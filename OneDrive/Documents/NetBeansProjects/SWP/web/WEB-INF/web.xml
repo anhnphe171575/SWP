@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>Controller.ResetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewPassword</servlet-name>
+        <servlet-class>Controller.NewPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomePage</servlet-name>
+        <servlet-class>Controller.HomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginCusController</servlet-name>
+        <servlet-class>Controller.LoginCusController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/ResetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewPassword</servlet-name>
+        <url-pattern>/NewPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePage</servlet-name>
+        <url-pattern>/HomePage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginCusController</servlet-name>
+        <url-pattern>/LoginCusController</url-pattern>
+    </servlet-mapping>
+</web-app>
