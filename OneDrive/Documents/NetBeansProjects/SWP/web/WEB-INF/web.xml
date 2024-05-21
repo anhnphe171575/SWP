@@ -16,6 +16,14 @@
         <servlet-name>LoginCusController</servlet-name>
         <servlet-class>Controller.LoginCusController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>Controller.LogOut</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchHome</servlet-name>
+        <servlet-class>Controller.SearchHome</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>LoginCusController</servlet-name>
         <url-pattern>/LoginCusController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/LogOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchHome</servlet-name>
+        <url-pattern>/SearchHome</url-pattern>
     </servlet-mapping>
 </web-app>

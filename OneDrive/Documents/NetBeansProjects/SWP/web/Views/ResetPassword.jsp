@@ -43,7 +43,7 @@ input[type="text"]:focus {
   outline: none;
   border-color: #999;
 }
-button[type="submit"] {
+button {
    margin-top: 10px; 
   background-color: #007bff;
   color: #fff;
@@ -53,7 +53,7 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+button:hover {
   background-color: #0056b3;
 }
 
@@ -74,7 +74,9 @@ button[type="submit"]:active {
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" placeholder="Nhập email của bạn">
             <button type="submit">Gửi mật khẩu</button>
+           
         </form>
+         <button onclick="location.href='LoginCusController'">Back to login</button>
          <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("errorMessage") %>

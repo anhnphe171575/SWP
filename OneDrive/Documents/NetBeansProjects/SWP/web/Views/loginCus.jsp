@@ -38,7 +38,7 @@
                         </div>
                         <p style="color: red">${error}</p>
                         <div class="form-link">
-                            <a href="#" class="forgot-pass">Forgot password?</a>
+                            <a href="ResetPassword" class="forgot-pass">Forgot password?</a>
                         </div>
 
                         <div class="field button-field">
@@ -49,6 +49,9 @@
                     <div class="form-link">
                         <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
                     </div>
+                    <div class="form-link">
+                            <a href="HomePage" class="forgot-pass">Back to login</a>
+                        </div>
                 </div>
 
               

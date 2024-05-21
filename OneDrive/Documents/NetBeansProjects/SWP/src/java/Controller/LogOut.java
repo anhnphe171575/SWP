@@ -4,21 +4,20 @@
  */
 package Controller;
 
-import DAL.DAOCustomer;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 
 /**
  *
  * @author phuan
  */
-public class LoginCusController extends HttpServlet {
+public class LogOut extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +36,10 @@ public class LoginCusController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginCusController</title>");            
+            out.println("<title>Servlet LogOut</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginCusController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LogOut at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +57,7 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
+        doPost(request, response);
     }
 
     /**
@@ -72,20 +71,23 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomer daoC = new DAOCustomer();
-        HttpSession session = request.getSession();
-        
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        boolean check = daoC.loginCus(username, password);
-        if (check==true) {
-            session.setAttribute("cus", daoC.getCus(username));
-            response.sendRedirect("HomePage");
-        }else{
-            request.setAttribute("error", "error");
-            request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
-        }
+        response.setContentType("text/html");
+    	Cookie[] cookies = request.getCookies();
+    	if(cookies != null){
+    	for(Cookie cookie : cookies){
+    		if(cookie.getName().equals("JSESSIONID")){
+    			System.out.println("JSESSIONID="+cookie.getValue());
+    			break;
+    		}
+    	}
+    	}
+    	//invalidate the session if exists
+    	HttpSession session = request.getSession(false);
+    	System.out.println("User="+session.getAttribute("user"));
+    	if(session != null){
+    		session.invalidate();
+    	}
+    	response.sendRedirect("HomePage");
     }
 
     /**
