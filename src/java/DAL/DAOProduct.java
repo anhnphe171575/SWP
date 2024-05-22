@@ -59,7 +59,9 @@ public class DAOProduct extends DBContext{
     public List<Product> ListCatogoryAndBrand(){
       List<Product> product = new ArrayList();
         try {
-            String query = "SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order";
+            String query = " select p.brand,p.category_productID,cp.category_name   \n" +
+"				  from [Product] p inner join CategoryProduct cp on p.category_productID = cp.category_productID\n" +
+"				  group by p.brand,p.category_productID,cp.category_name ";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

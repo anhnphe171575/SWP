@@ -24,6 +24,14 @@
         <servlet-name>SearchHome</servlet-name>
         <servlet-class>Controller.SearchHome</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SignUpCustomer</servlet-name>
+        <servlet-class>Controller.SignUpCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>Controller.VerifyServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -47,5 +55,13 @@
     <servlet-mapping>
         <servlet-name>SearchHome</servlet-name>
         <url-pattern>/SearchHome</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignUpCustomer</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/verify</url-pattern>
     </servlet-mapping>
 </web-app>

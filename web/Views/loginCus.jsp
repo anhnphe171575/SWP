@@ -47,7 +47,7 @@
                     </form>
 
                     <div class="form-link">
-                        <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
+                        <span>Don't have an account? <a href="signup" class="link signup-link">Signup</a></span>
                     </div>
                     <div class="form-link">
                             <a href="HomePage" class="forgot-pass">Back to login</a>

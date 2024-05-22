@@ -161,7 +161,7 @@
                             <c:otherwise>
                         <div class="navbar-nav ml-auto py-0">
                             <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                            <a href="" class="nav-item nav-link">Register</a>
+                            <a href="signup" class="nav-item nav-link">Register</a>
                         </div>
                             </c:otherwise>
                         </c:choose>

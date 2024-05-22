@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dal;
+package DAL;
 
 import DAL.DBContext;
 import java.sql.ResultSet;
@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import Entity.Security;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -78,7 +80,35 @@ public class DAOSecurityQuestion extends DBContext {
         }
         return n;
     }
-
+    public List<String> getSecurityQuestions() {
+        List<String> securityQuestions = new ArrayList<>();
+        try {
+            String query = "SELECT security_question FROM SecurityQuestion";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                String question = rs.getString("security_question");
+                securityQuestions.add(question);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();            
+        }
+        return securityQuestions;
+    }
+     public int getSecurityQuestionID(String questionText) {
+        try {
+            String query = "SELECT securityID FROM SecurityQuestion WHERE security_question = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, questionText);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("securityID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
     public static void main(String[] args) {
         DAOSecurityQuestion dao = new DAOSecurityQuestion();
 //        SecurityQuestion obj = new SecurityQuestion(1, " what old is your dog?");
