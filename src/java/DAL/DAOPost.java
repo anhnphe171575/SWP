@@ -30,6 +30,79 @@ import Entity.User;
  * @author admin
  */
 public class DAOPost extends DBContext {
+ public void hideShow(int id, int status) {
+        try {
+            String sql = "UPDATE [dbo].[Post]\n"
+                    + "   SET \n"
+                    + "      [status] = "+status+"\n"
+                    + "\n"
+                    + " WHERE postID="+id;
+
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    public Vector<Post> sort(String option) {
+        Vector<Post> vector = new Vector<>();
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                p.featured,p.status,p.brief_information,\n"
+                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 cp.category_postID,cp.category_productID,\n"
+                + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "				 from Post p \n"
+                + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                inner join [User] u on p.UserID = u.UserID"
+                + "                  order by " + option + " ASC";
+
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security sq = new Security(rs.getInt("securityID"),
+                        null);
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"),
+                        rs.getString("category_name"),
+                        rs.getString("category_description"),"");
+                User u = new User(rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        rs.getInt("role"),
+                        sq,
+                        rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"),
+                        cpr);
+                Post p = new Post(rs.getInt("postID"),
+                        rs.getString("thumbnail"),
+                        rs.getString("title"),
+                        cp,
+                        rs.getInt("featured"),
+                        rs.getInt("status"),
+                        rs.getString("brief_information"),
+                        rs.getString("description"),
+                        rs.getInt("flag"),
+                        u,
+                        rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return vector;
+
+    }
 
     public void addPost(Post obj) {
         try {
@@ -62,7 +135,7 @@ public class DAOPost extends DBContext {
 
             pre.setDate(10, Date.valueOf(date1));
 
-            pre.executeUpdate(sql);
+            pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -265,19 +338,19 @@ public class DAOPost extends DBContext {
 
     public static void main(String[] args) {
         DAOPost daoP = new DAOPost();
-//        LocalDate localDate = LocalDate.now();
-//        java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        CategoryProduct cp1 = new CategoryProduct();
-//        CategoryPost cp = new CategoryPost(1, cp1);
-//        User u = new User(1, "", "", "", "", "", "", "", null, true, 0, 0, 0, "");
-//       Post obj = new Post(0,"aaa","aaa", cp, "aaa", 1, "aaa", "aaa", 1,u , date_create_by);
-//    dao.addPost(obj);
+        LocalDate localDate = LocalDate.now();
+        java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        CategoryProduct cp1 = new CategoryProduct();
+        CategoryPost cp = new CategoryPost(1, cp1);
+        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, 0, null, "");
+       Post obj = new Post(0,"aaa","aaa", cp, 1, 1, "aaa", "aaa", 1,u , date_create_by);
+    daoP.addPost(obj);
 
-        String category = "all";
-        String author = "all";
-        String status_raw = "1";
-        int status = Integer.parseInt(status_raw);
-        Map<String, String> aa1 = new LinkedHashMap<>();
+//        String category = "all";
+//        String author = "all";
+//        String status_raw = "1";
+//        int status = Integer.parseInt(status_raw);
+//        Map<String, String> aa1 = new LinkedHashMap<>();
     
       
       
@@ -286,36 +359,37 @@ public class DAOPost extends DBContext {
 //for (Map.Entry<String, String> item : aa1.entrySet()) {
 //    System.out.println(item.getKey() + " - " + item.getValue());
 //}
-        ArrayList<String> list = new ArrayList<>();
-        if (!status_raw.equalsIgnoreCase("all")) {
-            list.add("p.Status = ?");
-             aa1.put("status", status_raw);
-        }
-        if (!author.equalsIgnoreCase("all")) {
-            list.add("(u.first_name + ' ' + u.last_name) = ?");
-            aa1.put("author", author);
-        }
-        if (!category.equalsIgnoreCase("all")) {
-            list.add("cpr.category_name = ?");
-             aa1.put("category", category);
-        }
-        Vector<Post> vector = new Vector<>();
-        if (list.isEmpty()) {
-            vector = daoP.getAll1(aa1, "");
-        } else {
-            String all1 = "where ";
-            for (int i = 0; i < list.size(); i++) {
-                if (i == list.size() - 1) {
-                    all1 += list.get(i);
-                } else {
-                    all1 += list.get(i) + " AND ";
-                }
-            }
-            vector = daoP.getAll1(aa1, all1);
-            System.out.println(all1);
-            System.out.println(aa1);
-           
-        }
-          System.out.println(vector);
-    }
+//        ArrayList<String> list = new ArrayList<>();
+//        if (!status_raw.equalsIgnoreCase("all")) {
+//            list.add("p.Status = ?");
+//             aa1.put("status", status_raw);
+//        }
+//        if (!author.equalsIgnoreCase("all")) {
+//            list.add("(u.first_name + ' ' + u.last_name) = ?");
+//            aa1.put("author", author);
+//        }
+//        if (!category.equalsIgnoreCase("all")) {
+//            list.add("cpr.category_name = ?");
+//             aa1.put("category", category);
+//        }
+//        Vector<Post> vector = new Vector<>();
+//        if (list.isEmpty()) {
+//            vector = daoP.getAll1(aa1, "");
+//        } else {
+//            String all1 = "where ";
+//            for (int i = 0; i < list.size(); i++) {
+//                if (i == list.size() - 1) {
+//                    all1 += list.get(i);
+//                } else {
+//                    all1 += list.get(i) + " AND ";
+//                }
+//            }
+//            vector = daoP.getAll1(aa1, all1);
+//            System.out.println(all1);
+//            System.out.println(aa1);
+//           
+//        }
+//          System.out.println(vector);
+//    }
+}
 }

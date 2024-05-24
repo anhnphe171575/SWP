@@ -18,7 +18,7 @@ public class User {
     private String phone;
     private String email;
     private String address;
-    private String usename;
+    private String username;
     private String password;
     private Date dob;
     private boolean gender;
@@ -29,14 +29,15 @@ public class User {
      public User(){
          
      }
-    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String usename, String password, Date dob, boolean gender, int status, int role, Security security, String securityAnswer) {
+
+    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, int role, Security security, String securityAnswer) {
         this.UserID = UserID;
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.usename = usename;
+        this.username = username;
         this.password = password;
         this.dob = dob;
         this.gender = gender;
@@ -94,12 +95,12 @@ public class User {
         this.address = address;
     }
 
-    public String getUsename() {
-        return usename;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsename(String usename) {
-        this.usename = usename;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -157,6 +158,7 @@ public class User {
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
     }
+  
 
    
 }

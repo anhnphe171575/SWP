@@ -81,6 +81,37 @@ public class DAOUser extends DBContext {
         }
         //return false;
    }
+        public User getUserByLogin(String username) {
+        User u = null;
+        String sql = "select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "inner join SecurityQuestion s on u.securityID=s.securityID where username =?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                u = new User(rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        rs.getInt("role"),
+                        sq,
+                        rs.getString("securityAnswer"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return u;
+    }
     public Vector<User> getUser(String sql) {
         Vector<User> vector = new Vector<>();
         try {

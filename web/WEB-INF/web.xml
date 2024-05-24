@@ -32,6 +32,42 @@
         <servlet-name>VerifyServlet</servlet-name>
         <servlet-class>Controller.VerifyServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PostController</servlet-name>
+        <servlet-class>Controller.PostController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Status</servlet-name>
+        <servlet-class>Controller.Status</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SecurityQuestionController</servlet-name>
+        <servlet-class>Controller.SecurityQuestionController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>Controller.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsList</servlet-name>
+        <servlet-class>Controller.ProductsList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProduct</servlet-name>
+        <servlet-class>Controller.AddProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateStatus</servlet-name>
+        <servlet-class>Controller.UpdateStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProduct</servlet-name>
+        <servlet-class>Controller.EditProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewProduct</servlet-name>
+        <servlet-class>Controller.ViewProduct</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -63,5 +99,41 @@
     <servlet-mapping>
         <servlet-name>VerifyServlet</servlet-name>
         <url-pattern>/verify</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostController</servlet-name>
+        <url-pattern>/PostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Status</servlet-name>
+        <url-pattern>/Status</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SecurityQuestionController</servlet-name>
+        <url-pattern>/SecurityQuestion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsList</servlet-name>
+        <url-pattern>/productslist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProduct</servlet-name>
+        <url-pattern>/addp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStatus</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProduct</servlet-name>
+        <url-pattern>/editp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProduct</servlet-name>
+        <url-pattern>/view</url-pattern>
     </servlet-mapping>
 </web-app>

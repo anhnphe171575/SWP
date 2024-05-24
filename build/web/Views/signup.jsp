@@ -30,7 +30,7 @@
         <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
         <!-- Main CSS-->
-        <link href="css/main.css" rel="stylesheet" media="all">
+        <link href="vncss/vn4.css" rel="stylesheet" media="all">
     </head>
 
     <body>
@@ -184,7 +184,7 @@
         <script src="vendor/datepicker/daterangepicker.js"></script>
 
         <!-- Main JS-->
-        <script src="js/global.js"></script>
+        <script src="vnjs/global.js"></script>
     </body>
 
 </html>

@@ -4,11 +4,9 @@
  */
 package Controller;
 
-
 import DAL.DAOCustomer;
-import Entity.Customer;
-import Entity.Security;
 import DAL.DAOSecurityQuestion;
+import DAL.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,13 +18,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import Entity.Customer;
+import Entity.Security;
+import Entity.Security;
+import Entity.User;
 import jakarta.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.mail.Message;
@@ -96,7 +96,7 @@ public class SignUpCustomer extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, UnsupportedEncodingException {
+            throws ServletException, IOException {
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -113,11 +113,15 @@ public class SignUpCustomer extends HttpServlet {
 
         DAOCustomer db = new DAOCustomer();
         DAOSecurityQuestion db1 = new DAOSecurityQuestion();
+        DAOUser dbu = new DAOUser();
         boolean checkPhone = true;
         boolean checkEmail = true;
         boolean checkUsername = true;
+        boolean checkPhoneUser = true;
+        boolean checkEmailUser = true;
+        boolean checkUsernameUser = true;
+        boolean checkPass = true;
 
-        // Kiểm tra định dạng và trùng lặp số điện thoại
         if (isValidPhoneNumber(phone)) {
             for (Customer c : db.getCustomer()) {
                 if (phone.equals(c.getPhone())) {
@@ -126,12 +130,21 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
+            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+                    + "on u.securityID=sq.securityID;")) {
+                if (phone.equals(u.getPhone())) {
+                    checkPhoneUser = false;
+                    request.setAttribute("msgPhone", "Phone number already registered!");
+                    break;
+                }
+            }
         } else {
             checkPhone = false;
+            checkPhoneUser = false;
             request.setAttribute("msgPhone", "Wrong phone format!");
         }
 
-        // Kiểm tra định dạng và trùng lặp email
         if (isValidEmail(email)) {
             for (Customer c : db.getCustomer()) {
                 if (email.equals(c.getEmail())) {
@@ -140,12 +153,21 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
+            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+                    + "on u.securityID=sq.securityID;")) {
+                if (email.equals(u.getEmail())) {
+                    checkEmailUser = false;
+                    request.setAttribute("msgEmail", "Phone number already registered!");
+                    break;
+                }
+            }
+            
         } else {
             checkEmail = false;
             request.setAttribute("msgEmail", "Wrong email format!");
         }
 
-        // Kiểm tra định dạng và trùng lặp username
         if (isValidUsername(user)) {
             for (Customer c : db.getCustomer()) {
                 if (user.equals(c.getUsername())) {
@@ -154,19 +176,26 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
+            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+                    + "on u.securityID=sq.securityID;")) {
+                if (user.equals(u.getUsername())) {
+                    checkUsernameUser = false;
+                    request.setAttribute("msgUser", "Phone number already registered!");
+                    break;
+                }
+            }
         } else {
             checkUsername = false;
             request.setAttribute("msgUser", "Wrong username format!");
         }
-        Boolean checkPass= true;
-        // Kiểm tra tính hợp lệ của mật khẩu
-       if (!pass.equals(repass)) {
+
+        if (!pass.equals(repass)) {
             checkPass = false;
             request.setAttribute("msgRe-pass", "Passwords do not match!");
         }
 
-        // Kiểm tra tất cả các điều kiện
-        boolean check = checkPhone && checkEmail && checkUsername && checkPass;
+        boolean check = checkPhone && checkEmail && checkUsername && checkPass && checkPhoneUser && checkEmailUser && checkUsernameUser;
 
         if (!check) {
             doGet(request, response);
@@ -176,13 +205,9 @@ public class SignUpCustomer extends HttpServlet {
             int secu_id = db1.getSecurityQuestionID(ques);
             Security sq = new Security(secu_id, ques);
             Customer cus = new Customer(id, firstName, lastName, phone, email, address, user, pass, formatDate(dob),
-                    Boolean.valueOf(gen), 1, sq, ans);
+                    Boolean.valueOf(gen), 1,sq , ans);
             session.setAttribute("cus", cus);
-            try {
-                sendVerificationEmail(email);
-            } catch (MessagingException ex) {
-                Logger.getLogger(SignUpCustomer.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            sendVerificationEmail(email);
             doGet(request, response);
         }
     }
@@ -196,7 +221,7 @@ public class SignUpCustomer extends HttpServlet {
         }
     }
 
-    private void sendVerificationEmail(String recipientEmail) throws MessagingException, UnsupportedEncodingException {
+    private void sendVerificationEmail(String recipientEmail) {
         final String fromEmail = "anhnphe171575@fpt.edu.vn";
         final String password = "jull jeex qjzb cdtn";
 
@@ -224,7 +249,6 @@ public class SignUpCustomer extends HttpServlet {
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
     }
 
     private boolean isValidEmail(String email) {
