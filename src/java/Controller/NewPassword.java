@@ -6,6 +6,8 @@ package Controller;
 
 import DAL.DAOCustomer;
 import Entity.Customer;
+import Entity.User;
+import DAL.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,11 +64,11 @@ public class NewPassword extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = request.getParameter("email");
-        String otp = request.getParameter("otp");
-           String checkOtp = (String) request.getSession().getAttribute(email + "_reset_otp");
-        request.setAttribute("checkOtp", checkOtp);
+        String otp = request.getParameter("otp"); 
+        String role = request.getParameter("role");
         request.setAttribute("otp", otp);
         request.setAttribute("email", email);
+         request.setAttribute("role", role);
         request.getRequestDispatcher("Views/NewPassword.jsp").forward(request, response);
     }
 
@@ -83,21 +85,23 @@ public class NewPassword extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String otp = request.getParameter("otp");
-
+        String role = request.getParameter("role");
         String password = request.getParameter("password");
         String retypePassword = request.getParameter("retypePassword");
 
         String checkOtp = (String) request.getSession().getAttribute(email + "_reset_otp");
         String expireTime = (String) request.getSession().getAttribute(email + "_reset_time");
-        
+             
         Customer cus = new DAOCustomer().getCusByEmail(email);
+        User user = new DAOUser().getUserByLogin(email, "select * from [User] where username =?");
         String msg = "";
          DAOCustomer db = new DAOCustomer();
-        if (cus == null) {
+         DAOUser db1 = new DAOUser();
+        if ((cus == null && role.equals("1"))  || (user == null && !role.equals("1"))) {
             msg = "Email not found";
-        } else if (otp.equals(checkOtp)) {
+        } else if (otp.equals(checkOtp) && role.equals("1")) {
 
-            if (isExpired(expireTime)) {
+            if (!isExpired(expireTime)) {
                 msg = "Link expired";
             } else {
 
@@ -113,10 +117,30 @@ public class NewPassword extends HttpServlet {
 
             }
 
-        } else {
+        }   
+        else if (otp.equals(checkOtp) && !role.equals("1")) {
+
+            if (!isExpired(expireTime)) {
+                msg = "Link expired";
+            } else {
+
+                if (password.equals(retypePassword)) {
+
+                   db1.UpdateNewPass(email, password);
+                    msg = "Reset password success";
+                    request.getSession().removeAttribute(email + "_reset_otp");
+
+                } else {
+                    msg = "2 password not match";
+                }
+
+            }
+
+        } 
+        else {
             msg = "Error! Cant reset password";
         }
-
+        request.setAttribute("role", role);
         request.setAttribute("errorMessage", msg);
         request.setAttribute("otp", otp);
         request.setAttribute("email", email);
@@ -132,15 +156,19 @@ public class NewPassword extends HttpServlet {
             Date expiryDate = dateFormat.parse(dateString);
 
 
-            Date currentTime = new Date();
+            Calendar calendar = Calendar.getInstance();
+            Date currentTime = calendar.getTime();
 
             // Compare the dates
-            return currentTime.after(expiryDate);
+            if (currentTime.after(expiryDate)){
+                return false;
+            }
         } catch (ParseException e) {
             // Handle parsing exception
             System.out.println("Error parsing date: " + e.getMessage());
             return false;
         }
+        return true;
     }
     /**
      * Returns a short description of the servlet.

@@ -78,19 +78,20 @@ body, input, button {
                 <%= request.getAttribute("errorMessage") %>
             </div>
             <% } %>
+         
     <form action="NewPassword" method="post" class="password-form">
         <input type="hidden" name="email" value="${email}">
         <input type="hidden" name="otp" value="${otp}">
-         
+          <input type="text" name="role" value="${role}">
         <div class="form-group">
-            <label for="new-password">Mật khẩu mới:</label>
+            <label for="new-password">New Password:</label>
             <input type="password" id="new-password" name="password" required>
         </div>
         <div class="form-group">
-            <label for="confirm-password">Xác nhận mật khẩu mới:</label>
+            <label for="confirm-password">Confirm new password:</label>
             <input type="password" id="confirm-password" name="retypePassword" required>
         </div>
-        <button type="submit">Cập nhật mật khẩu</button>
+        <button type="submit">Update password</button>
     </form>
 </body>
 </html>

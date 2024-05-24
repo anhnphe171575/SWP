@@ -69,11 +69,12 @@ button[type="submit"]:active {
 </head>
 <body>
     <div class="container">
-        <h1>Gửi mật khẩu về email</h1>
+        <h1>Send password to email</h1>
         <form action="ResetPassword" method="post">
+            <input type="text"  name="role" value="${requestScope.role}">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" placeholder="Nhập email của bạn">
-            <button type="submit">Gửi mật khẩu</button>
+            <input type="text" id="email" name="email" placeholder="Enter your email">
+            <button type="submit">Send</button>
            
         </form>
          <button onclick="location.href='LoginCusController'">Back to login</button>

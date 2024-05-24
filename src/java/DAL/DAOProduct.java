@@ -25,14 +25,14 @@ public class DAOProduct extends DBContext{
         List<Product> product = new ArrayList();
         try {
             String query = "select p.productID,p.product_name,p.price,p.quantity,p.year,p.product_description,\n" +
-"                    p.featured,p.thumbnail,p.brief_information,p.original_price,p.sale_price,p.category_productID, p.brand, p.update_date,\n" +
+"                    p.featured,p.thumbnail,p.brief_information,p.original_price,p.sale_price,p.category_productID, p.brand, p.update_date,p.status,\n" +
 "                    cp.category_name,cp.category_description from [Product] p inner join CategoryProduct cp \n" +
-"                    on p.category_productID = cp.category_productID where p.featured ='1' and p.quantity > 0";
+"                    on p.category_productID = cp.category_productID where p.featured ='1' and p.quantity  > 0 and p.status = 1";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 CategoryProduct cp = new CategoryProduct(rs.getInt("category_productID"),
-                        rs.getString("category_name"), rs.getString("category_description"));
+                        rs.getString("category_name"), rs.getString("category_description"),"");
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
                         rs.getFloat("price"),
@@ -46,8 +46,8 @@ public class DAOProduct extends DBContext{
                         rs.getFloat("sale_price"),
                         cp,
                         rs.getString("brand"),
-                        rs.getDate("update_date")
-                        );
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status") );
                 product.add(p);
             }
         } catch (SQLException e) {
@@ -66,7 +66,7 @@ public class DAOProduct extends DBContext{
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 CategoryProduct cp = new CategoryProduct(rs.getInt("category_productID"),
-                        rs.getString("category_name"), null);
+                        rs.getString("category_name"), null,"");
                 Product p = new Product(-1,
                         null,
                         -1,
@@ -80,8 +80,8 @@ public class DAOProduct extends DBContext{
                         -1,
                         cp,
                         rs.getString("brand"),
-                        null
-                        );
+                        null,
+                       null );
                 product.add(p);
             }
         } catch (SQLException e) {

@@ -5,12 +5,14 @@
 package Controller;
 
 import DAL.DAOCustomer;
+import DAL.DAOUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
@@ -20,6 +22,8 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,6 +71,8 @@ public class ResetPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String role = request.getParameter("role");
+        request.setAttribute("role", role);
         request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
     }
 
@@ -83,17 +89,32 @@ public class ResetPassword extends HttpServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         String email = request.getParameter("email");
         DAOCustomer db = new DAOCustomer();
-        if(db.getCusByEmail(email) == null){
+        DAOUser db1 = new DAOUser();
+        String role = request.getParameter("role");
+        if(role.equals("1") && db.getCusByEmail(email) == null){  
+            request.setAttribute("role",role);
+            request.setAttribute("errorMessage", "Email not registed!");
+            request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
+        
+        }
+        else if(!role.equals("1")){
+             request.setAttribute("role",role);
+             if(db1.getUserByLogin(email, "select * from [User] where username =?") == null){
              request.setAttribute("errorMessage", "Email not registed!");
               request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
         }
+        }
         else{
         String otp1 = OTP(4);
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(15*60);
         request.getSession().setAttribute(email + "_reset_otp", otp1);
         request.getSession().setAttribute(email + "_reset_time", getExpiredTime());
+        request.getSession().setAttribute("ep", getExpiredTime());
         String resetLink = "http://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath() + "/NewPassword?otp=" + otp1 + "&email=" + email;
+                + request.getContextPath() + "/NewPassword?otp=" + otp1 + "&email=" + email + "&role=" + role;
         try {
+            request.setAttribute("role",role);
             sendEmail("Reset PassWord", resetLink, email);
             request.setAttribute("errorMessage", "An email was sent!");
             request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
@@ -170,17 +191,16 @@ public class ResetPassword extends HttpServlet {
     }
 
     public String getExpiredTime() {
-        String result = "";
-        try {
-            LocalTime now = LocalTime.now();
+        Calendar calendar = Calendar.getInstance();
+        Date currentTime = calendar.getTime();
 
-            // Cộng thêm 10 phút
-            LocalTime timeAfter10Minutes = now.plusMinutes(10);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            result = dateFormat.format(timeAfter10Minutes);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        // Add n minutes
+        calendar.add(Calendar.MINUTE, 2);
+        Date newTime = calendar.getTime();
+
+        // Format the result as a string
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String result = dateFormat.format(newTime);
         return result;
     }
 

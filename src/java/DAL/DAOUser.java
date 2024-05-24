@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package dal;
+package DAL;
 
 import DAL.DBContext;
 import java.sql.PreparedStatement;
@@ -38,9 +38,9 @@ public class DAOUser extends DBContext {
         return flag;
     }
 
-    public User getUserByLogin(String username) {
+    public User getUserByLogin(String username, String sql) {
         User u = null;
-        String sql = "select * from [User] where username =?";
+     ;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
 
@@ -67,7 +67,20 @@ public class DAOUser extends DBContext {
         }
         return u;
     }
+      public void UpdateNewPass(String email, String passWord){
+        String query = "UPDATE User SET password=? WHERE email=?";
+        try {
+            
+         PreparedStatement pre = conn.prepareStatement(query);
+            
+            pre.setString(1, passWord);
+            pre.setString(2, email);
+            pre.executeUpdate();
+        } catch (Exception e) {
 
+        }
+        //return false;
+   }
     public Vector<User> getUser(String sql) {
         Vector<User> vector = new Vector<>();
         try {

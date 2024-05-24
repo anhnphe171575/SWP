@@ -114,7 +114,7 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security();
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"));
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
@@ -163,7 +163,7 @@ public class DAOPost extends DBContext {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Security se = new Security();
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"));
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
@@ -191,13 +191,13 @@ public class DAOPost extends DBContext {
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID";
+                + "                inner join [User] u on p.UserID = u.UserID where p.featured = 1";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"),"");
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"));
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
@@ -230,7 +230,7 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"),"");
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"));
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
@@ -254,7 +254,7 @@ public class DAOPost extends DBContext {
                 int category_productID = rs.getInt(1);
                 String category_name = rs.getString(2);
                 String category_description = rs.getString(3);
-                CategoryProduct obj = new CategoryProduct(category_productID, category_name, category_description);
+                CategoryProduct obj = new CategoryProduct(category_productID, category_name, category_description,"");
                 vector.add(obj);
             }
         } catch (Exception ex) {

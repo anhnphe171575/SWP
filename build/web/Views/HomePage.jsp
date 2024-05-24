@@ -34,7 +34,7 @@
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid">
+<!--    <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
@@ -64,7 +64,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
@@ -102,10 +102,10 @@
     <div class="container-fluid mb-5">
         <div class="row border-top px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                    <h6 class="m-0">Categories</h6>
-                    <i class="fa fa-angle-down text-dark"></i>
-                </a>
+                    <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                        <h6 class="m-0">Categories</h6>
+                        <i class="fa fa-angle-down text-dark"></i>
+                    </a>
                 <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                          <c:forEach items="${requestScope.Cate1}" var="a"> 
@@ -141,8 +141,7 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                    <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                    <a href="cart.html" class="dropdown-item">Lasted Post</a>
                                 </div>
                             </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -463,12 +462,12 @@
                                 <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
                             </div>
                         </form>-->
-<div><p>HKD Vũ Thị Quỳnh Anh </p>
+<div><p>HKD Nguyen Phu Anh </p>
     <p> Giấy chứng nhận đăng ký HKD số 17A80041952 do Phòng Tài chính - Kế hoạch, Uỷ ban nhân dân thành phố Thái Nguyên cấp ngày 30/5/2019</p>
     <p> Địa chỉ: Số 235, Đường Quang Trung, Tổ 7, Phường Tân Thịnh, Thành phố Thái Nguyên, Tỉnh Thái Nguyên, Việt Nam</p>
  <p> Email: teelabvn@gmail.com</p>
 <p>Điện thoại: 0865539083</p></div>
-                    </div>
+                    </div>      
                 </div>
             </div>
         </div>

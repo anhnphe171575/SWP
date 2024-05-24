@@ -12,14 +12,15 @@ public class CategoryProduct {
     private int category_productID;
     private String category_name;
     private String category_description;
-
+    private String image;
     public CategoryProduct() {
     }
 
-    public CategoryProduct(int category_productID, String category_name, String category_description) {
+    public CategoryProduct(int category_productID, String category_name, String category_description, String image) {
         this.category_productID = category_productID;
         this.category_name = category_name;
         this.category_description = category_description;
+        this.image = image;
     }
 
     public int getCategory_productID() {
@@ -46,9 +47,14 @@ public class CategoryProduct {
         this.category_description = category_description;
     }
 
-    @Override
-    public String toString() {
-        return "CategoryProduct{" + "category_productID=" + category_productID + ", category_name=" + category_name + ", category_description=" + category_description + '}';
+    public String getImage() {
+        return image;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+  
 
 }

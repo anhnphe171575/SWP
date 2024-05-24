@@ -26,7 +26,7 @@ public class DAOCategoryProduct extends DBContext{
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while(rs.next()){
-                CategoryProduct cp = new CategoryProduct(-1, rs.getString("category_name"), null);
+                CategoryProduct cp = new CategoryProduct(-1, rs.getString("category_name"), null,null);
                 cproduct.add(cp);
             }
         }

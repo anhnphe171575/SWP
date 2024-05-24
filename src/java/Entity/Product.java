@@ -25,8 +25,9 @@ public class Product {
     private CategoryProduct categoryProduct;
     private String brand;
     private Date update_date;
+    private  Boolean status;
 
-    public Product(int productID, String product_name, float price, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date) {
+    public Product(int productID, String product_name, float price, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status) {
         this.productID = productID;
         this.product_name = product_name;
         this.price = price;
@@ -41,6 +42,7 @@ public class Product {
         this.categoryProduct = categoryProduct;
         this.brand = brand;
         this.update_date = update_date;
+        this.status = status;
     }
 
     public int getProductID() {
@@ -154,6 +156,15 @@ public class Product {
     public void setUpdate_date(Date update_date) {
         this.update_date = update_date;
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+  
 
     @Override
     public String toString() {
