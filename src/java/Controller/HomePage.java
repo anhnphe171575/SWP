@@ -7,7 +7,7 @@ package Controller;
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
 import DAL.DAOProduct;
-import DAL.DAOSlider;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -61,13 +61,21 @@ public class HomePage extends HttpServlet {
             throws ServletException, IOException {
         DAOProduct db = new DAOProduct();
         DAOCategoryProduct db1 = new DAOCategoryProduct();
-        DAOSlider db2 =new DAOSlider();
+        
         DAOPost db3 = new DAOPost();
         request.setAttribute("imageC", db.ImageByCategory());   
          request.setAttribute("CountP" , db.CountProductByCategory());
          
-        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
-        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
+      
+         
+         
+         
+         
+         
+         
+         
+         
+         //abc 123 
         
          request.setAttribute("HotPost", db3.HotPost());
         request.setAttribute("AllP", db.getProductFeature());
