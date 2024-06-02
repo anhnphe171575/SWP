@@ -75,7 +75,7 @@ public class HomePage extends HttpServlet {
          
          
          
-         
+         //abc 123 
         
          request.setAttribute("HotPost", db3.HotPost());
         request.setAttribute("AllP", db.getProductFeature());
