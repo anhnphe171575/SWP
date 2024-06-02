@@ -38,13 +38,12 @@ public class DAOUser extends DBContext {
         return flag;
     }
 
-    public User getUserByLogin(String username, String sql) {
+    public User getUserByLogin(String var1, String sql) {
         User u = null;
-     ;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
 
-            pre.setString(1, username);
+            pre.setString(1, var1);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                   Security se = new Security(rs.getInt("securityID"), "");

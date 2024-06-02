@@ -71,7 +71,7 @@ button[type="submit"]:active {
     <div class="container">
         <h1>Send password to email</h1>
         <form action="ResetPassword" method="post">
-            <input type="text"  name="role" value="${requestScope.role}">
+            <input type="hidden"  name="role" value="${requestScope.role}">
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" placeholder="Enter your email">
             <button type="submit">Send</button>

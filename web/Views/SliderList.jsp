@@ -289,22 +289,23 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h2>Manage <b>Employees</b></h2>
+                                <h2>Manage <b>Post</b></h2>
                             </div>
                             <div style="text-align: right"class="col-sm-3">
-                                <form action="PostController" method="post">
-                                    <input type="text" name="title"><!-- comment -->
-                                    <input type="submit" name="submit" value="Search"><!-- comment -->
-                                    <input type="hidden" name="service" value="search">
-                                </form>					
+                                <form action="SliderServletURL" method="get">
+                                    <p>
+                                        Search title: <input type="text" name="title"> 
+                                        <input type="submit" name="submit" value="search">
+                                        <input type="reset" value="Clear"></p>
+                                    <input type="hidden" name="service" value="listAllSlider">
+                                </form>				
                             </div>
 
                             <div class="col-sm-6">
                                 <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                                <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
-                                <a href="#Sort" class="btn btn-danger" data-toggle="modal">
-                                    <i class="material-icons">&#xe164;</i> <span>Sort</span>         
-                                </a>
+                              
+                                         
+                                
                                 <h5>${sessionScope.username}</h5>
                             </div>
                         </div>
@@ -318,18 +319,15 @@
                                         <label for="selectAll"></label>
                                     </span>
                                 </th>
-                                <th>Post ID</th>
-                                <th>Thumbnail</th>
-                                <th>Title</th>
-                                <th>Category Name</th>
-                                <th>Author</th>
-                                <th>Feature</th>
-                                <th>Status</th>
-                                <th>Paginated</th>
+                               <th>SliderID</th>
+                                <th>title</th>
+                                <th>image</th>
+                                <th>link</th>
+                                <th>status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${requestScope.post}" var="p">
+                              <c:forEach items="${requestScope.listAllSlider}" var="c">
                                 <tr>
                                     <td>
                                         <span class="custom-checkbox">
@@ -337,37 +335,26 @@
                                             <label for="checkbox2"></label>
                                         </span>
                                     </td>
-                                    <td>${p.postID}</td>
-                                    <td><img src="${p.thumbnail}" alt="Image"/></td>
-                                    <td>${p.title}</td>
-                                    <td>${p.cp.category_product.category_name}</td>
-                                    <td>${p.user.first_name} ${p.user.last_name}</td>
+                                    <td>${c.sliderID}</td>
+                                    <td>${c.title}</td> 
+                                    <td><img src="${c.image}" alt="Image"/></td>
+                                    <td>${c.link}</td>
                                     <td>
-                                        <c:if test="${p.featured == '1'}">Common</c:if>
-                                        <c:if test="${p.featured != '1'}">No Common</c:if>
+                                        <c:if test="${c.status == '1'}">Show</c:if>
+                                        <c:if test="${c.status != '1'}">Hide</c:if>
                                         </td>
-                                        <td>
-                                        <c:if test="${p.status == '1'}">Show</c:if>
-                                        <c:if test="${p.status != '1'}">Hide</c:if>
-                                        </td>
-                                        <td>
-                                        <c:if test="${p.flag == 1}">Header</c:if>
-                                        <c:if test="${p.flag == 2}">Body</c:if>
-                                        <c:if test="${p.flag == 3}">Foot</c:if>
-                                        <c:if test="${p.flag == 0}">Non</c:if>
-                                        </td>
-                                        <td>
-                                        <c:if test="${p.status == '1'}">
-                                            <a href="Status?postID=${p.postID}&status=0"  class="fa fa-eye"></a>
+                                      
+                                   
+                                    <td>
+                                        <c:if test="${c.status == '1'}">
+                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=0"  class="fa fa-eye"></a>
                                         </c:if>
-                                        <c:if test="${p.status != '1'}">
+                                        <c:if test="${c.status != '1'}">
 
-                                            <a href="Status?postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
+                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=1" class="fa fa-eye-slash"></a>
                                         </c:if>
-                                        <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
-                                        <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
-
+                                        <a href="SliderServletURL?service=updateSlider&sliderid=${c.sliderID}" title="update" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                        <a href="SliderServletURL?service=viewDetailsSlider&sliderid=${c.sliderID}" title="ViewDetails" data-toggle="tooltip"><i class="material-icons">&#xE8B6;</i></a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -384,38 +371,20 @@
                             <h5 class="modal-title">Bộ lọc</h5>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <form action="PostController" method="post">
+                        <form action="SliderServletURL" method="post">
                             <div class="modal-body">
                                 <!-- Category Filter -->
                                 <div class="form-group">
-                                    <label for="category-select">category:</label>
-                                    <select id="category-select" class="form-control" name="category">
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.category}" var="c">
-                                            <option value="${c}">${c}</option>
-                                        </c:forEach>
+                                    <label for="category-select">Status:</label>
+                                    <select id="category-select" class="form-control" name="status">
+                                        <option value="3">ALL</option>
+                                   
+                                            <option value="1">Show</option>
+                                            <option value="0">Hide</option>
                                     </select>
                                 </div>
                                 <!-- Author Filter -->
-                                <div class="form-group">
-                                    <label for="author-select">author:</label>
-                                    <select id="author-select" class="form-control" name="author">                               
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.user}" var="u">
-                                            <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <!-- Status Filter -->
-                                <div class="form-group">
-                                    <label for="status-select">status:</label>
-                                    <select id="status-select" class="form-control" name="status">
-                                        <option value="3">ALL</option>
-                                        <c:forEach items="${requestScope.status}" var="s">
-                                            <option value="${s}">${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                              
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">OK</button>

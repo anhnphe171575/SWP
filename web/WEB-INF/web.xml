@@ -68,6 +68,46 @@
         <servlet-name>ViewProduct</servlet-name>
         <servlet-class>Controller.ViewProduct</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>changePassword</servlet-name>
+        <servlet-class>Controller.changePassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PostDetail</servlet-name>
+        <servlet-class>Controller.PostDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditPost</servlet-name>
+        <servlet-class>Controller.EditPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BlogController</servlet-name>
+        <servlet-class>Controller.BlogController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerServlet</servlet-name>
+        <servlet-class>Controller.CustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsListPublic</servlet-name>
+        <servlet-class>Controller.ProductsListPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SliderServlet</servlet-name>
+        <servlet-class>Controller.SliderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>Controller.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailsPublic</servlet-name>
+        <servlet-class>Controller.ProductDetailsPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartDetails</servlet-name>
+        <servlet-class>Controller.CartDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -135,5 +175,45 @@
     <servlet-mapping>
         <servlet-name>ViewProduct</servlet-name>
         <url-pattern>/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePassword</servlet-name>
+        <url-pattern>/ChangePassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PostDetail</servlet-name>
+        <url-pattern>/PostDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditPost</servlet-name>
+        <url-pattern>/EditPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogController</servlet-name>
+        <url-pattern>/BlogController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerServlet</servlet-name>
+        <url-pattern>/CustomerServletURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsListPublic</servlet-name>
+        <url-pattern>/ProductsListPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SliderServlet</servlet-name>
+        <url-pattern>/SliderServletURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailsPublic</servlet-name>
+        <url-pattern>/ProductDetailsPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartDetails</servlet-name>
+        <url-pattern>/CartDetails</url-pattern>
     </servlet-mapping>
 </web-app>

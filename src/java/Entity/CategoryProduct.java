@@ -55,6 +55,11 @@ public class CategoryProduct {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "CategoryProduct{" + "category_productID=" + category_productID + ", category_name=" + category_name + ", category_description=" + category_description + ", image=" + image + '}';
+    }
+
   
 
 }

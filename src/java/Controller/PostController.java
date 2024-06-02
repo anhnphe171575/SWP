@@ -79,7 +79,7 @@ public class PostController extends HttpServlet {
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
         Vector<Post> vec1 = dao.getAll();
-        Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
+     //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = dao.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
@@ -89,7 +89,7 @@ public class PostController extends HttpServlet {
         request.setAttribute("post", vec1);
         request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);
-        request.setAttribute("status", vec4);
+     //   request.setAttribute("status", vec4);
         request.setAttribute("category_product", vec5);
         request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
     }

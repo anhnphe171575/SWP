@@ -4,11 +4,14 @@
  */
 package Entity;
 
+import java.util.Date;
+
 /**
  *
  * @author phuan
  */
 public class Slider {
+
     private int sliderID;
     private String title;
     private String image;
@@ -16,8 +19,14 @@ public class Slider {
     private int status;
     private String notes;
     private User user;
+    private int page_order;
+    private Date slider_date_createby;
 
-    public Slider(int sliderID, String title, String image, String link, int status, String notes, User user) {
+    
+     public Slider(){
+         
+     }
+    public Slider(int sliderID, String title, String image, String link, int status, String notes, User user, int page_order, Date slider_date_createby) {
         this.sliderID = sliderID;
         this.title = title;
         this.image = image;
@@ -25,6 +34,8 @@ public class Slider {
         this.status = status;
         this.notes = notes;
         this.user = user;
+        this.page_order = page_order;
+        this.slider_date_createby = slider_date_createby;
     }
 
     public int getSliderID() {
@@ -83,9 +94,20 @@ public class Slider {
         this.user = user;
     }
 
-    @Override
-    public String toString() {
-        return "Slider{" + "sliderID=" + sliderID + ", title=" + title + ", image=" + image + ", link=" + link + ", status=" + status + ", notes=" + notes + ", user=" + user + '}';
+    public int getPage_order() {
+        return page_order;
     }
-    
+
+    public void setPage_order(int page_order) {
+        this.page_order = page_order;
+    }
+
+    public Date getSlider_date_createby() {
+        return slider_date_createby;
+    }
+
+    public void setSlider_date_createby(Date slider_date_createby) {
+        this.slider_date_createby = slider_date_createby;
+    }
+
 }

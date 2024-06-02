@@ -10,6 +10,7 @@ import java.util.Vector;
 import org.apache.catalina.util.CustomObjectInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +53,50 @@ public class DAOCustomer extends DBContext {
         }
         return c;
     }
+    public int updateCustomer(Customer obj) {
+        int n = 0;
+        String sql = "UPDATE [Customer]\n"
+                + "   SET \n"
+                + "           [first_name]=?\n"
+                + "           ,[last_name]=?\n"
+                + "           ,[phone]=?\n"
+                + "           ,[email]=?\n"
+                + "           ,[address]=?\n"
+                + "           ,[username]=?\n"
+                + "           ,[password]=?\n"
+                + "           ,[dob]=?\n"
+                + "           ,[gender]=?\n"
+                + "           ,[status]=?\n"
+                + "           ,[securityID]=?\n"
+                + "           ,[securityAnswer]=?\n"
+                + " WHERE [customerID] = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+
+            pre.setString(1, obj.getFirst_name());
+            pre.setString(2, obj.getLast_name());
+            pre.setString(3, obj.getPhone());
+            pre.setString(4, obj.getEmail());
+            pre.setString(5, obj.getAddress());
+            pre.setString(6, obj.getUsername());
+            pre.setString(7, obj.getPassword());
+            SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+            String date1 = spd.format(obj.getDob());
+            pre.setDate(8, java.sql.Date.valueOf(date1));
+            pre.setBoolean(9, obj.isGender());
+            pre.setInt(10, obj.getStatus());
+            pre.setInt(11, obj.getSecurity().getSecurityID());
+            pre.setString(12, obj.getSecutityAnswer());
+            pre.setInt(13, obj.getCustomerID());
+            n = pre.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return n;
+    }
+
     public Customer getCus(String username) {
         Customer c = null;
         try {
@@ -162,7 +207,46 @@ public class DAOCustomer extends DBContext {
         }
         return false;
     }
-    
+     public int insertCustomer(Customer obj) {
+        int n = 0;
+        String sql = "INSERT INTO [Customer]\n"
+                + "           ([customerID]\n"
+                + "           ,[first_name]\n"
+                + "           ,[last_name]\n"
+                + "           ,[phone]\n"
+                + "           ,[email]\n"
+                + "           ,[address]\n"
+                + "           ,[username]\n"
+                + "           ,[password]\n"
+                + "           ,[dob]\n"
+                + "           ,[gender]\n"
+                + "           ,[status]\n"
+                + "           ,[securityID]\n"
+                + "           ,[securityAnswer])\n"
+                + "     VALUES\n"
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, obj.getCustomerID());
+            pre.setString(2, obj.getFirst_name());
+            pre.setString(3, obj.getLast_name());
+            pre.setString(4, obj.getPhone());
+            pre.setString(5, obj.getEmail());
+            pre.setString(6, obj.getAddress());
+            pre.setString(7, obj.getUsername());
+            pre.setString(8, obj.getPassword());
+            pre.setDate(9, (java.sql.Date) obj.getDob());
+            pre.setBoolean(10, obj.isGender());
+            pre.setInt(11, obj.getStatus());
+            pre.setInt(12, obj.getSecurity().getSecurityID());
+            pre.setString(13, obj.getSecutityAnswer());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+           
+        }
+
+        return n;
+    }
    public int getLastCustomerID() {
         Integer lastCustomerID = null;
         try {
@@ -208,11 +292,209 @@ public class DAOCustomer extends DBContext {
         }
         return customer;
     }
-   
-   
+   public Vector<Customer> getCustomer(String sql) {
+        Vector<Customer> vector = new Vector<Customer>();
+        try {
+               PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+                int securityID = rs.getInt("securityID");
+                String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, true, status, sq, securityAnswer);
+                vector.add(cus); // Added to the vector
+            }
+        } catch (SQLException ex) {
+           
+        }
+        return vector;
+    }
+   public Vector<Integer> getStatus(String sql) {
+        Vector<Integer> vector = new Vector<>();
+        try {
+            PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                vector.add(rs.getInt("status"));
+            }
+        } catch (Exception ex) {
+        }
+
+        return vector;
+    }
+     public Vector<String> getEmail(String sql) {
+        Vector<String> vector = new Vector<>();
+        try {
+             PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                vector.add(rs.getString("email"));
+            }
+        } catch (Exception ex) {
+        }
+
+        return vector;
+    }
+
+    public Vector<String> getPhone(String sql) {
+        Vector<String> vector = new Vector<>();
+        try {
+             PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                vector.add(rs.getString("phone"));
+            }
+        } catch (Exception ex) {
+        }
+
+        return vector;
+    }
+
+    public Vector<String> getFname(String sql) {
+        Vector<String> vector = new Vector<>();
+        try {
+              PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                vector.add(rs.getString("first_name"));
+            }
+        } catch (Exception ex) {
+        }
+
+        return vector;
+    }
+    
+     public Vector<Customer> sort(String option) {
+        Vector<Customer> vector = new Vector<Customer>();
+        String sql = "select c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.status, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
+                + "inner join SecurityQuestion sq on c.securityID = sq.securityID order by"+option+ "ACS";
+        try {
+             PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                Security sq = new Security(rs.getInt("securityID"),
+                        null);
+                Customer cus = new Customer(rs.getInt("customerID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        sq,
+                        rs.getString("securityAnswer")
+                );
+                vector.add(cus);
+            }
+        } catch (SQLException ex) {
+         ex.printStackTrace();
+        }
+        return vector;
+    }
+     public Customer checkAnswer(int id, String answer, String username, String pass) {
+        String sql = "select sq.security_question,c.securityAnswer,c.customerID,c.first_name,\n"
+                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.status,c.securityID from Customer c \n"
+                + "inner join SecurityQuestion sq on c.securityID = sq.securityID where c.securityID=? and c.securityanswer=? and c.username=?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            st.setString(2, answer);
+            st.setString(3, username);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //      return new Customer(rs.getInt("CustomerID"),rs.getString("first_name"),rs.getString("last_name"),rs.getString("phone"),
+                //    rs.getString("email"),rs.getString("address"),username,password,rs.getDate("dob"),rs.getBoolean("gender"),rs.getInt("securityID"),rs.getString("securityAnswer"));
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+     
+
+                String securityAnswer = rs.getString("securityAnswer");
+                Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+
+                return new Customer(customerID, first_name, last_name, phone, email, address, username, pass, dob, gender, status, sq, securityAnswer);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+      public Customer check(String username, String password) {
+        String sql = "select sq.security_question,c.securityAnswer,c.customerID,c.first_name,\n"
+                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.status,c.securityID from Customer c \n"
+                + "inner join SecurityQuestion sq on c.securityID = sq.securityID where username=  ? and password = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, password);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                //      return new Customer(rs.getInt("CustomerID"),rs.getString("first_name"),rs.getString("last_name"),rs.getString("phone"),
+                //    rs.getString("email"),rs.getString("address"),username,password,rs.getDate("dob"),rs.getBoolean("gender"),rs.getInt("securityID"),rs.getString("securityAnswer"));
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+              
+
+                String securityAnswer = rs.getString("securityAnswer");
+                Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+
+                return new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, status, sq, securityAnswer);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+      public void change(String user, String pass) {
+        String sql = "update Customer set password = ? where username = ?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, pass);
+            st.setString(2, user);
+            st.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
         DAOCustomer dao = new DAOCustomer();
-        boolean check = dao.loginCus("user", "123");
-        System.out.println(check);
+        System.out.println(dao.getCustomer("select c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.status, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
+                        + "inner join SecurityQuestion sq on c.securityID = sq.securityID"));
     }
 }

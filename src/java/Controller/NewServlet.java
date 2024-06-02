@@ -4,22 +4,19 @@
  */
 package Controller;
 
-import DAL.DAOCategoryProduct;
-import DAL.DAOPost;
-import DAL.DAOProduct;
-import DAL.DAOSlider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  *
  * @author phuan
  */
-public class HomePage extends HttpServlet {
+public class NewServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +35,10 @@ public class HomePage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePage</title>");            
+            out.println("<title>Servlet NewServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,23 +56,7 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOProduct db = new DAOProduct();
-        DAOCategoryProduct db1 = new DAOCategoryProduct();
-        DAOSlider db2 =new DAOSlider();
-        DAOPost db3 = new DAOPost();
-        request.setAttribute("imageC", db.ImageByCategory());   
-         request.setAttribute("CountP" , db.CountProductByCategory());
-         
-        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
-        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
-        
-         request.setAttribute("HotPost", db3.HotPost());
-        request.setAttribute("AllP", db.getProductFeature());
-        
-        request.setAttribute("Cate1", db1.getCategoryProductProduct());
-        request.setAttribute("CategoryB", db.ListCatogoryAndBrand());
-       
-       request.getRequestDispatcher("Views/HomePage.jsp").forward(request, response);
+        request.getRequestDispatcher("Views/newjsp1.jsp").forward(request, response);
     }
 
     /**
@@ -89,7 +70,22 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String[] checkboxValues = request.getParameterValues("checkbox");
+
+        // Check if any checkbox values are received
+        if (checkboxValues != null) {
+            // Print received checkbox values for debugging
+            System.out.println("Checkbox values: " + Arrays.toString(checkboxValues));
+        } else {
+            // If no checkboxes were selected
+            System.out.println("No checkbox selected");
+        }
+
+        // Set the checkbox values as a request attribute
+        request.setAttribute("checkboxValues", checkboxValues);
+
+        // Forward the request to the JSP page
+        request.getRequestDispatcher("Views/newjsp.jsp").forward(request, response);
     }
 
     /**

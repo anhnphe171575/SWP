@@ -158,11 +158,11 @@ public class SignUpCustomer extends HttpServlet {
                     + "on u.securityID=sq.securityID;")) {
                 if (email.equals(u.getEmail())) {
                     checkEmailUser = false;
-                    request.setAttribute("msgEmail", "Phone number already registered!");
+                    request.setAttribute("msgEmail", "Email already registered!");
                     break;
                 }
             }
-            
+
         } else {
             checkEmail = false;
             request.setAttribute("msgEmail", "Wrong email format!");
@@ -181,7 +181,7 @@ public class SignUpCustomer extends HttpServlet {
                     + "on u.securityID=sq.securityID;")) {
                 if (user.equals(u.getUsername())) {
                     checkUsernameUser = false;
-                    request.setAttribute("msgUser", "Phone number already registered!");
+                    request.setAttribute("msgUser", "Username already registered!");
                     break;
                 }
             }
@@ -192,7 +192,7 @@ public class SignUpCustomer extends HttpServlet {
 
         if (!pass.equals(repass)) {
             checkPass = false;
-            request.setAttribute("msgRe-pass", "Passwords do not match!");
+            request.setAttribute("msgRepass", "Passwords do not match!");
         }
 
         boolean check = checkPhone && checkEmail && checkUsername && checkPass && checkPhoneUser && checkEmailUser && checkUsernameUser;
@@ -201,30 +201,31 @@ public class SignUpCustomer extends HttpServlet {
             doGet(request, response);
         } else {
             HttpSession session = request.getSession(false);
+            session.setMaxInactiveInterval(15 * 60);
+
+            // Tính toán thời gian hết hạn của phiên
+            long currentTimeMillis = System.currentTimeMillis();
+            long expirationTimeMillis = currentTimeMillis + (session.getMaxInactiveInterval() * 1000);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expirationTimeStr = sdf.format(new Date(expirationTimeMillis));
+
             int id = db.getLastCustomerID();
             int secu_id = db1.getSecurityQuestionID(ques);
             Security sq = new Security(secu_id, ques);
             Customer cus = new Customer(id, firstName, lastName, phone, email, address, user, pass, formatDate(dob),
-                    Boolean.valueOf(gen), 1,sq , ans);
+                    Boolean.valueOf(gen), 1, sq, ans);
             session.setAttribute("cus", cus);
-            sendVerificationEmail(email);
+
+            // Gửi email xác minh với thời gian hết hạn
+            sendVerificationEmail(email, expirationTimeStr);
             doGet(request, response);
         }
     }
 
-    private Date formatDate(String dob) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            return dateFormat.parse(dob);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    private void sendVerificationEmail(String recipientEmail) {
+    private void sendVerificationEmail(String recipientEmail, String expirationTime) {
         final String fromEmail = "anhnphe171575@fpt.edu.vn";
         final String password = "jull jeex qjzb cdtn";
-
+        //set properties for mail
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
@@ -244,10 +245,20 @@ public class SignUpCustomer extends HttpServlet {
             msg.setFrom(new InternetAddress(fromEmail, "NoReply"));
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
             msg.setSubject("Account Verification");
-            msg.setText("Click the following link to verify your account: http://localhost:8080/SWP/verify?token=" + recipientEmail);
+            msg.setText("Click the following link to verify your account: http://localhost:8080/SWP/verify?token=" + recipientEmail
+                    + "\nThis link will expire at: " + expirationTime);
             Transport.send(msg);
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+    }
+
+    private Date formatDate(String dob) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            return dateFormat.parse(dob);
+        } catch (ParseException e) {
+            return null;
         }
     }
 

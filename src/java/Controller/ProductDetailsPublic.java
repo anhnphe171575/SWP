@@ -5,21 +5,27 @@
 package Controller;
 
 import DAL.DAOCategoryProduct;
-import DAL.DAOPost;
+import DAL.DAOFeedback;
 import DAL.DAOProduct;
-import DAL.DAOSlider;
+import Entity.CategoryProduct;
+import Entity.Customer;
+import Entity.Feedback;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  *
  * @author phuan
  */
-public class HomePage extends HttpServlet {
+public class ProductDetailsPublic extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +44,10 @@ public class HomePage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePage</title>");            
+            out.println("<title>Servlet ProductDetailsPublic</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductDetailsPublic at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,23 +65,24 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int pid_raw=0;
         DAOProduct db = new DAOProduct();
-        DAOCategoryProduct db1 = new DAOCategoryProduct();
-        DAOSlider db2 =new DAOSlider();
-        DAOPost db3 = new DAOPost();
-        request.setAttribute("imageC", db.ImageByCategory());   
-         request.setAttribute("CountP" , db.CountProductByCategory());
-         
-        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
-        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
-        
-         request.setAttribute("HotPost", db3.HotPost());
-        request.setAttribute("AllP", db.getProductFeature());
-        
-        request.setAttribute("Cate1", db1.getCategoryProductProduct());
-        request.setAttribute("CategoryB", db.ListCatogoryAndBrand());
-       
-       request.getRequestDispatcher("Views/HomePage.jsp").forward(request, response);
+        DAOFeedback db1  = new DAOFeedback();
+        try{
+         String pid = request.getParameter("pid");
+         pid_raw = Integer.parseInt(pid);
+                 }
+        catch(Exception e){
+            request.getRequestDispatcher("ProductsListPublic").forward(request, response);
+        }
+        CategoryProduct cp = new CategoryProduct();
+        DAOCategoryProduct db2 = new DAOCategoryProduct();
+        cp = db2.getCategoryProductbyPID(pid_raw);
+        request.setAttribute("feedback", db1.getFeedBackByProID(pid_raw));
+        request.setAttribute("product", db.getProductByID(pid_raw));
+        request.setAttribute("qreview", db1.CountFeedback(pid_raw));
+        request.setAttribute("relatedP", db.getProductbyCategoryName(cp.getCategory_name()));
+        request.getRequestDispatcher("Views/ProductPublicDetails.jsp").forward(request, response);
     }
 
     /**
@@ -89,7 +96,19 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+      int star = Integer.parseInt(request.getParameter("rating"));
+  
+      String comment = request.getParameter("comment");
+       HttpSession session = request.getSession();
+      Customer cus = (Customer) session.getAttribute("cus");
+      int Cusid = cus.getCustomerID();
+      int pid = Integer.parseInt(request.getParameter("pid"));
+      String image = request.getParameter("image");
+      LocalDate localDate = LocalDate.now();
+      Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+      DAOFeedback db = new DAOFeedback();
+      db.InsertFeedBack(pid, Cusid, comment, star, image, 1, date_create_by);
+        doGet(request, response);
     }
 
     /**

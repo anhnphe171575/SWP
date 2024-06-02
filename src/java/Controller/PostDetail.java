@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package Controller;
+
 
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
-import DAL.DAOProduct;
-import DAL.DAOSlider;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,40 +17,37 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author phuan
+ * @author admin
  */
-public class HomePage extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class PostDetail extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePage</title>");            
+            out.println("<title>Servlet PostDetail</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PostDetail at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,29 +55,20 @@ public class HomePage extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        DAOProduct db = new DAOProduct();
-        DAOCategoryProduct db1 = new DAOCategoryProduct();
-        DAOSlider db2 =new DAOSlider();
-        DAOPost db3 = new DAOPost();
-        request.setAttribute("imageC", db.ImageByCategory());   
-         request.setAttribute("CountP" , db.CountProductByCategory());
-         
-        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
-        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
-        
-         request.setAttribute("HotPost", db3.HotPost());
-        request.setAttribute("AllP", db.getProductFeature());
-        
-        request.setAttribute("Cate1", db1.getCategoryProductProduct());
-        request.setAttribute("CategoryB", db.ListCatogoryAndBrand());
-       
-       request.getRequestDispatcher("Views/HomePage.jsp").forward(request, response);
-    }
+    throws ServletException, IOException {
+        String service = request.getParameter("service");
+        DAOPost daoP = new DAOPost();
+      
+        if (service.equals("viewDetail")) {
+            int postID = Integer.parseInt(request.getParameter("postID"));
+            request.setAttribute("post", daoP.getPostById(postID));
+            
+        request.getRequestDispatcher("Views/postDetail.jsp").forward(request, response);
+        }
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -88,13 +76,12 @@ public class HomePage extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

@@ -99,7 +99,7 @@ public class ResetPassword extends HttpServlet {
         }
         else if(!role.equals("1")){
              request.setAttribute("role",role);
-             if(db1.getUserByLogin(email, "select * from [User] where username =?") == null){
+             if(db1.getUserByLogin(email, "select * from [User] where email =?") == null){
              request.setAttribute("errorMessage", "Email not registed!");
               request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
         }
@@ -124,7 +124,7 @@ public class ResetPassword extends HttpServlet {
         }
     }
    public void sendEmail(String subject,String body, String to) throws MessagingException, UnsupportedEncodingException{
-       final String fromEmail = "anhnphe171575@fpt.edu.vn";
+        final String fromEmail = "anhnphe171575@fpt.edu.vn";
         // Mat khai email cua ban
         final String password = "jull jeex qjzb cdtn";
         // dia chi email nguoi nhan
@@ -140,6 +140,7 @@ public class ResetPassword extends HttpServlet {
         props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
       
         Authenticator auth = new Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(fromEmail, password);
             }
@@ -192,7 +193,7 @@ public class ResetPassword extends HttpServlet {
 
     public String getExpiredTime() {
         Calendar calendar = Calendar.getInstance();
-        Date currentTime = calendar.getTime();
+        //Date currentTime = calendar.getTime();
 
         // Add n minutes
         calendar.add(Calendar.MINUTE, 2);

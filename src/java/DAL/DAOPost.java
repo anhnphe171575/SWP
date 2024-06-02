@@ -30,6 +30,169 @@ import Entity.User;
  * @author admin
  */
 public class DAOPost extends DBContext {
+     public Post getPostById(int id) {
+        Post p = null;
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                p.featured,p.status,p.brief_information,\n"
+                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 cp.category_postID,cp.category_productID,\n"
+                + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "				 from Post p \n"
+                + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                inner join [User] u on p.UserID = u.UserID where p.postID=" + id;
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+            }
+        } catch (Exception ex) {
+
+        }
+        return p;
+    } 
+      public Vector<Post> getPostByCPname(String name) {
+
+        Vector<Post> vector = new Vector<>();
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n" +
+"                                p.featured,p.status,p.brief_information,\n" +
+"                                 p.description,p.flag, p.date_create_by,\n" +
+"                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
+"                				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n" +
+"                				 cp.category_postID,cp.category_productID,\n" +
+"                				 cpr.category_productID,cpr.category_name,cpr.category_description\n" +
+"                				 from Post p \n" +
+"                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n" +
+"                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n" +
+"                                inner join [User] u on p.UserID = u.UserID where cpr.category_name='"+ name+"'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return vector;
+    }public void editPost(Post obj) {
+        String sql = "UPDATE [dbo].[Post]\n"
+                + "   SET [thumbnail] =?\n"
+                + "      ,[title] = ?\n"
+                + "      ,[category_postID] = ?\n"
+                + "      ,[featured] = ?\n"
+                + "      ,[status] = ?\n"
+                + "      ,[brief_information] = ?\n"
+                + "      ,[description] = ?\n"
+                + "      ,[flag] = ?\n"
+                + "\n"
+                + " WHERE postID =?";
+
+        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+            pre.setString(1, obj.getThumbnail());
+            pre.setString(2, obj.getTitle());
+            pre.setInt(3, obj.getCp().getCategory_postID());
+            pre.setInt(4, obj.getFeatured());
+            pre.setInt(5, obj.getStatus());
+            pre.setString(6, obj.getBrief_information());
+            pre.setString(7, obj.getDescription());
+            pre.setInt(8, obj.getFlag());
+            pre.setInt(9, obj.getPostID());
+
+            pre.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public Vector<Post> getLastBlog() {
+        Vector<Post> vector = new Vector<>();
+        String sql = "WITH LatestDate AS (\n"
+                + "    SELECT MAX(date_create_by) AS max_date\n"
+                + "    FROM post\n"
+                + ")"
+                + "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                p.featured,p.status,p.brief_information,\n"
+                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 cp.category_postID,cp.category_productID,\n"
+                + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "				 from Post p \n"
+                + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                inner join [User] u on p.UserID = u.UserID where date_create_by = (SELECT max_date FROM LatestDate)";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+
+        }
+        return vector;
+
+    }
+
+    public Vector<Post> getBlog() {
+        Vector<Post> vector = new Vector<>();
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                p.featured,p.status,p.brief_information,\n"
+                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 cp.category_postID,cp.category_productID,\n"
+                + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "				 from Post p \n"
+                + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                inner join [User] u on p.UserID = u.UserID ORDER BY  date_create_by DESC";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+
+        }
+        return vector;
+
+    }
  public void hideShow(int id, int status) {
         try {
             String sql = "UPDATE [dbo].[Post]\n"
@@ -264,7 +427,7 @@ public class DAOPost extends DBContext {
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID where p.featured = 1";
+                + "                inner join [User] u on p.UserID = u.UserID ";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);

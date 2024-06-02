@@ -82,7 +82,7 @@ body, input, button {
     <form action="NewPassword" method="post" class="password-form">
         <input type="hidden" name="email" value="${email}">
         <input type="hidden" name="otp" value="${otp}">
-          <input type="text" name="role" value="${role}">
+          <input type="hidden" name="role" value="${role}">
         <div class="form-group">
             <label for="new-password">New Password:</label>
             <input type="password" id="new-password" name="password" required>

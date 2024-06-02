@@ -81,6 +81,7 @@ public class LoginCusController extends HttpServlet {
         boolean check = daoC.loginCus(username, password);
         if (check==true) {
             session.setAttribute("cus", daoC.getCus(username));
+            session.setMaxInactiveInterval(5*60);
             response.sendRedirect("HomePage");
         }else{
             request.setAttribute("error", "error");
