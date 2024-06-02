@@ -64,7 +64,13 @@ public class NewPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
+        String email = request.getParameter("email");
+        String otp = request.getParameter("otp"); 
+        String role = request.getParameter("role");
+        request.setAttribute("otp", otp);
+        request.setAttribute("email", email);
+         request.setAttribute("role", role);
+        request.getRequestDispatcher("Views/NewPassword.jsp").forward(request, response);
     }
 
     /**
