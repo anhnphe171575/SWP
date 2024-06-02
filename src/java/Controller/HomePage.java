@@ -59,7 +59,23 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      
+        DAOProduct db = new DAOProduct();
+        DAOCategoryProduct db1 = new DAOCategoryProduct();
+        DAOSlider db2 =new DAOSlider();
+        DAOPost db3 = new DAOPost();
+        request.setAttribute("imageC", db.ImageByCategory());   
+         request.setAttribute("CountP" , db.CountProductByCategory());
+         
+        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
+        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
+        
+         request.setAttribute("HotPost", db3.HotPost());
+        request.setAttribute("AllP", db.getProductFeature());
+        
+        request.setAttribute("Cate1", db1.getCategoryProductProduct());
+        request.setAttribute("CategoryB", db.ListCatogoryAndBrand());
+       
+       request.getRequestDispatcher("Views/HomePage.jsp").forward(request, response);
     }
 
     /**
