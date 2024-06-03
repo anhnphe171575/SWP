@@ -22,7 +22,13 @@ import java.util.logging.Level;
  * @author phuan
  */
 public class DAOProduct extends DBContext {
-
+    public List<Product> getListbyPage(List<Product> list, int start, int end) {
+        ArrayList<Product> l = new ArrayList();
+        for (int i = start; i < end; i++) {
+            l.add(list.get(i));
+        }
+        return l;
+    }
     public List<String> getBrand(int category_productID) {
         List<String> list = new ArrayList<>();
         try {
@@ -656,7 +662,6 @@ public class DAOProduct extends DBContext {
                 p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
