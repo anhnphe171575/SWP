@@ -11,7 +11,9 @@ package Entity;
 public class Cart {
     int CartID;
      Customer customer;
-
+    public Cart(){
+        
+    }
     public Cart(int CartID, Customer customer) {
         this.CartID = CartID;
         this.customer = customer;

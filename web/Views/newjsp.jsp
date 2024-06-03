@@ -19,5 +19,6 @@
                 }
             %>
         </ul>
+            <p>${requestScope.error}<p>
     </body>
 </html>
