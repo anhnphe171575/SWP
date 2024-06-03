@@ -204,7 +204,7 @@ public class DAOPost extends DBContext {
                 vector.add(p);
             }
         } catch (Exception ex) {
-
+          ex.printStackTrace();
         }
         return vector;
 
@@ -520,14 +520,14 @@ public class DAOPost extends DBContext {
 
     public static void main(String[] args) {
         DAOPost daoP = new DAOPost();
-        LocalDate localDate = LocalDate.now();
-        java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        CategoryProduct cp1 = new CategoryProduct();
-        CategoryPost cp = new CategoryPost(1, cp1);
-        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, 0, null, "");
-        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", 1, u, date_create_by);
-        daoP.editPost(obj);
-        System.out.println(daoP.getAll());
+//        LocalDate localDate = LocalDate.now();
+//        java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        CategoryProduct cp1 = new CategoryProduct();
+//        CategoryPost cp = new CategoryPost(1, cp1);
+//        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, 0, null, "");
+//        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", 1, u, date_create_by);
+//        daoP.editPost(obj);
+        System.out.println(daoP.getBlog());
 
 //        String category = "all";
 //        String author = "all";

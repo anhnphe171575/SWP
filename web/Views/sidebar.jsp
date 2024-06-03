@@ -10,7 +10,7 @@
 
                 <ul class="sidebar-list">
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
+                        <a href="MKTDashboard" target="_blank">
                             <span class="material-icons-outlined">dashboard</span> Dashboard
                         </a>
                     </li>
@@ -20,8 +20,8 @@
                         </a>
                     </li>
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
-                            <span class="material-icons-outlined">category</span> Categories
+                        <a href="FeedBackList" target="_blank">
+                            <span class="material-icons-outlined">feedback</span> FeedBack
                         </a>
                     </li>
                     <li class="sidebar-list-item">
