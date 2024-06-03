@@ -662,7 +662,6 @@ public class DAOProduct extends DBContext {
                 p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
