@@ -4,12 +4,15 @@
  */
 package Controller;
 
+import DAL.DAOCart;
+import Entity.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -55,6 +58,10 @@ public class CartDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
+         Customer cus = (Customer) session.getAttribute("cus");
+         DAOCart db = new DAOCart();
+         request.setAttribute("list", db.getListCart(cus.getCustomerID()));
         request.getRequestDispatcher("Views/CartDetails.jsp").forward(request, response);
     }
 
@@ -69,7 +76,17 @@ public class CartDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       String Quantity = request.getParameter("quantity");
+       String CardID = request.getParameter("cartid");
+       DAOCart db = new DAOCart();
+       if(Quantity !=null && CardID !=null){
+       db.UpdateCart(Integer.parseInt(CardID), Integer.parseInt(Quantity));
+       }
+      String CartItem = request.getParameter("cartitemid");
+       if(CardID != null && CartItem !=null){
+           db.DeleteCardItems(Integer.parseInt(CardID), Integer.parseInt(CartItem));
+       }
+        doGet(request, response);
     }
 
     /**

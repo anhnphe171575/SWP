@@ -53,7 +53,7 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -83,7 +83,7 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                  
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -114,7 +114,7 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -146,7 +146,7 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                      
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -179,7 +179,7 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -221,7 +221,7 @@ public class DAOProduct extends DBContext {
                         rs.getString("image"));
                 Product product = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -254,7 +254,7 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -293,7 +293,7 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -331,7 +331,7 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -367,7 +367,7 @@ public class DAOProduct extends DBContext {
                         rs.getString("image"));
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -397,7 +397,7 @@ public class DAOProduct extends DBContext {
             while (rs.next()) {
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                        
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -428,7 +428,7 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -459,7 +459,7 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                      
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -490,7 +490,7 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -515,26 +515,26 @@ public class DAOProduct extends DBContext {
             int quantity, int year, int category_productID, String product_description, int featured, String thumbnail,
             String brief_information, float original_price, float sale_price, Date update_date, String brand, Boolean status) {
         try {
-            String query = "UPDATE Product SET product_name = ?, price = ?, quantity = ?, year = ?, category_productID = ?, "
+            String query = "UPDATE Product SET product_name = ?, quantity = ?, year = ?, category_productID = ?, "
                     + "product_description = ?, featured = ?, thumbnail = ?, brief_information = ?, original_price = ?, sale_price = ?, "
                     + "update_date = ?, brand = ?, status = ? WHERE productID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             java.sql.Date sqlDate = new java.sql.Date(update_date.getTime());
             stm.setString(1, product_name);
-            stm.setFloat(2, price);
-            stm.setInt(3, quantity);
-            stm.setInt(4, year);
-            stm.setInt(5, category_productID);
-            stm.setString(6, product_description);
-            stm.setInt(7, featured);
-            stm.setString(8, thumbnail);
-            stm.setString(9, brief_information);
-            stm.setFloat(10, original_price);
-            stm.setFloat(11, sale_price);
-            stm.setDate(12, sqlDate);
-            stm.setString(13, brand);
-            stm.setBoolean(14, status);
-            stm.setInt(15, productID);
+         
+            stm.setInt(2, quantity);
+            stm.setInt(3, year);
+            stm.setInt(4, category_productID);
+            stm.setString(5, product_description);
+            stm.setInt(6, featured);
+            stm.setString(7, thumbnail);
+            stm.setString(8, brief_information);
+            stm.setFloat(9, original_price);
+            stm.setFloat(10, sale_price);
+            stm.setDate(11, sqlDate);
+            stm.setString(12, brand);
+            stm.setBoolean(13, status);
+            stm.setInt(14, productID);
             stm.executeUpdate();
         } catch (Exception e) {
         }
@@ -554,7 +554,7 @@ public class DAOProduct extends DBContext {
                         rs.getString("category_name"), rs.getString("category_description"), "");
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -589,7 +589,7 @@ public class DAOProduct extends DBContext {
                         rs.getString("category_name"), null, "");
                 Product p = new Product(-1,
                         null,
-                        -1,
+               
                         -1,
                         -1,
                         null,
@@ -656,7 +656,7 @@ public class DAOProduct extends DBContext {
                 p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -693,7 +693,7 @@ public class DAOProduct extends DBContext {
                 Product p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -738,7 +738,7 @@ public class DAOProduct extends DBContext {
                 Product p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                        rs.getFloat("price"),
+                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -762,22 +762,22 @@ public class DAOProduct extends DBContext {
 
     public void addProduct(String product_name, float price, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand) {
         try {
-            String query = "INSERT INTO Product(product_name, price, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, product_name);
-            stm.setFloat(2, price);
-            stm.setInt(3, quantity);
-            stm.setInt(4, year);
-            stm.setInt(5, category_productID);
-            stm.setString(6, product_description);
-            stm.setInt(7, featured);
-            stm.setString(8, thumbnail);
-            stm.setString(9, brief_information);
-            stm.setFloat(10, original_price);
-            stm.setFloat(11, sale_price);
+       
+            stm.setInt(2, quantity);
+            stm.setInt(3, year);
+            stm.setInt(4, category_productID);
+            stm.setString(5, product_description);
+            stm.setInt(6, featured);
+            stm.setString(7, thumbnail);
+            stm.setString(8, brief_information);
+            stm.setFloat(9, original_price);
+            stm.setFloat(10, sale_price);
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-            stm.setDate(12, currentDate);
-            stm.setString(13, brand);
+            stm.setDate(11, currentDate);
+            stm.setString(12, brand);
             stm.executeUpdate();
 
         } catch (SQLException e) {

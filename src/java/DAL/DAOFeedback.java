@@ -66,7 +66,7 @@ public class DAOFeedback extends DBContext{
               stm.setInt(1, pid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-              Customer cus = new Customer(0, rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, 0, null, "");
+              Customer cus = new Customer(0, rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, null, null, "");
                 Feedback fb = new Feedback(
                 rs.getInt("feedbackID"),
                         null,

@@ -13,7 +13,7 @@ import java.util.Date;
 public class Product {
        private int productID;
     private String product_name;
-    private float price;
+  
     private int quantity;
     private int year;
     private String product_description;
@@ -27,10 +27,9 @@ public class Product {
     private Date update_date;
     private  Boolean status;
 
-    public Product(int productID, String product_name, float price, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status) {
+    public Product(int productID, String product_name, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status) {
         this.productID = productID;
         this.product_name = product_name;
-        this.price = price;
         this.quantity = quantity;
         this.year = year;
         this.product_description = product_description;
@@ -59,14 +58,6 @@ public class Product {
 
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public int getQuantity() {
@@ -164,12 +155,13 @@ public class Product {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-  
 
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", product_name=" + product_name + ", price=" + price + ", quantity=" + quantity + ", year=" + year + ", product_description=" + product_description + ", featured=" + featured + ", thumbnail=" + thumbnail + ", brief_information=" + brief_information + ", original_price=" + original_price + ", sale_price=" + sale_price + ", categoryProduct=" + categoryProduct + ", brand=" + brand + ", update_date=" + update_date + '}';
+        return "Product{" + "productID=" + productID + ", product_name=" + product_name + ", quantity=" + quantity + ", year=" + year + ", product_description=" + product_description + ", featured=" + featured + ", thumbnail=" + thumbnail + ", brief_information=" + brief_information + ", original_price=" + original_price + ", sale_price=" + sale_price + ", categoryProduct=" + categoryProduct + ", brand=" + brand + ", update_date=" + update_date + ", status=" + status + '}';
     }
+
+   
 
    
     

@@ -25,6 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Entity.Customer;
 import Entity.Security;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  *
@@ -106,14 +108,14 @@ public class CustomerServlet extends HttpServlet {
                 }
                 String gender = request.getParameter("gender");
                 boolean gen = Boolean.parseBoolean(gender);
-                String status = request.getParameter("status");
-                int status1 = Integer.parseInt(status);
+            
                 String securityid = request.getParameter("security");
                 int securityId = Integer.parseInt(securityid);
          
                 Security sq = new Security(securityId, "");
                 
-      
+       LocalDate localDate = LocalDate.now();
+                Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 String securityAnswer = request.getParameter("securityAnswer");
                 //Customer cus = new Customer(, username, username, phone, email, address, username, password, dob, true, 0, sq, securityAnswer);
                 int customerid = Integer.parseInt(customerID);
@@ -121,7 +123,7 @@ public class CustomerServlet extends HttpServlet {
                         + "inner join SecurityQuestion sq on c.securityID = sq.securityID where customerID=" + customerID;
                 Vector<Customer> vector = dao.getCustomer(sql);
                 if (vector.size() > 0) {
-                Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, status1, sq, securityAnswer);
+                Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer);
                 dao.updateCustomer(cus);
                response.sendRedirect("CustomerServletURL");
              
@@ -163,15 +165,9 @@ public class CustomerServlet extends HttpServlet {
                 sq.setSecurityID(securityId);
                 sq.setSecurity_question(sercurityquestion);
                 String securityAnswer = request.getParameter("securityAnswer");
-                //Customer cus = new Customer(, username, username, phone, email, address, username, password, dob, true, 0, sq, securityAnswer);
-               
-//                String sql = "select c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.status, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
-//                        + "inner join SecurityQuestion sq on c.securityID = sq.securityID where customerID=" + customerID;
-//                Vector<Customer> vector = dao.getCustomer(sql);
-//                if (vector.size() > 0) {
-//                    //response.sendRedirect("CustomerServletURL");
-//                }
-                Customer cus = new Customer(-1, fname, lname, phone, email, address, username, password, date1, gen, status1, sq, securityAnswer);
+                 LocalDate localDate = LocalDate.now();
+                Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Customer cus = new Customer(-1, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer);
                 dao.insertCustomer(cus);
                 response.sendRedirect("CustomerServletURL");
             }

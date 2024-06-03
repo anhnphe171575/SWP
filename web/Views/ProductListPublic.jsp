@@ -32,14 +32,7 @@
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <style>
-            #cursor {
-                position: absolute;
-                width: 10px;
-                height: 10px;
-                background-color: red;
-                border-radius: 50%;
-                pointer-events: none;
-            }
+           
             .nav-item.dropdown:hover {
                 background-color: #f0f0f0; /* Màu xám */
             }
@@ -192,7 +185,7 @@
 
            
                 <!-- Shop Product Start -->
-                <div class="col-lg-9 col-md-12">
+                <div class="col-lg-9 col-md-12" >
                     <div class="row pb-3">
                         <div class="col-12 pb-1">
                             <div class="d-flex align-items-center justify-content-between mb-4">
@@ -207,14 +200,16 @@
 
                                     </div>
                                     <input type="hidden" name="cid" value="${requestScope.cid}">
+                              
                                     <input type="hidden" name="service" value="search">
                                 </form>
 
                             </div>
                         </div>
-
+                         <div id="searchbox">
+                                        </div>            
                         <c:forEach items="${requestScope.ListProduct}" var="l">
-                            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                            <div class="col-lg-4 col-md-6 col-sm-12 pb-1" >
 
                                 <div class="card product-item border-0 mb-4">
                                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -238,6 +233,7 @@
 
                             </div>
                         </c:forEach>
+                                   
                         <div class="col-12 pb-1">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center mb-3">
@@ -391,54 +387,23 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
+<script type="text/javascript">
+    window.onload = function() {
+        <c:if test="${not empty requestScope.search1}">
+            var searchboxElement = document.getElementById("searchbox");
+            if (searchboxElement) {
+                searchboxElement.scrollIntoView({
+                    behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
+                    block: 'start' // Chỉ định vị trí cuộn tới của phần tử
+                });
+            }
+        </c:if>
+    };
+</script>
         <!-- Contact Javascript File -->
         <script src="mail/jqBootstrapValidation.min.js"></script>
         <script src="mail/contact.js"></script>
-        <script>
-            // Thêm sự kiện click và mousemove
-            const defaultX = 839;
-            const defaultY = 146;
-
-            // Function to update the cursor position
-            function updateCursorPosition(x, y) {
-                const cursor = document.getElementById('cursor');
-                cursor.style.left = x + 'px';
-                cursor.style.top = y + 'px';
-            }
-
-            // Load default mouse position when the page loads
-            window.addEventListener('load', function () {
-                updateCursorPosition(defaultX, defaultY);
-                console.log('Default Mouse Position - X: ' + defaultX + ' Y: ' + defaultY);
-            });
-
-            // Save mouse click position to localStorage and update cursor
-            document.addEventListener('click', function (event) {
-                const x = event.clientX;
-                const y = event.clientY;
-                localStorage.setItem('mouseX', x);
-                localStorage.setItem('mouseY', y);
-                updateCursorPosition(x, y);
-                console.log('Mouse Clicked');
-                console.log('X: ' + x + ' Y: ' + y);
-            });
-
-            // Update cursor position on mouse move
-            document.addEventListener('mousemove', function (event) {
-                const x = event.clientX;
-                const y = event.clientY;
-                updateCursorPosition(x, y);
-                console.log('Mouse Moved');
-                console.log('X: ' + x + ' Y: ' + y);
-            });
-            window.addEventListener("scroll", function () {
-                var navbar = document.querySelector(".bar");
-                navbar.classList.toggle("bar-scroll", window.scrollY > 0);
-            });
-
-
-        </script>
+       
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>

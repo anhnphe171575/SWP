@@ -26,14 +26,14 @@ public class Customer {
     private String password;
     private Date dob;
     private boolean gender;
-    private int status;
+    private Date activity_history;
     private Security security;
     private String secutityAnswer;
 
     public Customer() {
     }
 
-    public Customer(int customerID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Security security, String secutityAnswer) {
+    public Customer(int customerID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, Date activity_history, Security security, String secutityAnswer) {
         this.customerID = customerID;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -44,7 +44,7 @@ public class Customer {
         this.password = password;
         this.dob = dob;
         this.gender = gender;
-        this.status = status;
+        this.activity_history = activity_history;
         this.security = security;
         this.secutityAnswer = secutityAnswer;
     }
@@ -129,14 +129,15 @@ public class Customer {
         this.gender = gender;
     }
 
-    public int getStatus() {
-        return status;
+    public Date getActivity_history() {
+        return activity_history;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setActivity_history(Date activity_history) {
+        this.activity_history = activity_history;
     }
-public Security getSecurity() {
+
+    public Security getSecurity() {
         return security;
     }
 
@@ -151,13 +152,7 @@ public Security getSecurity() {
     public void setSecutityAnswer(String secutityAnswer) {
         this.secutityAnswer = secutityAnswer;
     }
-      
-    
 
-    @Override
-    public String toString() {
-        return "Customer{" + "customerID=" + customerID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", secutityID=" + security + ", secutityAnswer=" + secutityAnswer + '}';
-    }
     
 
 }

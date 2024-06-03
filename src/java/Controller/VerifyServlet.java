@@ -87,7 +87,7 @@ public class VerifyServlet extends HttpServlet {
             int sid = db.getSecurityQuestionID(cus.getSecurity().getSecurity_question());
 
             db1.addCustomer(cus.getFirst_name(), cus.getLast_name(), cus.getPhone(), cus.getEmail(), cus.getAddress(), cus.getUsername(),
-                    cus.getPassword(), cus.getDob(), cus.isGender(), cus.getStatus(), sid, cus.getSecutityAnswer());
+                    cus.getPassword(), cus.getDob(), cus.isGender(), cus.getActivity_history(), sid, cus.getSecutityAnswer());
             session.removeAttribute("cus");
             request.getRequestDispatcher("Views/success.jsp").forward(request, response);
         } 

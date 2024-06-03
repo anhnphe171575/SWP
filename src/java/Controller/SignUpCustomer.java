@@ -212,8 +212,9 @@ public class SignUpCustomer extends HttpServlet {
             int id = db.getLastCustomerID();
             int secu_id = db1.getSecurityQuestionID(ques);
             Security sq = new Security(secu_id, ques);
+            Date date = new Date();
             Customer cus = new Customer(id, firstName, lastName, phone, email, address, user, pass, formatDate(dob),
-                    Boolean.valueOf(gen), 1, sq, ans);
+                    Boolean.valueOf(gen), date, sq, ans);
             session.setAttribute("cus", cus);
 
             // Gửi email xác minh với thời gian hết hạn
