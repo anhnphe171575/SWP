@@ -20,8 +20,22 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Montserrat Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
         <style>
+            .container-xl{
+                width: 1400px;
+            }
+            .material-icons-outlined {
+                vertical-align: middle;
+                line-height: 1px;
+                font-size: 35px;
+            }
             td img {
                 width: 100px; /* Sets the width of the image */
                 height: auto; /* Maintains the aspect ratio */
@@ -283,99 +297,104 @@
         </script>
     </head>
     <body>
-        <div class="container-xl">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h2>Manage <b>Employees</b></h2>
-                            </div>
-                            <div style="text-align: right"class="col-sm-3">
-                                <form action="PostController" method="post">
-                                    <input type="text" name="title"><!-- comment -->
-                                    <input type="submit" name="submit" value="Search"><!-- comment -->
-                                    <input type="hidden" name="service" value="search">
-                                </form>					
-                            </div>
+        <div class="grid-container">
 
-                            <div class="col-sm-6">
-                                <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                                <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
-                                <a href="#Sort" class="btn btn-danger" data-toggle="modal">
-                                    <i class="material-icons">&#xe164;</i> <span>Sort</span>         
-                                </a>
-                                <h5>${sessionScope.username}</h5>
+            <!-- Header -->
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+
+            <div class="container-xl">
+                    <div class="table-responsive">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h2>Manage <b>Employees</b></h2>
+                                    </div>
+                                    <div style="text-align: right"class="col-sm-3">
+                                        <form action="PostController" method="post">
+                                            <input type="text" name="title"><!-- comment -->
+                                            <input type="submit" name="submit" value="Search"><!-- comment -->
+                                            <input type="hidden" name="service" value="search">
+                                        </form>					
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
+                                        <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
+                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal">
+                                            <i class="material-icons">&#xe164;</i> <span>Sort</span>         
+                                        </a>
+                                        <h5>${sessionScope.username}</h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <span class="custom-checkbox">
-                                        <input type="checkbox" id="selectAll">
-                                        <label for="selectAll"></label>
-                                    </span>
-                                </th>
-                                <th>Post ID</th>
-                                <th>Thumbnail</th>
-                                <th>Title</th>
-                                <th>Category Name</th>
-                                <th>Author</th>
-                                <th>Feature</th>
-                                <th>Status</th>
-                                <th>Paginated</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${requestScope.post}" var="p">
+                        <table class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>
+                                    <th>
                                         <span class="custom-checkbox">
-                                            <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                                            <label for="checkbox2"></label>
+                                            <input type="checkbox" id="selectAll">
+                                            <label for="selectAll"></label>
                                         </span>
-                                    </td>
-                                    <td>${p.postID}</td>
-                                    <td><img src="${p.thumbnail}" alt="Image"/></td>
-                                    <td>${p.title}</td>
-                                    <td>${p.cp.category_product.category_name}</td>
-                                    <td>${p.user.first_name} ${p.user.last_name}</td>
-                                    <td>
-                                        <c:if test="${p.featured == '1'}">Common</c:if>
-                                        <c:if test="${p.featured != '1'}">No Common</c:if>
-                                        </td>
-                                        <td>
-                                        <c:if test="${p.status == '1'}">Show</c:if>
-                                        <c:if test="${p.status != '1'}">Hide</c:if>
-                                        </td>
-                                        <td>
-                                        <c:if test="${p.flag == 1}">Header</c:if>
-                                        <c:if test="${p.flag == 2}">Body</c:if>
-                                        <c:if test="${p.flag == 3}">Foot</c:if>
-                                        <c:if test="${p.flag == 0}">Non</c:if>
-                                        </td>
-                                        <td>
-                                        <c:if test="${p.status == '1'}">
-                                            <a href="Status?postID=${p.postID}&status=0"  class="fa fa-eye"></a>
-                                        </c:if>
-                                        <c:if test="${p.status != '1'}">
-
-                                            <a href="Status?postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
-                                        </c:if>
-                                        <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
-                                        <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
-
-                                    </td>
+                                    </th>
+                                    <th>Post ID</th>
+                                    <th>Thumbnail</th>
+                                    <th>Title</th>
+                                    <th>Category Name</th>
+                                    <th>Author</th>
+                                    <th>Feature</th>
+                                    <th>Status</th>
                                 </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${requestScope.post}" var="p">
+                                    <tr>
+                                        <td>
+                                            <span class="custom-checkbox">
+                                                <input type="checkbox" id="checkbox2" name="options[]" value="1">
+                                                <label for="checkbox2"></label>
+                                            </span>
+                                        </td>
+                                        <td>${p.postID}</td>
+                                        <td><img src="${p.thumbnail}" alt="Image"/></td>
+                                        <td>${p.title}</td>
+                                        <td>${p.cp.category_product.category_name}</td>
+                                        <td>${p.user.first_name} ${p.user.last_name}</td>
+                                        <td>
+                                            <c:if test="${p.featured == '1'}">Common</c:if>
+                                            <c:if test="${p.featured != '1'}">No Common</c:if>
+                                            </td>
+                                            <td>
+                                            <c:if test="${p.status == '1'}">Show</c:if>
+                                            <c:if test="${p.status != '1'}">Hide</c:if>
+                                            </td>
+      
+                                            <td>
+                                            <c:if test="${p.status == '1'}">
+                                                <a href="Status?postID=${p.postID}&status=0"  class="fa fa-eye"></a>
+                                            </c:if>
+                                            <c:if test="${p.status != '1'}">
 
-                </div>        
+                                                <a href="Status?postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
+                                            </c:if>
+                                            <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
+                                            <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
+
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+
+                    </div>        
+                </div>
             </div>
+
             <!-- Filter Modal HTML -->
             <div id="Filter" class="modal fade">
                 <div class="modal-dialog">
@@ -582,6 +601,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <script src="./mktjs/scripts.js"></script>
     </body>
+
+
 </html>
 
