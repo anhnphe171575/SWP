@@ -22,6 +22,7 @@ import java.util.logging.Level;
  * @author phuan
  */
 public class DAOProduct extends DBContext {
+
     public List<Product> getListbyPage(List<Product> list, int start, int end) {
         ArrayList<Product> l = new ArrayList();
         for (int i = start; i < end; i++) {
@@ -29,21 +30,21 @@ public class DAOProduct extends DBContext {
         }
         return l;
     }
+
     public List<String> getBrand(int category_productID) {
         List<String> list = new ArrayList<>();
         try {
             String query = "select distinct brand from Product p "
                     + "where p.category_productID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
- 
+
             stm.setInt(1, category_productID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 list.add(rs.getString("brand"));
-                
+
             }
-        }
-        catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
@@ -59,7 +60,6 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -79,17 +79,17 @@ public class DAOProduct extends DBContext {
         }
         return productList;
     }
-   public List<Product> LastedProduct(String sql) {
-       List<Product> list = new ArrayList<>();
+
+    public List<Product> LastedProduct(String sql) {
+        List<Product> list = new ArrayList<>();
         try {
-            
+
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                  
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -102,13 +102,14 @@ public class DAOProduct extends DBContext {
                         rs.getString("brand"),
                         rs.getDate("update_date"),
                         rs.getBoolean("status"));
-               list.add(p);
+                list.add(p);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
+
     public List<Product> getProductByTitle(String title) {
         List<Product> p = new ArrayList();
         try {
@@ -120,7 +121,6 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -141,7 +141,8 @@ public class DAOProduct extends DBContext {
         }
         return p;
     }
- public List<Product> getProductByTitleByCid(String title, int cid) {
+
+    public List<Product> getProductByTitleByCid(String title, int cid) {
         List<Product> p = new ArrayList();
         try {
             String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ?";
@@ -152,7 +153,6 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                      
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -173,6 +173,7 @@ public class DAOProduct extends DBContext {
         }
         return p;
     }
+
     public List<Product> getProductByBrief(String Brief) {
         List<Product> p = new ArrayList<>();
         try {
@@ -185,7 +186,6 @@ public class DAOProduct extends DBContext {
                 Product pr = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -227,7 +227,6 @@ public class DAOProduct extends DBContext {
                         rs.getString("image"));
                 Product product = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -260,7 +259,6 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -299,7 +297,6 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -320,6 +317,7 @@ public class DAOProduct extends DBContext {
         }
         return productList;
     }
+
     public List<Product> getProductbyCategoryID(int categoryid) {
         List<Product> productList = new ArrayList<>();
         try {
@@ -337,7 +335,6 @@ public class DAOProduct extends DBContext {
                 Product product = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -373,7 +370,6 @@ public class DAOProduct extends DBContext {
                         rs.getString("image"));
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -397,13 +393,12 @@ public class DAOProduct extends DBContext {
     public List<Product> sortByPrice(String query) {
         List<Product> productList = new ArrayList<>();
         try {
-            
+
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                        
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -434,7 +429,6 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -465,7 +459,6 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                      
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -496,7 +489,6 @@ public class DAOProduct extends DBContext {
 
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -527,7 +519,6 @@ public class DAOProduct extends DBContext {
             PreparedStatement stm = conn.prepareStatement(query);
             java.sql.Date sqlDate = new java.sql.Date(update_date.getTime());
             stm.setString(1, product_name);
-         
             stm.setInt(2, quantity);
             stm.setInt(3, year);
             stm.setInt(4, category_productID);
@@ -560,7 +551,6 @@ public class DAOProduct extends DBContext {
                         rs.getString("category_name"), rs.getString("category_description"), "");
                 Product p = new Product(rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -595,7 +585,6 @@ public class DAOProduct extends DBContext {
                         rs.getString("category_name"), null, "");
                 Product p = new Product(-1,
                         null,
-               
                         -1,
                         -1,
                         null,
@@ -654,11 +643,19 @@ public class DAOProduct extends DBContext {
     public Product getProductByID(int productID) {
         Product p = null;
         try {
-            String query = "SELECT * FROM Product WHERE productID = ?";
+            String query = "SELECT * FROM Product p "
+                    + "INNER JOIN CategoryProduct cp ON p.category_productID = cp.category_productID "
+                    + "WHERE p.productID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, productID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
+                CategoryProduct cp = new CategoryProduct(
+                        rs.getInt("category_productID"),
+                        rs.getString("category_name"),
+                        rs.getString("category_description"),
+                        rs.getString("image")
+                );
                 p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
@@ -670,7 +667,7 @@ public class DAOProduct extends DBContext {
                         rs.getString("brief_information"),
                         rs.getFloat("original_price"),
                         rs.getFloat("sale_price"),
-                        null,
+                        cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
                         rs.getBoolean("status")
@@ -698,7 +695,6 @@ public class DAOProduct extends DBContext {
                 Product p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                     
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -743,7 +739,6 @@ public class DAOProduct extends DBContext {
                 Product p = new Product(
                         rs.getInt("productID"),
                         rs.getString("product_name"),
-                       
                         rs.getInt("quantity"),
                         rs.getInt("year"),
                         rs.getString("product_description"),
@@ -770,7 +765,7 @@ public class DAOProduct extends DBContext {
             String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, product_name);
-       
+
             stm.setInt(2, quantity);
             stm.setInt(3, year);
             stm.setInt(4, category_productID);
@@ -817,8 +812,36 @@ public class DAOProduct extends DBContext {
         }
     }
 
+    public int getProductFeaturedbyID(int id) {
+        int featured = 0;
+        try {
+            String query = "SELECT featured FROM Product WHERE productID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                featured = rs.getInt("featured");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return featured;
+    }
+
+    public void updateProductFeatured(int productID, int featured) {
+        try {
+            String query = "UPDATE Product SET featured = ? WHERE productID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, featured);
+            stm.setInt(2, productID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        System.out.println(p.getProductByTitleByCid("p", 1));
+        System.out.println(p.getProductByID(1));
     }
 }

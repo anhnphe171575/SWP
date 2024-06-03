@@ -108,6 +108,14 @@
         <servlet-name>CartDetails</servlet-name>
         <servlet-class>Controller.CartDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TurnFeatured</servlet-name>
+        <servlet-class>Controller.TurnFeatured</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProductDetails</servlet-name>
+        <servlet-class>Controller.EditProductDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -215,5 +223,13 @@
     <servlet-mapping>
         <servlet-name>CartDetails</servlet-name>
         <url-pattern>/CartDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TurnFeatured</servlet-name>
+        <url-pattern>/turnfeatured</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProductDetails</servlet-name>
+        <url-pattern>/editProductDetails</url-pattern>
     </servlet-mapping>
 </web-app>
