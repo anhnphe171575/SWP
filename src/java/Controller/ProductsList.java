@@ -10,6 +10,7 @@ import DAL.DAOProduct;
 
 import Entity.CategoryProduct;
 import Entity.Post;
+import Entity.Product;
 import Entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -68,7 +70,22 @@ public class ProductsList extends HttpServlet {
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
         DAOCategoryProduct cp = new DAOCategoryProduct();
-        request.setAttribute("list", d.getProduct());
+        int page, numberperpage = 5;
+        String xpage = request.getParameter("page");
+        List<Product> list = d.getProduct();
+        int size = list.size();
+        int number = (size % numberperpage == 0 ? (size / numberperpage) : ((size / numberperpage)) + 1);
+        if (xpage == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(xpage);
+        }
+        int start = (page - 1) * numberperpage;
+        int end = Math.min(page * numberperpage, size);
+        List<Product> l  = d.getListbyPage(list, start, end);
+        request.setAttribute("list", l);
+        request.setAttribute("page", page);
+        request.setAttribute("number", number);
         request.setAttribute("category", cp.getCategoryProductName());
         request.setAttribute("status", cp.getCategoryStatus());
         request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);

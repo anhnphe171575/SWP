@@ -22,7 +22,13 @@ import java.util.logging.Level;
  * @author phuan
  */
 public class DAOProduct extends DBContext {
-
+    public List<Product> getListbyPage(List<Product> list, int start, int end) {
+        ArrayList<Product> l = new ArrayList();
+        for (int i = start; i < end; i++) {
+            l.add(list.get(i));
+        }
+        return l;
+    }
     public List<String> getBrand(int category_productID) {
         List<String> list = new ArrayList<>();
         try {

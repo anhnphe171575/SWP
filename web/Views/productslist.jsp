@@ -14,7 +14,6 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="/vnss/vn1.css">
         <style>
             td img {
                 width: 100px; /* Sets the width of the image */
@@ -128,36 +127,21 @@
                 margin-right: 10px;
             }
             .pagination {
-                float: right;
-                margin: 0 0 5px;
+                display: inline-block;
             }
-            .pagination li a {
-                border: none;
-                font-size: 13px;
-                min-width: 30px;
-                min-height: 30px;
-                color: #999;
-                margin: 0 2px;
-                line-height: 30px;
-                border-radius: 2px !important;
-                text-align: center;
-                padding: 0 6px;
+            .pagination  a {
+                color: black;
+                font-size: 22px;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
             }
-            .pagination li a:hover {
-                color: #666;
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
             }
-            .pagination li.active a, .pagination li.active a.page-link {
-                background: #03A9F4;
-            }
-            .pagination li.active a:hover {
-                background: #0397d6;
-            }
-            .pagination li.disabled i {
-                color: #ccc;
-            }
-            .pagination li i {
-                font-size: 16px;
-                padding-top: 6px
+            .pagination a:hover:not(.active) {
+                background: #27A4F2;
             }
             .hint-text {
                 float: left;
@@ -277,13 +261,14 @@
         </script>
     </head>
     <body>
+
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
-                            <div class="col-sm-3">
-                                <h2>Manage <b>Products</b></h2>
+                            <div  class="col-sm-3">
+                                <a href="productslist" style="color: white"><h2>Manage <b>Products</b></h2></a>
                             </div>
                             <c:if test="${not empty msg}">
                                 <div style="color: white">${msg}</div>
@@ -294,8 +279,7 @@
 
                             <div style="text-align: right" class="col-sm-3">
                                 <form action="productslist" method="post">
-                                    <input type="text" name="title" placeholder="Title"><!-- comment -->
-                                    <input type="text" name="brief" placeholder="Brief_information"><!-- comment -->
+                                    <input type="text" name="title" placeholder="Title or brief_information"><!-- comment -->
                                     <input type="submit" name="submit" value="Search"><!-- comment -->
                                     <input type="hidden" name="service" value="search">                                                                      
                                 </form>                    
@@ -413,11 +397,18 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Sort</button>
+                                <input type="hidden" name="service" value="sort">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <c:set var="page" value="${requestScope.page}"/> 
+        <div class="pagination">
+            <c:forEach begin="${1}" end ="${requestScope.number}" var="i">
+                <a class="${i==page?"active":""}" href="productslist?page=${i}">${i}</a>
+            </c:forEach>
+        </div>    
     </body>
 </html>
