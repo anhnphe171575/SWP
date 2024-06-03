@@ -5,21 +5,22 @@
 package Controller;
 
 import DAL.DAOCart;
-import DAL.DAOCustomer;
+import Entity.CartItems;
+import Entity.Customer;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import java.util.List;
 
 /**
  *
  * @author phuan
  */
-public class LoginCusController extends HttpServlet {
+public class AddToCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class LoginCusController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginCusController</title>");            
+            out.println("<title>Servlet AddToCart</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginCusController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +60,36 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
+      String pid = request.getParameter("pid");
+      int pid_raw = 0;
+      try{
+          pid_raw = Integer.parseInt(pid);
+      }
+      catch(Exception e){
+          request.getRequestDispatcher("HomePage").forward(request, response);
+      }
+      HttpSession session = request.getSession();
+      Customer cus = (Customer)session.getAttribute("cus");
+      List<CartItems> cart = ( List<CartItems>) session.getAttribute("cart");
+      DAOCart db = new DAOCart();
+     if(db.checkCart(cus.getCustomerID()) == null){
+         db.Add2Cart(cus.getCustomerID());
+         db.Add2CartItem(1, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, 1);
+          request.setAttribute("error", "error2");
+     }
+     else{
+         if(db.chekcProductInCart(pid_raw) == null){
+         int cartItemsID = db.getCartItemsByCartID(cart.get(0).getCart().getCartID()).size() +1;
+         db.Add2CartItem(cartItemsID,db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, 1);
+         request.setAttribute("error", "error");
+         }
+         else{
+             db.UpdateCartQuantity(db.checkCart(cus.getCustomerID()).getCartID(),db.chekcProductInCart(pid_raw).getQuantity() + 1 , pid_raw);
+           request.setAttribute("error", "error1");        
+         }
+     }
+  
+  response.sendRedirect("CartDetails");
     }
 
     /**
@@ -73,28 +103,13 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomer daoC = new DAOCustomer();
-        HttpSession session = request.getSession();
-        
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        DAOCart db = new DAOCart();
-        boolean check = daoC.loginCus(username, password);
-        int cusid = daoC.getCusByUserName(username).getCustomerID();
-        if (check==true) {
-            session.setAttribute("cus", daoC.getCus(username));
-            session.setAttribute("cart", db.getListCart(cusid));
-            session.setMaxInactiveInterval(5*60);
-            response.sendRedirect("HomePage");
-        }else{
-            request.setAttribute("error", "error");
-            request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
      * Returns a short description of the servlet.
      *
+     * 
      * @return a String containing servlet description
      */
     @Override

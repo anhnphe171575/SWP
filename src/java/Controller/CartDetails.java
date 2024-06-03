@@ -5,6 +5,8 @@
 package Controller;
 
 import DAL.DAOCart;
+import DAL.DAOCategoryProduct;
+import DAL.DAOProduct;
 import Entity.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -61,6 +63,12 @@ public class CartDetails extends HttpServlet {
          HttpSession session = request.getSession();
          Customer cus = (Customer) session.getAttribute("cus");
          DAOCart db = new DAOCart();
+         DAOProduct db1 = new DAOProduct();
+         DAOCategoryProduct db2 = new DAOCategoryProduct();
+    
+          session.setAttribute("cart", db.getListCart(cus.getCustomerID()));
+         request.setAttribute("Cate1", db2.getCategoryProductProduct());
+        request.setAttribute("CategoryB", db1.ListCatogoryAndBrand());
          request.setAttribute("list", db.getListCart(cus.getCustomerID()));
         request.getRequestDispatcher("Views/CartDetails.jsp").forward(request, response);
     }
@@ -78,14 +86,17 @@ public class CartDetails extends HttpServlet {
             throws ServletException, IOException {
        String Quantity = request.getParameter("quantity");
        String CardID = request.getParameter("cartid");
+       String pid = request.getParameter("pid");
        DAOCart db = new DAOCart();
        if(Quantity !=null && CardID !=null){
-       db.UpdateCart(Integer.parseInt(CardID), Integer.parseInt(Quantity));
+       db.UpdateCartQuantity(Integer.parseInt(CardID), Integer.parseInt(Quantity),Integer.parseInt(pid));
        }
       String CartItem = request.getParameter("cartitemid");
+      
        if(CardID != null && CartItem !=null){
            db.DeleteCardItems(Integer.parseInt(CardID), Integer.parseInt(CartItem));
        }
+       request.setAttribute("scroll", "scroll");
         doGet(request, response);
     }
 

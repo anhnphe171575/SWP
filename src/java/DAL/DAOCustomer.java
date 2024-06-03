@@ -52,6 +52,37 @@ public class DAOCustomer extends DBContext {
             System.out.println(ex);
         }
         return c;
+    }  public Customer getCusByUserName(String UserName) {
+        Customer c = null;
+        try {
+            String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.activity_history,c.email,c.address,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
+                    + "sq.security_question from Customer c\n"
+                    + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
+                    + "where c.username=?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, UserName);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Security sq = new Security(rs.getInt("securityID"),
+                        rs.getString("security_question"));
+                c = new Customer(rs.getInt("customerID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("activity_history"),
+                        sq,
+                        rs.getString("securityAnswer"));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return c;
     }
     public int updateCustomer(Customer obj) {
         int n = 0;
@@ -496,6 +527,6 @@ public class DAOCustomer extends DBContext {
     }
     public static void main(String[] args) {
         DAOCustomer dao = new DAOCustomer();
-        System.out.println(dao.loginCus("user1", "123"));
+        System.out.println(dao.getCusByUserName("user1"));
     }
 }
