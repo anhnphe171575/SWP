@@ -5,6 +5,7 @@
 package Controller;
 
 import DAL.DAOProduct;
+import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -57,9 +58,13 @@ public class ViewProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
-        int id = Integer.parseInt(request.getParameter("vid"));
-        request.setAttribute("product",d.getProductByID(id));
-        request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
+        try {
+            int id = Integer.parseInt(request.getParameter("vid"));
+            Product product = d.getProductByID(id);
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
+        } catch (NumberFormatException e){
+        }
     }
 
     /**

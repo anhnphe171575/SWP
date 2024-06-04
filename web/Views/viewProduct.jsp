@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             td img {
-                width: 100px; /* Sets the width of the image */
+                width: 300px; /* Sets the width of the image */
                 height: auto; /* Maintains the aspect ratio */
                 border: 2px solid #ccc; /* Adds a border around the image */
                 border-radius: 5px; /* Rounds the corners of the image */
@@ -31,8 +31,7 @@
             }
             /* CSS for viewProduct.jsp */
             .thumbnail img {
-                max-width: 100%; /* Ảnh sẽ tự động thay đổi kích thước sao cho phù hợp với độ rộng của phần tử cha */
-                height: auto; /* Duy trì tỷ lệ khung hình */
+                height: auto;
             }
 
             body {
