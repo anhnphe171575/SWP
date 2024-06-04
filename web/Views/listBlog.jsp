@@ -137,7 +137,7 @@
                         <div style="height: auto; text-align: center; padding: 5px;">
                             <c:forEach items="${requestScope.category_product}" var="a"> 
                                 <div class="nav-item dropdown" style="border: 1px solid black; padding: 5px;">
-                                    <a href="BlogController?service=getBlogByCP&cid=${a.category_productID}&name=${a.category_name}" class="nav-link ${cid == a.category_productID ? 'selected' : ''}" style="color: black;">${a.category_name}</a>                                                                                     
+                                    <a href="BlogController?cid=${a.category_productID}" class="nav-link ${cid == a.category_productID ? 'selected' : ''}" style="color: black;">${a.category_name}</a>                                                                                     
                                 </div>
                             </c:forEach> 
                         </div>
@@ -145,7 +145,7 @@
                     <div class="border-bottom mb-4 pb-4">
                         <div id="header-carousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
-                                <c:forEach items="${requestScope.LatedProducts}" var="lp" varStatus="status">
+                                <c:forEach items="${requestScope.lastPost}" var="lp" varStatus="status">
                                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}" data-bs-interval="10000">
                                         <img src="${lp.thumbnail}" class="d-block w-100" alt="Product image">
                                     </div>
@@ -176,13 +176,14 @@
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <form action="BlogController" method="get">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="title" placeholder="Search by name">
+                                    <input type="text" class="form-control" name="search" placeholder="Search by name">
                                     <div class="input-group-append">
                                         <span class="input-group-text bg-transparent text-primary">
                                             <i class="fa fa-search"></i>
                                         </span>
                                     </div>
                                 </div>
+                                <input type="hidden" name="cid" value="${requestScope.cid}">
                                 <input type="hidden" name="service" value="search">
                             </form>
                             <!--                                <div class="dropdown ml-4">
@@ -201,7 +202,7 @@
                     <div class="container">
                         <div class="row">
                             <c:forEach items="${blog}" var="b">
-                                <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                                <div class="col-lg-6 col-md-6 col-sm-12 pb-1">
                                     <div class="card product-item border-0 mb-4">
                                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                             <img class="img-fluid w-100" src="${b.thumbnail}" alt="">

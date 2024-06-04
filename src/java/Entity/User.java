@@ -23,14 +23,14 @@ public class User {
     private Date dob;
     private boolean gender;
     private int status;
-    private int role;
+    private Role role;
     private Security security;
     private String securityAnswer;
      public User(){
          
      }
 
-    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, int role, Security security, String securityAnswer) {
+    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Role role, Security security, String securityAnswer) {
         this.UserID = UserID;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -135,11 +135,11 @@ public class User {
         this.status = status;
     }
 
-    public int getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -158,7 +158,12 @@ public class User {
     public void setSecurityAnswer(String securityAnswer) {
         this.securityAnswer = securityAnswer;
     }
-  
 
+    @Override
+    public String toString() {
+        return "User{" + "UserID=" + UserID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", role=" + role + ", security=" + security + ", securityAnswer=" + securityAnswer + '}';
+    }
+
+   
    
 }

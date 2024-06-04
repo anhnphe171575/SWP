@@ -66,41 +66,42 @@ public class BlogController extends HttpServlet {
         HttpSession session = request.getSession();
         String service = request.getParameter("service");
         Vector<Post> list_post = new Vector<>();
-        String cid_raw = request.getParameter("cid");
-        int cid = 0;
+        String cid = request.getParameter("cid");
+        int cid_raw = 0;
+        String cname = request.getParameter("cname");
+        String search = request.getParameter("search");
+
         try {
-            if (cid_raw != null) {
-                cid = Integer.parseInt(cid_raw);
+            if (cid != null && !cid.isBlank()) {
+                cid_raw = Integer.parseInt(cid);
             }
         } catch (Exception e) {
             request.getRequestDispatcher("HomePage").forward(request, response);
         }
-        if (service == null) {
+        if (cname != null) {
+            cid_raw = daoCP.getCategoryProductbyName(cname).getCategory_productID();
+        }
+        if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank())) {
             list_post = daoP.getBlog();
-            request.setAttribute("blog", list_post);
-            request.setAttribute("category_product", daoCP.getCategoryProductProduct());
-        } else if (service.equals("viewDetail")) {
-            int postID = Integer.parseInt(request.getParameter("postID"));
-            String name = request.getParameter("name");
-            request.setAttribute("blog", daoP.getPostByCPname(name));
-            request.setAttribute("category_product", daoCP.getCategoryProductProduct());
-            request.setAttribute("blog", daoP.getPostById(postID));
-
-        } else if (service.equals("search")) {
-            String title = request.getParameter("title");
-            list_post = daoP.search(title);
-            request.setAttribute("blog", daoP.search(title));
-            request.setAttribute("category_product", daoCP.getCategoryProductProduct());
-        } else if (service.equals("getBlogByCP")) {
-
-            String name = request.getParameter("name");
-            list_post = daoP.getPostByCPname(name);
+        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank()) {
+            list_post = daoP.getPostBySearchAndid(search, cid_raw);
+            request.setAttribute("search1", search);
             request.setAttribute("cid", cid);
-            request.setAttribute("blog", daoP.getPostByCPname(name));
-            request.setAttribute("category_product", daoCP.getCategoryProductProduct());
+        } else if (cid != null && !cid.isBlank()) {
+            list_post = daoP.getPostByCPId(cid_raw);
+            request.setAttribute("cid", cid);
+        } else if (cname != null && !cname.isBlank()) {
+            // Assuming you have a method to get products by category name if needed.
+            list_post = daoP.getPostByCPId(cid_raw);
+            request.setAttribute("cname", cname);
+        } else if (search != null && !search.isBlank()) {
+            list_post = daoP.search(search);
+            request.setAttribute("search1", search);
+        } else {
+            list_post = daoP.getBlog();
         }
         int page = 0;
-        int numberOfPage = 6;
+        int numberOfPage = 4;
         String xpage = request.getParameter("page");
         int size = list_post.size();
         int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
@@ -113,6 +114,8 @@ public class BlogController extends HttpServlet {
         start = (page - 1) * numberOfPage;
         end = Math.min(page * numberOfPage, list_post.size());
         Vector<Post> list = daoP.getListByPage(list_post, start, end);
+        request.setAttribute("category_product", daoCP.getCategoryProductProduct());
+
         request.setAttribute("lastPost", daoP.getLastBlog());
         request.setAttribute("numpage", num);
         request.setAttribute("page", page);

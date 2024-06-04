@@ -27,6 +27,7 @@ public class Customer {
     private Date dob;
     private boolean gender;
     private Date activity_history;
+    private Role role;
     private Security security;
     private String secutityAnswer;
 
