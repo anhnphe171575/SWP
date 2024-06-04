@@ -85,7 +85,7 @@ public class DAOUser extends DBContext {
         public User getUserByLogin(String username) {
         User u = null;
         String sql = "select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID"
                 + "inner join [Role] r on r.RoleID=u.RoleID"
                 + " where username =?";
