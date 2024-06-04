@@ -135,7 +135,7 @@ public Vector<Post> getPostByCPId(int id) {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -240,7 +240,7 @@ public Vector<Post> getPostByCPId(int id) {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -602,8 +602,8 @@ public Vector<Post> getPostByCPId(int id) {
         java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         CategoryProduct cp1 = new CategoryProduct();
         CategoryPost cp = new CategoryPost(1, cp1);
-        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, 0, null, "");
-        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", 1, u, date_create_by);
+        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, null, null, "");
+        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", u, date_create_by);
         daoP.editPost(obj);
         System.out.println(daoP.getAll());
 
@@ -649,4 +649,5 @@ public Vector<Post> getPostByCPId(int id) {
 //          System.out.println(vector);
 //    }
     }
+}
 
