@@ -22,14 +22,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             td img {
-                width: 300px; /* Sets the width of the image */
-                height: auto; /* Maintains the aspect ratio */
-                border: 2px solid #ccc; /* Adds a border around the image */
-                border-radius: 5px; /* Rounds the corners of the image */
-                padding: 5px; /* Adds padding inside the border */
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adds a shadow effect */
+                width: 300px;
+                height: auto;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                padding: 5px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             }
-            /* CSS for viewProduct.jsp */
             .thumbnail img {
                 height: auto;
             }
@@ -292,160 +291,170 @@
             </script>
         </head>
         <body>
-            <div class="container-xl">
+            <div class="container">
                 <div class="table-responsive">
                     <div class="table-wrapper">
                         <div class="table-title">
                             <div class="row">
-                                <div  class="col-sm-3">
-                                    <a href="productslist" style="color: white"><h2>Product <b>Details</b></h2></a>
-                                    </div>
+                                <div class="col-sm-8"><h2>Product <b>Details</b></h2></div>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Attributes</th>
+                                    <th>Values</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:if test="${not empty product}">
+                                    <tr>
+                                        <td>Thumbnail:</td>
+                                        <td><img src="${product.thumbnail}" alt="Thumbnail" class="thumbnail"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Category Product:</td>
+                                        <td>${product.categoryProduct.category_name}</td>                                    
+                                    </tr>
+                                    <tr>
+                                        <td>Title:</td>
+                                        <td>${product.product_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Brief Information:</td>
+                                        <td>${product.brief_information}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Attached images:</td>
+                                        <td><img src="${product.categoryProduct.image}" alt="Attached Image"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Product Description:</td>
+                                        <td>${product.product_description}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Quantity:</td>
+                                        <td>${product.quantity}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Original Price:</td>
+                                        <td>${product.original_price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sale Price:</td>
+                                        <td>${product.sale_price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Featured:</td>
+                                        <td>
+                                            ${product.featured == 1 ? "Yes" : "No"}
+                                            <c:if test="${product.featured == 1}">
+                                                <a title="Off" onclick="location.href = 'turnfeatured?action=off&id=${product.productID}'"><i class="fas fa-flag-checkered"></i></a>
+                                                </c:if>
+                                                <c:if test="${product.featured == 0}">
+                                                <a title="On" onclick="location.href = 'turnfeatured?action=on&id=${product.productID}'"><i class="fas fa-flag"></i></a>
+                                                </c:if>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status:</td>
+                                        <td>${product.status ? "Show" : "Hide"}</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td colspan="2" class="text-right">
+                                            <button><a href="productslist">Back To Products List</a></button>
+                                            <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </c:if>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit Modal HTML -->
+            <div id="editProductModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="editProductDetails" method="post">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit Product</h4>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="productID" value="${product.productID}">
+                                <div class="form-group">
+                                    <label>Product Name</label>
+                                    <input type="text" name="product_name" class="form-control" value="${product.product_name}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" name="quantity" class="form-control" value="${product.quantity}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    <input type="number" name="year" class="form-control" value="${product.year}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category Product ID</label>
+                                    <input type="number" name="category_productID" class="form-control" value="${product.categoryProduct.category_productID}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Product Description</label>
+                                    <textarea name="product_description" class="form-control">${product.product_description}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Featured</label>
+                                    <input type="number" name="featured" class="form-control" value="${product.featured}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Thumbnail</label>
+                                    <input type="text" name="thumbnail" class="form-control" value="${product.thumbnail}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Brief Information</label>
+                                    <textarea name="brief_information" class="form-control">${product.brief_information}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Original Price</label>
+                                    <input type="number" step="0.01" name="original_price" class="form-control" value="${product.original_price}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sale Price</label>
+                                    <input type="number" step="0.01" name="sale_price" class="form-control" value="${product.sale_price}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Update Date</label>
+                                    <input type="date" name="update_date" class="form-control" value="${product.update_date}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Brand</label>
+                                    <input type="text" name="brand" class="form-control" value="${product.brand}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <input type="checkbox" name="status" ${product.status ? "checked" : ""}>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <select name="status" class="form-control" required>
+                                        <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                    </select>
                                 </div>
                             </div>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Attributes</th>
-                                        <th>Values</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:if test="${not empty product}">
-                                        <tr>
-                                            <td>Thumbnail:</td>
-                                            <td><img src="${product.thumbnail}" alt="Thumbnail" class="thumbnail"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Category Product:</td>
-                                            <td>${product.categoryProduct.category_name}</td>                                    
-                                        </tr>
-                                        <tr>
-                                            <td>Title:</td>
-                                            <td>${product.product_name}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Brief Information:</td>
-                                            <td>${product.brief_information}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Attached images:</td>
-                                            <td>${product.categoryProduct.image}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Product Description:</td>
-                                            <td>${product.product_description}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quantity:</td>
-                                            <td>${product.quantity}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Original Price:</td>
-                                            <td>${product.original_price}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sale Price:</td>
-                                            <td>${product.sale_price}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Featured:</td>
-                                            <td>
-                                                ${product.featured == 1 ? "Yes" : "No"}
-                                                <c:if test="${product.featured == 1}">
-                                                    <a title="Off" onclick="location.href = 'turnfeatured?action=off&id=${product.productID}'"><i class="fas fa-flag-checkered"></i></a>
-                                                    </c:if>
-                                                    <c:if test="${product.featured == 0}">
-                                                    <a title="On" onclick="location.href = 'turnfeatured?action=on&id=${product.productID}'"><i class="fas fa-flag"></i></a>
-                                                    </c:if>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Status:</td>
-                                            <td>${product.status ? "Show" : "Hide"}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="text-right">
-                                                <button type="button" class="btn btn-primary edit">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:if>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-success" value="Save Changes">
+                    </div>
+                    </form>
 
-                <!-- Edit Product Modal -->
-                <div id="editProductModal" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form form method="post" action="editProductDetails">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Edit Product</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">
-                                    <input name="id" value="${product.productID}" readonly>
-                                    <div class="form-group">
-                                        <label>Thumbnail</label>
-                                        <input type="text" name="thumbnail" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Category</label>
-                                        <input type="text" name="category" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Product Name</label>
-                                        <input type="text" name="name" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Brief Information</label>
-                                        <input type="text" name="briefInformation" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Attached Images</label>
-                                        <input type="text" name="attachedImages" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description</label>
-                                        <textarea name="description" class="form-control" required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Quantity</label>
-                                        <input type="number" id="quantity" name="quantity" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Price</label>
-                                        <input type="number" id="productPrice" name="price" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Sale Price</label>
-                                        <input type="number" id="salePrice" name="salePrice" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Featured</label>
-                                        <select name="featured" class="form-control" required>
-                                            <option value="0">No</option>
-                                            <option value="1">Yes</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <select name="status" class="form-control" required>
-                                            <option value="0">Hide</option>
-                                            <option value="1">Show</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                    <input type="button" id="saveChangesBtn" class="btn btn-success" value="Save">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
-            </body>
-        </html>
+            </div>
+        </div>
+    </body>
+</html>

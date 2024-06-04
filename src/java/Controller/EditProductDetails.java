@@ -74,24 +74,22 @@ public class EditProductDetails extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int productID = Integer.parseInt(request.getParameter("id"));
-            String product_name = request.getParameter("name");
-            float price = Float.parseFloat(request.getParameter("price"));
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            String product_name = request.getParameter("product_name");
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             int year = Integer.parseInt(request.getParameter("year"));
-            int category_productID = Integer.parseInt(request.getParameter("category"));
-            String product_description = request.getParameter("description");
+            int category_productID = Integer.parseInt(request.getParameter("category_productID"));
+            String product_description = request.getParameter("product_description");
             int featured = Integer.parseInt(request.getParameter("featured"));
             String thumbnail = request.getParameter("thumbnail");
-            String brief_information = request.getParameter("briefInformation");
-            float original_price = Float.parseFloat(request.getParameter("originalPrice"));
-            float sale_price = Float.parseFloat(request.getParameter("salePrice"));
-            Date update_date = formatDate(request.getParameter("updateDate"));
+            String brief_information = request.getParameter("brief_information");
+            float original_price = Float.parseFloat(request.getParameter("original_price"));
+            float sale_price = Float.parseFloat(request.getParameter("sale_price"));
+            Date update_date = formatDate(request.getParameter("update_date"));
             String brand = request.getParameter("brand");
             Boolean status = Boolean.valueOf(request.getParameter("status"));
             DAOProduct dao = new DAOProduct();
-            dao.updateProduct(productID, product_name, price, quantity, year, category_productID, product_description,
-                    featured, thumbnail, brief_information, original_price, sale_price, update_date, brand, status);
+            dao.updateProduct(productID, product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand, status);
             response.sendRedirect("view?vid=" + productID);
         } catch (IOException | NumberFormatException e) {
         }

@@ -35,86 +35,81 @@
     <body>
         <div class="container">
             <h2>Edit Product</h2>
-            <form id="editProductForm" action="editp" method="post">
+            <form action="editp" method="post">
                 <div class="form-group">
-                    <div>Product ID:</div>
+                    <label>Product ID:</label>
                     <input type="text" name="productID" value="${product.productID}" readonly>
                 </div>
 
                 <div class="form-group">
-                    <div>Product Name:</div>
-                    <input type="text" name="productName" value="${product.product_name}">
+                    <label>Product Name:</label>
+                    <input type="text" name="productName" value="${product.product_name}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Price:</div>
-                    <input type="number" step="0.01" name="price" value="${product.price}">
+                    <label>Quantity:</label>
+                    <input type="number" name="quantity" value="${product.quantity}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Quantity:</div>
-                    <input type="number" name="quantity" value="${product.quantity}">
+                    <label>Year:</label>
+                    <input type="number" name="year" value="${product.year}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Year:</div>
-                    <input type="number" name="year" value="${product.year}">
+                    <label>Category:</label>
+                    <input type="number" name="category" value="${product.categoryProduct.category_productID}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Category:</div>
-                    <input type="number" name="category" value="${product.categoryProduct.category_productID}">
+                    <label>Product Description:</label>
+                    <textarea name="description" class="form-control" required>${product.product_description}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <div>Product Description:</div>
-                    <textarea name="description">${product.product_description}</textarea>
+                    <label>Featured:</label>
+                    <input type="number" id="featured" name="featured" value="${product.featured}" min="0" max="1" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Featured:</div>
-                    <input type="number" id="featured" name="featured" value="${product.featured}" min="0" max="1">
+                    <label>Thumbnail:</label>
+                    <input type="text" name="thumbnail" value="${product.thumbnail}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Thumbnail:</div>
-                    <input type="text" name="thumbnail" value="${product.thumbnail}">
+                    <label>Brief Information:</label>
+                    <textarea name="briefInfo" class="form-control" required>${product.brief_information}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <div>Brief Information:</div>
-                    <textarea name="briefInfo">${product.brief_information}</textarea>
+                    <label>Original Price:</label>
+                    <input type="number" step="0.01" id="originalPrice" name="originalPrice" value="${product.original_price}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Original Price:</div>
-                    <input type="number" step="0.01" id="originalPrice" name="originalPrice" value="${product.original_price}">
+                    <label>Sale Price:</label>
+                    <input type="number" step="0.01" id="salePrice" name="salePrice" value="${product.sale_price}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Sale Price:</div>
-                    <input type="number" step="0.01" id="salePrice" name="salePrice" value="${product.sale_price}">
+                    <label>Update Date:</label>
+                    <input type="date" id="updateDate" name="updateDate" value="${product.update_date}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Update Date:</div>
-                    <input type="date" id="updateDate" name="updateDate" value="${product.update_date}">
+                    <label>Brand:</label>
+                    <input type="text" name="brand" value="${product.brand}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <div>Brand:</div>
-                    <input type="text" name="brand" value="${product.brand}">
-                </div>
-
-                <div class="form-group">
-                    <div>Status:</div>
-                    <select name="status" required> 
+                    <label>Status:</label>
+                    <select name="status" class="form-control" required> 
                         <option value="true" ${product.status ? 'selected' : ''}>Show</option>
                         <option value="false" ${!product.status ? 'selected' : ''}>Hide</option>
                     </select>
                 </div>
-
-                <input type="submit" value="Submit">
+                    <a href="productslist" class="btn btn-default">Back to Product List</a>
+                    <input type="submit" class="btn btn-success" value="Save">
             </form>
         </div>
     </body>
