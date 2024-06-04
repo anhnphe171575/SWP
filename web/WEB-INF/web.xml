@@ -108,6 +108,14 @@
         <servlet-name>CartDetails</servlet-name>
         <servlet-class>Controller.CartDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MKTDashboard</servlet-name>
+        <servlet-class>Controller.MKTDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCart</servlet-name>
+        <servlet-class>Controller.AddToCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -215,5 +223,13 @@
     <servlet-mapping>
         <servlet-name>CartDetails</servlet-name>
         <url-pattern>/CartDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MKTDashboard</servlet-name>
+        <url-pattern>/MKTDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCart</servlet-name>
+        <url-pattern>/AddToCart</url-pattern>
     </servlet-mapping>
 </web-app>
