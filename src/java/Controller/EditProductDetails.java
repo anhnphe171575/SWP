@@ -5,19 +5,21 @@
 package Controller;
 
 import DAL.DAOProduct;
-import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author MANH VINH
  */
-public class ViewProduct extends HttpServlet {
+public class EditProductDetails extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +38,10 @@ public class ViewProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProduct</title>");
+            out.println("<title>Servlet EditProductDetails</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EditProductDetails at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,14 +59,7 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOProduct d = new DAOProduct();
-        try {
-            int id = Integer.parseInt(request.getParameter("vid"));
-            Product product = d.getProductByID(id);
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
-        } catch (NumberFormatException e){
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -78,7 +73,38 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            int productID = Integer.parseInt(request.getParameter("id"));
+            String product_name = request.getParameter("name");
+            float price = Float.parseFloat(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int year = Integer.parseInt(request.getParameter("year"));
+            int category_productID = Integer.parseInt(request.getParameter("category"));
+            String product_description = request.getParameter("description");
+            int featured = Integer.parseInt(request.getParameter("featured"));
+            String thumbnail = request.getParameter("thumbnail");
+            String brief_information = request.getParameter("briefInformation");
+            float original_price = Float.parseFloat(request.getParameter("originalPrice"));
+            float sale_price = Float.parseFloat(request.getParameter("salePrice"));
+            Date update_date = formatDate(request.getParameter("updateDate"));
+            String brand = request.getParameter("brand");
+            Boolean status = Boolean.valueOf(request.getParameter("status"));
+            DAOProduct dao = new DAOProduct();
+            dao.updateProduct(productID, product_name, price, quantity, year, category_productID, product_description,
+                    featured, thumbnail, brief_information, original_price, sale_price, update_date, brand, status);
+            response.sendRedirect("view?vid=" + productID);
+        } catch (IOException | NumberFormatException e) {
+        }
+    }
+
+    private Date formatDate(String dob) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = dateFormat.parse(dob);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     /**

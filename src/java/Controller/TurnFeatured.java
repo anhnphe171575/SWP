@@ -5,7 +5,6 @@
 package Controller;
 
 import DAL.DAOProduct;
-import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author MANH VINH
  */
-public class ViewProduct extends HttpServlet {
+public class TurnFeatured extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +35,10 @@ public class ViewProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProduct</title>");
+            out.println("<title>Servlet TurnFeatured</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TurnFeatured at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,13 +56,16 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
+        int productid = Integer.parseInt(request.getParameter("id"));
         DAOProduct d = new DAOProduct();
-        try {
-            int id = Integer.parseInt(request.getParameter("vid"));
-            Product product = d.getProductByID(id);
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
-        } catch (NumberFormatException e){
+        int featured = d.getProductFeaturedbyID(productid);
+        if ("off".equals(action) && featured == 1) {
+            d.updateProductFeatured(productid, 0);
+            response.sendRedirect("view?vid=" + productid);
+        } else if ("on".equals(action) && featured == 0) {
+            d.updateProductFeatured(productid, 1);
+            response.sendRedirect("view?vid=" + productid);
         }
     }
 

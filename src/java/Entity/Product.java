@@ -11,9 +11,8 @@ import java.util.Date;
  * @author phuan
  */
 public class Product {
-       private int productID;
+    private int productID;
     private String product_name;
-  
     private int quantity;
     private int year;
     private String product_description;
@@ -25,7 +24,7 @@ public class Product {
     private CategoryProduct categoryProduct;
     private String brand;
     private Date update_date;
-    private  Boolean status;
+    private Boolean status;
 
     public Product(int productID, String product_name, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status) {
         this.productID = productID;
@@ -161,9 +160,4 @@ public class Product {
         return "Product{" + "productID=" + productID + ", product_name=" + product_name + ", quantity=" + quantity + ", year=" + year + ", product_description=" + product_description + ", featured=" + featured + ", thumbnail=" + thumbnail + ", brief_information=" + brief_information + ", original_price=" + original_price + ", sale_price=" + sale_price + ", categoryProduct=" + categoryProduct + ", brand=" + brand + ", update_date=" + update_date + ", status=" + status + '}';
     }
 
-   
-
-   
-    
-             
 }

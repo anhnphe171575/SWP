@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             td img {
-                width: 100px; /* Sets the width of the image */
+                width: 300px; /* Sets the width of the image */
                 height: auto; /* Maintains the aspect ratio */
                 border: 2px solid #ccc; /* Adds a border around the image */
                 border-radius: 5px; /* Rounds the corners of the image */
@@ -31,8 +31,7 @@
             }
             /* CSS for viewProduct.jsp */
             .thumbnail img {
-                max-width: 100%; /* Ảnh sẽ tự động thay đổi kích thước sao cho phù hợp với độ rộng của phần tử cha */
-                height: auto; /* Duy trì tỷ lệ khung hình */
+                height: auto;
             }
 
             body {
@@ -138,28 +137,6 @@
                 vertical-align: middle;
                 margin-right: 10px;
             }
-            .pagination {
-                display: inline-block;
-            }
-            .pagination  a {
-                color: black;
-                font-size: 22px;
-                float: left;
-                padding: 8px 16px;
-                text-decoration: none;
-            }
-            .pagination a.active {
-                background-color: #4CAF50;
-                color: white;
-            }
-            .pagination a:hover:not(.active) {
-                background: #27A4F2;
-            }
-            .hint-text {
-                float: left;
-                margin-top: 10px;
-                font-size: 13px;
-            }
             /* Custom checkbox */
             .custom-checkbox {
                 position: relative;
@@ -211,142 +188,264 @@
                 box-shadow: none;
                 background: #ddd;
             }
-            /* Modal styles */
-            .modal .modal-dialog {
-                max-width: 400px;
+            /* Custom styles for Edit button */
+            .btn-edit {
+                background-color: #28a745;
+                border-color: #28a745;
+                color: white;
             }
-            .modal .modal-header, .modal .modal-body, .modal .modal-footer {
-                padding: 20px 30px;
+            .btn-edit:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
             }
-            .modal .modal-content {
-                border-radius: 3px;
-                font-size: 14px;
-            }
-            .modal .modal-footer {
-                background: #ecf0f1;
-                border-radius: 0 0 3px 3px;
-            }
-            .modal .modal-title {
+            .flag-container {
+                position: relative;
                 display: inline-block;
             }
-            .modal .form-control {
-                border-radius: 2px;
-                box-shadow: none;
-                border-color: #dddddd;
+            .flag-container .fa-flag {
+                color: #435d7d;
             }
-            .modal textarea.form-control {
-                resize: vertical;
-            }
-            .modal .btn {
-                border-radius: 2px;
-                min-width: 100px;
-            }
-            .modal form label {
-                font-weight: normal;
-            }
-        </style>
-        <script>
-            $(document).ready(function () {
-                // Activate tooltip
-                $('[data-toggle="tooltip"]').tooltip();
+            .flag-container .fa-ban {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: red;
+                font-size: 1.2em;
+            </style>
+            <script>
+                $(document).ready(function () {
+                    // Edit button click event
+                    $(document).on("click", ".edit", function () {
+                        var productId = "${product.productID}";
+                        var productName = "${product.product_name}";
+                        var productThumbnail = "${product.thumbnail}";
+                        var productPrice = "${product.original_price}";
+                        var productCategory = "${product.categoryProduct.category_name}";
+                        var briefInformation = "${product.brief_information}";
+                        var attachedImages = "${product.categoryProduct.image}";
+                        var productDescription = "${product.product_description}";
+                        var quantity = "${product.quantity}";
+                        var salePrice = "${product.sale_price}";
+                        var featured = "${product.featured}";
+                        var status = "${product.status}";
 
-                // Select/Deselect checkboxes
-                var checkbox = $('table tbody input[type="checkbox"]');
-                $("#selectAll").click(function () {
-                    if (this.checked) {
-                        checkbox.each(function () {
-                            this.checked = true;
-                        });
-                    } else {
-                        checkbox.each(function () {
-                            this.checked = false;
-                        });
-                    }
-                });
-                checkbox.click(function () {
-                    if (!this.checked) {
-                        $("#selectAll").prop("checked", false);
-                    }
-                });
-            });
+                        $("#editProductModal #productId").val(productId);
+                        $("#editProductModal #productName").val(productName);
+                        $("#editProductModal #productThumbnail").val(productThumbnail);
+                        $("#editProductModal #productPrice").val(productPrice);
+                        $("#editProductModal #productCategory").val(productCategory);
+                        $("#editProductModal #briefInformation").val(briefInformation);
+                        $("#editProductModal #attachedImages").val(attachedImages);
+                        $("#editProductModal #productDescription").val(productDescription);
+                        $("#editProductModal #quantity").val(quantity);
+                        $("#editProductModal #salePrice").val(salePrice);
+                        $("#editProductModal #featured").val(featured);
+                        $("#editProductModal #status").val(status);
 
-        </script>
-    </head>
-    <body>
-        <div class="container-xl">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div  class="col-sm-3">
-                                <a href="productslist" style="color: white"><h2>Product <b>Details</b></h2></a>
+                        $("#editProductModal").modal("show");
+                    });
+
+                    // Save changes button click event
+                    $("#saveChangesBtn").click(function () {
+                        var productId = $("#editProductModal #productId").val();
+                        var productName = $("#editProductModal #productName").val();
+                        var productThumbnail = $("#editProductModal #productThumbnail").val();
+                        var productPrice = $("#editProductModal #productPrice").val();
+                        var productCategory = $("#editProductModal #productCategory").val();
+                        var briefInformation = $("#editProductModal #briefInformation").val();
+                        var attachedImages = $("#editProductModal #attachedImages").val();
+                        var productDescription = $("#editProductModal #productDescription").val();
+                        var quantity = $("#editProductModal #quantity").val();
+                        var salePrice = $("#editProductModal #salePrice").val();
+                        var featured = $("#editProductModal #featured").val();
+                        var status = $("#editProductModal #status").val();
+
+                        // Use AJAX to update the product information
+                        $.ajax({
+                            url: "editProductDetails",
+                            type: "POST",
+                            data: {
+                                id: productId,
+                                name: productName,
+                                thumbnail: productThumbnail,
+                                price: productPrice,
+                                category: productCategory,
+                                briefInformation: briefInformation,
+                                attachedImages: attachedImages,
+                                description: productDescription,
+                                quantity: quantity,
+                                salePrice: salePrice,
+                                featured: featured,
+                                status: status
+                            },
+                            success: function (response) {
+                                // Handle success response
+                                location.reload(); // Reload the page to reflect the changes
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle error response
+                                alert("An error occurred while updating the product.");
+                            }
+                        });
+                    });
+                });
+            </script>
+        </head>
+        <body>
+            <div class="container-xl">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div  class="col-sm-3">
+                                    <a href="productslist" style="color: white"><h2>Product <b>Details</b></h2></a>
+                                    </div>
+                                </div>
                             </div>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Attributes</th>
+                                        <th>Values</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:if test="${not empty product}">
+                                        <tr>
+                                            <td>Thumbnail:</td>
+                                            <td><img src="${product.thumbnail}" alt="Thumbnail" class="thumbnail"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Category Product:</td>
+                                            <td>${product.categoryProduct.category_name}</td>                                    
+                                        </tr>
+                                        <tr>
+                                            <td>Title:</td>
+                                            <td>${product.product_name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Brief Information:</td>
+                                            <td>${product.brief_information}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Attached images:</td>
+                                            <td>${product.categoryProduct.image}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Product Description:</td>
+                                            <td>${product.product_description}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Quantity:</td>
+                                            <td>${product.quantity}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Original Price:</td>
+                                            <td>${product.original_price}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sale Price:</td>
+                                            <td>${product.sale_price}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Featured:</td>
+                                            <td>
+                                                ${product.featured == 1 ? "Yes" : "No"}
+                                                <c:if test="${product.featured == 1}">
+                                                    <a title="Off" onclick="location.href = 'turnfeatured?action=off&id=${product.productID}'"><i class="fas fa-flag-checkered"></i></a>
+                                                    </c:if>
+                                                    <c:if test="${product.featured == 0}">
+                                                    <a title="On" onclick="location.href = 'turnfeatured?action=on&id=${product.productID}'"><i class="fas fa-flag"></i></a>
+                                                    </c:if>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Status:</td>
+                                            <td>${product.status ? "Show" : "Hide"}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">
+                                                <button type="button" class="btn btn-primary edit">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Attributes</th>
-                                <th>Values</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:set value="list" var="product"></c:set>                                                          
-                                <tr>
-                                    <td>Thumbnail:</td>
-                                    <td><img src="${product.thumbnail}" alt="Thumbnail" class="thumbnail"></td>
-                                </tr>
-                                <tr>
-                                    <td>Category Product:</td>
-                                    <td>${product.categoryProduct.category_name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Title:</td>
-                                    <td>${product.product_name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Brief Information:</td>
-                                    <td>${product.brief_information}</td>
-                                </tr>
-                                <tr>
-                                    <td>Attached images:</td>
-                                    <td>${product.categoryProduct.image}</td>
-                                </tr>
-                                <tr>
-                                    <td>Product Description:</td>
-                                    <td>${product.product_description}</td>
-                                </tr>
-                                <tr>
-                                    <td>Quantity:</td>
-                                    <td>${product.quantity}</td>
-                                </tr>
-                                <tr>
-                                    <td>Original Price:</td>
-                                    <td>${product.original_price}</td>
-                                </tr>
-                                <tr>
-                                    <td>Sale Price:</td>
-                                    <td>${product.sale_price}</td>
-                                </tr>
-                                <tr>
-                                    <td>Featured:</td>
-                                    <td>${product.featured == 1 ? "Yes" : "No"}
-                                        <c:if test="${product.featured == 1}">
-                                            <a title="Off" onclick="location.href = 'turnfeatured?action=off&id=${product.productID}'"><i class="fas fa-flag-checkered"></i></a>
-                                        </c:if>
-                                        <c:if test="${product.featured == 0}">
-                                            <a title="On" onclick="location.href = 'turnfeatured?action=on&id=${product.productID}'"><i class="fas fa-flag"></i></a>
-                                        </c:if>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Status:</td>
-                                    <td>${product.status ? "Show" : "Hide"}</td>
-                                </tr>                          
-                        </tbody>
-                    </table>
                 </div>
-            </div>
-        </div>
-    </body>
-</html>
+
+                <!-- Edit Product Modal -->
+                <div id="editProductModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form form method="post" action="editProductDetails">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit Product</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <input name="id" value="${product.productID}" readonly>
+                                    <div class="form-group">
+                                        <label>Thumbnail</label>
+                                        <input type="text" name="thumbnail" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <input type="text" name="category" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Product Name</label>
+                                        <input type="text" name="name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Brief Information</label>
+                                        <input type="text" name="briefInformation" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Attached Images</label>
+                                        <input type="text" name="attachedImages" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea name="description" class="form-control" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Quantity</label>
+                                        <input type="number" id="quantity" name="quantity" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="number" id="productPrice" name="price" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sale Price</label>
+                                        <input type="number" id="salePrice" name="salePrice" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Featured</label>
+                                        <select name="featured" class="form-control" required>
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select name="status" class="form-control" required>
+                                            <option value="0">Hide</option>
+                                            <option value="1">Show</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <input type="button" id="saveChangesBtn" class="btn btn-success" value="Save">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </html>
