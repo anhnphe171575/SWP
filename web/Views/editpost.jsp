@@ -85,16 +85,6 @@
                     <textarea name="description">${post.description}</textarea>
                 </div>
 
-                <div class="form-group">
-                    <div>Paginated</div>
-                    <select name="flag" required> 
-                        <option value="1" ${post.flag == 1 ? 'selected' : ''}>Header</option>
-                        <option value="2" ${post.flag == 2 ? 'selected' : ''}>Body</option>
-                        <option value="3" ${post.flag == 3 ? 'selected' : ''}>Footer</option>
-                        <option value="0" ${post.flag == 0 ? 'selected' : ''}>none</option>
-
-                    </select>
-                </div>
 
                 <input type="submit" value="Submit">
             </form>

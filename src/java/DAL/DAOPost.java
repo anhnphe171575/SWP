@@ -46,7 +46,7 @@ public class DAOPost extends DBContext {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.RoleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -300,6 +300,20 @@ public Vector<Post> getPostByCPId(int id) {
             ex.printStackTrace();
         }
     }
+    public void On_OffFeature(int id, int featured) {
+        try {
+            String sql = "UPDATE [dbo].[Post]\n"
+                    + "   SET \n"
+                    + "      [featured] = " + featured + "\n"
+                    + "\n"
+                    + " WHERE postID=" + id;
+
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public Vector<Post> sort(String option) {
         Vector<Post> vector = new Vector<>();
@@ -375,7 +389,7 @@ public Vector<Post> getPostByCPId(int id) {
                     + "           ,[UserID]\n"
                     + "           ,[date_create_by])\n"
                     + "     VALUES\n"
-                    + "           (?,?,?,?,?,?,?,?,?,?)";
+                    + "           (?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, obj.getThumbnail());
@@ -602,10 +616,11 @@ public Vector<Post> getPostByCPId(int id) {
         java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         CategoryProduct cp1 = new CategoryProduct();
         CategoryPost cp = new CategoryPost(1, cp1);
-        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, null, null, "");
+        Role r = new Role(1, "");
+        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "");
         Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", u, date_create_by);
-        daoP.editPost(obj);
-        System.out.println(daoP.getAll());
+        daoP.addPost(obj);
+        
 
 //        String category = "all";
 //        String author = "all";

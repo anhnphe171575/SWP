@@ -215,7 +215,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-between bg-light border">
-                                            <a href="BlogController?service=viewDetail&postID=${b.postID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                            <a href="BlogDetail?postID=${b.postID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
                                         </div>
                                     </div>
                                 </div>

@@ -312,7 +312,7 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>Employees</b></h2>
+                                        <h2>Manage <b>Post</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="PostController" method="post">
@@ -379,7 +379,7 @@
                                             </c:if>
                                             <c:if test="${p.status != '1'}">
 
-                                                <a href="Status?postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
+                                                <a href="Status?service=status&postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
                                             </c:if>
                                             <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                             <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
@@ -430,8 +430,14 @@
                                     <label for="status-select">status:</label>
                                     <select id="status-select" class="form-control" name="status">
                                         <option value="3">ALL</option>
-                                        <c:forEach items="${requestScope.status}" var="s">
-                                            <option value="${s}">${s}</option>
+                                        <c:forEach items="${requestScope.status}" var="p">
+                                            <c:if test="${p == '1'}">
+                                            <option value="${p}">Show</option>
+                                            </c:if>
+                                            <c:if test="${p != '1'}">
+
+                                            <option value="${p}">Hide</option>
+                                            </c:if>
                                         </c:forEach>
                                     </select>
                                 </div>

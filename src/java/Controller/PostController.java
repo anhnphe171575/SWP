@@ -74,17 +74,20 @@ public class PostController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOPost dao = new DAOPost();
+        DAOPost daoP = new DAOPost();
         DAOUser dao1 = new DAOUser();
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
-        Vector<Post> vec1 = dao.getAll();
+        Vector<Post> vec1 = daoP.getAll();
      //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
-        Vector<String> vec2 = dao.getAllNameCategory("select category_name from CategoryProduct group by category_name");
+        Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
+                    Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
+
+                    request.setAttribute("status", vec4);
 
         request.setAttribute("post", vec1);
         request.setAttribute("category", vec2);
@@ -123,7 +126,7 @@ public class PostController extends HttpServlet {
             Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
             Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
             Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
             Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
 
@@ -169,7 +172,7 @@ public class PostController extends HttpServlet {
             Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
             Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
             Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
             Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
 
@@ -190,7 +193,6 @@ public class PostController extends HttpServlet {
             try {
 
                 int category_post_id = Integer.parseInt(category_post_raw);
-                int flag = 0;
 
                 int status = 1;
                 String username = (String) session.getAttribute("username");
@@ -202,8 +204,8 @@ public class PostController extends HttpServlet {
                 Post post = new Post(0, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
                 daoP.addPost(post);
                 doGet(request, response);
-                request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
             } catch (Exception e) {
+                doGet(request, response);
             }
         } else if (service.equals("status")) {
             String postID_raw = request.getParameter("postID");
@@ -216,7 +218,7 @@ public class PostController extends HttpServlet {
                 Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
                 Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
                 Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
                 Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
 
@@ -232,7 +234,7 @@ public class PostController extends HttpServlet {
             Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
             Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
             Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
             Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
 

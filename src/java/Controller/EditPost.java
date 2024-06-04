@@ -97,8 +97,7 @@ public class EditPost extends HttpServlet {
         int status = Integer.parseInt(request.getParameter("status"));
         String brief_information = request.getParameter("brief_information");
         String description = request.getParameter("description");
-       
-          
+        
         String username = (String) session.getAttribute("username");
         User u = daoU.getUserByLogin(username);
         LocalDate localDate = LocalDate.now();
@@ -111,7 +110,7 @@ public class EditPost extends HttpServlet {
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
 
         request.setAttribute("post", vec1);

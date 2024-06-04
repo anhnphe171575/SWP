@@ -51,7 +51,10 @@ public class Status extends HttpServlet {
             throws ServletException, IOException {
         int postID = -1;
         int status = -1;
-       try{
+        int featured = -1;
+        String service = request.getParameter("service");
+        if (service.equals("status")) {
+             try{
            postID = Integer.parseInt(request.getParameter("postID"));
            status = Integer.parseInt(request.getParameter("status"));
        }
@@ -61,6 +64,19 @@ public class Status extends HttpServlet {
          DAOPost db = new DAOPost();
          db.hideShow(postID, status);
          response.sendRedirect("PostController");
+        }else if(service.equals("featured")){
+            try{
+           postID = Integer.parseInt(request.getParameter("postID"));
+           featured = Integer.parseInt(request.getParameter("featured"));
+       }
+       catch(Exception e){
+           response.sendRedirect("PostDetail?service=viewDetail&postID="+postID);
+       }
+         DAOPost db = new DAOPost();
+         db.On_OffFeature(postID, featured);
+           response.sendRedirect("PostDetail?service=viewDetail&postID="+postID);
+        }
+      
     }
 
     /**

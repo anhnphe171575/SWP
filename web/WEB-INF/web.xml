@@ -124,6 +124,10 @@
         <servlet-name>StatusFeedBack</servlet-name>
         <servlet-class>Controller.StatusFeedBack</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogDetail</servlet-name>
+        <servlet-class>Controller.BlogDetail</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -247,5 +251,9 @@
     <servlet-mapping>
         <servlet-name>StatusFeedBack</servlet-name>
         <url-pattern>/StatusFeedBack</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogDetail</servlet-name>
+        <url-pattern>/BlogDetail</url-pattern>
     </servlet-mapping>
 </web-app>

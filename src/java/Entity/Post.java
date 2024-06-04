@@ -115,11 +115,9 @@ public class Post {
         this.date_create_by = date_create_by;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Post{" + "postID=" + postID + ", thumbnail=" + thumbnail + ", title=" + title + ", cp=" + cp + ", featured=" + featured + ", status=" + status + ", brief_information=" + brief_information + ", description=" + description + ", user=" + user + ", date_create_by=" + date_create_by + '}';
+    }
 
-    
-
-    
-    
-    
 }
