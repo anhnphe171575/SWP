@@ -68,7 +68,7 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                
+
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">${sessionScope.cart.size()}</span>
@@ -157,7 +157,7 @@
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
                 <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="">Home</a></p>
+                    <p class="m-0"><a href="HomePage">Home</a></p>
                     <p class="m-0 px-2">-</p>
                     <p class="m-0">Shopping Cart</p>
                 </div>
@@ -199,35 +199,30 @@
 
 
                                     <td class="align-middle">
-                                        <form id="quantityForm" action="CartDetails" method="post">
+                                        <form class="quantityForm" action="CartDetails" method="post">
                                             <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
                                             <input type="hidden" name="pid" value="${l.product.productID}">
                                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-primary btn-minus" data-index="">
+                                                    <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}">
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity"readonly>
+                                                <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity">
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-primary btn-plus" data-index="">
+                                                    <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}">
                                                         <i class="fa fa-plus"></i>
                                                     </button>
+
                                                 </div>
                                             </div>
                                         </form>
                                     </td>
-                                    <c:set value="${total + (l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price) * l.quantity}" var="total"></c:set>
-                                    <td class="align-middle" id="total-${status.index}">
-                                        <c:choose>
-                                            <c:when test="${l.product.sale_price != 0}">
-                                                ${l.product.sale_price * l.quantity}
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${l.product.original_price  * l.quantity}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+                                  
+
+                                        <td class="align-middle" id="total-${status.index}">
+                                        ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
+                                    </td>                              
                             <form action="CartDetails" method="post">
 
                                 <td class="align-middle">
@@ -254,7 +249,7 @@
                         <div class="card-footer border-secondary bg-transparent">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold">$${total}</h5>
+                                <h5 class="font-weight-bold"></h5>
                             </div>
                             <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                         </div>
@@ -346,27 +341,66 @@
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
         <script>
-             document.querySelectorAll('input[type="text"]').forEach(function (checkbox) {
-                 checkbox.addEventListener('change', function () {
-                     document.getElementById('quantityForm').submit();
-                 });
-             });
+//             document.querySelectorAll('input[type="text"]').forEach(function (checkbox) {
+//                 checkbox.addEventListener('change', function () {
+//                     document.getElementById('quantityForm').submit();
+//                 });
+//             });
+$(document).ready(function () {
+    $(".quantityForm").submit(function (event) {
+        // Prevent the form from being submitted in the usual way
+        event.preventDefault();
+
+        // Get the data from the form
+        var formData = $(this).serialize();
+
+        // Send the data using AJAX
+        $.ajax({
+            url: "CartDetails", // The path to the server that will handle the form
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                // Handle the server's response (if necessary)
+                console.log("Form submitted successfully!");
+
+                // Update the quantity and total on the page
+                var quantityInput = $(event.target).find(".quantity-input");
+                var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                var quantity = parseInt(quantityInput.val());
+                var price = parseFloat(priceElement.text());
+                var total = price * quantity;
+                totalElement.text(total);
+
+                // Update the total price displayed on the page
+                var totalPrice = 0;
+                $("td[id^='total-']").each(function() {
+                    totalPrice += parseFloat($(this).text());
+                });
+                $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+            },
+            error: function () {
+                console.error("Error when submitting the form!");
+            }
+        });
+    });
+});
 
 
         </script>
         <script type="text/javascript">
-    window.onload = function() {
-        <c:if test="${not empty requestScope.scroll}">
-            var searchboxElement = document.getElementById("ListPro");
-            if (searchboxElement) {
-                searchboxElement.scrollIntoView({
-                    behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
-                    block: 'start' // Chỉ định vị trí cuộn tới của phần tử
-                });
-            }
-        </c:if>
-    };
-</script>
+            window.onload = function () {
+            <c:if test="${not empty requestScope.scroll}">
+                var searchboxElement = document.getElementById("ListPro");
+                if (searchboxElement) {
+                    searchboxElement.scrollIntoView({
+                        behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
+                        block: 'start' // Chỉ định vị trí cuộn tới của phần tử
+                    });
+                }
+            </c:if>
+            };
+        </script>
     </body>
 
 </html>
