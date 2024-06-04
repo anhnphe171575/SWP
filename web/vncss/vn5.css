@@ -7,80 +7,121 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : MANH VINH
 */
 /* CSS for edit product form */
-/* CSS for edit product form */
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : May 24, 2024, 4:11:53 AM
-    Author     : MANH VINH
-*/
-/* CSS for edit product form */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 185vh;
 }
 
-.container {
-    width: 80%;
-    max-width: 800px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+.modal-dialog {
+    max-width: 600px;
+    margin: 1.75rem auto;
+}
+
+.modal-content {
     padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-h2 {
-    text-align: center;
-    color: #435d7d;
-    margin-bottom: 20px;
+.modal-header, .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.close {
+    font-size: 1.5rem;
+    color: #000;
+    text-shadow: none;
+    opacity: 0.5;
+    background: none;
+    border: none;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
     margin-bottom: 15px;
 }
 
-.form-group div {
+.form-group label {
     margin-bottom: 5px;
+    display: block;
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="date"],
-textarea,
-select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+.form-control {
     width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
-textarea {
-    resize: vertical;
-}
-
-input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
+.btn {
+    padding: 10px 15px;
     border: none;
-    padding: 10px 20px;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
-    margin-top: 20px;
-    width: 100%;
 }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
+.btn-default {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* CSS for modal footer and buttons */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.back-btn {
+    background-color: #f8f9fa;
+    color: #000;
+    border: 1px solid #ced4da;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.back-btn:hover {
+    background-color: #e2e6ea;
+    color: #000;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: 1px solid #28a745;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
 }

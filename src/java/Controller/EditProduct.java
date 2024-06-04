@@ -79,7 +79,6 @@ public class EditProduct extends HttpServlet {
         DAOProduct d = new DAOProduct();
         int id = Integer.parseInt(request.getParameter("productID"));
         String productName = request.getParameter("productName");
-        float price = Float.parseFloat(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         int year = Integer.parseInt(request.getParameter("year"));
         int category = Integer.parseInt(request.getParameter("category"));
@@ -94,16 +93,15 @@ public class EditProduct extends HttpServlet {
         boolean status = Boolean.parseBoolean(request.getParameter("status"));
         Date formattedDate = formatDate(updateDate);
         if (status == true) {
-            d.updateProduct(id, productName, price, quantity, year, category,
+            d.updateProduct(id, productName, quantity, year, category,
                     description, featured, thumbnail, briefInfo, originalPrice, salePrice,
                     formattedDate, brand, true);
         } else {
-            d.updateProduct(id, productName, price, quantity, year, category,
+            d.updateProduct(id, productName, quantity, year, category,
                     description, featured, thumbnail, briefInfo, originalPrice, salePrice,
                     formattedDate, brand, false);
         }
         request.setAttribute("msg", "Edit successfully!");
-        request.setAttribute("list", d.getProduct());
         request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
     }
 

@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -509,7 +511,7 @@ public class DAOProduct extends DBContext {
         return productList;
     }
 
-    public void updateProduct(int productID, String product_name, float price,
+    public void updateProduct(int productID, String product_name,
             int quantity, int year, int category_productID, String product_description, int featured, String thumbnail,
             String brief_information, float original_price, float sale_price, Date update_date, String brand, Boolean status) {
         try {
@@ -840,8 +842,24 @@ public class DAOProduct extends DBContext {
         }
     }
 
+    public Date formatDate(String dob) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = dateFormat.parse(dob);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        System.out.println(p.getProductByID(1));
+        try {
+            String dob = "2024-06-01"; // String representing the date of birth
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define the date format
+            Date date = dateFormat.parse(dob);
+            p.updateProduct(1, "Fiction Book 1.2", 50, 2024, 1, "A thrilling fiction book.", 0, "https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_22913.jpg", "A great fiction book.", 25.99f, 19.99f, date, "Brand A", true);
+        } catch (Exception e) {
+        }
     }
 }
