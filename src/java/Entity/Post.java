@@ -19,11 +19,10 @@ public class Post {
     private int status;
     private String brief_information;
     private String description;
-    private int flag;
     private User user;
     private Date date_create_by;
 
-    public Post(int postID, String thumbnail, String title, CategoryPost cp, int featured, int status, String brief_information, String description, int flag, User user, Date date_create_by) {
+    public Post(int postID, String thumbnail, String title, CategoryPost cp, int featured, int status, String brief_information, String description, User user, Date date_create_by) {
         this.postID = postID;
         this.thumbnail = thumbnail;
         this.title = title;
@@ -32,7 +31,6 @@ public class Post {
         this.status = status;
         this.brief_information = brief_information;
         this.description = description;
-        this.flag = flag;
         this.user = user;
         this.date_create_by = date_create_by;
     }
@@ -101,14 +99,6 @@ public class Post {
         this.description = description;
     }
 
-    public int getFlag() {
-        return flag;
-    }
-
-    public void setFlag(int flag) {
-        this.flag = flag;
-    }
-
     public User getUser() {
         return user;
     }
@@ -125,10 +115,7 @@ public class Post {
         this.date_create_by = date_create_by;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" + "postID=" + postID + ", thumbnail=" + thumbnail + ", title=" + title + ", cp=" + cp + ", featured=" + featured + ", status=" + status + ", brief_information=" + brief_information + ", description=" + description + ", flag=" + flag + ", user=" + user + ", date_create_by=" + date_create_by + '}';
-    }
+    
 
     
 

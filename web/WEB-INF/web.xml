@@ -116,6 +116,14 @@
         <servlet-name>AddToCart</servlet-name>
         <servlet-class>Controller.AddToCart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FeedBackList</servlet-name>
+        <servlet-class>Controller.FeedBackList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatusFeedBack</servlet-name>
+        <servlet-class>Controller.StatusFeedBack</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -231,5 +239,13 @@
     <servlet-mapping>
         <servlet-name>AddToCart</servlet-name>
         <url-pattern>/AddToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedBackList</servlet-name>
+        <url-pattern>/FeedBackList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatusFeedBack</servlet-name>
+        <url-pattern>/StatusFeedBack</url-pattern>
     </servlet-mapping>
 </web-app>

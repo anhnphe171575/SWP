@@ -89,7 +89,6 @@ public class PostController extends HttpServlet {
         request.setAttribute("post", vec1);
         request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);
-     //   request.setAttribute("status", vec4);
         request.setAttribute("category_product", vec5);
         request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
     }
@@ -200,7 +199,7 @@ public class PostController extends HttpServlet {
                 Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 int featured = Integer.parseInt(featured_raw);
                 CategoryPost cp = new CategoryPost(category_post_id, daoCPR.getCategoryProductbyID(category_post_id));
-                Post post = new Post(0, thumbnail, title, cp, featured, status, brief_information, description, flag, u, date_create_by);
+                Post post = new Post(0, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
                 daoP.addPost(post);
                 doGet(request, response);
                 request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);

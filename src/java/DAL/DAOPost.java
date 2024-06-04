@@ -43,7 +43,7 @@ public class DAOPost extends DBContext {
         Post p = null;
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -63,7 +63,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
             }
         } catch (Exception ex) {
 
@@ -76,7 +76,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                                p.featured,p.status,p.brief_information,\n"
-                + "                                 p.description,p.flag, p.date_create_by,\n"
+                + "                                 p.description, p.date_create_by,\n"
                 + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "                				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
@@ -96,7 +96,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -115,7 +115,7 @@ public class DAOPost extends DBContext {
                     + "      ,[status] = ?\n"
                     + "      ,[brief_information] = ?\n"
                     + "      ,[description] = ?\n"
-                    + "      ,[flag] = ?,[date_create_by] = ?\n"
+                    + ",[date_create_by] = ?\n"
                     + "\n"
                     + " WHERE postID =?";
 
@@ -128,9 +128,9 @@ public class DAOPost extends DBContext {
             pre.setInt(5, obj.getStatus());
             pre.setString(6, obj.getBrief_information());
             pre.setString(7, obj.getDescription());
-            pre.setInt(8, obj.getFlag());
-            pre.setDate(9, sqlDate);
-            pre.setInt(10, obj.getPostID());
+       
+            pre.setDate(8, sqlDate);
+            pre.setInt(9, obj.getPostID());
 
             pre.executeUpdate();
         } catch (Exception e) {
@@ -146,7 +146,7 @@ public class DAOPost extends DBContext {
                 + ")"
                 + "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -166,7 +166,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -180,7 +180,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -200,7 +200,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -229,7 +229,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -273,7 +273,7 @@ public class DAOPost extends DBContext {
                         rs.getInt("status"),
                         rs.getString("brief_information"),
                         rs.getString("description"),
-                        rs.getInt("flag"),
+                       
                         u,
                         rs.getDate("date_create_by"));
                 vector.add(p);
@@ -295,7 +295,6 @@ public class DAOPost extends DBContext {
                     + "           ,[status]\n"
                     + "           ,[brief_information]\n"
                     + "           ,[description]\n"
-                    + "           ,[flag]\n"
                     + "           ,[UserID]\n"
                     + "           ,[date_create_by])\n"
                     + "     VALUES\n"
@@ -309,12 +308,12 @@ public class DAOPost extends DBContext {
             pre.setInt(5, obj.getStatus());
             pre.setString(6, obj.getBrief_information());
             pre.setString(7, obj.getDescription());
-            pre.setInt(8, obj.getFlag());
-            pre.setInt(9, obj.getUser().getUserID());
+    
+            pre.setInt(8, obj.getUser().getUserID());
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(obj.getDate_create_by());
 
-            pre.setDate(10, Date.valueOf(date1));
+            pre.setDate(9, Date.valueOf(date1));
 
             pre.executeUpdate();
         } catch (SQLException ex) {
@@ -354,7 +353,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -374,7 +373,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -389,7 +388,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -398,12 +397,8 @@ public class DAOPost extends DBContext {
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
                 + "                inner join [User] u on p.UserID = u.UserID " + all;
-//                + "WHERE p.Status = ? \n"
-//                + "AND (u.first_name + ' ' + u.last_name) = ?\n"
-//                + "and cpr.category_name = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-//            pre.setInt(1, status);
             int i = 1;
             for (Map.Entry<String, String> item : aa1.entrySet()) {
                 if (item.getKey().equals("status")) {
@@ -423,7 +418,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -437,7 +432,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -457,7 +452,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -471,7 +466,7 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -491,7 +486,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
