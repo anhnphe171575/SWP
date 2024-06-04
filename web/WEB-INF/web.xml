@@ -109,12 +109,20 @@
         <servlet-class>Controller.CartDetails</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>TurnFeatured</servlet-name>
-        <servlet-class>Controller.TurnFeatured</servlet-class>
+        <servlet-name>MKTDashboard</servlet-name>
+        <servlet-class>Controller.MKTDashboard</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>EditProductDetails</servlet-name>
-        <servlet-class>Controller.EditProductDetails</servlet-class>
+        <servlet-name>AddToCart</servlet-name>
+        <servlet-class>Controller.AddToCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedBackList</servlet-name>
+        <servlet-class>Controller.FeedBackList</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatusFeedBack</servlet-name>
+        <servlet-class>Controller.StatusFeedBack</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
@@ -225,11 +233,19 @@
         <url-pattern>/CartDetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>TurnFeatured</servlet-name>
-        <url-pattern>/turnfeatured</url-pattern>
+        <servlet-name>MKTDashboard</servlet-name>
+        <url-pattern>/MKTDashboard</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>EditProductDetails</servlet-name>
-        <url-pattern>/editProductDetails</url-pattern>
+        <servlet-name>AddToCart</servlet-name>
+        <url-pattern>/AddToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedBackList</servlet-name>
+        <url-pattern>/FeedBackList</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatusFeedBack</servlet-name>
+        <url-pattern>/StatusFeedBack</url-pattern>
     </servlet-mapping>
 </web-app>

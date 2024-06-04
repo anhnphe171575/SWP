@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.util.Stack;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
+import Entity.Role;
 import Entity.Security;
 import java.sql.Statement;
 
@@ -47,6 +48,7 @@ public class DAOUser extends DBContext {
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                   Security se = new Security(rs.getInt("securityID"), "");
+                  Role role = new Role(rs.getInt("RoleID"), "");
                  u = new User(rs.getInt("UserID"),
                          rs.getString("first_name"),
                          rs.getString("last_name"),
@@ -58,7 +60,7 @@ public class DAOUser extends DBContext {
                         rs.getDate("dob"),
                          rs.getBoolean("gender"),
                          rs.getInt("status"),
-                         rs.getInt("role"),
+                         role,
                         se,
                          rs.getString("securityAnswer"));
             }
@@ -83,14 +85,17 @@ public class DAOUser extends DBContext {
         public User getUserByLogin(String username) {
         User u = null;
         String sql = "select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.role,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-                + "inner join SecurityQuestion s on u.securityID=s.securityID where username =?";
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "inner join SecurityQuestion s on u.securityID=s.securityID"
+                + "inner join [Role] r on r.RoleID=u.RoleID"
+                + " where username =?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                Role role = new Role(rs.getInt("RoleID"), "");
                 u = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -102,7 +107,7 @@ public class DAOUser extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getInt("status"),
-                        rs.getInt("role"),
+                        role,
                         sq,
                         rs.getString("securityAnswer"));
             }
@@ -118,6 +123,7 @@ public class DAOUser extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
+                Role role = new Role(rs.getInt("RoleID"), "");
                 User obj = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -129,7 +135,7 @@ public class DAOUser extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getInt("status"),
-                        rs.getInt("role"),
+                        role,
                         se,
                         rs.getString("securityAnswer"));
                 vector.add(obj);
@@ -143,7 +149,6 @@ public class DAOUser extends DBContext {
 
     public static void main(String[] args) {
         DAOUser dao = new DAOUser();
-        boolean check = dao.login("user", "123");
-        System.out.println(check);
+        System.out.println(dao.getUser("select * from [User]"));
     }
 }

@@ -103,20 +103,21 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products" name="search">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
                     </div>
+                    <input type="hidden" name="service" value="search">
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
 
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
             </div>
         </div>
@@ -206,8 +207,8 @@
                     <p class="m-0"><a href="HomePage">Home</a></p>
                     <p class="m-0 px-2">-</p>
                     <p class="m-0" ><a href="ProductsListPublic">Products</a></p>
-                     <p class="m-0 px-2">-</p>
-                      <p class="m-0">Product Details</p>
+                    <p class="m-0 px-2">-</p>
+                    <p class="m-0">Product Details</p>
                 </div>
             </div>
         </div>
@@ -227,12 +228,8 @@
                 <div class="col-lg-7 pb-5">
                     <h3 class="font-weight-semi-bold">${p.product_name}</h3>
                     <div class="d-flex mb-3">
-                        <div class="text-primary mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star-half-alt"></small>
-                            <small class="far fa-star"></small>
+                        <div class="star-rating1">
+                            
                         </div>
                         <small class="pt-1">(${requestScope.qreview} Reviews)</small>
                     </div>
@@ -260,7 +257,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                        <button class="btn btn-primary px-3" onclick="location.href = 'AddToCart?pid=${p.productID}'"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                     </div>
 
                 </div>
@@ -275,7 +272,7 @@
                         <div class="tab-pane fade" id="tab-pane-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h4 class="mb-4">1 review for ${p.product_name}</h4>
+                                    <h4 class="mb-4">Review for ${p.product_name}</h4>
                                     <c:forEach items="${requestScope.feedback}" var="fb">
                                         <div class="media mb-4">
                                             <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">

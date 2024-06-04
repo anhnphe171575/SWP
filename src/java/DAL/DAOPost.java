@@ -22,6 +22,7 @@ import java.util.Stack;
 import java.util.TreeMap;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
+import Entity.Role;
 import Entity.Security;
 import Entity.User;
 
@@ -30,11 +31,20 @@ import Entity.User;
  * @author admin
  */
 public class DAOPost extends DBContext {
-     public Post getPostById(int id) {
+
+    public Vector<Post> getListByPage(Vector<Post> list, int start, int end) {
+        Vector<Post> arr = new Vector<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
+
+    public Post getPostById(int id) {
         Post p = null;
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -48,65 +58,107 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
+                Role role = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), role, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
             }
         } catch (Exception ex) {
 
         }
         return p;
-    } 
-      public Vector<Post> getPostByCPname(String name) {
+    }
+
+    public Vector<Post> getPostByCPname(String name) {
 
         Vector<Post> vector = new Vector<>();
-        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n" +
-"                                p.featured,p.status,p.brief_information,\n" +
-"                                 p.description,p.flag, p.date_create_by,\n" +
-"                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n" +
-"                				 cp.category_postID,cp.category_productID,\n" +
-"                				 cpr.category_productID,cpr.category_name,cpr.category_description\n" +
-"                				 from Post p \n" +
-"                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n" +
-"                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n" +
-"                                inner join [User] u on p.UserID = u.UserID where cpr.category_name='"+ name+"'";
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                                p.featured,p.status,p.brief_information,\n"
+                + "                                 p.description, p.date_create_by,\n"
+                + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "                				 cp.category_postID,cp.category_productID,\n"
+                + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "                				 from Post p \n"
+                + "                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                                inner join [User] u on p.UserID = u.UserID where cpr.category_name='" + name + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
+                                Role r = new Role(rs.getInt("RoleID"), "");
+
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return vector;
-    }public void editPost(Post obj) {
-        String sql = "UPDATE [dbo].[Post]\n"
-                + "   SET [thumbnail] =?\n"
-                + "      ,[title] = ?\n"
-                + "      ,[category_postID] = ?\n"
-                + "      ,[featured] = ?\n"
-                + "      ,[status] = ?\n"
-                + "      ,[brief_information] = ?\n"
-                + "      ,[description] = ?\n"
-                + "      ,[flag] = ?\n"
-                + "\n"
-                + " WHERE postID =?";
+    }
+public Vector<Post> getPostByCPId(int id) {
 
-        try (PreparedStatement pre = conn.prepareStatement(sql)) {
+        Vector<Post> vector = new Vector<>();
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                                p.featured,p.status,p.brief_information,\n"
+                + "                                 p.description,p.flag, p.date_create_by,\n"
+                + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "                				 cp.category_postID,cp.category_productID,\n"
+                + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "                				 from Post p \n"
+                + "                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                                inner join [User] u on p.UserID = u.UserID where cpr.category_productID='" + id + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                                Role r = new Role(rs.getInt("RoleID"), "");
+
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return vector;
+    }
+    public void editPost(Post obj) {
+        try {
+            String sql = "UPDATE [dbo].[Post]\n"
+                    + "   SET [thumbnail] =?\n"
+                    + "      ,[title] = ?\n"
+                    + "      ,[category_postID] = ?\n"
+                    + "      ,[featured] = ?\n"
+                    + "      ,[status] = ?\n"
+                    + "      ,[brief_information] = ?\n"
+                    + "      ,[description] = ?\n"
+                    + ",[date_create_by] = ?\n"
+                    + "\n"
+                    + " WHERE postID =?";
+
+            PreparedStatement pre = conn.prepareStatement(sql);
+            java.sql.Date sqlDate = new java.sql.Date(obj.getDate_create_by().getTime());
             pre.setString(1, obj.getThumbnail());
             pre.setString(2, obj.getTitle());
             pre.setInt(3, obj.getCp().getCategory_postID());
@@ -114,7 +166,8 @@ public class DAOPost extends DBContext {
             pre.setInt(5, obj.getStatus());
             pre.setString(6, obj.getBrief_information());
             pre.setString(7, obj.getDescription());
-            pre.setInt(8, obj.getFlag());
+       
+            pre.setDate(8, sqlDate);
             pre.setInt(9, obj.getPostID());
 
             pre.executeUpdate();
@@ -122,6 +175,7 @@ public class DAOPost extends DBContext {
             System.out.println(e);
         }
     }
+
     public Vector<Post> getLastBlog() {
         Vector<Post> vector = new Vector<>();
         String sql = "WITH LatestDate AS (\n"
@@ -130,9 +184,9 @@ public class DAOPost extends DBContext {
                 + ")"
                 + "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -144,17 +198,53 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
+                                Role r = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
 
+        }
+        return vector;
+
+    }
+    public Vector<Post> getPostBySearchAndid(String title, int id) {
+        Vector<Post> vector = new Vector<>();
+        String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
+                + "                p.featured,p.status,p.brief_information,\n"
+                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 cp.category_postID,cp.category_productID,\n"
+                + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
+                + "				 from Post p \n"
+                + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
+                + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
+                + "                inner join [User] u on p.UserID = u.UserID WHERE p.title like '%" + title + "%' and cpr.category_productID ="+id ;
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Security se = new Security(rs.getInt("securityID"), "");
+                                Role r = new Role(rs.getInt("RoleID"), "");
+
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
+                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                        rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
+                Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
+                vector.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
         return vector;
 
@@ -164,9 +254,9 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -178,28 +268,31 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
+                                Role r = new Role(rs.getInt("RoleID"), "");
+
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
-
+          ex.printStackTrace();
         }
         return vector;
 
     }
- public void hideShow(int id, int status) {
+
+    public void hideShow(int id, int status) {
         try {
             String sql = "UPDATE [dbo].[Post]\n"
                     + "   SET \n"
-                    + "      [status] = "+status+"\n"
+                    + "      [status] = " + status + "\n"
                     + "\n"
-                    + " WHERE postID="+id;
+                    + " WHERE postID=" + id;
 
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.executeUpdate();
@@ -207,13 +300,14 @@ public class DAOPost extends DBContext {
             ex.printStackTrace();
         }
     }
+
     public Vector<Post> sort(String option) {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -228,9 +322,10 @@ public class DAOPost extends DBContext {
             while (rs.next()) {
                 Security sq = new Security(rs.getInt("securityID"),
                         null);
+                                Role r = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"),
                         rs.getString("category_name"),
-                        rs.getString("category_description"),"");
+                        rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -242,7 +337,7 @@ public class DAOPost extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getInt("status"),
-                        rs.getInt("role"),
+                        r,
                         sq,
                         rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"),
@@ -255,7 +350,7 @@ public class DAOPost extends DBContext {
                         rs.getInt("status"),
                         rs.getString("brief_information"),
                         rs.getString("description"),
-                        rs.getInt("flag"),
+                       
                         u,
                         rs.getDate("date_create_by"));
                 vector.add(p);
@@ -277,7 +372,6 @@ public class DAOPost extends DBContext {
                     + "           ,[status]\n"
                     + "           ,[brief_information]\n"
                     + "           ,[description]\n"
-                    + "           ,[flag]\n"
                     + "           ,[UserID]\n"
                     + "           ,[date_create_by])\n"
                     + "     VALUES\n"
@@ -291,12 +385,12 @@ public class DAOPost extends DBContext {
             pre.setInt(5, obj.getStatus());
             pre.setString(6, obj.getBrief_information());
             pre.setString(7, obj.getDescription());
-            pre.setInt(8, obj.getFlag());
-            pre.setInt(9, obj.getUser().getUserID());
+    
+            pre.setInt(8, obj.getUser().getUserID());
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(obj.getDate_create_by());
 
-            pre.setDate(10, Date.valueOf(date1));
+            pre.setDate(9, Date.valueOf(date1));
 
             pre.executeUpdate();
         } catch (SQLException ex) {
@@ -336,9 +430,9 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -350,13 +444,15 @@ public class DAOPost extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security();
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
+                                Role r = new Role(rs.getInt("RoleID"), "");
+
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -366,26 +462,22 @@ public class DAOPost extends DBContext {
 
     }
 
-    public Vector<Post> getAll1(Map <String, String> aa1, String all) {
+    public Vector<Post> getAll1(Map<String, String> aa1, String all) {
 
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
                 + "                inner join [User] u on p.UserID = u.UserID " + all;
-//                + "WHERE p.Status = ? \n"
-//                + "AND (u.first_name + ' ' + u.last_name) = ?\n"
-//                + "and cpr.category_name = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-//            pre.setInt(1, status);
             int i = 1;
             for (Map.Entry<String, String> item : aa1.entrySet()) {
                 if (item.getKey().equals("status")) {
@@ -399,13 +491,14 @@ public class DAOPost extends DBContext {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Security se = new Security();
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
+                Role r = new Role(rs.getInt("RoleID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"),r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -419,9 +512,9 @@ public class DAOPost extends DBContext {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -432,29 +525,31 @@ public class DAOPost extends DBContext {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                Security se = new Security(rs.getInt("securityID"),"");
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
+                Security se = new Security(rs.getInt("securityID"), "");
+                Role r = new Role(rs.getInt("RoleID"), "");
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"),  u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
-
+            System.out.println(ex);
         }
         return vector;
     }
+
     public Vector<Post> HotPost() {
 
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.role,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -465,14 +560,16 @@ public class DAOPost extends DBContext {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                Security se = new Security(rs.getInt("securityID"),"");
-                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"),"");
+                Security se = new Security(rs.getInt("securityID"), "");
+                Role r = new Role(rs.getInt("RoleID"), "");
+
+                CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), rs.getInt("role"), se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
-                        rs.getString("description"), rs.getInt("flag"), u, rs.getDate("date_create_by"));
+                        rs.getString("description"), u, rs.getDate("date_create_by"));
                 vector.add(p);
             }
         } catch (Exception ex) {
@@ -490,7 +587,7 @@ public class DAOPost extends DBContext {
                 int category_productID = rs.getInt(1);
                 String category_name = rs.getString(2);
                 String category_description = rs.getString(3);
-                CategoryProduct obj = new CategoryProduct(category_productID, category_name, category_description,"");
+                CategoryProduct obj = new CategoryProduct(category_productID, category_name, category_description, "");
                 vector.add(obj);
             }
         } catch (Exception ex) {
@@ -505,19 +602,16 @@ public class DAOPost extends DBContext {
         java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         CategoryProduct cp1 = new CategoryProduct();
         CategoryPost cp = new CategoryPost(1, cp1);
-        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, 0, null, "");
-       Post obj = new Post(0,"aaa","aaa", cp, 1, 1, "aaa", "aaa", 1,u , date_create_by);
-    daoP.addPost(obj);
+        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, null, null, "");
+        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", u, date_create_by);
+        daoP.editPost(obj);
+        System.out.println(daoP.getAll());
 
 //        String category = "all";
 //        String author = "all";
 //        String status_raw = "1";
 //        int status = Integer.parseInt(status_raw);
 //        Map<String, String> aa1 = new LinkedHashMap<>();
-    
-      
-      
-
 // Print entries
 //for (Map.Entry<String, String> item : aa1.entrySet()) {
 //    System.out.println(item.getKey() + " - " + item.getValue());
@@ -554,5 +648,6 @@ public class DAOPost extends DBContext {
 //        }
 //          System.out.println(vector);
 //    }
+    }
 }
-}
+

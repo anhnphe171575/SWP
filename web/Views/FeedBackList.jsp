@@ -268,6 +268,23 @@
             .modal form label {
                 font-weight: normal;
             }
+            .filter-container {
+            margin-bottom: 20px;
+        }
+        .feedback-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        td a {
+    margin-right: 10px; /* Khoảng cách giữa các liên kết */
+    display: inline-block; /* Đảm bảo các thẻ a nằm cùng một hàng */
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+}
+
+.material-icons {
+    font-size: 24px; /* Kích thước biểu tượng */
+}
         </style>
         <script>
             $(document).ready(function () {
@@ -306,16 +323,16 @@
                 <!-- Sidebar -->
             <jsp:include page="sidebar.jsp"></jsp:include>
 
-            <div class="container-xl">
+                <div class="container-xl">
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>Employees</b></h2>
+                                        <h2>Manage <b>FeedBack</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
-                                        <form action="PostController" method="post">
+                                        <form action="FeedBackList" method="post">
                                             <input type="text" name="title"><!-- comment -->
                                             <input type="submit" name="submit" value="Search"><!-- comment -->
                                             <input type="hidden" name="service" value="search">
@@ -323,8 +340,8 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                                        <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
+                                       
+                                      
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal">
                                             <i class="material-icons">&#xe164;</i> <span>Sort</span>         
                                         </a>
@@ -332,6 +349,37 @@
                                 </div>
                             </div>
                         </div>
+                                <form action="FeedBackList" method="post">
+                        <div class="filter-container">
+                            <label for="status-filter">Status:</label>
+                            <select id="status-filter" name="status">
+                                <option value="all">All</option>
+                                <option value="0">Hide</option>
+                                <option value="1">Show</option>
+                            </select>
+
+                            <label for="product-filter">Product:</label>
+                            <select id="product-filter" name="proid">
+                                <option value="all">All</option>
+                                <c:forEach items="${requestScope.product}" var="p">
+                                <option value="${p.productID}">${p.product_name}</option>
+                                </c:forEach>
+                            </select>
+
+                            <label for="star-filter">Rated Star:</label>
+                            <select id="star-filter" name = "star">
+                                <option value="all">All</option>
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                            <input type="hidden" value="filter" name="service">
+                            <input type="submit" value="Filter">
+                        </div>
+                                    
+                                    </form>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -341,17 +389,15 @@
                                             <label for="selectAll"></label>
                                         </span>
                                     </th>
-                                    <th>Post ID</th>
-                                    <th>Thumbnail</th>
-                                    <th>Title</th>
-                                    <th>Category Name</th>
-                                    <th>Author</th>
-                                    <th>Feature</th>
+                                    <th>Customer Name</th>
+                                    <th>Product Name</th>
+                                    <th>Rate Star</th>
                                     <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${requestScope.post}" var="p">
+                                <c:forEach items="${requestScope.list}" var="l">
                                     <tr>
                                         <td>
                                             <span class="custom-checkbox">
@@ -359,30 +405,24 @@
                                                 <label for="checkbox2"></label>
                                             </span>
                                         </td>
-                                        <td>${p.postID}</td>
-                                        <td><img src="${p.thumbnail}" alt="Image"/></td>
-                                        <td>${p.title}</td>
-                                        <td>${p.cp.category_product.category_name}</td>
-                                        <td>${p.user.first_name} ${p.user.last_name}</td>
-                                        <td>
-                                            <c:if test="${p.featured == '1'}">Common</c:if>
-                                            <c:if test="${p.featured != '1'}">No Common</c:if>
-                                            </td>
-                                            <td>
-                                            <c:if test="${p.status == '1'}">Show</c:if>
-                                            <c:if test="${p.status != '1'}">Hide</c:if>
-                                            </td>
-      
-                                            <td>
-                                            <c:if test="${p.status == '1'}">
-                                                <a href="Status?postID=${p.postID}&status=0"  class="fa fa-eye"></a>
-                                            </c:if>
-                                            <c:if test="${p.status != '1'}">
 
-                                                <a href="Status?postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
+
+                                        <td>${l.customer.first_name} ${l.customer.last_name}</td>
+                                        <td>${l.product.product_name}</td>
+                                        <td>${l.rate_star}</td>
+                                        <td>
+                                            <c:if test="${l.status == '1'}">Show</c:if>
+                                            <c:if test="${l.status != '1'}">Hide</c:if> 
+                                        </td>
+                                        <td>
+                                            <c:if test="${l.status == '1'}">
+                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=0"  class="fa fa-eye"></a>
+                                            </c:if>
+                                            <c:if test="${l.status != '1'}">
+
+                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=1" class="fa fa-eye-slash"></a>
                                             </c:if>
                                             <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                            <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
                                             <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
 
                                         </td>
@@ -396,108 +436,14 @@
             </div>
 
             <!-- Filter Modal HTML -->
-            <div id="Filter" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Bộ lọc</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <form action="PostController" method="post">
-                            <div class="modal-body">
-                                <!-- Category Filter -->
-                                <div class="form-group">
-                                    <label for="category-select">category:</label>
-                                    <select id="category-select" class="form-control" name="category">
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.category}" var="c">
-                                            <option value="${c}">${c}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <!-- Author Filter -->
-                                <div class="form-group">
-                                    <label for="author-select">author:</label>
-                                    <select id="author-select" class="form-control" name="author">                               
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.user}" var="u">
-                                            <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <!-- Status Filter -->
-                                <div class="form-group">
-                                    <label for="status-select">status:</label>
-                                    <select id="status-select" class="form-control" name="status">
-                                        <option value="3">ALL</option>
-                                        <c:forEach items="${requestScope.status}" var="s">
-                                            <option value="${s}">${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">OK</button>
-                                <input type="hidden" name="service" value="filter">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            
             <!-- Add Modal HTML -->
-            <div id="Add" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
-                            <div class="modal-header">						
-                                <h4 class="modal-title">New Post</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <div class="form-group">
-                                    <label>title</label>
-                                    <input type="text" class="form-control" name="title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>thumbnail</label>
-                                    <input type="text" class="form-control" name="thumbnail" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Category Post</label>
-                                    <select id="category-select" class="form-control" name="category_post">                                   
-                                        <c:forEach items="${requestScope.category_product}" var="c">
-                                            <option value="${c.category_productID}">${c.category_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>featured</label>
-                                    <input type="text" class="form-control" name="featured" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>brief_information</label>
-                                    <input type="text" class="form-control" name="brief_information" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>description</label>
-                                    <input type="text" class="form-control" name="description" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <input type="submit" class="btn btn-info" value="OK">
-                                <input type="hidden" name="service" value="add">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+           
             <!-- Sort -->
             <div id="Sort" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
+                        <form action="FeedBackList" method="post" >
                             <div class="modal-header">						
                                 <h4 class="modal-title">Sort</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -506,11 +452,10 @@
                                 <div class="form-group">
                                     <label>Option:</label>
                                     <select id="category-select" class="form-control" name="sort">                                   
-                                        <option value="p.title">Title</option>
-                                        <option value="cpr.category_name">Category</option>
-                                        <option value="u.first_name">Author</option>
-                                        <option value="p.featured">Featured</option>
-                                        <option value="p.status">Status</option>
+                                        <option value="c.first_name">Customer Name</option>
+                                        <option value="p.product_name">Product Name</option>
+                                        <option value="f.rate_star">Rate Star</option>
+                                        <option value="f.status">Status</option>
                                     </select>
                                 </div>
                             </div>

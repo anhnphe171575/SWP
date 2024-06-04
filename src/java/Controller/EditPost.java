@@ -97,14 +97,14 @@ public class EditPost extends HttpServlet {
         int status = Integer.parseInt(request.getParameter("status"));
         String brief_information = request.getParameter("brief_information");
         String description = request.getParameter("description");
-        int flag = Integer.parseInt(request.getParameter("flag"));
+       
           
         String username = (String) session.getAttribute("username");
         User u = daoU.getUserByLogin(username);
         LocalDate localDate = LocalDate.now();
         Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         CategoryPost cp = new CategoryPost(category_postID, daoCPR.getCategoryProductbyID(category_postID));
-        Post post = new Post(id, thumbnail, title, cp, featured, status, brief_information, description, flag, u, date_create_by);
+        Post post = new Post(id, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
         daoP.editPost(post);
 
         Vector<Post> vec1 = daoP.getAll();

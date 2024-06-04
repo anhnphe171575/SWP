@@ -28,7 +28,20 @@
 
         <!-- Libraries Stylesheet -->
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
+        <style>
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                color: white;
+                background-color: #BCC6FF;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
     </head>
@@ -42,22 +55,23 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
+                <form action="ProductsListPublic" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products" name = "search">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
                             </span>
                         </div>
                     </div>
+                    <input type="hidden" name="service" value="search">
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
 
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
             </div>
         </div>
@@ -73,11 +87,21 @@
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                        <div class="navbar-nav w-100 overflow-hidden" style="height: auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link" data-toggle="dropdown">Dresses </a>
+                        <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                            <c:forEach items="${requestScope.Cate1}" var="a"> 
+                                <div class="nav-item dropdown"> 
+                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
+                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
+                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
 
-                            </div>
+                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
+
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </c:forEach>                   
                         </div>
                     </nav>
                 </div>
@@ -95,10 +119,9 @@
                                 <a href="ProductsListPublic" class="nav-item nav-link">Shop</a>
 
                                 <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="BlogController" class="dropdown-item">Shopping Cart</a>
-
+                                        <a href="BlogController" class="dropdown-item">Lasted Post</a>
                                     </div>
                                 </div>
                                 <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -134,7 +157,7 @@
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
                 <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="">Home</a></p>
+                    <p class="m-0"><a href="HomePage">Home</a></p>
                     <p class="m-0 px-2">-</p>
                     <p class="m-0">Shopping Cart</p>
                 </div>
@@ -142,10 +165,13 @@
         </div>
         <!-- Page Header End -->
 
-
+        <button class="button" style="margin-left: 7%"onclick="location.href = 'ProductsListPublic'">More Product</button>
+        <div id="ListPro"></div>
         <!-- Cart Start -->
         <div class="container-fluid pt-5">
+
             <div class="row px-xl-5">
+
                 <div class="col-lg-8 table-responsive mb-5">
                     <table class="table table-bordered text-center mb-0">
                         <thead class="bg-secondary text-dark">
@@ -158,7 +184,7 @@
                             </tr>
                         </thead>
                         <tbody class="align-middle">
-                  
+
                             <c:forEach items="${requestScope.list}" var="l" varStatus="status">
                                 <tr>
                                     <td class="align-middle"><img src="${l.product.thumbnail}" alt="" style="width: 50px;">${l.product.product_name}</td>
@@ -170,51 +196,47 @@
                                             <td class="align-middle" id="price-${status.index}">${l.product.original_price}</td>
                                         </c:otherwise>
                                     </c:choose>
-                          
-                         
-                                <td class="align-middle">
-                                       <form id="quantityForm" action="CartDetails" method="post">
-                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                    <div class="input-group quantity mx-auto" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus" data-index="">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity"readonly>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus" data-index="">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+
+
+                                    <td class="align-middle">
+                                        <form class="quantityForm" action="CartDetails" method="post">
+                                            <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                            <input type="hidden" name="pid" value="${l.product.productID}">
+                                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity">
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+
+                                                </div>
+                                            </div>
                                         </form>
-                                </td>
-                            <c:set value="${total + (l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price) * l.quantity}" var="total"></c:set>
-                            <td class="align-middle" id="total-${status.index}">
-                                <c:choose>
-                                    <c:when test="${l.product.sale_price != 0}">
-                                        ${l.product.sale_price * l.quantity}
-                                    </c:when>
-                                    <c:otherwise>
-                                        ${l.product.original_price  * l.quantity}
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
+                                    </td>
+                                  
+
+                                        <td class="align-middle" id="total-${status.index}">
+                                        ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
+                                    </td>                              
                             <form action="CartDetails" method="post">
-                            
-                            <td class="align-middle">
+
+                                <td class="align-middle">
                                     <button class="btn btn-sm btn-primary" type="submit" name="delete" value="delete">
                                         <i class="fa fa-times"></i>
                                     </button>
-                            </td>       
-                            <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                 <input type="hidden" name="cartitemid" value="${l.getCarItemID()}">
-                               </form>
-                                </tr>
-                                
+                                </td>       
+                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                <input type="hidden" name="cartitemid" value="${l.getCarItemID()}">
+                            </form>
+                            </tr>
+
                         </c:forEach>
-                                 
+
                         </tbody>
                     </table>
                 </div>
@@ -227,7 +249,7 @@
                         <div class="card-footer border-secondary bg-transparent">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold">$${total}</h5>
+                                <h5 class="font-weight-bold"></h5>
                             </div>
                             <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                         </div>
@@ -319,13 +341,65 @@
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
         <script>
-            document.querySelectorAll('input[type="text"]').forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    document.getElementById('quantityForm').submit();
+//             document.querySelectorAll('input[type="text"]').forEach(function (checkbox) {
+//                 checkbox.addEventListener('change', function () {
+//                     document.getElementById('quantityForm').submit();
+//                 });
+//             });
+$(document).ready(function () {
+    $(".quantityForm").submit(function (event) {
+        // Prevent the form from being submitted in the usual way
+        event.preventDefault();
+
+        // Get the data from the form
+        var formData = $(this).serialize();
+
+        // Send the data using AJAX
+        $.ajax({
+            url: "CartDetails", // The path to the server that will handle the form
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                // Handle the server's response (if necessary)
+                console.log("Form submitted successfully!");
+
+                // Update the quantity and total on the page
+                var quantityInput = $(event.target).find(".quantity-input");
+                var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                var quantity = parseInt(quantityInput.val());
+                var price = parseFloat(priceElement.text());
+                var total = price * quantity;
+                totalElement.text(total);
+
+                // Update the total price displayed on the page
+                var totalPrice = 0;
+                $("td[id^='total-']").each(function() {
+                    totalPrice += parseFloat($(this).text());
                 });
-            });
+                $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+            },
+            error: function () {
+                console.error("Error when submitting the form!");
+            }
+        });
+    });
+});
 
 
+        </script>
+        <script type="text/javascript">
+            window.onload = function () {
+            <c:if test="${not empty requestScope.scroll}">
+                var searchboxElement = document.getElementById("ListPro");
+                if (searchboxElement) {
+                    searchboxElement.scrollIntoView({
+                        behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
+                        block: 'start' // Chỉ định vị trí cuộn tới của phần tử
+                    });
+                }
+            </c:if>
+            };
         </script>
     </body>
 

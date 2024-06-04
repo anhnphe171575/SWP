@@ -3,18 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+
+
 package Entity;
 
-import java.util.*;
-import java.lang.*;
+/**
+ *
+ * @author admin
+ */
 public class Role {
-    int RoleID;
-    int Role_Name;
+    private int RoleID;
+    private String Role_Name;
 
-    public Role() {
+
+    public Role(){
     }
 
-    public Role(int RoleID, int Role_Name) {
+    public Role(int RoleID, String Role_Name) {
         this.RoleID = RoleID;
         this.Role_Name = Role_Name;
     }
@@ -27,17 +32,15 @@ public class Role {
         this.RoleID = RoleID;
     }
 
-    public int getRole_Name() {
+    public String getRole_Name() {
         return Role_Name;
     }
 
-    public void setRole_Name(int Role_Name) {
+    public void setRole_Name(String Role_Name) {
         this.Role_Name = Role_Name;
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" + "RoleID=" + RoleID + ", Role_Name=" + Role_Name + '}';
     }
     
 }
+
+    
+

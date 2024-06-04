@@ -4,22 +4,20 @@
  */
 package Controller;
 
-import DAL.DAOCart;
-import DAL.DAOCustomer;
+import DAL.DAOFeedback;
+import DAL.DAOPost;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 
 /**
  *
  * @author phuan
  */
-public class LoginCusController extends HttpServlet {
+public class StatusFeedBack extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +36,10 @@ public class LoginCusController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginCusController</title>");            
+            out.println("<title>Servlet StatusFeedBack</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginCusController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StatusFeedBack at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +57,18 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
+      int FeedBackID = -1;
+        int status = -1;
+       try{
+           FeedBackID = Integer.parseInt(request.getParameter("FID"));
+           status = Integer.parseInt(request.getParameter("status"));
+       }
+       catch(Exception e){
+           response.sendRedirect("FeedBackList");
+       }
+         DAOFeedback db = new DAOFeedback();
+         db.hideShow(FeedBackID, status);
+         response.sendRedirect("FeedBackList");
     }
 
     /**
@@ -73,23 +82,7 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomer daoC = new DAOCustomer();
-        HttpSession session = request.getSession();
-        
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        DAOCart db = new DAOCart();
-        boolean check = daoC.loginCus(username, password);
-        int cusid = daoC.getCusByUserName(username).getCustomerID();
-        if (check==true) {
-            session.setAttribute("cus", daoC.getCus(username));
-            session.setAttribute("cart", db.getListCart(cusid));
-            session.setMaxInactiveInterval(5*60);
-            response.sendRedirect("HomePage");
-        }else{
-            request.setAttribute("error", "error");
-            request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
