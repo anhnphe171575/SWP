@@ -361,7 +361,6 @@
                                         <td>${product.status ? "Show" : "Hide"}</td>
                                     </tr>
                                     <tr>
-
                                         <td colspan="2" class="text-right">
                                             <button><a href="productslist">Back To Products List</a></button>
                                             <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
@@ -369,7 +368,6 @@
                                             </button>
                                         </td>
                                     </tr>
-
                                 </c:if>
                             </tbody>
                         </table>
@@ -446,15 +444,14 @@
                                     </select>
                                 </div>
                             </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-success" value="Save Changes">
-                    </div>
-                    </form>
 
+                            <div class="modal-footer">
+                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                <input type="submit" class="btn btn-success" value="Save Changes">
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </body>
-</html>
+        </body>
+    </html>

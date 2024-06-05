@@ -128,6 +128,14 @@
         <servlet-name>BlogDetail</servlet-name>
         <servlet-class>Controller.BlogDetail</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Orderlist</servlet-name>
+        <servlet-class>Controller.Orderlist</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProductDetails</servlet-name>
+        <servlet-class>Controller.EditProductDetails</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -255,5 +263,13 @@
     <servlet-mapping>
         <servlet-name>BlogDetail</servlet-name>
         <url-pattern>/BlogDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Orderlist</servlet-name>
+        <url-pattern>/orderlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProductDetails</servlet-name>
+        <url-pattern>/editProductDetails</url-pattern>
     </servlet-mapping>
 </web-app>
