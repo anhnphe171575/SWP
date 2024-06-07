@@ -96,7 +96,7 @@ public class ProductsListPublic extends HttpServlet {
         } else if (cname != null && !cname.isBlank()) {
             // Assuming you have a method to get products by category name if needed.
             listProduct = db.getProductbyCategoryID(cid_raw);
-            request.setAttribute("cname", cname);
+            request.setAttribute("cid", cid_raw);
         } else if (search != null && !search.isBlank()) {
             listProduct = db.getProductByTitle(search);
             request.setAttribute("search1", search);

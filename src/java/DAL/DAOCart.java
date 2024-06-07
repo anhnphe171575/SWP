@@ -79,6 +79,59 @@ public class DAOCart extends DBContext {
         }
         return list;
     }
+    public CartItems getCartItemsSelect( int cartID, int cartItemID){
+        CartItems ci = null;
+        try {
+            String sql ="select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
+                    + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
+                    + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
+                    + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
+                    + "inner join Cart ca on ci.cartID = ca.cartID\n"
+                    + "inner join Product p on p.productID = ci.productID\n"
+                    + "inner join Customer c on c.customerID = ca.customerID\n"
+                    + "where ci.cartID = ? and ci.cartItemID = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, cartID);
+            stm.setInt(2, cartItemID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                Customer c = new Customer(rs.getInt("customerID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("activity_history"),
+                        null,
+                        rs.getString("securityAnswer"));
+
+                Cart ca = new Cart(rs.getInt("cartID"), c);
+                Product p = new Product(rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("pquantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status"));
+                 ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ci;
+    }
     public Cart checkCart(int cusid){
          Cart c = null;
         try{

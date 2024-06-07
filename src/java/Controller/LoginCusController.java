@@ -83,8 +83,9 @@ public class LoginCusController extends HttpServlet {
         int cusid = daoC.getCusByUserName(username).getCustomerID();
         if (check==true) {
             session.setAttribute("cus", daoC.getCus(username));
+              
             session.setAttribute("cart", db.getListCart(cusid));
-            session.setMaxInactiveInterval(5*60);
+            session.setMaxInactiveInterval(15*60);
             response.sendRedirect("HomePage");
         }else{
             request.setAttribute("error", "error");

@@ -136,6 +136,14 @@
         <servlet-name>EditProductDetails</servlet-name>
         <servlet-class>Controller.EditProductDetails</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CartContact</servlet-name>
+        <servlet-class>Controller.CartContact</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ajaxServlet</servlet-name>
+        <servlet-class>Controller.ajaxServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -271,5 +279,13 @@
     <servlet-mapping>
         <servlet-name>EditProductDetails</servlet-name>
         <url-pattern>/editProductDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartContact</servlet-name>
+        <url-pattern>/CartContact</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ajaxServlet</servlet-name>
+        <url-pattern>/vnpayajax/*</url-pattern>
     </servlet-mapping>
 </web-app>

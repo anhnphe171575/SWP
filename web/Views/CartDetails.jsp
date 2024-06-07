@@ -176,6 +176,7 @@
                     <table class="table table-bordered text-center mb-0">
                         <thead class="bg-secondary text-dark">
                             <tr>
+                                <th></th>
                                 <th>Products</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -183,10 +184,15 @@
                                 <th>Remove</th>
                             </tr>
                         </thead>
+
                         <tbody class="align-middle">
 
                             <c:forEach items="${requestScope.list}" var="l" varStatus="status">
                                 <tr>
+                                    <td class="align-middle">
+                                        <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" checked="">
+                                        <input type="hidden" name="cartid" value="${l.cart.getCartID()}" class="cartid">
+                                    </td>
                                     <td class="align-middle"><img src="${l.product.thumbnail}" alt="" style="width: 50px;">${l.product.product_name}</td>
                                         <c:choose>
                                             <c:when test="${l.product.sale_price != 0}">
@@ -218,9 +224,10 @@
                                             </div>
                                         </form>
                                     </td>
-                                  
-
-                                        <td class="align-middle" id="total-${status.index}">
+                                    <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
+                                    <c:set var="subtotal" value="${itemPrice * l.quantity}" />
+                                    <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
+                                    <td class="align-middle" id="total-${status.index}">
                                         ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
                                     </td>                              
                             <form action="CartDetails" method="post">
@@ -249,12 +256,13 @@
                         <div class="card-footer border-secondary bg-transparent">
                             <div class="d-flex justify-content-between mt-2">
                                 <h5 class="font-weight-bold">Total</h5>
-                                <h5 class="font-weight-bold"></h5>
+                                <h5 class="font-weight-bold">$${totalOrderPrice}</h5>
                             </div>
-                            <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                            <button class="btn btn-block btn-primary my-3 py-3" id="proceedToCheckout">Proceed To Checkout</button>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!-- Cart End -->
@@ -278,8 +286,7 @@
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
+                                
                                 <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
                                 <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
@@ -289,8 +296,7 @@
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
+                                
                                 <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
                                 <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
@@ -341,55 +347,71 @@
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
         <script>
-//             document.querySelectorAll('input[type="text"]').forEach(function (checkbox) {
-//                 checkbox.addEventListener('change', function () {
-//                     document.getElementById('quantityForm').submit();
-//                 });
-//             });
-$(document).ready(function () {
-    $(".quantityForm").submit(function (event) {
-        // Prevent the form from being submitted in the usual way
-        event.preventDefault();
 
-        // Get the data from the form
-        var formData = $(this).serialize();
+            $(document).ready(function () {
+                $(".quantityForm").submit(function (event) {
+                    // Prevent the form from being submitted in the usual way
+                    event.preventDefault();
 
-        // Send the data using AJAX
-        $.ajax({
-            url: "CartDetails", // The path to the server that will handle the form
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                // Handle the server's response (if necessary)
-                console.log("Form submitted successfully!");
+                    // Get the data from the form
+                    var formData = $(this).serialize();
 
-                // Update the quantity and total on the page
-                var quantityInput = $(event.target).find(".quantity-input");
-                var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
-                var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
-                var quantity = parseInt(quantityInput.val());
-                var price = parseFloat(priceElement.text());
-                var total = price * quantity;
-                totalElement.text(total);
+                    // Send the data using AJAX
+                    $.ajax({
+                        url: "CartDetails", // The path to the server that will handle the form
+                        type: "POST",
+                        data: formData,
+                        success: function (response) {
+                            // Handle the server's response (if necessary)
+                            console.log("Form submitted successfully!");
 
-                // Update the total price displayed on the page
-                var totalPrice = 0;
-                $("td[id^='total-']").each(function() {
-                    totalPrice += parseFloat($(this).text());
+                            // Update the quantity and total on the page
+                            var quantityInput = $(event.target).find(".quantity-input");
+                            var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                            var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                            var quantity = parseInt(quantityInput.val());
+                            var price = parseFloat(priceElement.text());
+                            var total = price * quantity;
+                            totalElement.text(total);
+
+                            // Update the total price displayed on the page
+                            var totalPrice = 0;
+                            $("td[id^='total-']").each(function () {
+                                totalPrice += parseFloat($(this).text());
+                            });
+                            $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+                        },
+                        error: function () {
+                            console.error("Error when submitting the form!");
+                        }
+                    });
                 });
-                $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
-            },
-            error: function () {
-                console.error("Error when submitting the form!");
-            }
-        });
-    });
-});
+            });
 
 
         </script>
+
+        <script>
+            document.getElementById("proceedToCheckout").addEventListener("click", function () {
+                // Lấy tất cả các phần tử input có name là "select-item"
+                var carItemIDs = [];
+                var cartIDs = [];
+                var checkboxes = document.querySelectorAll('input[name="select-item"]');
+                checkboxes.forEach(function (checkbox) {
+                    if (checkbox.checked) {
+                        var carItemID = checkbox.value;
+                        var cartID = checkbox.nextElementSibling.value;
+                        carItemIDs.push(carItemID);
+                        cartIDs.push(cartID);
+                    }
+                });
+                var url = "CartContact?carItemIDs=" + encodeURIComponent(carItemIDs.join(',')) + "&cartIDs=" + encodeURIComponent(cartIDs.join(','));
+                window.location.href = url;
+            });
+        </script>
+
         <script type="text/javascript">
-            window.onload = function () {
+            wi        ndow.onload = function () {
             <c:if test="${not empty requestScope.scroll}">
                 var searchboxElement = document.getElementById("ListPro");
                 if (searchboxElement) {
@@ -399,7 +421,9 @@ $(document).ready(function () {
                     });
                 }
             </c:if>
-            };
+            }
+
+            ;
         </script>
     </body>
 
