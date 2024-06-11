@@ -8,7 +8,6 @@ package Entity;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 import java.util.Date;
 
 /**
@@ -16,6 +15,7 @@ import java.util.Date;
  * @author Nguyễn Đăng
  */
 public class Customer {
+
     private int customerID;
     private String first_name;
     private String last_name;
@@ -27,14 +27,14 @@ public class Customer {
     private Date dob;
     private boolean gender;
     private Date activity_history;
-    private String image;
     private Security security;
     private String secutityAnswer;
+    private String image;
 
     public Customer() {
     }
 
-    public Customer(int customerID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, Date activity_history, Security security, String secutityAnswer) {
+    public Customer(int customerID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, Date activity_history, Security security, String secutityAnswer, String image) {
         this.customerID = customerID;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -48,6 +48,7 @@ public class Customer {
         this.activity_history = activity_history;
         this.security = security;
         this.secutityAnswer = secutityAnswer;
+        this.image = image;
     }
 
     public int getCustomerID() {
@@ -152,6 +153,19 @@ public class Customer {
 
     public void setSecutityAnswer(String secutityAnswer) {
         this.secutityAnswer = secutityAnswer;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "customerID=" + customerID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", activity_history=" + activity_history + ", security=" + security + ", secutityAnswer=" + secutityAnswer + ", image=" + image + '}';
     }
 
     

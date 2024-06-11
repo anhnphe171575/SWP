@@ -132,9 +132,15 @@
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <a href="LogOut">Log out</a>
-
+                                          <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                        <div class="dropdown-menu ml-auto py-0">
+                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
+                                        </div>
+                                        <!--<a href="LogOut">Log out</a>-->
+                                        
+                                          </div>
+                                        <a href="LogOut" class="nav-link ">Log out</a>
                                     </div>
 
                                 </c:when>

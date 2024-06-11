@@ -39,7 +39,9 @@ public class DAOReceiver extends DBContext{
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         null,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                      null);
+                      
                       Receiver r = new Receiver(rs.getInt("ReceiverID"), 
                               rs.getString("ReceiverFullName"), 
                               rs.getString("ReceiverMobile"), 
@@ -76,7 +78,8 @@ public class DAOReceiver extends DBContext{
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         null,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                      null);
                        r = new Receiver(rs.getInt("ReceiverID"), 
                               rs.getString("ReceiverFullName"), 
                               rs.getString("ReceiverMobile"), 

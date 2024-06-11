@@ -108,7 +108,8 @@ public class DAOCart extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         null,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),
@@ -178,7 +179,8 @@ public class DAOCart extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         null,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),
@@ -231,7 +233,8 @@ public class DAOCart extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         null,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),

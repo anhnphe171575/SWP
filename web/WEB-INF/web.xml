@@ -152,6 +152,14 @@
         <servlet-name>TurnFeatured</servlet-name>
         <servlet-class>Controller.TurnFeatured</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaleDashboard</servlet-name>
+        <servlet-class>Controller.SaleDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editProfileCustomer</servlet-name>
+        <servlet-class>Controller.editProfileCustomer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -303,5 +311,13 @@
     <servlet-mapping>
         <servlet-name>TurnFeatured</servlet-name>
         <url-pattern>/turnfeatured</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleDashboard</servlet-name>
+        <url-pattern>/SaleDashboardURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProfileCustomer</servlet-name>
+        <url-pattern>/editProfileCustomerURL</url-pattern>
     </servlet-mapping>
 </web-app>
