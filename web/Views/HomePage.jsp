@@ -78,10 +78,10 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-       
+
                 <a href="CartDetails" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    
+
                     <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
             </div>  
@@ -102,19 +102,9 @@
                         <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                             <c:forEach items="${requestScope.Cate1}" var="a"> 
                                 <div class="nav-item dropdown"> 
-                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
-                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-
-                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
-
-                                            </c:if>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-                            </c:forEach>                   
-                        </div>
+                                    <a href="ProductsListPublic?cname=${a.category_name}" class="nav-link" >${a.category_name}</a>
+                                </c:forEach>                   
+                            </div>
                     </nav>
                 </div>
                 <div class="col-lg-9">
@@ -128,6 +118,7 @@
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
                                 <a href="HomePage" class="nav-item nav-link active">Home</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Product</a>
                                 <div class="nav-item dropdown">
                                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                     <div class="dropdown-menu rounded-0 m-0">
@@ -264,7 +255,6 @@
                 <div class="text-center mb-4">
                     <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
                 </div>
-
                 <div class="row px-xl-5 pb-3">
                     <c:forEach items="${requestScope.AllP}"  begin="1" end="8" var="p">
                         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
@@ -273,7 +263,7 @@
                                     <img class="img-fluid w-100" src="${p.thumbnail}" alt="">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3">${p.product_name}</h6>
+                                    <a href="ProductDetailsPublic?pid=${p.productID}"> <h6 class="text-truncate mb-3">${p.product_name}</h6></a>
                                     <div class="d-flex justify-content-center">
                                         <h6>${p.original_price}</h6>
                                         <c:if test="${not empty p.sale_price}">
@@ -295,7 +285,7 @@
 
             </div>
             <div class="bbb">
-                <button id="moreBtn" onclick="location.href = ''" class="btn btn-primary">More</button>
+                <button id="moreBtn" onclick="location.href = 'ProductsListPublic?feature=yes'" class="btn btn-primary">More</button>
             </div>
             <!-- Products End -->
 
@@ -312,14 +302,11 @@
                     <c:forEach items="${requestScope.HotPost}" var="hp"> 
                         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
-
-
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                     <img class="aa" src="${hp.thumbnail}" alt="">
                                 </div>
-
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <a  href="" class="text-truncate mb-3">${hp.title}</a>
+                                    <a href="BlogDetail?postID=${hp.postID}" class="text-truncate mb-3">${hp.title}</a>
                                     <div class="d-flex justify-content-center">
                                         <p>${hp.brief_information}</p><h6 class="text-muted ml-2"><del></del></h6>
                                     </div>

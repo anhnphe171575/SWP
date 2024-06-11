@@ -206,14 +206,14 @@ public class DAOCart extends DBContext {
     public List<CartItems> getListCart(int cusid) {
         List<CartItems> list = new ArrayList<>();
         try {
-            String query = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
-                    + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
-                    + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
-                    + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
-                    + "inner join Cart ca on ci.cartID = ca.cartID\n"
-                    + "inner join Product p on p.productID = ci.productID\n"
-                    + "inner join Customer c on c.customerID = ca.customerID\n"
-                    + "where c.customerID = ?";
+                String query = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
+                        + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
+                        + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
+                        + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
+                        + "inner join Cart ca on ci.cartID = ca.cartID\n"
+                        + "inner join Product p on p.productID = ci.productID\n"
+                        + "inner join Customer c on c.customerID = ca.customerID\n"
+                        + "where c.customerID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, cusid);
             ResultSet rs = stm.executeQuery();

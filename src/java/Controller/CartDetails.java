@@ -60,15 +60,16 @@ public class CartDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession();
-         Customer cus = (Customer) session.getAttribute("cus");
-         DAOCart db = new DAOCart();
-         DAOProduct db1 = new DAOProduct();
-         DAOCategoryProduct db2 = new DAOCategoryProduct();    
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("cus");
+        DAOCart db = new DAOCart();
+        DAOProduct db1 = new DAOProduct();
+        DAOCategoryProduct db2 = new DAOCategoryProduct();    
         session.setAttribute("cart", db.getListCart(cus.getCustomerID()));
         request.setAttribute("Cate1", db2.getCategoryProductProduct());
         request.setAttribute("CategoryB", db1.ListCatogoryAndBrand());
         request.setAttribute("list", db.getListCart(cus.getCustomerID()));
+        request.setAttribute("quantity", db1.CountProductByProduct());
         request.getRequestDispatcher("Views/CartDetails.jsp").forward(request, response);
     }
 

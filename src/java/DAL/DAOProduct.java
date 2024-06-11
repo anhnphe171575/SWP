@@ -176,6 +176,104 @@ public class DAOProduct extends DBContext {
         return p;
     }
 
+    public List<Product> getProductFeatureByTitleByCid(String title, int cid, int feature) {
+        List<Product> p = new ArrayList();
+        try {
+            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ? and featured = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, cid);
+            stm.setInt(2, feature);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product pr = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status")
+                );
+                p.add(pr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
+    public List<Product> getProductFeatureByTitle(String title, int feature) {
+        List<Product> p = new ArrayList();
+        try {
+            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%'  and featured = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, feature);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product pr = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status")
+                );
+                p.add(pr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
+    public List<Product> getProductFeatureByCid(int cid, int feature) {
+        List<Product> p = new ArrayList();
+        try {
+            String query = "SELECT * FROM Product WHERE  category_productID = ? and featured = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, cid);
+            stm.setInt(2, feature);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product pr = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status")
+                );
+                p.add(pr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return p;
+    }
+
     public List<Product> getProductByBrief(String Brief) {
         List<Product> p = new ArrayList<>();
         try {
@@ -626,6 +724,23 @@ public class DAOProduct extends DBContext {
 
     }
 
+    public HashMap<Integer, Integer> CountProductByProduct() {
+        HashMap<Integer, Integer> product = new HashMap<>();
+        try {
+            String query = "select p.quantity , p.productID  from Product p\n"
+                    + "group by p.productID,p.quantity";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                product.put(rs.getInt("productID"), rs.getInt("quantity"));
+            }
+        } catch (SQLException e) {
+            java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return product;
+
+    }
+
     public HashMap<String, String> ImageByCategory() {
         HashMap<String, String> image = new HashMap<>();
         try {
@@ -854,12 +969,13 @@ public class DAOProduct extends DBContext {
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        try {
-            String dob = "2024-06-01"; // String representing the date of birth
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define the date format
-            Date date = dateFormat.parse(dob);
-            p.updateProduct(1, "Fiction Book 1.2", 50, 2024, 1, "A thrilling fiction book.", 0, "https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_22913.jpg", "A great fiction book.", 25.99f, 19.99f, date, "Brand A", true);
-        } catch (Exception e) {
-        }
+//        try {
+//            String dob = "2024-06-01"; // String representing the date of birth
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Define the date format
+//            Date date = dateFormat.parse(dob);
+//            p.updateProduct(1, "Fiction Book 1.2", 50, 2024, 1, "A thrilling fiction book.", 0, "https://cdn0.fahasa.com/media/catalog/product/i/m/image_195509_1_22913.jpg", "A great fiction book.", 25.99f, 19.99f, date, "Brand A", true);
+//        } catch (Exception e) {
+//        }
+        System.out.println(p.getProductFeature());
     }
 }

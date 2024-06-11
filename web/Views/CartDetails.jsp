@@ -77,7 +77,6 @@
         </div>
         <!-- Topbar End -->
 
-
         <!-- Navbar Start -->
         <div class="container-fluid">
             <div class="row border-top px-xl-5">
@@ -180,6 +179,7 @@
                                 <th>Products</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Available</th>
                                 <th>Total</th>
                                 <th>Remove</th>
                             </tr>
@@ -203,27 +203,34 @@
                                         </c:otherwise>
                                     </c:choose>
 
+                                    <c:forEach items="${requestScope.quantity}" var="q">
+                                        <c:if test="${q.key == l.product.productID}">
+                                            <td class="align-middle">
+                                                <form class="quantityForm" action="CartDetails" method="post">
+                                                    <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                                    <input type="hidden" name="pid" value="${l.product.productID}">
+                                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}">
+                                                                <i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity" max="${q.value}" min = "1">
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}">
+                                                                <i class="fa fa-plus"></i>
+                                                            </button>
 
-                                    <td class="align-middle">
-                                        <form class="quantityForm" action="CartDetails" method="post">
-                                            <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                            <input type="hidden" name="pid" value="${l.product.productID}">
-                                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </td>                                
 
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </td>
+                                            <td class="align-middle">
+                                                ${q.value}
+                                            </td>
+                                        </c:if>
+                                    </c:forEach>
                                     <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
                                     <c:set var="subtotal" value="${itemPrice * l.quantity}" />
                                     <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
@@ -286,7 +293,7 @@
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                
+
                                 <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
                                 <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
@@ -296,7 +303,7 @@
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                
+
                                 <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
                                 <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
@@ -346,49 +353,103 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
-        <script>
-
-            $(document).ready(function () {
-                $(".quantityForm").submit(function (event) {
-                    // Prevent the form from being submitted in the usual way
-                    event.preventDefault();
-
-                    // Get the data from the form
-                    var formData = $(this).serialize();
-
-                    // Send the data using AJAX
-                    $.ajax({
-                        url: "CartDetails", // The path to the server that will handle the form
-                        type: "POST",
-                        data: formData,
-                        success: function (response) {
-                            // Handle the server's response (if necessary)
-                            console.log("Form submitted successfully!");
-
-                            // Update the quantity and total on the page
-                            var quantityInput = $(event.target).find(".quantity-input");
-                            var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
-                            var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
-                            var quantity = parseInt(quantityInput.val());
-                            var price = parseFloat(priceElement.text());
-                            var total = price * quantity;
-                            totalElement.text(total);
-
-                            // Update the total price displayed on the page
-                            var totalPrice = 0;
-                            $("td[id^='total-']").each(function () {
-                                totalPrice += parseFloat($(this).text());
+        <!--        <script>
+        
+                    $(document).ready(function () {
+                        $(".quantityForm").submit(function (event) {
+                            // Prevent the form from being submitted in the usual way
+                            event.preventDefault();
+        
+                            // Get the data from the form
+                            var formData = $(this).serialize();
+        
+                            // Send the data using AJAX
+                            $.ajax({
+                                url: "CartDetails", // The path to the server that will handle the form
+                                type: "POST",
+                                data: formData,
+                                success: function (response) {
+                                    // Handle the server's response (if necessary)
+                                    console.log("Form submitted successfully!");
+        
+                                    // Update the quantity and total on the page
+                                    var quantityInput = $(event.target).find(".quantity-input");
+                                    var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                                    var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                                    var quantity = parseInt(quantityInput.val());
+                                    var price = parseFloat(priceElement.text());
+                                    var total = price * quantity;
+                                    totalElement.text(total);
+        
+                                    // Update the total price displayed on the page
+                                    var totalPrice = 0;
+                                    $("td[id^='total-']").each(function () {
+                                        totalPrice += parseFloat($(this).text());
+                                    });
+                                    $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+                                },
+                                error: function () {
+                                    console.error("Error when submitting the form!");
+                                }
                             });
-                            $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
-                        },
-                        error: function () {
-                            console.error("Error when submitting the form!");
-                        }
+                        });
                     });
-                });
-            });
+        
+        
+                </script>-->
+        <script>
+          $(document).ready(function () {
+              $(".quantityForm").submit(function (event) {
+                  // Prevent the form from being submitted in the usual way
+                  event.preventDefault();
 
+                  // Get the quantity input and its max value
+                  var quantityInput = $(this).find(".quantity-input");
+                  var quantity = parseInt(quantityInput.val());
+                  var max = parseInt(quantityInput.attr("max"));
+                  var min = parseInt(quantityInput.attr("min"));
 
+                  // Validate the quantity
+                  if (quantity > max) {
+                      quantityInput.val(max);
+                      quantity = max;
+                  } else if (quantity < min) {
+                      quantityInput.val(min);
+                      quantity = min;
+                  }
+
+                  // Get the data from the form
+                  var formData = $(this).serialize();
+
+                  // Send the data using AJAX
+                  $.ajax({
+                      url: "CartDetails", // The path to the server that will handle the form
+                      type: "POST",
+                      data: formData,
+                      success: function (response) {
+                          // Handle the server's response (if necessary)
+                          console.log("Form submitted successfully!");
+
+                          // Update the quantity and total on the page
+                          var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                          var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                          var price = parseFloat(priceElement.text());
+                          var total = price * quantity;
+                          totalElement.text(total.toFixed(2));
+
+                          // Update the total price displayed on the page
+                          var totalPrice = 0;
+                          $("td[id^='total-']").each(function () {
+                              totalPrice += parseFloat($(this).text());
+                          });
+                          $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+                      },
+                      error: function () {
+                          console.error("Error when submitting the form!");
+                      }
+                  });
+              });
+          });
         </script>
 
         <script>
@@ -411,7 +472,7 @@
         </script>
 
         <script type="text/javascript">
-            wi        ndow.onload = function () {
+            window.onload = function () {
             <c:if test="${not empty requestScope.scroll}">
                 var searchboxElement = document.getElementById("ListPro");
                 if (searchboxElement) {
@@ -422,9 +483,13 @@
                 }
             </c:if>
             }
-
             ;
         </script>
+
+
+
+
+
     </body>
 
 </html>

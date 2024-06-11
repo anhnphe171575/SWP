@@ -14,19 +14,20 @@ public class Order {
     private Date shipped_date;
     private Date order_date;
     private User user;
-    private AddressOrder addressorder;
-
+    private Receiver receiver;
+    private String  Notes;
     public Order() {
     }
 
-    public Order(int orderID, int Status_OrderID, Customer customer, Date shipped_date, Date order_date, User user, AddressOrder addressorder) {
+    public Order(int orderID, int Status_OrderID, Customer customer, Date shipped_date, Date order_date, User user, Receiver receiver, String Notes) {
         this.orderID = orderID;
         this.Status_OrderID = Status_OrderID;
         this.customer = customer;
         this.shipped_date = shipped_date;
         this.order_date = order_date;
         this.user = user;
-        this.addressorder = addressorder;
+        this.receiver = receiver;
+        this.Notes = Notes;
     }
 
     public int getOrderID() {
@@ -77,17 +78,27 @@ public class Order {
         this.user = user;
     }
 
-    public AddressOrder getAddressorder() {
-        return addressorder;
+    public Receiver getReceiver() {
+        return receiver;
     }
 
-    public void setAddressorder(AddressOrder addressorder) {
-        this.addressorder = addressorder;
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getNotes() {
+        return Notes;
+    }
+
+    public void setNotes(String Notes) {
+        this.Notes = Notes;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderID=" + orderID + ", Status_OrderID=" + Status_OrderID + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", addressorder=" + addressorder + '}';
+        return "Order{" + "orderID=" + orderID + ", Status_OrderID=" + Status_OrderID + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receiver=" + receiver + ", Notes=" + Notes + '}';
     }
+
+    
     
 }

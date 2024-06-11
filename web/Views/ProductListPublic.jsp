@@ -32,14 +32,14 @@
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <style>
-           
+
             .nav-item.dropdown:hover {
                 background-color: #f0f0f0; /* Màu xám */
             }
             .selected {
-    background-color: #C17A74; /* Màu nền cho mục được chọn */
-    color: white; /* Màu chữ cho mục được chọn */
-}
+                background-color: #C17A74; /* Màu nền cho mục được chọn */
+                color: white; /* Màu chữ cho mục được chọn */
+            }
         </style>
     </head>
 
@@ -52,6 +52,7 @@
                 <a href="" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
+              
             </div>
             <div class="col-lg-6 col-6 text-left">
 
@@ -85,7 +86,8 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link active">Home</a>
+                                <a href="HomePage" class="nav-item nav-link ">Home</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link active">Product</a>
                                 <div class="nav-item dropdown">
                                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                     <div class="dropdown-menu rounded-0 m-0">
@@ -152,13 +154,33 @@
                         <div style="height: auto; text-align: center; padding: 5px;">
                             <c:forEach items="${requestScope.Cate1}" var="a"> 
                                 <div class="nav-item dropdown" style="border: 1px solid black; padding: 5px;">
-                                    <a href="ProductsListPublic?cid=${a.category_productID}" class="nav-link ${cid == a.category_productID ? 'selected' : ''}" style="color: black;">${a.category_name}</a>               
+                                    <a href="ProductsListPublic?cid=${a.category_productID}&feature=${requestScope.feature}" class="nav-link ${requestScope.cid == a.category_productID ? 'selected' : ''}" style="color: black;">${a.category_name}</a>               
                                 </div>
                             </c:forEach> 
                         </div>
-
-
                     </div> 
+                    <div class="border-bottom mb-4 pb-4">
+                        <h5 class="font-weight-semi-bold mb-4" style="text-align: center">Feature</h5>
+                        <form id="select-radio"action="ProductsListPublic" method="get">
+
+                            <input type="hidden" name="cid" value="${requestScope.cid}">  
+                            <input type="hidden" name="search" value="${requestScope.search1}"> 
+                            <div style="display: flex; justify-content: space-between">
+                                <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                                    <input type="radio" class="custom-control-input" id="price-yes" name="feature" value="yes" onchange="submitForm()"
+                                           ${feature eq 'yes' ? 'checked' : ''}>
+                                    <label class="custom-control-label" for="price-yes">Yes</label>
+                                </div>
+                                <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
+                                    <input type="radio" class="custom-control-input" id="price-no" name="feature" value="no" onchange="submitForm()"
+                                           ${feature eq 'no' ? 'checked' : ''}>
+                                    <label class="custom-control-label" for="price-no">No</label>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <h5 class="font-weight-semi-bold mb-4" style="text-align: center">Feature Products</h5>
                     <div class="border-bottom mb-4 pb-4">
                         <div id="header-carousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
@@ -183,7 +205,7 @@
                 </div>
                 <!-- Shop Sidebar End -->
 
-           
+
                 <!-- Shop Product Start -->
                 <div class="col-lg-9 col-md-12" >
                     <div class="row pb-3">
@@ -199,15 +221,14 @@
                                         </div>
 
                                     </div>
-                                    <input type="hidden" name="cid" value="${requestScope.cid}">
-                              
+                                    <input type="hidden" name="feature" value="${requestScope.feature}">  
+                                    <input type="hidden" name="cid" value="${requestScope.cid}">                             
                                     <input type="hidden" name="service" value="search">
                                 </form>
-
                             </div>
                         </div>
-                         <div id="searchbox">
-                                        </div>            
+                        <div id="searchbox">
+                        </div>            
                         <c:forEach items="${requestScope.ListProduct}" var="l">
                             <div class="col-lg-4 col-md-6 col-sm-12 pb-1" >
 
@@ -230,10 +251,9 @@
                                         <a href="AddToCart?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                                     </div>
                                 </div>
-
                             </div>
                         </c:forEach>
-                                   
+
                         <div class="col-12 pb-1">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center mb-3">
@@ -243,19 +263,15 @@
                                             <span class="sr-only">Previous</span>
                                         </a>
                                     </li>
-
-                                    <!--                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                                                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-
                                     <c:choose>
                                         <c:when test="${requestScope.numpage < 7}">
                                             <c:forEach begin="1" end="${requestScope.numpage}" var="i">
                                                 <c:choose>
                                                     <c:when test="${requestScope.page == i}">
-                                                        <li class="page-item active"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}">${i}</a></li>
+                                                        <li class="page-item active"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${i}</a></li>
                                                         </c:when>
                                                         <c:otherwise>
-                                                        <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}">${i}</a></li>
+                                                        <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${i}</a></li>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
@@ -265,29 +281,29 @@
                                                     <c:when test="${requestScope.page <= 4}">
                                                         <c:forEach begin="1" end="5" var="i">
                                                         <li class="${requestScope.page==i ? 'page-item active' : 'page-item'}">
-                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}">${i}</a>
+                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${i}</a>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item"><span class="page-link">...</span></li>
-                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${requestScope.numpage}&search=${requestScope.search1}&cid=${requestScope.cid}">${requestScope.numpage}</a></li>
+                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${requestScope.numpage}</a></li>
                                                     </c:when>
                                                     <c:when test="${requestScope.page > 4 && requestScope.page < requestScope.numpage - 3}">
-                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=1&search=${requestScope.search1}&cid=${requestScope.cid}">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">1</a></li>
                                                     <li class="page-item"><span class="page-link">...</span></li>
                                                         <c:forEach begin="${requestScope.page - 2}" end="${requestScope.page + 2}" var="i">
                                                         <li class="${requestScope.page==i ? 'page-item active' : 'page-item'}">
-                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}">${i}</a>
+                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${i}</a>
                                                         </li>
                                                     </c:forEach>
                                                     <li class="page-item"><span class="page-link">...</span></li>
-                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${requestScope.numpage}&search=${requestScope.search1}&cid=${requestScope.cid}">${requestScope.numpage}</a></li>
+                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${requestScope.numpage}</a></li>
                                                     </c:when>
                                                     <c:otherwise>
-                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=1&search=${requestScope.search1}&cid=${requestScope.cid}">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">1</a></li>
                                                     <li class="page-item"><span class="page-link">...</span></li>
                                                         <c:forEach begin="${requestScope.numpage - 4}" end="${requestScope.numpage}" var="i">
                                                         <li class="${requestScope.page==i ? 'page-item active' : 'page-item'}">
-                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}">${i}</a>
+                                                            <a class="page-link" href="ProductsListPublic?page=${i}&search=${requestScope.search1}&cid=${requestScope.cid}&feature=${requestScope.feature}">${i}</a>
                                                         </li>
                                                     </c:forEach>
                                                 </c:otherwise>
@@ -387,23 +403,27 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script type="text/javascript">
-    window.onload = function() {
-        <c:if test="${not empty requestScope.search1}">
-            var searchboxElement = document.getElementById("searchbox");
-            if (searchboxElement) {
-                searchboxElement.scrollIntoView({
-                    behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
-                    block: 'start' // Chỉ định vị trí cuộn tới của phần tử
-                });
-            }
-        </c:if>
-    };
-</script>
+        <script type="text/javascript">
+                                        window.onload = function () {
+            <c:if test="${not empty requestScope.search1}">
+                                            var searchboxElement = document.getElementById("searchbox");
+                                            if (searchboxElement) {
+                                                searchboxElement.scrollIntoView({
+                                                    behavior: 'smooth', // Thêm thuộc tính behavior để làm mềm cuộn
+                                                    block: 'start' // Chỉ định vị trí cuộn tới của phần tử
+                                                });
+                                            }
+            </c:if>
+                                        };
+        </script>
         <!-- Contact Javascript File -->
         <script src="mail/jqBootstrapValidation.min.js"></script>
         <script src="mail/contact.js"></script>
-       
+        <script>
+                                        function submitForm() {
+                                            document.getElementById("select-radio").submit();
+                                        }
+        </script>
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>

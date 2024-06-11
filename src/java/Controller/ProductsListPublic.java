@@ -81,27 +81,75 @@ public class ProductsListPublic extends HttpServlet {
             }
         }
         String cname = request.getParameter("cname");
+        String feature = request.getParameter("feature");
+
         if (cname != null) {
             cid_raw = db1.getCategoryProductbyName(cname).getCategory_productID();
         }
-        if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank())) {
+        if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank()) && feature!= null &&feature.equals("no")
+                ) {
             listProduct = db.getProductBySorted();
+            request.setAttribute("feature", "no");
+        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank() && feature != null && !feature.isBlank()) {
+            if (feature.equals("yes")) {
+                listProduct = db.getProductFeatureByTitleByCid(search, cid_raw, 1);
+
+                request.setAttribute("feature", "yes");
+            } else {
+                listProduct = db.getProductFeatureByTitleByCid(search, cid_raw, 0);
+                request.setAttribute("feature", "no");
+            }
+            request.setAttribute("search1", search);
+            request.setAttribute("cid", cid_raw);
+        } else if (cid != null && !cid.isBlank() && feature != null && !feature.isBlank()) {
+            if (feature.equals("yes")) {
+                listProduct = db.getProductFeatureByCid(cid_raw, 1);
+
+                request.setAttribute("feature", "yes");
+            } else {
+                listProduct = db.getProductFeatureByCid(cid_raw, 0);
+                request.setAttribute("feature", "no");
+            }
+            request.setAttribute("cid", cid_raw);
+        } else if (search != null && !search.isBlank() && feature != null && !feature.isBlank()) {
+            if (feature.equals("yes")) {
+                listProduct = db.getProductFeatureByTitle(search, 1);
+
+                request.setAttribute("feature", "yes");
+            } else {
+                listProduct = db.getProductFeatureByTitle(search, 0);
+                request.setAttribute("feature", "no");
+            }
+            request.setAttribute("search1", search);
         } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank()) {
             listProduct = db.getProductByTitleByCid(search, cid_raw);
             request.setAttribute("search1", search);
-            request.setAttribute("cid", cid);
+            request.setAttribute("cid", cid_raw);
+            request.setAttribute("feature", "no");
+        } else if (feature != null && !feature.isBlank()) {
+            if (feature.equals("yes")) {
+                listProduct = db.getProductFeature();
+                request.setAttribute("feature", "yes");
+            } else {
+                listProduct = db.getProductBySorted();
+                request.setAttribute("feature", "no");
+            }
         } else if (cid != null && !cid.isBlank()) {
             listProduct = db.getProductbyCategoryID(cid_raw);
             request.setAttribute("cid", cid);
+            request.setAttribute("feature", "no");
         } else if (cname != null && !cname.isBlank()) {
             // Assuming you have a method to get products by category name if needed.
             listProduct = db.getProductbyCategoryID(cid_raw);
             request.setAttribute("cid", cid_raw);
+            request.setAttribute("feature", "no");
         } else if (search != null && !search.isBlank()) {
             listProduct = db.getProductByTitle(search);
             request.setAttribute("search1", search);
+            request.setAttribute("feature", "no");
         } else {
             listProduct = db.getProductBySorted();
+            request.setAttribute("feature", "no");
         }
 
         int page = 0;
@@ -127,7 +175,6 @@ public class ProductsListPublic extends HttpServlet {
         request.setAttribute("ListProduct", list);
         request.setAttribute("brand", db.getBrand(1));
 
-       
         request.getRequestDispatcher("Views/ProductListPublic.jsp").forward(request, response);
     }
 
