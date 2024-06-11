@@ -13,18 +13,17 @@ public class OrderItems {
     private Product product;
     private float list_price;
     private int quantity;
-    private float discount;
+    
 
     public OrderItems() {
     }
 
-    public OrderItems(int orderitemID, Order order, Product product, float list_price, int quantity, float discount) {
+    public OrderItems(int orderitemID, Order order, Product product, float list_price, int quantity) {
         this.orderitemID = orderitemID;
         this.order = order;
         this.product = product;
         this.list_price = list_price;
         this.quantity = quantity;
-        this.discount = discount;
     }
 
     public int getOrderitemID() {
@@ -66,17 +65,9 @@ public class OrderItems {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
-    }
-
     @Override
     public String toString() {
-        return "OrderItems{" + "orderitemID=" + orderitemID + ", order=" + order + ", product=" + product + ", list_price=" + list_price + ", quantity=" + quantity + ", discount=" + discount + '}';
+        return "OrderItems{" + "orderitemID=" + orderitemID + ", order=" + order + ", product=" + product + ", list_price=" + list_price + ", quantity=" + quantity + '}';
     }
+
 }

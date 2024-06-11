@@ -2,32 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package Entity;
 
 import java.util.*;
 import java.lang.*;
+
 public class Order {
+
     private int orderID;
-    private int Status_OrderID;
+    private StatusOrder status;
     private Customer customer;
     private Date shipped_date;
     private Date order_date;
     private User user;
-    private Receiver receiver;
-    private String  Notes;
+    private Receiver receivers;
+    private String notes;
+
     public Order() {
     }
 
-    public Order(int orderID, int Status_OrderID, Customer customer, Date shipped_date, Date order_date, User user, Receiver receiver, String Notes) {
+    public Order(int orderID, StatusOrder status, Customer customer, Date shipped_date, Date order_date, User user, Receiver receivers, String notes) {
         this.orderID = orderID;
-        this.Status_OrderID = Status_OrderID;
+        this.status = status;
         this.customer = customer;
         this.shipped_date = shipped_date;
         this.order_date = order_date;
         this.user = user;
-        this.receiver = receiver;
-        this.Notes = Notes;
+        this.receivers = receivers;
+        this.notes = notes;
     }
 
     public int getOrderID() {
@@ -38,12 +40,12 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public int getStatus_OrderID() {
-        return Status_OrderID;
+    public StatusOrder getStatus() {
+        return status;
     }
 
-    public void setStatus_OrderID(int Status_OrderID) {
-        this.Status_OrderID = Status_OrderID;
+    public void setStatus(StatusOrder status) {
+        this.status = status;
     }
 
     public Customer getCustomer() {
@@ -78,27 +80,30 @@ public class Order {
         this.user = user;
     }
 
-    public Receiver getReceiver() {
-        return receiver;
+    public Receiver getReceivers() {
+        return receivers;
     }
 
-    public void setReceiver(Receiver receiver) {
-        this.receiver = receiver;
+    public void setReceivers(Receiver receivers) {
+        this.receivers = receivers;
     }
 
     public String getNotes() {
-        return Notes;
+        return notes;
     }
 
-    public void setNotes(String Notes) {
-        this.Notes = Notes;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderID=" + orderID + ", Status_OrderID=" + Status_OrderID + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receiver=" + receiver + ", Notes=" + Notes + '}';
+        return "Order{" + "orderID=" + orderID + ", status=" + status + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receivers=" + receivers + ", notes=" + notes + '}';
     }
+
+}
+
 
     
     
-}
+

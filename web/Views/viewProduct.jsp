@@ -359,16 +359,22 @@
                                     <tr>
                                         <td>Status:</td>
                                         <td>${product.status ? "Show" : "Hide"}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="text-right">
-                                            <button><a href="productslist">Back To Products List</a></button>
-                                            <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </c:if>
+                                        <c:if test="${product.status == true}">
+                                    <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
+                                    </c:if>
+                                    <c:if test="${product.status == false}">
+                                    <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
+                                    </c:if>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <button><a href="productslist">Back To Products List</a></button>
+                                        <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:if>
                             </tbody>
                         </table>
                     </div>

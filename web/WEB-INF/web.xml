@@ -144,6 +144,14 @@
         <servlet-name>ajaxServlet</servlet-name>
         <servlet-class>Controller.ajaxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderDetails</servlet-name>
+        <servlet-class>Controller.OrderDetails</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TurnFeatured</servlet-name>
+        <servlet-class>Controller.TurnFeatured</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -287,5 +295,13 @@
     <servlet-mapping>
         <servlet-name>ajaxServlet</servlet-name>
         <url-pattern>/vnpayajax/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderDetails</servlet-name>
+        <url-pattern>/orderdetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TurnFeatured</servlet-name>
+        <url-pattern>/turnfeatured</url-pattern>
     </servlet-mapping>
 </web-app>
