@@ -306,7 +306,7 @@
                 <!-- Sidebar -->
             <jsp:include page="sidebar.jsp"></jsp:include>
 
-            <div class="container-xl">
+                <div class="container-xl">
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
@@ -372,16 +372,16 @@
                                             <c:if test="${p.status == '1'}">Show</c:if>
                                             <c:if test="${p.status != '1'}">Hide</c:if>
                                             </td>
-      
+
                                             <td>
                                             <c:if test="${p.status == '1'}">
-                                                <a href="Status?postID=${p.postID}&status=0"  class="fa fa-eye"></a>
+                                                <a href="Status?service=status&postID=${p.postID}&status=0"  class="fa fa-eye"></a>
                                             </c:if>
                                             <c:if test="${p.status != '1'}">
 
                                                 <a href="Status?service=status&postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
                                             </c:if>
-                                            <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a href="EditPost?postID=${p.postID}&detail=1" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                             <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
                                             <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
 
@@ -390,226 +390,245 @@
                                 </c:forEach>
                             </tbody>
                         </table>
+                        <div class="clearfix">
+                            
 
-                    </div>        
-                </div>
-            </div>
+                            <ul class="pagination">
+                                <li class="page-item disabled"><a href="#">Previous</a></li>
+                                    <c:forEach begin="${1}" end="${numpage}" var="i">
+                                        <c:choose>
+                                            <c:when test="${requestScope.page == i}">
+                                            <li class="page-item active"><a href="PostController?page=${i}" class="page-link">${i}</a></li>
+                                            </c:when>
+                                            <c:otherwise>
+                                             <li class="page-item "><a href="PostController?page=${i}" class="page-link">${i}</a></li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
 
-            <!-- Filter Modal HTML -->
-            <div id="Filter" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Bộ lọc</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                            </ul>
                         </div>
-                        <form action="PostController" method="post">
-                            <div class="modal-body">
-                                <!-- Category Filter -->
-                                <div class="form-group">
-                                    <label for="category-select">category:</label>
-                                    <select id="category-select" class="form-control" name="category">
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.category}" var="c">
-                                            <option value="${c}">${c}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <!-- Author Filter -->
-                                <div class="form-group">
-                                    <label for="author-select">author:</label>
-                                    <select id="author-select" class="form-control" name="author">                               
-                                        <option value="all">ALL</option>
-                                        <c:forEach items="${requestScope.user}" var="u">
-                                            <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <!-- Status Filter -->
-                                <div class="form-group">
-                                    <label for="status-select">status:</label>
-                                    <select id="status-select" class="form-control" name="status">
-                                        <option value="3">ALL</option>
-                                        <c:forEach items="${requestScope.status}" var="p">
-                                            <c:if test="${p == '1'}">
+                    </div>
+                </div>        
+            </div>
+        </div>
+
+        <!-- Filter Modal HTML -->
+        <div id="Filter" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bộ lọc</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form action="PostController" method="post">
+                        <div class="modal-body">
+                            <!-- Category Filter -->
+                            <div class="form-group">
+                                <label for="category-select">category:</label>
+                                <select id="category-select" class="form-control" name="category">
+                                    <option value="all">ALL</option>
+                                    <c:forEach items="${requestScope.category}" var="c">
+                                        <option value="${c}">${c}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <!-- Author Filter -->
+                            <div class="form-group">
+                                <label for="author-select">author:</label>
+                                <select id="author-select" class="form-control" name="author">                               
+                                    <option value="all">ALL</option>
+                                    <c:forEach items="${requestScope.user}" var="u">
+                                        <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <!-- Status Filter -->
+                            <div class="form-group">
+                                <label for="status-select">status:</label>
+                                <select id="status-select" class="form-control" name="status">
+                                    <option value="3">ALL</option>
+                                    <c:forEach items="${requestScope.status}" var="p">
+                                        <c:if test="${p == '1'}">
                                             <option value="${p}">Show</option>
-                                            </c:if>
-                                            <c:if test="${p != '1'}">
+                                        </c:if>
+                                        <c:if test="${p != '1'}">
 
                                             <option value="${p}">Hide</option>
-                                            </c:if>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                                        </c:if>
+                                    </c:forEach>
+                                </select>
                             </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">OK</button>
-                                <input type="hidden" name="service" value="filter">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Add Modal HTML -->
-            <div id="Add" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
-                            <div class="modal-header">						
-                                <h4 class="modal-title">New Post</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <div class="form-group">
-                                    <label>title</label>
-                                    <input type="text" class="form-control" name="title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>thumbnail</label>
-                                    <input type="text" class="form-control" name="thumbnail" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Category Post</label>
-                                    <select id="category-select" class="form-control" name="category_post">                                   
-                                        <c:forEach items="${requestScope.category_product}" var="c">
-                                            <option value="${c.category_productID}">${c.category_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>featured</label>
-                                    <input type="text" class="form-control" name="featured" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>brief_information</label>
-                                    <input type="text" class="form-control" name="brief_information" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>description</label>
-                                    <input type="text" class="form-control" name="description" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <input type="submit" class="btn btn-info" value="OK">
-                                <input type="hidden" name="service" value="add">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Sort -->
-            <div id="Sort" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
-                            <div class="modal-header">						
-                                <h4 class="modal-title">Sort</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <div class="form-group">
-                                    <label>Option:</label>
-                                    <select id="category-select" class="form-control" name="sort">                                   
-                                        <option value="p.title">Title</option>
-                                        <option value="cpr.category_name">Category</option>
-                                        <option value="u.first_name">Author</option>
-                                        <option value="p.featured">Featured</option>
-                                        <option value="p.status">Status</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <input type="submit" class="btn btn-info" value="OK">
-                                <input type="hidden" name="service" value="sort">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!<!-- comment -->
-            <div id="Edit" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
-                            <div class="modal-header">						
-                                <h4 class="modal-title">Edit Post</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <div class="form-group">
-                                    <label>title</label>
-                                    <input type="text" class="form-control" name="title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>thumbnail</label>
-                                    <input type="text" class="form-control" name="thumbnail" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Category Post</label>
-                                    <select id="category-select" class="form-control" name="category_post">                                   
-                                        <c:forEach items="${requestScope.category_product}" var="c">
-                                            <option value="${c.category_productID}">${c.category_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>featured</label>
-                                    <input type="text" class="form-control" name="featured" required>
-                                </div>
-                                <!--                            <div class="form-group">
-                                                                <label>status</label>
-                                                                <select id="status-select" class="form-control" name="status">
-                                <c:forEach items="${requestScope.status}" var="s">
-                                    <option value="${s}">${s}</option>
-                                </c:forEach>
-                            </select>
-                        </div>-->
-                                <div class="form-group">
-                                    <label>brief_information</label>
-                                    <input type="text" class="form-control" name="brief_information" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>description</label>
-                                    <input type="text" class="form-control" name="description" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <input type="submit" class="btn btn-info" value="OK">
-                                <input type="hidden" name="service" value="add">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Delete Modal HTML -->
-            <div id="deleteEmployeeModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form>
-                            <div class="modal-header">						
-                                <h4 class="modal-title">Delete Employee</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <p>Are you sure you want to delete these Records?</p>
-                                <p class="text-warning"><small>This action cannot be undone.</small></p>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                <input type="submit" class="btn btn-danger" value="Delete">
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">OK</button>
+                            <input type="hidden" name="service" value="filter">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <script src="./mktjs/scripts.js"></script>
-    </body>
+        <!-- Add Modal HTML -->
+        <div id="Add" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">New Post</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>title</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>thumbnail</label>
+                                <input type="text" class="form-control" name="thumbnail" >
+                            </div>
+                            <div class="form-group">
+                                <label>Category Post</label>
+                                <select id="category-select" class="form-control" name="category_post">                                   
+                                    <c:forEach items="${requestScope.category_product}" var="c">
+                                        <option value="${c.category_productID}">${c.category_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>featured</label>
+                                <input type="text" class="form-control" name="featured" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>brief_information</label>
+                                <input type="text" class="form-control" name="brief_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label>description</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Sort -->
+        <div id="Sort" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Sort</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Option:</label>
+                                <select id="category-select" class="form-control" name="sort">                                   
+                                    <option value="p.title">Title</option>
+                                    <option value="cpr.category_name">Category</option>
+                                    <option value="u.first_name">Author</option>
+                                    <option value="p.featured">Featured</option>
+                                    <option value="p.status">Status</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="sort">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!<!-- comment -->
+        <div id="Edit" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Edit Post</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>title</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>thumbnail</label>
+                                <input type="text" class="form-control" name="thumbnail" >
+                            </div>
+                            <div class="form-group">
+                                <label>Category Post</label>
+                                <select id="category-select" class="form-control" name="category_post">                                   
+                                    <c:forEach items="${requestScope.category_product}" var="c">
+                                        <option value="${c.category_productID}">${c.category_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>featured</label>
+                                <input type="text" class="form-control" name="featured" required>
+                            </div>
+                            <!--                            <div class="form-group">
+                                                            <label>status</label>
+                                                            <select id="status-select" class="form-control" name="status">
+                            <c:forEach items="${requestScope.status}" var="s">
+                                <option value="${s}">${s}</option>
+                            </c:forEach>
+                        </select>
+                    </div>-->
+                            <div class="form-group">
+                                <label>brief_information</label>
+                                <input type="text" class="form-control" name="brief_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label>description</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal HTML -->
+        <div id="deleteEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Delete Employee</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <p>Are you sure you want to delete these Records?</p>
+                            <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./mktjs/scripts.js"></script>
+</body>
 
 
 </html>

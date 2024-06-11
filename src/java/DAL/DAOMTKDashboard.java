@@ -4,6 +4,8 @@
  */
 package DAL;
 
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
@@ -62,6 +64,68 @@ public class DAOMTKDashboard extends DBContext {
 
     }
 
+    public int allProduct() {
+        int n = 0;
+        String sql = "SELECT SUM( quantity) AS total_quantity\n"
+                + "FROM [n7].[dbo].[Product];";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("total_quantity");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+    public int allPost() {
+        int n = 0;
+        String sql = "select count (*) as post_total from Post";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("post_total");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+    public int allCustomer() {
+        int n = 0;
+        String sql = "select count (*) as post_total from Customer";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("post_total");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+    public int allFeedback() {
+        int n = 0;
+        String sql = "select count (*) as post_total from Feedback";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("post_total");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
     public LinkedHashMap<String, Integer> trendProduct7day(String date) {
         LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
         String sql = "DECLARE @selectedDate DATE;\n"
@@ -99,6 +163,184 @@ public class DAOMTKDashboard extends DBContext {
         } catch (Exception ex) {
 
         }
+        return linkedHashMap;
+
+    }
+
+    public LinkedHashMap<String, Integer> trendPostAutoday(String start_date, String end_date) {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        String sql
+                = "DECLARE @startDate DATE = ?;\n"
+                + "DECLARE @endDate DATE = ?;\n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT CAST(@endDate AS DATE) AS date_created\n"
+                + "    UNION ALL\n"
+                + "    SELECT CAST(DATEADD(DAY, 1, date_created) AS DATE)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, date_created) <= @startDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.date_created AS post_date,\n"
+                + "    COUNT(p.date_create_by) AS total_product\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [dbo].[Post] p\n"
+                + "    ON dr.date_created = CONVERT(DATE, p.date_create_by)\n"
+                + "GROUP BY \n"
+                + "    dr.date_created\n"
+                + "ORDER BY \n"
+                + "    dr.date_created;"; // Order by ascending dates
+
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set startDate and endDate properly
+            pstmt.setString(1, start_date);
+            pstmt.setString(2, end_date);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    linkedHashMap.put(rs.getString("post_date"), rs.getInt("total_product"));
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+        return linkedHashMap;
+    }
+
+    public LinkedHashMap<String, Integer> trendProAutoday(String start_date, String end_date) {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        String sql
+                = "DECLARE @startDate DATE = ?;\n"
+                + "DECLARE @endDate DATE = ?;\n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT CAST(@endDate AS DATE) AS date_created\n"
+                + "    UNION ALL\n"
+                + "    SELECT CAST(DATEADD(DAY, 1, date_created) AS DATE)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, date_created) <= @startDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.date_created AS post_date,\n"
+                + "    COUNT(p.update_date) AS total_product\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [dbo].[Product] p\n"
+                + "    ON dr.date_created = CONVERT(DATE, p.update_date)\n"
+                + "GROUP BY \n"
+                + "    dr.date_created\n"
+                + "ORDER BY \n"
+                + "    dr.date_created;"; // Order by ascending dates
+
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set startDate and endDate properly
+            pstmt.setString(1, start_date);
+            pstmt.setString(2, end_date);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    linkedHashMap.put(rs.getString("post_date"), rs.getInt("total_product"));
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+        return linkedHashMap;
+    }
+
+    public LinkedHashMap<String, Integer> trendCusAutoday(String start_date, String end_date) {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        String sql = "DECLARE @startDate DATE = ?;\n"
+                + "DECLARE @endDate DATE = ?;\n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT CAST(@endDate AS DATE) AS date_created\n"
+                + "    UNION ALL\n"
+                + "    SELECT CAST(DATEADD(DAY, 1, date_created) AS DATE)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, date_created) <= @startDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.date_created AS post_date,\n"
+                + "    COUNT(p.activity_history) AS total_product\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [dbo].[Customer] p\n"
+                + "    ON dr.date_created = CONVERT(DATE, p.activity_history)\n"
+                + "GROUP BY \n"
+                + "    dr.date_created\n"
+                + "ORDER BY \n"
+                + "    dr.date_created;";
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set startDate and endDate properly
+            pstmt.setString(1, start_date);
+            pstmt.setString(2, end_date);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    linkedHashMap.put(rs.getString("post_date"), rs.getInt("total_product"));
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+        return linkedHashMap;
+
+    }
+
+    public LinkedHashMap<String, Integer> trendFeedbackAutoday(String start_date, String end_date) {
+        LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
+        String sql = "DECLARE @startDate DATE = ?;\n"
+                + "DECLARE @endDate DATE = ?;\n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT CAST(@endDate AS DATE) AS date_created\n"
+                + "    UNION ALL\n"
+                + "    SELECT CAST(DATEADD(DAY, 1, date_created) AS DATE)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, date_created) <= @startDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.date_created AS post_date,\n"
+                + "    COUNT(p.update_date_feedback) AS total_product\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [dbo].[Feedback] p\n"
+                + "    ON dr.date_created = CONVERT(DATE, p.update_date_feedback)\n"
+                + "GROUP BY \n"
+                + "    dr.date_created\n"
+                + "ORDER BY \n"
+                + "    dr.date_created;";
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set startDate and endDate properly
+            pstmt.setString(1, start_date);
+            pstmt.setString(2, end_date);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    linkedHashMap.put(rs.getString("post_date"), rs.getInt("total_product"));
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
         return linkedHashMap;
 
     }
@@ -186,6 +428,6 @@ public class DAOMTKDashboard extends DBContext {
 
     public static void main(String[] args) {
         DAOMTKDashboard dao = new DAOMTKDashboard();
-        System.out.println(dao.trendCus7day("2024-06-01"));
+        System.out.println(dao.allProduct());
     }
 }

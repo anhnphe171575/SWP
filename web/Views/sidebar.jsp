@@ -15,7 +15,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
+                        <a href="productslist" target="_blank">
                             <span class="material-icons-outlined">inventory_2</span> Products
                         </a>
                     </li>
@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
+                        <a href="PostController" target="_blank">
                             <span class="material-icons-outlined">fact_check</span> Post
                         </a>
                     </li>

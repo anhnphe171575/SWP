@@ -11,7 +11,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Product</title>
-        <link rel="stylesheet" href="vncss/vn5.css"/>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy ngày hiện tại
@@ -37,6 +36,37 @@
                 });
             });
         </script>
+        <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group div {
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -84,8 +114,12 @@
                     <div>Description:</div>
                     <textarea name="description">${post.description}</textarea>
                 </div>
-
-
+                <c:if test="${detail == '0'}">
+                                    <input type="hidden" name="service" value="editDetail">
+                                </c:if>
+                                   <c:if test="${detail == '1'}">
+                                    <input type="hidden" name="service" value="editList">
+                                </c:if> 
                 <input type="submit" value="Submit">
             </form>
         </div>
