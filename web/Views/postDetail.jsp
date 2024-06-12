@@ -78,12 +78,13 @@
                                         <img src="${post.thumbnail}" alt="Blog post image"></div>
                                 <div class="col-xl-8">
                                     <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
-                                    <a href="EditPost?postID=${post.postID}" class="btn btn-danger"><i class="material-icons">&#xE3C9;</i> <span>Edit</span></a>
+                                    <a href="EditPost?postID=${post.postID}&detail=0" class="btn btn-danger"><i class="material-icons">&#xE3C9;</i> <span>Edit</span></a>
                                 </div>
                             </div>
-                            <h1 class="blog-title">${post.title}</h1>
+                                <div class="blog-meta">
+                            <h1 class="blog-title">${post.title}</h1></div>
                             <div class="blog-meta">
-                                <h3>${post.brief_information}</h3>
+                                <h4>${post.brief_information}</h4>
                                 <span class="author">Author: ${post.user.first_name} ${post.user.last_name}</span> | 
                                 <span class="updated-date">Updated: ${post.date_create_by}</span> | 
                                 <span class="blog-category">Category: ${post.cp.category_product.category_name}</span>

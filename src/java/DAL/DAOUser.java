@@ -22,7 +22,7 @@ import java.sql.Statement;
  * @author admin
  */
 public class DAOUser extends DBContext {
-
+    
     public boolean login(String username, String password) {
         boolean flag = false;
         String sql = "select * from [User] where username =? and password =?";
@@ -38,57 +38,58 @@ public class DAOUser extends DBContext {
         }
         return flag;
     }
-
+    
     public User getUserByLogin(String var1, String sql) {
         User u = null;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-
+            
             pre.setString(1, var1);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
-                  Security se = new Security(rs.getInt("securityID"), "");
-                  Role role = new Role(rs.getInt("RoleID"), "");
-                 u = new User(rs.getInt("UserID"),
-                         rs.getString("first_name"),
-                         rs.getString("last_name"),
-                         rs.getString("phone"),
+                Security se = new Security(rs.getInt("securityID"), "");
+                Role role = new Role(rs.getInt("RoleID"), "");
+                u = new User(rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
                         rs.getString("email"),
-                         rs.getString("address"),
-                         rs.getString("username"),
-                         rs.getString("password"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
                         rs.getDate("dob"),
-                         rs.getBoolean("gender"),
-                         rs.getInt("status"),
-                         role,
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        role,
                         se,
-                         rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
             }
         } catch (Exception e) {
         }
         return u;
     }
-      public void UpdateNewPass(String email, String passWord){
+
+    public void UpdateNewPass(String email, String passWord) {
         String query = "UPDATE User SET password=? WHERE email=?";
         try {
             
-         PreparedStatement pre = conn.prepareStatement(query);
+            PreparedStatement pre = conn.prepareStatement(query);
             
             pre.setString(1, passWord);
             pre.setString(2, email);
             pre.executeUpdate();
         } catch (Exception e) {
-
+            
         }
         //return false;
-   }
-        public User getUserByLogin(String username) {
+    }
+
+    public User getUserByLogin(String username) {
         User u = null;
         String sql = "select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question,u.image from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID "
-
                 + "inner join [Role] r on r.RoleID=u.RoleID"
                 + " where username =?";
         try {
@@ -111,13 +112,15 @@ public class DAOUser extends DBContext {
                         rs.getInt("status"),
                         role,
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
             }
         } catch (Exception e) {
             System.out.println(e);
         }
         return u;
     }
+
     public Vector<User> getUser(String sql) {
         Vector<User> vector = new Vector<>();
         try {
@@ -139,16 +142,17 @@ public class DAOUser extends DBContext {
                         rs.getInt("status"),
                         role,
                         se,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
                 vector.add(obj);
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
-
+        
         return vector;
     }
-
+    
     public static void main(String[] args) {
         DAOUser dao = new DAOUser();
 //        System.out.println(dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"

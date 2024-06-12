@@ -87,7 +87,7 @@ public class LoginController extends HttpServlet {
         boolean check = dao.login(username, password);
         if (check==true) {
             session.setAttribute("username", username);
-            request.getRequestDispatcher("PostController").forward(request, response);
+            response.sendRedirect("PostController");
         } else {
             request.setAttribute("error", "error");
             doGet(request, response);

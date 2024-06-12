@@ -59,6 +59,8 @@ public class BlogDetail extends HttpServlet {
         try {
             int postID = Integer.parseInt(postID_r);
             request.setAttribute("blog", daoP.getPostById(postID));
+            request.setAttribute("blogc", daoP.getBlog());
+
             request.getRequestDispatcher("Views/blogDetail.jsp").forward(request, response);
         } catch (Exception e) {
             request.getRequestDispatcher("Views/blogDetail.jsp").forward(request, response);

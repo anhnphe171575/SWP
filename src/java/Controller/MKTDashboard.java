@@ -8,7 +8,7 @@ import DAL.DAOMTKDashboard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;    
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -35,8 +35,8 @@ public class MKTDashboard extends HttpServlet {
             throws ServletException, IOException {
         DAOMTKDashboard daoMTK = new DAOMTKDashboard();
         String submit = request.getParameter("submit");
+        String service = request.getParameter("service");
         if (submit != null) {
-            String service = request.getParameter("service");
             if (service.equals("date")) {
                 String dateinput = (String) request.getParameter("dateinput");
                 LocalDate localDate1 = LocalDate.now();
@@ -45,13 +45,35 @@ public class MKTDashboard extends HttpServlet {
                 String date1 = formatter1.format(date_create_by1);
                 request.setAttribute("date1", dateinput);
                 request.setAttribute("date", date1);
+                request.setAttribute("total_product", daoMTK.allProduct());
+                request.setAttribute("total_post", daoMTK.allPost());
+                request.setAttribute("total_customer", daoMTK.allCustomer());
+                request.setAttribute("total_feedback", daoMTK.allFeedback());
+
                 request.setAttribute("dataProduct", daoMTK.trendProduct7day(dateinput));
                 request.setAttribute("dataPost", daoMTK.trendPost7day(dateinput));
                 request.setAttribute("dataCus", daoMTK.trendCus7day(dateinput));
                 request.setAttribute("dataFeedback", daoMTK.trendFeedback7day(dateinput));
                 request.getRequestDispatcher("Views/MKTDashboard.jsp").forward(request, response);
-            }
+            } else if (service.equals("2date")) {
+                String start_date = (String) request.getParameter("start_date");
+                String end_date = (String) request.getParameter("end_date");
+                LocalDate localDate1 = LocalDate.now();
+                Date date_create_by1 = Date.from(localDate1.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+                String datemax = formatter1.format(date_create_by1);
+                request.setAttribute("date", datemax);
+                request.setAttribute("total_product", daoMTK.allProduct());
+                request.setAttribute("total_post", daoMTK.allPost());
+                request.setAttribute("total_customer", daoMTK.allCustomer());
+                request.setAttribute("total_feedback", daoMTK.allFeedback());
 
+                request.setAttribute("dataProduct", daoMTK.trendProAutoday(start_date, end_date));
+                request.setAttribute("dataPost", daoMTK.trendPostAutoday(start_date, end_date));
+                request.setAttribute("dataCus", daoMTK.trendCusAutoday(start_date, end_date));
+                request.setAttribute("dataFeedback", daoMTK.trendFeedbackAutoday(start_date, end_date));
+                request.getRequestDispatcher("Views/MKTDashboard.jsp").forward(request, response);
+            }
         } else {
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -59,9 +81,14 @@ public class MKTDashboard extends HttpServlet {
             String date = formatter.format(date_create_by);
             request.setAttribute("date", date);
             request.setAttribute("date1", "null");
+            request.setAttribute("total_product", daoMTK.allProduct());
+            request.setAttribute("total_post", daoMTK.allPost());
+            request.setAttribute("total_customer", daoMTK.allCustomer());
+            request.setAttribute("total_feedback", daoMTK.allFeedback());
+
             request.setAttribute("dataProduct", daoMTK.trendProduct7day(date));
             request.setAttribute("dataPost", daoMTK.trendPost7day(date));
-//                request.setAttribute("dataCus", daoMTK.trendCus7day(dateinput));
+            request.setAttribute("dataCus", daoMTK.trendCus7day(date));
             request.setAttribute("dataFeedback", daoMTK.trendFeedback7day(date));
             request.getRequestDispatcher("Views/MKTDashboard.jsp").forward(request, response);
         }

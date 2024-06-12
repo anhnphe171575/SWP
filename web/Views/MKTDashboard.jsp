@@ -59,6 +59,7 @@
             }
 
         </style>
+
     </head>
 
     <body>
@@ -86,7 +87,7 @@
                                 <h3>PRODUCTS</h3>
                                 <span class="material-icons-outlined">inventory_2</span>
                             </div>
-                            <h1>249</h1>
+                            <h1>${total_product}</h1>
                         </div>
 
                         <div class="card">
@@ -94,7 +95,7 @@
                                 <h3>POST</h3>
                                 <span class="material-icons-outlined">article</span>
                             </div>
-                            <h1>25</h1>
+                            <h1>${total_post}</h1>
                         </div>
 
                         <div class="card">
@@ -102,25 +103,75 @@
                                 <h3>CUSTOMERS</h3>
                                 <span class="material-icons-outlined">groups</span>
                             </div>
-                            <h1>1500</h1>
+                            <h1>${total_customer}</h1>
                         </div>
                         <div class="card">
                             <div class="card-inner">
                                 <h3>FEEDBACK</h3>
                                 <span class="material-icons-outlined">comment</span>
                             </div>
-                            <h1>56</h1>
+                            <h1>${total_feedback}</h1>
                         </div>
 
                     </div>
-                    <p style="color: black">Select date:</p>
                     <form action="MKTDashboard">
-                        <input type="date" name="dateinput" id="pastDatePicker" class="date-input" max="${date}"  >
+                        <h3 style="color: black">Select date:
+                            <input type="date" name="dateinput" id="pastDatePicker" class="date-input" max="${date}"  >
+                        <button type="submit" value="ok" name="submit" class="submit-button">Submit</button></h3>
+                    <input type="hidden" name="service" value="date">
+                </form>
+
+                <form action="MKTDashboard">
+                    <label for="start-date" style="color: black">Start Date:</label>
+                    <input type="date" id="start-date" name="start_date" max="${date}">
+
+                    <label for="end-date" style="color: black">End Date:</label>
+                    <input type="date" id="end-date" name="end_date">
 
                     <button type="submit" value="ok" name="submit" class="submit-button">Submit</button>
-                    <input type="hidden" name="service" value="date">
+                    <input type="hidden" name="service" value="2date">
 
                 </form>
+
+                <script>
+                    const startDateInput = document.getElementById('start-date');
+                    const endDateInput = document.getElementById('end-date');
+                    const maxDate = new Date().toISOString().split('T')[0];
+
+                    // Set the max date attribute to today's date for start-date
+                    startDateInput.max = maxDate;
+
+                    function updateEndDateRange() {
+                        if (startDateInput.value) {
+                            const startDate = new Date(startDateInput.value);
+                            const minEndDate = new Date(startDate);
+                            minEndDate.setDate(startDate.getDate() - 7);
+                            const maxEndDate = new Date(startDate);
+                            maxEndDate.setDate(startDate.getDate() - 1);
+
+                            // Format the dates to YYYY-MM-DD
+                            const minEndDateString = minEndDate.toISOString().split('T')[0];
+                            const maxEndDateString = maxEndDate.toISOString().split('T')[0];
+
+                            endDateInput.min = minEndDateString;
+                            endDateInput.max = maxEndDateString;
+
+                            if (new Date(endDateInput.value) < minEndDate || new Date(endDateInput.value) > maxEndDate) {
+                                endDateInput.value = '';
+                            }
+                        } else {
+                            endDateInput.min = '';
+                            endDateInput.max = '';
+                            endDateInput.value = '';
+                        }
+                    }
+
+                    startDateInput.addEventListener('change', updateEndDateRange);
+
+                    // Initialize the date range when the page loads
+                    window.addEventListener('load', updateEndDateRange);
+                </script>
+
                 <div class="charts">
                     <div class="charts-card">
                         <h2 class="chart-title">Products In 7-Day Before</h2>
@@ -152,518 +203,518 @@
         <!-- ApexCharts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
         <script>
-            let sidebarOpen = false;
-            const sidebar = document.getElementById('sidebar');
-            function openSidebar() {
-                if (!sidebarOpen) {
-                    sidebar.classList.add('sidebar-responsive');
-                    sidebarOpen = true;
-                }
-            }
+    let sidebarOpen = false;
+    const sidebar = document.getElementById('sidebar');
+    function openSidebar() {
+        if (!sidebarOpen) {
+            sidebar.classList.add('sidebar-responsive');
+            sidebarOpen = true;
+        }
+    }
 
-            function closeSidebar() {
-                if (sidebarOpen) {
-                    sidebar.classList.remove('sidebar-responsive');
-                    sidebarOpen = false;
-                }
-            }
-            function searchFunction() {
-                // Code to handle search icon click
-                console.log("Search function triggered");
-            }
+    function closeSidebar() {
+        if (sidebarOpen) {
+            sidebar.classList.remove('sidebar-responsive');
+            sidebarOpen = false;
+        }
+    }
+    function searchFunction() {
+        // Code to handle search icon click
+        console.log("Search function triggered");
+    }
 
 // ---------- CHARTS ----------
-            var datapro = [];
-            var datapost = [];
-            var datacus = [];
-            var datafeed = [];
-            var product = [];
-            var post = [];
-            var cus = [];
-            var feedback = [];
+    var datapro = [];
+    var datapost = [];
+    var datacus = [];
+    var datafeed = [];
+    var product = [];
+    var post = [];
+    var cus = [];
+    var feedback = [];
 
-            // Using JSP to populate the JavaScript arrays
+    // Using JSP to populate the JavaScript arrays
             <c:forEach items="${dataProduct}" var="entry">
-            datapro.push(${entry.value});
-            product.push('<c:out value="${entry.key}"/>');
+    datapro.push(${entry.value});
+    product.push('<c:out value="${entry.key}"/>');
             </c:forEach>
             <c:forEach items="${dataPost}" var="entry">
-            datapost.push(${entry.value});
-            post.push('<c:out value="${entry.key}"/>');
+    datapost.push(${entry.value});
+    post.push('<c:out value="${entry.key}"/>');
             </c:forEach>
             <c:forEach items="${dataCus}" var="entry">
-            datacus.push(${entry.value});
-            cus.push('<c:out value="${entry.key}"/>');
+    datacus.push(${entry.value});
+    cus.push('<c:out value="${entry.key}"/>');
             </c:forEach>
             <c:forEach items="${dataFeedback}" var="entry">
-            datafeed.push(${entry.value});
-            feedback.push('<c:out value="${entry.key}"/>');
+    datafeed.push(${entry.value});
+    feedback.push('<c:out value="${entry.key}"/>');
             </c:forEach>
 // BAR CHART
-            const barChartOptions1 = {
-                series: [
-                    {
-                        name: 'Product',
-                        data: datapro
-                    },
-                ],
-                chart: {
-                    type: 'bar',
-                    background: 'transparent',
-                    height: 350,
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
-                plotOptions: {
-                    bar: {
-                        distributed: true,
-                        borderRadius: 4,
-                        horizontal: false,
-                        columnWidth: '40%',
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    opacity: 1,
-                },
-                grid: {
-                    borderColor: '#55596e',
-                    yaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                    xaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                },
-                legend: {
-                    labels: {
-                        colors: '#f5f7ff',
-                    },
+    const barChartOptions1 = {
+        series: [
+            {
+                name: 'Product',
+                data: datapro
+            },
+        ],
+        chart: {
+            type: 'bar',
+            background: 'transparent',
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+        colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
+        plotOptions: {
+            bar: {
+                distributed: true,
+                borderRadius: 4,
+                horizontal: false,
+                columnWidth: '40%',
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
+        },
+        grid: {
+            borderColor: '#55596e',
+            yaxis: {
+                lines: {
                     show: true,
-                    position: 'top',
                 },
-                stroke: {
-                    colors: ['transparent'],
+            },
+            xaxis: {
+                lines: {
                     show: true,
-                    width: 2,
                 },
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                    theme: 'dark',
+            },
+        },
+        legend: {
+            labels: {
+                colors: '#f5f7ff',
+            },
+            show: true,
+            position: 'top',
+        },
+        stroke: {
+            colors: ['transparent'],
+            show: true,
+            width: 2,
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            theme: 'dark',
+        },
+        xaxis: {
+            categories: product,
+            title: {
+                style: {
+                    color: '#f5f7ff',
                 },
-                xaxis: {
-                    categories: product,
-                    title: {
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    axisTicks: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    labels: {
-                        style: {
-                            colors: '#f5f7ff',
-                        },
-                    },
+            },
+            axisBorder: {
+                show: true,
+                color: '#55596e',
+            },
+            axisTicks: {
+                show: true,
+                color: '#55596e',
+            },
+            labels: {
+                style: {
+                    colors: '#f5f7ff',
                 },
-                yaxis: {
-                    title: {
-                        text: 'Count',
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    axisTicks: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    labels: {
-                        formatter: function (value) {
-                            return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
-                        },
-                        style: {
-                            colors: '#f5f7ff'
-                        }
-                    },
-                    min: 0, // Giá trị nhỏ nhất của y-axis
-                    max: Math.max(...datapro) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
-                    tickAmount: Math.max(...datapro) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+            },
+        },
+        yaxis: {
+            title: {
+                text: 'Count',
+                style: {
+                    color: '#f5f7ff',
                 },
-            };
+            },
+            axisBorder: {
+                color: '#55596e',
+                show: true,
+            },
+            axisTicks: {
+                color: '#55596e',
+                show: true,
+            },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
+                },
+                style: {
+                    colors: '#f5f7ff'
+                }
+            },
+            min: 0, // Giá trị nhỏ nhất của y-axis
+            max: Math.max(...datapro) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
+            tickAmount: Math.max(...datapro) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+        },
+    };
 
-            const barChart1 = new ApexCharts(
-                    document.querySelector('#bar-chart1'),
-                    barChartOptions1
-                    );
-            barChart1.render();
+    const barChart1 = new ApexCharts(
+            document.querySelector('#bar-chart1'),
+            barChartOptions1
+            );
+    barChart1.render();
 // BAR CHAR 2
-            const barChartOptions2 = {
-                series: [
-                    {
-                        data: datapost,
-                        name: 'Post',
-                    },
-                ],
-                chart: {
-                    type: 'bar',
-                    background: 'transparent',
-                    height: 350,
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
-                plotOptions: {
-                    bar: {
-                        distributed: true,
-                        borderRadius: 4,
-                        horizontal: false,
-                        columnWidth: '40%',
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    opacity: 1,
-                },
-                grid: {
-                    borderColor: '#55596e',
-                    yaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                    xaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                },
-                legend: {
-                    labels: {
-                        colors: '#f5f7ff',
-                    },
+    const barChartOptions2 = {
+        series: [
+            {
+                data: datapost,
+                name: 'Post',
+            },
+        ],
+        chart: {
+            type: 'bar',
+            background: 'transparent',
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+        colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
+        plotOptions: {
+            bar: {
+                distributed: true,
+                borderRadius: 4,
+                horizontal: false,
+                columnWidth: '40%',
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
+        },
+        grid: {
+            borderColor: '#55596e',
+            yaxis: {
+                lines: {
                     show: true,
-                    position: 'top',
                 },
-                stroke: {
-                    colors: ['transparent'],
+            },
+            xaxis: {
+                lines: {
                     show: true,
-                    width: 2,
                 },
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                    theme: 'dark',
+            },
+        },
+        legend: {
+            labels: {
+                colors: '#f5f7ff',
+            },
+            show: true,
+            position: 'top',
+        },
+        stroke: {
+            colors: ['transparent'],
+            show: true,
+            width: 2,
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            theme: 'dark',
+        },
+        xaxis: {
+            categories: post,
+            title: {
+                style: {
+                    color: '#f5f7ff',
                 },
-                xaxis: {
-                    categories: post,
-                    title: {
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    axisTicks: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    labels: {
-                        style: {
-                            colors: '#f5f7ff',
-                        },
-                    },
+            },
+            axisBorder: {
+                show: true,
+                color: '#55596e',
+            },
+            axisTicks: {
+                show: true,
+                color: '#55596e',
+            },
+            labels: {
+                style: {
+                    colors: '#f5f7ff',
                 },
-                yaxis: {
-                    title: {
-                        text: 'Count',
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    axisTicks: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    labels: {
-                        formatter: function (value) {
-                            return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
-                        },
-                        style: {
-                            colors: '#f5f7ff'
-                        }
-                    },
-                    min: 0, // Giá trị nhỏ nhất của y-axis
-                    max: Math.max(...datapost) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
-                    tickAmount: Math.max(...datapost) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+            },
+        },
+        yaxis: {
+            title: {
+                text: 'Count',
+                style: {
+                    color: '#f5f7ff',
                 },
-            };
+            },
+            axisBorder: {
+                color: '#55596e',
+                show: true,
+            },
+            axisTicks: {
+                color: '#55596e',
+                show: true,
+            },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
+                },
+                style: {
+                    colors: '#f5f7ff'
+                }
+            },
+            min: 0, // Giá trị nhỏ nhất của y-axis
+            max: Math.max(...datapost) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
+            tickAmount: Math.max(...datapost) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+        },
+    };
 
-            const barChart2 = new ApexCharts(
-                    document.querySelector('#bar-chart2'),
-                    barChartOptions2
-                    );
-            barChart2.render();
+    const barChart2 = new ApexCharts(
+            document.querySelector('#bar-chart2'),
+            barChartOptions2
+            );
+    barChart2.render();
 
 // BAR CHAR 3
-            const barChartOptions3 = {
-                series: [
-                    {
-                        data: datacus,
-                        name: 'Actived',
-                    },
-                ],
-                chart: {
-                    type: 'bar',
-                    background: 'transparent',
-                    height: 350,
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
-                plotOptions: {
-                    bar: {
-                        distributed: true,
-                        borderRadius: 4,
-                        horizontal: false,
-                        columnWidth: '40%',
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    opacity: 1,
-                },
-                grid: {
-                    borderColor: '#55596e',
-                    yaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                    xaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                },
-                legend: {
-                    labels: {
-                        colors: '#f5f7ff',
-                    },
+    const barChartOptions3 = {
+        series: [
+            {
+                data: datacus,
+                name: 'Actived',
+            },
+        ],
+        chart: {
+            type: 'bar',
+            background: 'transparent',
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+        colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
+        plotOptions: {
+            bar: {
+                distributed: true,
+                borderRadius: 4,
+                horizontal: false,
+                columnWidth: '40%',
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
+        },
+        grid: {
+            borderColor: '#55596e',
+            yaxis: {
+                lines: {
                     show: true,
-                    position: 'top',
                 },
-                stroke: {
-                    colors: ['transparent'],
+            },
+            xaxis: {
+                lines: {
                     show: true,
-                    width: 2,
                 },
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                    theme: 'dark',
+            },
+        },
+        legend: {
+            labels: {
+                colors: '#f5f7ff',
+            },
+            show: true,
+            position: 'top',
+        },
+        stroke: {
+            colors: ['transparent'],
+            show: true,
+            width: 2,
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            theme: 'dark',
+        },
+        xaxis: {
+            categories: cus,
+            title: {
+                style: {
+                    color: '#f5f7ff',
                 },
-                xaxis: {
-                    categories: cus,
-                    title: {
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    axisTicks: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    labels: {
-                        style: {
-                            colors: '#f5f7ff',
-                        },
-                    },
+            },
+            axisBorder: {
+                show: true,
+                color: '#55596e',
+            },
+            axisTicks: {
+                show: true,
+                color: '#55596e',
+            },
+            labels: {
+                style: {
+                    colors: '#f5f7ff',
                 },
-                yaxis: {
-                    title: {
-                        text: 'Count',
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    axisTicks: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    labels: {
-                        formatter: function (value) {
-                            return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
-                        },
-                        style: {
-                            colors: '#f5f7ff'
-                        }
-                    },
-                    min: 0, // Giá trị nhỏ nhất của y-axis
-                    max: Math.max(...datacus) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
-                    tickAmount: Math.max(...datacus) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+            },
+        },
+        yaxis: {
+            title: {
+                text: 'Count',
+                style: {
+                    color: '#f5f7ff',
                 },
-            };
+            },
+            axisBorder: {
+                color: '#55596e',
+                show: true,
+            },
+            axisTicks: {
+                color: '#55596e',
+                show: true,
+            },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
+                },
+                style: {
+                    colors: '#f5f7ff'
+                }
+            },
+            min: 0, // Giá trị nhỏ nhất của y-axis
+            max: Math.max(...datacus) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
+            tickAmount: Math.max(...datacus) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+        },
+    };
 
-            const barChart3 = new ApexCharts(
-                    document.querySelector('#bar-chart3'),
-                    barChartOptions3
-                    );
-            barChart3.render();
+    const barChart3 = new ApexCharts(
+            document.querySelector('#bar-chart3'),
+            barChartOptions3
+            );
+    barChart3.render();
 
-            const barChartOptions4 = {
-                series: [
-                    {
-                        data: datafeed,
-                        name: 'Feedback',
-                    },
-                ],
-                chart: {
-                    type: 'bar',
-                    background: 'transparent',
-                    height: 350,
-                    toolbar: {
-                        show: false,
-                    },
-                },
-                colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
-                plotOptions: {
-                    bar: {
-                        distributed: true,
-                        borderRadius: 4,
-                        horizontal: false,
-                        columnWidth: '40%',
-                    },
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                fill: {
-                    opacity: 1,
-                },
-                grid: {
-                    borderColor: '#55596e',
-                    yaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                    xaxis: {
-                        lines: {
-                            show: true,
-                        },
-                    },
-                },
-                legend: {
-                    labels: {
-                        colors: '#f5f7ff',
-                    },
+    const barChartOptions4 = {
+        series: [
+            {
+                data: datafeed,
+                name: 'Feedback',
+            },
+        ],
+        chart: {
+            type: 'bar',
+            background: 'transparent',
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+        colors: ['#2962ff', '#d50000', '#2e7d32', '#ff6d00', '#583cb3', '#ffffff', '#ffff00'],
+        plotOptions: {
+            bar: {
+                distributed: true,
+                borderRadius: 4,
+                horizontal: false,
+                columnWidth: '40%',
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
+        },
+        grid: {
+            borderColor: '#55596e',
+            yaxis: {
+                lines: {
                     show: true,
-                    position: 'top',
                 },
-                stroke: {
-                    colors: ['transparent'],
+            },
+            xaxis: {
+                lines: {
                     show: true,
-                    width: 2,
                 },
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                    theme: 'dark',
+            },
+        },
+        legend: {
+            labels: {
+                colors: '#f5f7ff',
+            },
+            show: true,
+            position: 'top',
+        },
+        stroke: {
+            colors: ['transparent'],
+            show: true,
+            width: 2,
+        },
+        tooltip: {
+            shared: true,
+            intersect: false,
+            theme: 'dark',
+        },
+        xaxis: {
+            categories: feedback,
+            title: {
+                style: {
+                    color: '#f5f7ff',
                 },
-                xaxis: {
-                    categories: feedback,
-                    title: {
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    axisTicks: {
-                        show: true,
-                        color: '#55596e',
-                    },
-                    labels: {
-                        style: {
-                            colors: '#f5f7ff',
-                        },
-                    },
+            },
+            axisBorder: {
+                show: true,
+                color: '#55596e',
+            },
+            axisTicks: {
+                show: true,
+                color: '#55596e',
+            },
+            labels: {
+                style: {
+                    colors: '#f5f7ff',
                 },
-                yaxis: {
-                    title: {
-                        text: 'Count',
-                        style: {
-                            color: '#f5f7ff',
-                        },
-                    },
-                    axisBorder: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    axisTicks: {
-                        color: '#55596e',
-                        show: true,
-                    },
-                    labels: {
-                        formatter: function (value) {
-                            return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
-                        },
-                        style: {
-                            colors: '#f5f7ff'
-                        }
-                    },
-                    min: 0, // Giá trị nhỏ nhất của y-axis
-                    max: Math.max(...datafeed) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
-                    tickAmount: Math.max(...datafeed) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+            },
+        },
+        yaxis: {
+            title: {
+                text: 'Count',
+                style: {
+                    color: '#f5f7ff',
                 },
-            };
+            },
+            axisBorder: {
+                color: '#55596e',
+                show: true,
+            },
+            axisTicks: {
+                color: '#55596e',
+                show: true,
+            },
+            labels: {
+                formatter: function (value) {
+                    return Math.round(value); // Đảm bảo giá trị hiển thị là số nguyên
+                },
+                style: {
+                    colors: '#f5f7ff'
+                }
+            },
+            min: 0, // Giá trị nhỏ nhất của y-axis
+            max: Math.max(...datafeed) + 1, // Giá trị lớn nhất của y-axis (tự động tính toán dựa trên dữ liệu)
+            tickAmount: Math.max(...datafeed) + 1 // Số lượng tick trên trục y-axis, đảm bảo các giá trị hiển thị là số nguyên
+        },
+    };
 
-            const barChart4 = new ApexCharts(
-                    document.querySelector('#bar-chart4'),
-                    barChartOptions4
-                    );
-            barChart4.render();
+    const barChart4 = new ApexCharts(
+            document.querySelector('#bar-chart4'),
+            barChartOptions4
+            );
+    barChart4.render();
 
         </script>
         <!-- Custom JS -->

@@ -21,11 +21,12 @@ import java.util.List;
  * @author phuan
  */
 public class DAOCustomer extends DBContext {
+
     public Customer getCusByEmail(String email) {
         Customer c = null;
         try {
             String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.activity_history,c.email,c.address,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
-                    + "sq.security_question from Customer c\n"
+                    + "sq.security_question, c.image from Customer c\n"
                     + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
                     + "where email=?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -46,17 +47,20 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return c;
-    }  public Customer getCusByUserName(String UserName) {
+    }
+
+    public Customer getCusByUserName(String UserName) {
         Customer c = null;
         try {
-            String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.activity_history,c.email,c.address,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
-                    + "sq.security_question from Customer c\n"
+            String sql = "select c.customerID,c.first_name,c.last_name,c.image,c.phone,c.activity_history,c.email,c.address,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
+                    + "sq.security_question, c.image from Customer c\n"
                     + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
                     + "where c.username=?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -77,13 +81,15 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return c;
     }
+
     public int updateCustomer(Customer obj) {
         int n = 0;
         String sql = "UPDATE [Customer]\n"
@@ -100,6 +106,7 @@ public class DAOCustomer extends DBContext {
                 + "           ,[activity_history]=?\n"
                 + "           ,[securityID]=?\n"
                 + "           ,[securityAnswer]=?\n"
+                + "           ,[image]=?\n"
                 + " WHERE [customerID] = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
@@ -113,12 +120,14 @@ public class DAOCustomer extends DBContext {
             pre.setString(7, obj.getPassword());
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(obj.getDob());
+            String date2 = spd.format(obj.getActivity_history());
             pre.setDate(8, java.sql.Date.valueOf(date1));
             pre.setBoolean(9, obj.isGender());
-            pre.setDate(10, (java.sql.Date) obj.getActivity_history());
+            pre.setDate(10, java.sql.Date.valueOf(date2) );
             pre.setInt(11, obj.getSecurity().getSecurityID());
             pre.setString(12, obj.getSecutityAnswer());
-            pre.setInt(13, obj.getCustomerID());
+            pre.setString(13, obj.getImage());
+            pre.setInt(14, obj.getCustomerID());
             n = pre.executeUpdate();
 
         } catch (SQLException ex) {
@@ -132,7 +141,7 @@ public class DAOCustomer extends DBContext {
         Customer c = null;
         try {
             String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.email,c.address,c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID,c.securityAnswer,\n"
-                    + "sq.security_question from Customer c\n"
+                    + "sq.security_question, c.image from Customer c\n"
                     + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
                     + "where username=?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -153,7 +162,8 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -167,7 +177,7 @@ public class DAOCustomer extends DBContext {
 
         try {
             String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.email,c.address,c.activity_history,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
-                    + "sq.security_question from Customer c\n"
+                    + "sq.security_question, c.image from Customer c\n"
                     + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
                     + "where c.username=?";
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -188,7 +198,8 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
                 vector.add(c);
                 flag = true;
 
@@ -198,12 +209,13 @@ public class DAOCustomer extends DBContext {
         }
         return flag;
     }
-   public void UpdateNewPass(String email, String passWord){
+
+    public void UpdateNewPass(String email, String passWord) {
         String query = "UPDATE Customer SET password=? WHERE email=?";
         try {
-            
-         PreparedStatement pre = conn.prepareStatement(query);
-            
+
+            PreparedStatement pre = conn.prepareStatement(query);
+
             pre.setString(1, passWord);
             pre.setString(2, email);
             pre.executeUpdate();
@@ -211,8 +223,9 @@ public class DAOCustomer extends DBContext {
 
         }
         //return false;
-   }
-     public Boolean addCustomer(String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, Boolean gender, Date activity, int securityID, String securityAnswer) {
+    }
+
+    public Boolean addCustomer(String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, Boolean gender, Date activity, int securityID, String securityAnswer) {
         try {
             //java.sql.Date sqlDate = new java.sql.Date(dob.getTime());
             SimpleDateFormat mySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -236,11 +249,12 @@ public class DAOCustomer extends DBContext {
             stm.executeUpdate();
             return true;
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
         return false;
     }
-     public int insertCustomer(Customer obj) {
+
+    public int insertCustomer(Customer obj) {
         int n = 0;
         String sql = "INSERT INTO [Customer]\n"
                 + "           ([customerID]\n"
@@ -275,12 +289,13 @@ public class DAOCustomer extends DBContext {
             pre.setString(13, obj.getSecutityAnswer());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-           
+
         }
 
         return n;
     }
-   public int getLastCustomerID() {
+
+    public int getLastCustomerID() {
         Integer lastCustomerID = null;
         try {
             String query = "SELECT MAX(customerID) AS lastID FROM Customer";
@@ -292,14 +307,15 @@ public class DAOCustomer extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return (lastCustomerID != null) ? lastCustomerID : 9;
     }
-   public List<Customer> getCustomer() {
+
+    public List<Customer> getCustomer() {
         List<Customer> customer = new ArrayList<>();
         try {
             String query = "Select c.customerID, c.first_name, c.last_name,c.phone,c.email,c.address,"
-                    + "c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID,sq.security_question,c.securityAnswer \n"
+                    + "c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID,sq.security_question,c.securityAnswer, c.image \n"
                     + "from Customer c inner join SecurityQuestion sq on c.securityID = sq.securityID";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
@@ -316,8 +332,8 @@ public class DAOCustomer extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
-                        
-                        s,rs.getString("securityAnswer"));
+                        s, rs.getString("securityAnswer"),
+                            rs.getString("image"));
                 customer.add(c);
             }
         } catch (Exception e) {
@@ -325,10 +341,11 @@ public class DAOCustomer extends DBContext {
         }
         return customer;
     }
-   public Vector<Customer> getCustomer(String sql) {
+
+    public Vector<Customer> getCustomer(String sql) {
         Vector<Customer> vector = new Vector<Customer>();
         try {
-               PreparedStatement stm = conn.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 int customerID = rs.getInt("customerID");
@@ -348,15 +365,17 @@ public class DAOCustomer extends DBContext {
                 sq.setSecurityID(securityID);
                 sq.setSecurity_question(sercurityquestion);
                 String securityAnswer = rs.getString("securityAnswer");
-                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer);
+                String image = rs.getString("image");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
                 vector.add(cus); // Added to the vector
             }
         } catch (SQLException ex) {
-           
+
         }
         return vector;
     }
-   public Vector<Integer> getStatus(String sql) {
+
+    public Vector<Integer> getStatus(String sql) {
         Vector<Integer> vector = new Vector<>();
         try {
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -369,10 +388,11 @@ public class DAOCustomer extends DBContext {
 
         return vector;
     }
-     public Vector<String> getEmail(String sql) {
+
+    public Vector<String> getEmail(String sql) {
         Vector<String> vector = new Vector<>();
         try {
-             PreparedStatement stm = conn.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 vector.add(rs.getString("email"));
@@ -386,7 +406,7 @@ public class DAOCustomer extends DBContext {
     public Vector<String> getPhone(String sql) {
         Vector<String> vector = new Vector<>();
         try {
-             PreparedStatement stm = conn.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 vector.add(rs.getString("phone"));
@@ -400,7 +420,7 @@ public class DAOCustomer extends DBContext {
     public Vector<String> getFname(String sql) {
         Vector<String> vector = new Vector<>();
         try {
-              PreparedStatement stm = conn.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 vector.add(rs.getString("first_name"));
@@ -410,15 +430,15 @@ public class DAOCustomer extends DBContext {
 
         return vector;
     }
-    
-     public Vector<Customer> sort(String option) {
+
+    public Vector<Customer> sort(String option) {
         Vector<Customer> vector = new Vector<Customer>();
         String sql = "select c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
-                + "inner join SecurityQuestion sq on c.securityID = sq.securityID order by"+option+ "ACS";
+                + "inner join SecurityQuestion sq on c.securityID = sq.securityID order by" + option + "ACS";
         try {
-             PreparedStatement stm = conn.prepareStatement(sql);
+            PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Security sq = new Security(rs.getInt("securityID"),
                         null);
                 Customer cus = new Customer(rs.getInt("customerID"),
@@ -433,18 +453,20 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         sq,
-                        rs.getString("securityAnswer")
+                        rs.getString("securityAnswer"),
+                        rs.getString("image")
                 );
                 vector.add(cus);
             }
         } catch (SQLException ex) {
-         ex.printStackTrace();
+            ex.printStackTrace();
         }
         return vector;
     }
-     public Customer checkAnswer(int id, String answer, String username, String pass) {
+
+    public Customer checkAnswer(int id, String answer, String username, String pass) {
         String sql = "select sq.security_question,c.securityAnswer,c.customerID,c.first_name,\n"
-                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID from Customer c \n"
+                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID, c.image from Customer c \n"
                 + "inner join SecurityQuestion sq on c.securityID = sq.securityID where c.securityID=? and c.securityanswer=? and c.username=?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -465,12 +487,12 @@ public class DAOCustomer extends DBContext {
                 Date dob = rs.getDate("dob");
                 Boolean gender = rs.getBoolean("gender");
                 Date activity_history = rs.getDate("activity_history");
-     
 
                 String securityAnswer = rs.getString("securityAnswer");
                 Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                String image = rs.getString("image");
 
-                return new Customer(customerID, first_name, last_name, phone, email, address, username, pass, dob, gender, activity_history, sq, securityAnswer);
+                return new Customer(customerID, first_name, last_name, phone, email, address, username, pass, dob, gender, activity_history, sq, securityAnswer, image);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -478,9 +500,10 @@ public class DAOCustomer extends DBContext {
 
         return null;
     }
-      public Customer check(String username, String password) {
+
+    public Customer check(String username, String password) {
         String sql = "select sq.security_question,c.securityAnswer,c.customerID,c.first_name,\n"
-                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID from Customer c \n"
+                + "c.last_name,c.phone,c.email,c.email,c.address,c.username,c.password,c.dob,c.gender,c.activity_history,c.securityID, c.image from Customer c \n"
                 + "inner join SecurityQuestion sq on c.securityID = sq.securityID where username=  ? and password = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -501,12 +524,12 @@ public class DAOCustomer extends DBContext {
                 Date dob = rs.getDate("dob");
                 Boolean gender = rs.getBoolean("gender");
                 Date activity_history = rs.getDate("activity_history");
-              
 
                 String securityAnswer = rs.getString("securityAnswer");
                 Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                String image = rs.getString("image");
 
-                return new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer);
+                return new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -514,7 +537,8 @@ public class DAOCustomer extends DBContext {
 
         return null;
     }
-      public void change(String user, String pass) {
+
+    public void change(String user, String pass) {
         String sql = "update Customer set password = ? where username = ?";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -525,6 +549,7 @@ public class DAOCustomer extends DBContext {
             e.printStackTrace();
         }
     }
+
     public static void main(String[] args) {
         DAOCustomer dao = new DAOCustomer();
         System.out.println(dao.getCusByUserName("user1"));

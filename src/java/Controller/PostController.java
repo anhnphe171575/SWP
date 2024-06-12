@@ -79,17 +79,32 @@ public class PostController extends HttpServlet {
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
         Vector<Post> vec1 = daoP.getAll();
-     //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
+        //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
-                    Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-
-                    request.setAttribute("status", vec4);
-
-        request.setAttribute("post", vec1);
+        Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
+           int page = 0;
+        int numberOfPage = 10;
+        String xpage = request.getParameter("page");
+        int size = vec1.size();
+        int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
+        if (xpage == null) {
+            page = 1;
+        } else {
+            page = Integer.parseInt(xpage);
+        }
+        int start, end;
+        start = (page - 1) * numberOfPage;
+        end = Math.min(page * numberOfPage, vec1.size());
+        Vector<Post> list = daoP.getListByPage(vec1, start, end);
+        request.setAttribute("post", list);
+        request.setAttribute("numpage", num);
+        request.setAttribute("page", page);
+        request.setAttribute("numberOfPage", numberOfPage);
+        request.setAttribute("status", vec4);
         request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);
         request.setAttribute("category_product", vec5);
@@ -112,29 +127,16 @@ public class PostController extends HttpServlet {
         DAOPost daoP = new DAOPost();
         DAOUser daoU = new DAOUser();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
-
+        Vector<Post> listPost = new Vector<>();
         if (service == null) {
             doGet(request, response);
         } else if (service.equals("search")) {
             String title = request.getParameter("title");
-            request.setAttribute("post", daoP.search(title));
-            request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
+            listPost = daoP.search(title);
         } else if (service.equals("sort")) {
             String sort = request.getParameter("sort");
-            request.setAttribute("post", daoP.sort(sort));
+            listPost = daoP.sort(sort);
 
-            Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-            Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-            Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-                + "inner join SecurityQuestion s on u.securityID=s.securityID");
-            Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
-
-            request.setAttribute("category", vec2);
-            request.setAttribute("user", vec3);
-            request.setAttribute("status", vec4);
-            request.setAttribute("category_product", vec5);
-            request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
         } else if (service.equals("filter")) {
             String category = request.getParameter("category");
             String author = request.getParameter("author");
@@ -168,20 +170,7 @@ public class PostController extends HttpServlet {
                 }
                 vector = daoP.getAll1(aa1, all1);
             }
-
-            Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-            Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-            Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-                + "inner join SecurityQuestion s on u.securityID=s.securityID");
-            Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
-
-            request.setAttribute("post", vector);
-            request.setAttribute("category", vec2);
-            request.setAttribute("user", vec3);
-            request.setAttribute("status", vec4);
-            request.setAttribute("category_product", vec5);
-            request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
+            listPost = vector;
 
         } else if (service.equals("add")) {
             String thumbnail = request.getParameter("thumbnail");
@@ -191,9 +180,7 @@ public class PostController extends HttpServlet {
             String brief_information = request.getParameter("brief_information");
             String description = request.getParameter("description");
             try {
-
                 int category_post_id = Integer.parseInt(category_post_raw);
-
                 int status = 1;
                 String username = (String) session.getAttribute("username");
                 User u = daoU.getUserByLogin(username);
@@ -203,46 +190,42 @@ public class PostController extends HttpServlet {
                 CategoryPost cp = new CategoryPost(category_post_id, daoCPR.getCategoryProductbyID(category_post_id));
                 Post post = new Post(0, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
                 daoP.addPost(post);
-                doGet(request, response);
+                response.sendRedirect("PostController");
             } catch (Exception e) {
                 doGet(request, response);
             }
-        } else if (service.equals("status")) {
-            String postID_raw = request.getParameter("postID");
-            String status_raw = request.getParameter("status");
-            try {
-                int status = Integer.parseInt(status_raw);
-                int postID = Integer.parseInt(postID_raw);
-                daoP.hideShow(postID, status);
-
-                Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-                Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-                Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+        }else{
+        Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
+        Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
+        Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
-                Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
-
-                request.setAttribute("category", vec2);
-                request.setAttribute("user", vec3);
-                request.setAttribute("status", vec4);
-                request.setAttribute("category_product", vec5);
-                request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
-            } catch (Exception e) {
-            }
-
+        Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
+        int page = 0;
+        int numberOfPage = 10;
+        String xpage = request.getParameter("page");
+        int size = listPost.size();
+        int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
+        if (xpage == null) {
+            page = 1;
         } else {
-            Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-            Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-            Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-                + "inner join SecurityQuestion s on u.securityID=s.securityID");
-            Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
-
-            request.setAttribute("category", vec2);
-            request.setAttribute("user", vec3);
-            request.setAttribute("status", vec4);
-            request.setAttribute("category_product", vec5);
-            request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
+            page = Integer.parseInt(xpage);
+        }
+        int start, end;
+        start = (page - 1) * numberOfPage;
+        end = Math.min(page * numberOfPage, listPost.size());
+        Vector<Post> list = daoP.getListByPage(listPost, start, end);
+        request.setAttribute("post", list);
+        request.setAttribute("lastPost", daoP.getLastBlog());
+        request.setAttribute("numpage", num);
+        request.setAttribute("page", page);
+        request.setAttribute("numberOfPage", numberOfPage);
+   
+        request.setAttribute("category", vec2);
+        request.setAttribute("user", vec3);
+        request.setAttribute("status", vec4);
+        request.setAttribute("category_product", vec5);
+        request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
         }
     }
 

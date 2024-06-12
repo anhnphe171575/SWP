@@ -26,11 +26,12 @@ public class User {
     private Role role;
     private Security security;
     private String securityAnswer;
+    private String image;
      public User(){
          
      }
 
-    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Role role, Security security, String securityAnswer) {
+    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Role role, Security security, String securityAnswer, String image) {
         this.UserID = UserID;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -45,6 +46,7 @@ public class User {
         this.role = role;
         this.security = security;
         this.securityAnswer = securityAnswer;
+        this.image = image;
     }
 
     public int getUserID() {
@@ -159,9 +161,17 @@ public class User {
         this.securityAnswer = securityAnswer;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "UserID=" + UserID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", role=" + role + ", security=" + security + ", securityAnswer=" + securityAnswer + '}';
+        return "User{" + "UserID=" + UserID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", role=" + role + ", security=" + security + ", securityAnswer=" + securityAnswer + ", image=" + image + '}';
     }
 
    

@@ -70,6 +70,7 @@ public class EditPost extends HttpServlet {
         DAL.DAOPost dao = new DAOPost();
         int id = Integer.parseInt(request.getParameter("postID"));
         request.setAttribute("post", dao.getPostById(id));
+        request.setAttribute("detail", Integer.parseInt(request.getParameter("detail")));
         request.getRequestDispatcher("Views/editpost.jsp").forward(request, response);
     }
 
@@ -88,8 +89,9 @@ public class EditPost extends HttpServlet {
         DAOUser daoU = new DAOUser();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
         DAOPost daoP = new DAOPost();
-        
-        int id = Integer.parseInt(request.getParameter("postID"));
+        String service = request.getParameter("service");
+        if(service.equals("editDetail")){
+            int id = Integer.parseInt(request.getParameter("postID"));
         String title = request.getParameter("title");
         String thumbnail = request.getParameter("thumbnail");
         int category_postID = Integer.parseInt(request.getParameter("category_postID"));
@@ -110,7 +112,7 @@ public class EditPost extends HttpServlet {
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.image, u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
 
         request.setAttribute("post", vec1);
@@ -118,8 +120,30 @@ public class EditPost extends HttpServlet {
         request.setAttribute("user", vec3);
         request.setAttribute("status", vec4);
         request.setAttribute("category_product", daoCPR.getCategoryProductProduct());
-        request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
+        request.getRequestDispatcher("PostDetail?service=viewDetail&postID="+id).forward(request, response);
+        }else if ( service.equals("editList")){
+        int id = Integer.parseInt(request.getParameter("postID"));
+        String title = request.getParameter("title");
+        String thumbnail = request.getParameter("thumbnail");
+        int category_postID = Integer.parseInt(request.getParameter("category_postID"));
+        int featured = Integer.parseInt(request.getParameter("featured"));
+        int status = Integer.parseInt(request.getParameter("status"));
+        String brief_information = request.getParameter("brief_information");
+        String description = request.getParameter("description");
+        
+        String username = (String) session.getAttribute("username");
+        User u = daoU.getUserByLogin(username);
+        LocalDate localDate = LocalDate.now();
+        Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        CategoryPost cp = new CategoryPost(category_postID, daoCPR.getCategoryProductbyID(category_postID));
+        Post post = new Post(id, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
+        daoP.editPost(post);
 
+            response.sendRedirect("PostController");
+
+        }
+        
+        
     }
 
     /**

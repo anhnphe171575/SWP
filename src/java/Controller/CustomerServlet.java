@@ -117,13 +117,14 @@ public class CustomerServlet extends HttpServlet {
        LocalDate localDate = LocalDate.now();
                 Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 String securityAnswer = request.getParameter("securityAnswer");
+                String image = request.getParameter("image");
                 //Customer cus = new Customer(, username, username, phone, email, address, username, password, dob, true, 0, sq, securityAnswer);
                 int customerid = Integer.parseInt(customerID);
                 String sql = "select c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.status, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
                         + "inner join SecurityQuestion sq on c.securityID = sq.securityID where customerID=" + customerID;
                 Vector<Customer> vector = dao.getCustomer(sql);
                 if (vector.size() > 0) {
-                Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer);
+                Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer,image);
                 dao.updateCustomer(cus);
                response.sendRedirect("CustomerServletURL");
              
@@ -167,7 +168,7 @@ public class CustomerServlet extends HttpServlet {
                 String securityAnswer = request.getParameter("securityAnswer");
                  LocalDate localDate = LocalDate.now();
                 Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                Customer cus = new Customer(-1, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer);
+                Customer cus = new Customer(-1, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer,null);
                 dao.insertCustomer(cus);
                 response.sendRedirect("CustomerServletURL");
             }

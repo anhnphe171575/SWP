@@ -46,7 +46,7 @@ public class DAOPost extends DBContext {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.RoleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.RoleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -62,7 +62,7 @@ public class DAOPost extends DBContext {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), role, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), role, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -80,7 +80,7 @@ public class DAOPost extends DBContext {
                 + "                                p.featured,p.status,p.brief_information,\n"
                 + "                                 p.description, p.date_create_by,\n"
                 + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
                 + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "                				 from Post p \n"
@@ -97,7 +97,7 @@ public class DAOPost extends DBContext {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -115,7 +115,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                                p.featured,p.status,p.brief_information,\n"
                 + "                                 p.description,p.flag, p.date_create_by,\n"
                 + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
                 + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "                				 from Post p \n"
@@ -132,7 +132,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -186,7 +186,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -202,7 +202,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"),  u, rs.getDate("date_create_by"));
@@ -220,7 +220,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description,p.flag, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -237,7 +237,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -256,7 +256,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -273,7 +273,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -321,7 +321,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -353,7 +353,8 @@ public Vector<Post> getPostByCPId(int id) {
                         rs.getInt("status"),
                         r,
                         sq,
-                        rs.getString("securityAnswer"));
+                        rs.getString("securityAnswer"),
+                rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"),
                         cpr);
                 Post p = new Post(rs.getInt("postID"),
@@ -446,7 +447,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -463,7 +464,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"),  u, rs.getDate("date_create_by"));
@@ -483,7 +484,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -509,7 +510,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"),r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"),r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"),  u, rs.getDate("date_create_by"));
@@ -528,7 +529,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -544,7 +545,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"),  u, rs.getDate("date_create_by"));
@@ -563,7 +564,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer, \n"
+                + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
@@ -580,7 +581,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
                 User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
-                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"));
+                        rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
                 Post p = new Post(rs.getInt("postID"), rs.getString("thumbnail"), rs.getString("title"), cp, rs.getInt("featured"), rs.getInt("status"), rs.getString("brief_information"),
                         rs.getString("description"), u, rs.getDate("date_create_by"));
@@ -616,10 +617,11 @@ public Vector<Post> getPostByCPId(int id) {
         java.util.Date date_create_by = java.util.Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         CategoryProduct cp1 = new CategoryProduct();
         CategoryPost cp = new CategoryPost(1, cp1);
-        Role r = new Role(1, "");
-        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "");
-        Post obj = new Post(0, "aaa", "bbb", cp, 1, 1, "aaa", "aaa", u, date_create_by);
-        daoP.addPost(obj);
+//        Role r = new Role(1, "");
+//        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "","");
+//        Post obj = new Post(0, "ddd", "ooo", cp, 1, 1, "aaa", "aaa", u, date_create_by);
+//        daoP.addPost(obj);
+          System.out.println(daoP.getBlog());
         
 
 //        String category = "all";

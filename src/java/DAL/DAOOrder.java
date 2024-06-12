@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package DAL;
 
 import Entity.CategoryProduct;
@@ -9,6 +13,7 @@ import Entity.Product;
 import Entity.Role;
 import Entity.StatusOrder;
 import Entity.User;
+import java.sql.Statement;
 import java.util.*;
 import java.lang.*;
 import java.sql.PreparedStatement;
@@ -17,6 +22,420 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class DAOOrder extends DBContext {
+
+    public LinkedHashMap<String, Double> trend7dayTotalOrderBySale(int saleid, String startdate, String enddate) {
+        LinkedHashMap<String, Double> linkedHashMap = new LinkedHashMap<>();
+        String sql = "DECLARE @startDate DATE;\n"
+                + "DECLARE @endDate DATE;\n"
+                + "DECLARE @saleID INT;\n"
+                + "\n"
+                + "SET @startDate = '" + startdate + "'; \n"
+                + "SET @endDate = '" + enddate + "'; \n"
+                + "SET @saleID = '" + saleid + "';\n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT @startDate AS order_date\n"
+                + "    UNION ALL\n"
+                + "    SELECT DATEADD(DAY, 1, order_date)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, order_date) <= @endDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.order_date AS order_date,\n"
+                + "    SUM(oi.list_price * oi.quantity) AS Total_Revenue\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [Order] o ON dr.order_date = o.order_date\n"
+                + "LEFT JOIN \n"
+                + "    Order_items oi ON o.orderID = oi.orderID\n"
+                + "WHERE\n"
+                + "    o.UserID = @saleID\n"
+                + "GROUP BY \n"
+                + "    dr.order_date\n"
+                + "ORDER BY \n"
+                + "    dr.order_date DESC\n"
+                + "OPTION (MAXRECURSION 0);";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                linkedHashMap.put(rs.getString("order_date"), rs.getDouble("Total_Revenue"));
+            }
+        } catch (Exception ex) {
+
+        }
+        return linkedHashMap;
+
+    }
+
+    public int TotalOrder() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS Total_Orders\n"
+                + "FROM \n"
+                + "    [Order];";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("Total_Orders");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int TotalOrder1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT\n"
+                + "                    COUNT(*) AS Total_Orders\n"
+                + "                FROM \n"
+                + "                    [Order] o where o.UserID = '" + saleid + "' AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("Total_Orders");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalSuccess() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS Total_RevenueSuccess\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '5'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("Total_RevenueSuccess");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalSuccess1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS Total_RevenueSuccess\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '5'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("Total_RevenueSuccess");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalSubmit() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalSubmit\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '1'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalSubmit");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalSubmit1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalSubmit\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '1'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalSubmit");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalReject() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalReject\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '2'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalReject");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalReject1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalReject\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '2'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalReject");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalPacking() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalPacking\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '3'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalPacking");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalPacking1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalPacking\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '3'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalPacking");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalDelivering() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalDelivering\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '4'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalDelivering");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalDelivering1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalDelivering\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '4'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalDelivering");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalFail() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalFail\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '6'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalFail");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalFail1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalFail\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '6'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalFail");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalDone() {
+        int n = 0;
+        String sql = "SELECT \n"
+                + "    COUNT(*) AS TotalDone\n"
+                + "FROM \n"
+                + "    [Order] o\n"
+                + "WHERE\n"
+                + "    o.Status_OrderID = '7'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalDone");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public int trend7dayTotalDone1(int saleid, String startdate, String enddate) {
+        int n = 0;
+        String sql = "SELECT COUNT(*) AS TotalDone\n"
+                + "FROM [Order] o\n"
+                + "WHERE o.Status_OrderID = '7'\n"
+                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                n = rs.getInt("TotalDone");
+            }
+        } catch (Exception ex) {
+
+        }
+        return n;
+
+    }
+
+    public LinkedHashMap<String, Double> trend7dayTotalOrder(String date) {
+        LinkedHashMap<String, Double> linkedHashMap = new LinkedHashMap<>();
+        String sql = "DECLARE @selectedDate DATE;\n"
+                + "\n"
+                + "SET @selectedDate = '" + date + "'; \n"
+                + "\n"
+                + "WITH DateRange AS (\n"
+                + "    SELECT DATEADD(DAY, -7, @selectedDate) AS order_date\n"
+                + "    UNION ALL\n"
+                + "    SELECT DATEADD(DAY, 1, order_date)\n"
+                + "    FROM DateRange\n"
+                + "    WHERE DATEADD(DAY, 1, order_date) < @selectedDate\n"
+                + ")\n"
+                + "SELECT \n"
+                + "    dr.order_date AS order_date,\n"
+                + "    SUM(oi.list_price * oi.quantity) AS Total_Revenue\n"
+                + "FROM \n"
+                + "    DateRange dr\n"
+                + "LEFT JOIN \n"
+                + "    [Order] o ON dr.order_date = o.order_date\n"
+                + "LEFT JOIN \n"
+                + "    Order_items oi ON o.orderID = oi.orderID\n"
+                + "WHERE\n"
+                + "    dr.order_date BETWEEN DATEADD(DAY, -7, @selectedDate) AND DATEADD(DAY, -1, @selectedDate)\n"
+                + "GROUP BY \n"
+                + "    dr.order_date\n"
+                + "ORDER BY \n"
+                + "    dr.order_date DESC\n"
+                + "OPTION (MAXRECURSION 0);";
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                linkedHashMap.put(rs.getString("order_date"), rs.getDouble("Total_Revenue"));
+            }
+        } catch (Exception ex) {
+
+        }
+        return linkedHashMap;
+
+    }
 
     public ArrayList<OrderItems> getOrder() {
         ArrayList<OrderItems> orderitems = new ArrayList<>();
@@ -62,6 +481,7 @@ public class DAOOrder extends DBContext {
                         rs.getInt("status"),
                         null,
                         null,
+                        null,
                         null);
 
                 Product p = new Product(
@@ -92,6 +512,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
+                        null,
                         null,
                         null);
                 Receiver ri = new Receiver(rs.getInt("ReceiverID"),
@@ -163,6 +584,7 @@ public class DAOOrder extends DBContext {
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
                         null, // Assuming customer activity history is not used here
+                        null,
                         null,
                         null
                 );
@@ -278,6 +700,7 @@ public class DAOOrder extends DBContext {
                         false, // Assuming customer gender is not used here
                         null, // Assuming customer activity history is not used here
                         null,
+                        null,
                         null
                 );
 
@@ -370,6 +793,7 @@ public class DAOOrder extends DBContext {
                         false, // Assuming customer gender is not used here
                         null, // Assuming customer activity history is not used here
                         null,
+                        null,
                         null
                 );
 
@@ -460,6 +884,7 @@ public class DAOOrder extends DBContext {
                         false,
                         null,
                         null,
+                        null,
                         null
                 );
                 Product p = new Product(0,
@@ -505,204 +930,6 @@ public class DAOOrder extends DBContext {
         return orderItems;
     }
 
-    public ArrayList<OrderItems> getOrderbySaleName(String name) {
-        ArrayList<OrderItems> orderItems = new ArrayList<>();
-        try {
-            String query = "SELECT o.orderID, o.order_date, c.first_name, c.last_name, STRING_AGG(p.product_name, ', ') AS Product_name, "
-                    + "SUM(ot.list_price * ot.quantity) AS total_cost, "
-                    + "st.Status_OrderID, st.Status_Name "
-                    + "FROM [Order] o \n"
-                    + "INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
-                    + "INNER JOIN Customer c ON o.customerID = c.customerID \n"
-                    + "INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
-                    + "INNER JOIN Product p ON ot.productID = p.productID \n"
-                    + "INNER JOIN [User] u on u.UserID = o.UserID\n"
-                    + "WHERE CONCAT(u.first_name, ' ', u.last_name) = ?\n"
-                    + "GROUP BY \n"
-                    + "    o.orderID, \n"
-                    + "    o.order_date, \n"
-                    + "    c.first_name, \n"
-                    + "    c.last_name, \n"
-                    + "    st.Status_OrderID, \n"
-                    + "    st.Status_Name";
-
-            PreparedStatement stm = conn.prepareStatement(query);
-            stm.setString(1, name);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                // Create StatusOrder object
-                StatusOrder st = new StatusOrder(
-                        rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null // assuming no need for a third parameter based on your usage
-                );
-
-                // Create Customer object
-                Customer c = new Customer(
-                        0,
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null,
-                        null,
-                        null
-                );
-
-                // Create Order object
-                Order o = new Order(
-                        rs.getInt("orderID"),
-                        st,
-                        c,
-                        null,
-                        rs.getDate("order_date"),
-                        null,
-                        null,
-                        null
-                );
-
-                // Create Product object
-                Product p = new Product(
-                        0,
-                        rs.getString("Product_name"), // concatenated product names
-                        0,
-                        0,
-                        null,
-                        0,
-                        null,
-                        null,
-                        0,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-
-                // Create OrderItems object
-                OrderItems ot = new OrderItems(
-                        0,
-                        o,
-                        p,
-                        rs.getFloat("total_cost"),
-                        0 // assuming quantity is not needed here
-                );
-
-                orderItems.add(ot);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return orderItems;
-    }
-
-    public ArrayList<OrderItems> getOrderbyStatus(String status) {
-        ArrayList<OrderItems> orderItems = new ArrayList<>();
-        try {
-            String query = "SELECT "
-                    + "    o.orderID, "
-                    + "    o.order_date, "
-                    + "    c.first_name, "
-                    + "    c.last_name, "
-                    + "    STRING_AGG(p.product_name, ', ') AS Product_name, "
-                    + "    SUM(ot.list_price * ot.quantity) AS total_cost, "
-                    + "    st.Status_OrderID, "
-                    + "    st.Status_Name "
-                    + "FROM [Order] o "
-                    + "INNER JOIN Order_items ot ON o.orderID = ot.orderID "
-                    + "INNER JOIN Customer c ON o.customerID = c.customerID "
-                    + "INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID "
-                    + "INNER JOIN Product p ON ot.productID = p.productID "
-                    + "INNER JOIN [User] u ON u.UserID = o.UserID "
-                    + "WHERE st.Status_Name = ? "
-                    + "GROUP BY "
-                    + "    o.orderID, "
-                    + "    o.order_date, "
-                    + "    c.first_name, "
-                    + "    c.last_name, "
-                    + "    st.Status_OrderID, "
-                    + "    st.Status_Name";
-
-            PreparedStatement stm = conn.prepareStatement(query);
-            stm.setString(1, status);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                // Create StatusOrder object
-                StatusOrder st = new StatusOrder(
-                        rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null // Adjust if there's a third parameter needed
-                );
-
-                // Create Customer object
-                Customer c = new Customer(
-                        0,
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        false,
-                        null,
-                        null,
-                        null
-                );
-
-                // Create Order object
-                Order o = new Order(
-                        rs.getInt("orderID"),
-                        st,
-                        c,
-                        null,
-                        rs.getDate("order_date"),
-                        null,
-                        null,
-                        null
-                );
-
-                // Create Product object
-                Product p = new Product(
-                        0,
-                        rs.getString("Product_name"), // concatenated product names
-                        0,
-                        0,
-                        null,
-                        0,
-                        null,
-                        null,
-                        0,
-                        0,
-                        null,
-                        null,
-                        null,
-                        null
-                );
-
-                // Create OrderItems object
-                OrderItems ot = new OrderItems(
-                        0,
-                        o,
-                        p,
-                        rs.getFloat("total_cost"),
-                        0 // Assuming quantity is not needed here
-                );
-
-                orderItems.add(ot);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return orderItems;
-    }
-
     public List<String> getStatusOrder() {
         List<String> status = new ArrayList<>();
         try {
@@ -720,10 +947,9 @@ public class DAOOrder extends DBContext {
 
     public List<String> getSaleName() {
         List<String> names = new ArrayList<>();
-        try {
-            String query = "SELECT u.first_name, u.last_name FROM [User] u;";
-            PreparedStatement stm = conn.prepareStatement(query);
-            ResultSet rs = stm.executeQuery();
+        String query = "SELECT u.first_name, u.last_name FROM [User] u WHERE u.RoleID = 2;";
+        try (PreparedStatement stm = conn.prepareStatement(query); ResultSet rs = stm.executeQuery()) {
+
             while (rs.next()) {
                 String firstName = rs.getString("first_name");
                 String lastName = rs.getString("last_name");
@@ -775,6 +1001,7 @@ public class DAOOrder extends DBContext {
                         false,
                         null,
                         null,
+                        null,
                         null);
 
                 User user = new User(0,
@@ -788,6 +1015,7 @@ public class DAOOrder extends DBContext {
                         null,
                         false,
                         0, // Update this to correct status field if needed
+                        null,
                         null,
                         null,
                         null);
@@ -902,16 +1130,8 @@ public class DAOOrder extends DBContext {
         return orderItemsList;
     }
 
-    public List<OrderItems> getListbyPage(List<OrderItems> list, int start, int end) {
-        ArrayList<OrderItems> l = new ArrayList();
-        for (int i = start; i < end; i++) {
-            l.add(list.get(i));
-        }
-        return l;
-    }
-
     public static void main(String[] args) {
         DAOOrder d = new DAOOrder();
-        System.out.println(d.getSaleName().toString());
+        System.out.println(d.getOrderedProduct(1).toString());
     }
 }

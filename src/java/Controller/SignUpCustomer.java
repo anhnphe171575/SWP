@@ -214,7 +214,7 @@ public class SignUpCustomer extends HttpServlet {
             Security sq = new Security(secu_id, ques);
             Date date = new Date();
             Customer cus = new Customer(id, firstName, lastName, phone, email, address, user, pass, formatDate(dob),
-                    Boolean.valueOf(gen), date, sq, ans);
+                    Boolean.valueOf(gen), date, sq, ans,null);
             session.setAttribute("cus", cus);
 
             // Gửi email xác minh với thời gian hết hạn
