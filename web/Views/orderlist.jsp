@@ -8,9 +8,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:set var="pageSize" value="2" />
-<c:set var="totalItems" value="${fn:length(list1)}" />
-<c:set var="totalPages" value="${(totalItems + pageSize - 1) / pageSize}" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +16,12 @@
         <title>Order List</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             td img {
@@ -254,6 +252,18 @@
             }
         </style>
         <script>
+            $(document).ready(function () {
+                $('.table').DataTable({
+                    "paging": true,
+                    "lengthChange": false,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "pageLength": 2
+                });
+            });
+
             function validateForm() {
                 var orderID = document.forms["searchForm"]["id"].value;
                 var customerName = document.forms["searchForm"]["customer"].value;
@@ -290,10 +300,9 @@
                         </div>
                     </div>
                     <div class="container">
-                        <form action="orderlist"method="post">
+                        <form action="orderlist" method="post">
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <!-- Filter by Order Date -->
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Order Date:</span>
@@ -303,7 +312,6 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <!-- Filter by Customer Name -->
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Sale Name:</span>
@@ -317,7 +325,6 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <!-- Filter by Status -->
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Status:</span>
@@ -331,7 +338,6 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <!-- Hidden input field for service name -->
                                     <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
                                     <input type="hidden" name="service" value="filter">
                                 </div>
@@ -356,22 +362,15 @@
                                     <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
                                     <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
                                     <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                    <td>${item.product.product_name.split(',')[0]}</td>
+                                    <td>${fn:split(item.product.product_name, ',')[0]}</td>
                                     <td>${quantity[item.order.orderID]}</td>
-                                    <td>
-                                        <fmt:formatNumber value="${item.list_price}"/>
-                                    </td>   
+                                    <td><fmt:formatNumber value="${item.list_price}"/></td>   
                                     <td>${item.order.status.status_name}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                 </div>
-                <ul class="pagination">
-                    <c:forEach var="i" begin="1" end="${totalPages}">
-                        <a href="orderlist?page=${i}" class="page-link">${i}</a>
-                    </c:forEach>
-                </ul>
             </div>
         </div>
     </body>
