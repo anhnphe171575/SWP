@@ -115,26 +115,27 @@ public class Orderlist extends HttpServlet {
             Date to = formatDate(request.getParameter("toDate"));
             String sale = request.getParameter("sale");
             String status = request.getParameter("status");
-            ArrayList<OrderItems> orderItems = d.getOrderbyDate(from, to);
-            Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
+            ArrayList<OrderItems> orderItems;
+            Map<Integer, Integer> quantity;
+
+// Check if date range is provided
+            if (from != null && to != null) {
+                orderItems = d.getOrderbyDate(from, to);
+            } else if (sale != null && !sale.isEmpty()) { // Check if sale name is provided
+           //     orderItems = d.getOrderbySaleName(sale);
+            } else if (status != null && !status.isEmpty()) { // Check if status is provided
+             //   orderItems = d.getOrderbyStatus(status);
+            } else { // Default case if no parameters are provided
+                orderItems = new ArrayList<>(); // Or you can fetch a default list
+            }
+
+            //quantity = d.getOrderQuantities(orderItems);
+
             request.setAttribute("sale", d.getSaleName());
-            request.setAttribute("list1", orderItems);
-            request.setAttribute("quantity", quantity);
+//            request.setAttribute("list1", orderItems);
+//            request.setAttribute("quantity", quantity);
             request.setAttribute("status", d.getStatusOrder());
 
-//                ArrayList<OrderItems> orderItems = d.getOrderbySaleName(sale);
-//                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
-//                request.setAttribute("sale", d.getSaleName());
-//                request.setAttribute("list1", orderItems);
-//                request.setAttribute("quantity", quantity);
-//                request.setAttribute("status", d.getStatusOrder());
-//            
-//                ArrayList<OrderItems> orderItems = d.getOrderbyStatus(status);
-//                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
-//                request.setAttribute("sale", d.getSaleName());
-//                request.setAttribute("list1", orderItems);
-//                request.setAttribute("quantity", quantity);
-//                request.setAttribute("status", d.getStatusOrder());
             request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
         } else {
             doHead(request, response);
