@@ -4,6 +4,7 @@
  */
 package Entity;
 
+import DAL.DAOOrder;
 import java.util.*;
 import java.lang.*;
 
@@ -17,11 +18,11 @@ public class Order {
     private User user;
     private Receiver receivers;
     private String notes;
-
+    private String PaymentMethod;
     public Order() {
     }
 
-    public Order(int orderID, StatusOrder status, Customer customer, Date shipped_date, Date order_date, User user, Receiver receivers, String notes) {
+    public Order(int orderID, StatusOrder status, Customer customer, Date shipped_date, Date order_date, User user, Receiver receivers, String notes, String PaymentMethod) {
         this.orderID = orderID;
         this.status = status;
         this.customer = customer;
@@ -30,6 +31,7 @@ public class Order {
         this.user = user;
         this.receivers = receivers;
         this.notes = notes;
+        this.PaymentMethod = PaymentMethod;
     }
 
     public int getOrderID() {
@@ -96,11 +98,32 @@ public class Order {
         this.notes = notes;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" + "orderID=" + orderID + ", status=" + status + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receivers=" + receivers + ", notes=" + notes + '}';
+    public String getPaymentMethod() {
+        return PaymentMethod;
     }
 
+    public void setPaymentMethod(String PaymentMethod) {
+        this.PaymentMethod = PaymentMethod;
+    }
+   public int Salesdivision(){
+       DAOOrder db = new DAOOrder();
+        HashMap<Integer, Integer> countMap = db.Countorder();
+        int minCount = Integer.MAX_VALUE;
+        for (int count : countMap.values()) {
+            if (count < minCount) {
+                minCount = count;
+            }
+        }
+        List<Integer> userIdsWithMinCount = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+            if (entry.getValue() == minCount) {
+                userIdsWithMinCount.add(entry.getKey());
+            }
+        }
+        int randomIndex = new Random().nextInt(userIdsWithMinCount.size());
+        int randomUserID = userIdsWithMinCount.get(randomIndex);
+        return randomUserID;
+   } 
 }
 
 

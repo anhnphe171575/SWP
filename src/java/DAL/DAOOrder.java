@@ -4,6 +4,7 @@
  */
 package DAL;
 
+import java.util.Date;
 import Entity.CategoryProduct;
 import Entity.Receiver;
 import Entity.Customer;
@@ -18,8 +19,10 @@ import java.util.*;
 import java.lang.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 
 public class DAOOrder extends DBContext {
 
@@ -446,11 +449,11 @@ public class DAOOrder extends DBContext {
                     + "                        u.UserID, u.first_name, u.last_name, \n"
                     + "                        u.phone, u.email, u.address, \n"
                     + "                        u.username AS user_username, u.password, u.dob, \n"
-                    + "                        u.gender, u.status, ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
+                    + "                        u.gender, u.status,ri.ReceiverID, ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
                     + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, st.RoleID, \n"
-                    + "                        ot.orderitemID, ot.list_price, ot.quantity, ot.discount \n"
+                    + "                        ot.orderitemID, ot.list_price, ot.quantity \n"
                     + "                        FROM [Order] o \n"
                     + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
                     + "                        INNER JOIN Customer c ON o.customerID = c.customerID \n"
@@ -527,7 +530,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("shipped_date"),
                         rs.getDate("order_date"),
                         u,
-                        ri, null);
+                        ri, null, null);
 
                 OrderItems ot = new OrderItems(
                         rs.getInt("orderitemID"),
@@ -543,7 +546,129 @@ public class DAOOrder extends DBContext {
         }
         return orderitems;
     }
+         
+      public ArrayList<OrderItems> getOrderByOrderID(int orderID) {
+        ArrayList<OrderItems> orderitems = new ArrayList<>();
+        try {
+            String query = "SELECT o.orderID, o.order_date, o.Status_OrderID, o.shipped_date, \n"
+                    + "                        c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, \n"
+                    + "                        c.username, c.password, c.dob, c.gender, c.activity_history, \n"
+                    + "                        u.UserID, u.first_name, u.last_name, \n"
+                    + "                        u.phone, u.email, u.address, \n"
+                    + "                        u.username AS user_username, u.password, u.dob, \n"
+                    + "                        u.gender, u.status, ri.ReceiverID,ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
+                    + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
+                    + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
+                    + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, st.RoleID, \n"
+                    + "                        ot.orderitemID, ot.list_price, ot.quantity \n"
+                    + "                        FROM [Order] o \n"
+                    + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
+                    + "                        INNER JOIN Customer c ON o.customerID = c.customerID \n"
+                    + "                        INNER JOIN Status_Order so ON o.Status_OrderID = so.Status_OrderID \n"
+                    + "                        INNER JOIN [User] u ON o.UserID = u.UserID \n"
+                    + "                        INNER JOIN Receiver_Information ri ON ri.ReceiverID = o.ReceiverID \n"
+                    + "                        INNER JOIN Product p ON ot.productID = p.productID"
+                    + "                        INNER JOIN Status_Order st on st.Status_OrderID = o.Status_OrderID where o.orderID =?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, orderID);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Role r = new Role(rs.getInt("RoleID"),
+                        null);
+                StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
+                        rs.getString("status_name"),
+                        r);
+                User u = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        null,
+                        null,
+                        null,
+                        null);
 
+                Product p = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("product_status"));
+
+                Customer c = new Customer(
+                        rs.getInt("customerID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getDate("activity_history"),
+                        null,
+                        null,
+                        null);
+                Receiver ri = new Receiver(rs.getInt("ReceiverID"),
+                        rs.getString("ReceiverFullName"),
+                        rs.getString("ReceiverMobile"),
+                        rs.getString("ReceiverAddress"),
+                        c);
+                Order o = new Order(
+                        rs.getInt("orderID"),
+                        st,
+                        c,
+                        rs.getDate("shipped_date"),
+                        rs.getDate("order_date"),
+                        u,
+                        ri, null, null);
+
+                OrderItems ot = new OrderItems(
+                        rs.getInt("orderitemID"),
+                        o,
+                        p,
+                        rs.getFloat("list_price"),
+                        rs.getInt("quantity"));
+
+                orderitems.add(ot);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return orderitems;
+    }
+      public ArrayList<Integer> getOrder1() {
+        ArrayList<Integer> oid = new ArrayList<>();
+        try {
+            String query = "select * from [Order]";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+               oid.add(rs.getInt("orderID"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return oid;
+    }
+      
     public ArrayList<OrderItems> getOrderInfor() {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
@@ -611,7 +736,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("order_date"),
                         null,
                         null,
-                        null
+                        null, null
                 );
 
                 // Create OrderItems object
@@ -731,7 +856,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("order_date"),
                         null,
                         null,
-                        null
+                        null, null
                 );
 
                 // Create OrderItems object
@@ -824,7 +949,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("order_date"),
                         null,
                         null,
-                        null
+                        null, null
                 );
 
                 // Create OrderItems object
@@ -910,7 +1035,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("order_date"),
                         null,
                         null,
-                        null
+                        null, null
                 );
 
                 // Create OrderItems object
@@ -1027,7 +1152,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("order_date"),
                         user,
                         null,
-                        query);
+                        null, null);
                 OrderItems ot = new OrderItems(0,
                         order,
                         null,
@@ -1061,13 +1186,31 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         r,
-                        null);
+                        null, null);
                 od.add(o);
             }
         } catch (Exception e) {
 
         }
         return od;
+    }
+
+    public HashMap<Integer, Integer> Countorder() {
+        HashMap<Integer, Integer> count = new HashMap<>();
+        try {
+            String query = "select Count(o.orderID) as count , u.UserID \n"
+                    + "from [Order] o right join [User] u on o.UserID = u.UserID \n"
+                    + "where u.RoleID =2\n"
+                    + "group by u.UserID ";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                count.put(rs.getInt("UserID"), rs.getInt("count"));
+            }
+        } catch (SQLException e) {
+            java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
     }
 
     public List<OrderItems> getOrderedProduct(int orderid) {
@@ -1130,8 +1273,111 @@ public class DAOOrder extends DBContext {
         return orderItemsList;
     }
 
+    public void addOrder(int orderId,int Status_OrderID, int customerID, Date shipped_date, Date order_date, int UserID, int ReceiverId, String notes, String PaymentMethod) {
+        try {
+            String query = "INSERT INTO [dbo].[Order]\n"
+                    + "           ([Status_OrderID]\n"
+                    + "           ,[customerID]\n"
+                    + "           ,[shipped_date]\n"
+                    + "           ,[order_date]\n"
+                    + "           ,[UserID]\n"
+                    + "           ,[ReceiverID]\n"
+                    + "           ,[Notes]\n"
+                    + "           ,[PaymentMethod]"
+                    + "           , [orderID])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+            PreparedStatement stm = conn.prepareStatement(query);
+
+            stm.setInt(1, Status_OrderID);
+            stm.setInt(2, customerID);
+            SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+            String shipped_date1 = spd.format(shipped_date);
+            String order_dater1 = spd.format(order_date);
+            stm.setDate(3, java.sql.Date.valueOf(shipped_date1));
+            stm.setDate(4, java.sql.Date.valueOf(order_dater1));
+            stm.setInt(5, UserID);
+            stm.setInt(6, ReceiverId);
+            stm.setString(7, notes);
+            stm.setString(8, PaymentMethod);
+            stm.setInt(9, orderId);
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+     
+      public void addOrderItems(int orderitemID, int orderID, int productID, double list_price, int quantity) {
+        try {
+            String query = "INSERT INTO [dbo].[Order_items]\n"
+                    + "           ([orderitemID]\n"
+                    + "           ,[orderID]\n"
+                    + "           ,[productID]\n"
+                    + "           ,[list_price]\n"
+                    + "           , [quantity])\n"
+                    + "     VALUES\n"
+                    + "           (?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?\n"
+                    + "           ,?)";
+            PreparedStatement stm = conn.prepareStatement(query);
+
+            stm.setInt(1, orderitemID);
+            stm.setInt(2, orderID);
+           
+            stm.setInt(3, productID);
+            stm.setDouble(4, list_price);
+            stm.setInt(5, quantity);
+           
+            stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+      
     public static void main(String[] args) {
-        DAOOrder d = new DAOOrder();
-        System.out.println(d.getOrderedProduct(1).toString());
+        DAOOrder db = new DAOOrder();
+        db.getOrderByOrderID(17);
+//        HashMap<Integer, Integer> countMap = db.Countorder();
+//        int minCount = Integer.MAX_VALUE;
+//
+//// Tìm số lượng nhỏ nhất
+//        for (int count : countMap.values()) {
+//            if (count < minCount) {
+//                minCount = count;
+//            }
+//        }
+//
+//// Tìm userID có count bằng giá trị nhỏ nhất
+//        List<Integer> userIdsWithMinCount = new ArrayList<>();
+//        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+//            if (entry.getValue() == minCount) {
+//                userIdsWithMinCount.add(entry.getKey());
+//            }
+//        }
+//
+//// In ra userID có count ít nhất
+//        System.out.println("UserID(s) có số lượng đơn hàng ít nhất:");
+//        for (int userId : userIdsWithMinCount) {
+//            System.out.println("UserID: " + userId);
+//        }
+//        int randomIndex = new Random().nextInt(userIdsWithMinCount.size());
+//        int randomUserID = userIdsWithMinCount.get(randomIndex);
+//
+//// In ra userID được chọn
+//        System.out.println("UserID được chọn ngẫu nhiên: " + randomUserID);
+
+        //  db.addOrder(0, 4, 1,java.sql.Date.valueOf("2024-06-01"), java.sql.Date.valueOf("2024-05-20"), 3, 1, "Deliver before noon", null);
     }
 }
