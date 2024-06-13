@@ -14,6 +14,10 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="./mktcss/styles.css">
+        <link rel="stylesheet" href="/qcss/style.css">
         <style>
             td img {
                 width: 100px; /* Sets the width of the image */
@@ -261,154 +265,163 @@
         </script>
     </head>
     <body>
+        <div class="grid-container">
 
-        <div class="container-xl">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div  class="col-sm-3">
-                                <a href="productslist" style="color: white"><h2>Manage <b>Products</b></h2></a>
-                            </div>
-                            <c:if test="${not empty msg}">
-                                <div style="color: white">${msg}</div>
-                            </c:if>
-                            <c:if test="${not empty msgUpdate}">
-                                <div style="color: white">${msgUpdate}</div>
-                            </c:if>
+            <!-- Header -->
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
 
-                            <div style="text-align: right" class="col-sm-3">
-                                <form action="productslist" method="post">
-                                    <input type="text" name="title" placeholder="Title or brief_information"><!-- comment -->
-                                    <input type="submit" name="submit" value="Search"><!-- comment -->
-                                    <input type="hidden" name="service" value="search">                                                                      
-                                </form>                    
-                            </div>
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
 
-                            <div class="col-sm-6">
-                                <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
-                                <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
-                                <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                <div class="container-xl">
+                    <div class="table-responsive">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <a href="productslist" style="color: white"><h2>Manage <b>Products</b></h2></a>
+                                    </div>
+                                <c:if test="${not empty msg}">
+                                    <div style="color: white">${msg}</div>
+                                </c:if>
+                                <c:if test="${not empty msgUpdate}">
+                                    <div style="color: white">${msgUpdate}</div>
+                                </c:if>
+
+                                <div style="text-align: right" class="col-sm-3">
+                                    <form action="productslist" method="post">
+                                        <input type="text" name="title" placeholder="Title or brief_information"><!-- comment -->
+                                        <input type="submit" name="submit" value="Search"><!-- comment -->
+                                        <input type="hidden" name="service" value="search">                                                                      
+                                    </form>                    
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
+                                    <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                    <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Thumbnail</th>
-                                <th>Price</th>
-                                <th>Sale Price</th>
-                                <th>Featured</th>
-                                <th>Status</th>
-                                <th class="actions">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${list}" var="product" >
-
-                                <tr>                                  
-                                    <td>${product.productID}</td>
-                                    <td>${product.product_name}</td>
-                                    <td><img src="${product.thumbnail}" class="img"></td>
-                                    <td>${product.original_price}</td>
-                                    <td>${product.sale_price}</td>
-                                    <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
-                                    <td>${product.status ? 'Show' : 'Hide'}</td>
-                                    <td class="actions">
-                                        <c:if test="${product.status == true}">
-                                            <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
-                                            </c:if>
-                                            <c:if test="${product.status == false}">
-                                            <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
-                                            </c:if>
-
-                                        <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
-                                        <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
-                                    </td>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Thumbnail</th>
+                                    <th>Price</th>
+                                    <th>Sale Price</th>
+                                    <th>Featured</th>
+                                    <th>Status</th>
+                                    <th class="actions">Actions</th>
                                 </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>        
-            </div>
-            <!-- Filter Modal HTML -->
-            <div id="Filter" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Filter</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <form action="productslist" method="post">
-                            <div class="modal-body">
-                                <!-- Category Filter -->
-                                <div class="form-group">
-                                    <label for="category-select">Category:</label>
-                                    <select id="category-select" class="form-control" name="category">
-                                        <option value="3">ALL</option>                                        
-                                        <c:forEach items="${requestScope.category}" var="c">
-                                            <option value="${c}">${c}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>                                
-                                <!-- Status Filter -->
-                                <div class="form-group">
-                                    <label for="status-select">Status:</label>
-                                    <select id="status-select" class="form-control" name="status">
-                                        <option value="3">ALL</option>                                       
-                                        <c:forEach items="${requestScope.status}" var="s">
-                                            <option value="${s}">${s}</option>
-                                        </c:forEach>
-                                    </select>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${list}" var="product" >
+
+                                    <tr>                                  
+                                        <td>${product.productID}</td>
+                                        <td>${product.product_name}</td>
+                                        <td><img src="${product.thumbnail}" class="img"></td>
+                                        <td>${product.original_price}</td>
+                                        <td>${product.sale_price}</td>
+                                        <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
+                                        <td>${product.status ? 'Show' : 'Hide'}</td>
+                                        <td class="actions">
+                                            <c:if test="${product.status == true}">
+                                                <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
+                                                </c:if>
+                                                <c:if test="${product.status == false}">
+                                                <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
+                                                </c:if>
+
+                                            <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
+                                            <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>        
+                </div>
+                <!-- Filter Modal HTML -->
+                <div id="Filter" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Filter</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form action="productslist" method="post">
+                                <div class="modal-body">
+                                    <!-- Category Filter -->
+                                    <div class="form-group">
+                                        <label for="category-select">Category:</label>
+                                        <select id="category-select" class="form-control" name="category">
+                                            <option value="3">ALL</option>                                        
+                                            <c:forEach items="${requestScope.category}" var="c">
+                                                <option value="${c}">${c}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>                                
+                                    <!-- Status Filter -->
+                                    <div class="form-group">
+                                        <label for="status-select">Status:</label>
+                                        <select id="status-select" class="form-control" name="status">
+                                            <option value="3">ALL</option>                                       
+                                            <c:forEach items="${requestScope.status}" var="s">
+                                                <option value="${s}">${s}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">OK</button>
-                                <input type="hidden" name="service" value="filter">
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">OK</button>
+                                    <input type="hidden" name="service" value="filter">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Sort Modal HTML -->
-            <div id="Sort" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Sort By</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <form action="productslist" method="post">
-                            <div class="modal-body">
-                                <!-- Sort Options -->
-                                <div class="form-group">
-                                    <label for="sort-select">Sort By:</label>
-                                    <select id="sort-select" class="form-control" name="sort">
-                                        <option value="title">Title</option>
-                                        <option value="category">Category</option>
-                                        <option value="price">List Price</option>
-                                        <option value="saleprice">Sale Price</option>
-                                        <option value="featured">Featured</option>
-                                        <option value="status">Status</option>
-                                    </select>
+                <!-- Sort Modal HTML -->
+                <div id="Sort" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Sort By</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form action="productslist" method="post">
+                                <div class="modal-body">
+                                    <!-- Sort Options -->
+                                    <div class="form-group">
+                                        <label for="sort-select">Sort By:</label>
+                                        <select id="sort-select" class="form-control" name="sort">
+                                            <option value="title">Title</option>
+                                            <option value="category">Category</option>
+                                            <option value="price">List Price</option>
+                                            <option value="saleprice">Sale Price</option>
+                                            <option value="featured">Featured</option>
+                                            <option value="status">Status</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Sort</button>
-                                <input type="hidden" name="service" value="sort">
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Sort</button>
+                                    <input type="hidden" name="service" value="sort">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <c:set var="page" value="${requestScope.page}"/> 
+                <div class="pagination">
+                    <c:forEach begin="${1}" end ="${requestScope.number}" var="i">
+                        <a class="${i==page?"active":""}" href="productslist?page=${i}">${i}</a>
+                    </c:forEach>
+                </div> 
             </div>
-        </div>
-        <c:set var="page" value="${requestScope.page}"/> 
-        <div class="pagination">
-            <c:forEach begin="${1}" end ="${requestScope.number}" var="i">
-                <a class="${i==page?"active":""}" href="productslist?page=${i}">${i}</a>
-            </c:forEach>
         </div>    
     </body>
 </html>

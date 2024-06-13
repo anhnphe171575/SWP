@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -59,6 +60,7 @@ public class OrderDetails extends HttpServlet {
         DAOOrder d = new DAOOrder();
         String id = request.getParameter("id");
         int id_raw = Integer.parseInt(id);
+        HttpSession session = request.getSession(); 
         request.setAttribute("list1",d.getOrderDetails(id_raw));
         request.setAttribute("list2", d.getReceiverInfor(id_raw));
         request.setAttribute("list3", d.getOrderedProduct(id_raw));

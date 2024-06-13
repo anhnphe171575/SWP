@@ -23,7 +23,19 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Montserrat Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="./mktcss/styles.css">
+        <link rel="stylesheet" href="/qcss/style.css">
         <style>
+            .filter-form {
+                font-size: 12px; /* Adjust this value as needed */
+            }
             td img {
                 width: 100px; /* Sets the width of the image */
                 height: auto; /* Maintains the aspect ratio */
@@ -250,6 +262,27 @@
             .modal form label {
                 font-weight: normal;
             }
+            .grid-container {
+                display: grid;
+
+                height: 100vh;
+                width: 100%;
+            }
+            .filter-form .input-group-text,
+            .filter-form .form-control,
+            .filter-form .custom-select {
+                font-size: 12px; /* Make the font size smaller */
+            }
+            .filter-form .input-group {
+                flex-wrap: nowrap; /* Prevent wrapping */
+            }
+            .filter-form .input-group-prepend,
+            .filter-form .input-group-text,
+            .filter-form .form-control,
+            .filter-form .custom-select {
+                width: auto; /* Allow elements to resize based on content */
+                min-width: 0; /* Remove minimum width */
+            }
         </style>
         <script>
             $(document).ready(function () {
@@ -257,10 +290,10 @@
                     "paging": true,
                     "lengthChange": false,
                     "searching": false,
-                    "ordering": true,
-                    "info": true,
+                    "ordering": false,
+                    "info": false,
                     "autoWidth": false,
-                    "pageLength": 2
+                    "pageLength": 10
                 });
             });
 
@@ -281,95 +314,105 @@
         </script>
     </head>
     <body>
-        <div class="container">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <h2>Order <b>List</b></h2>
+        <div class="grid-container">
+
+            <!-- Header -->
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+
+                <div class="container-xl">
+                    <div class="table-responsive">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h2>Order <b>List</b></h2>
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <form name="searchForm" action="orderlist" method="post" onsubmit="return validateForm();">
+                                            <input type="text" name="id" placeholder="OrderID">
+                                            <input type="text" name="customer" placeholder="Customer Name">
+                                            <input type="submit" name="submit" value="Search">
+                                            <input type="hidden" name="service" value="search">
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-6 text-right">
-                                <form name="searchForm" action="orderlist" method="post" onsubmit="return validateForm();">
-                                    <input type="text" name="id" placeholder="OrderID">
-                                    <input type="text" name="customer" placeholder="Customer Name">
-                                    <input type="submit" name="submit" value="Search">
-                                    <input type="hidden" name="service" value="search">
-                                </form>
-                            </div>
+                            <div class="container">
+                                <form action="orderlist" method="post" class="filter-form">
+                                    <div class="row mb-3">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Order Date:</span>
+                                                </div>
+                                                <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
+                                                <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Sale Name:</span>
+                                                </div>
+                                                <select class="custom-select" id="salename" name="salename">
+                                                    <option value="all">All</option>
+                                                <c:forEach items="${requestScope.sale}" var="c">
+                                                    <option value="${c}">${c}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Status:</span>
+                                            </div>
+                                            <select class="custom-select" id="status" name="status">
+                                                <option value="all">All</option>
+                                                <c:forEach items="${requestScope.status}" var="c">
+                                                    <option value="${c}">${c}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
+                                        <input type="hidden" name="service" value="filter">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                    <div class="container">
-                        <form action="orderlist" method="post">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Order Date:</span>
-                                        </div>
-                                        <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
-                                        <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Sale Name:</span>
-                                        </div>
-                                        <select class="custom-select" id="status" name="sale">
-                                            <option value="all">All</option>
-                                            <c:forEach items="${requestScope.sale}" var="c">
-                                                <option value="${c}">${c}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Status:</span>
-                                        </div>
-                                        <select class="custom-select" id="status" name="status">
-                                            <option value="all">All</option>
-                                            <c:forEach items="${requestScope.status}" var="c">
-                                                <option value="${c}">${c}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
-                                    <input type="hidden" name="service" value="filter">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>  
-                                <th>Order ID</th>
-                                <th>Customer Name</th>
-                                <th>Ordered Date</th>
-                                <th>First Product Name</th>
-                                <th>Number of All Products</th>
-                                <th>Total Cost</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${list1}" var="item" varStatus="status">
-                                <tr>
-                                    <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
-                                    <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
-                                    <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                    <td>${fn:split(item.product.product_name, ',')[0]}</td>
-                                    <td>${quantity[item.order.orderID]}</td>
-                                    <td><fmt:formatNumber value="${item.list_price}"/></td>   
-                                    <td>${item.order.status.status_name}</td>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>  
+                                    <th>Order ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Ordered Date</th>
+                                    <th>First Product Name</th>
+                                    <th>Number of All Products</th>
+                                    <th>Total Cost</th>
+                                    <th>Status</th>
                                 </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${list1}" var="item" varStatus="status">
+                                    <tr>
+                                        <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
+                                        <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
+                                        <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
+                                        <td>${fn:split(item.product.product_name, ',')[0]}</td>
+                                        <td>${quantity[item.order.orderID]}</td>
+                                        <td><fmt:formatNumber value="${item.list_price}"/></td>   
+                                        <td>${item.order.status.status_name}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
