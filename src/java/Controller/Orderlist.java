@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,57 +91,70 @@ public class Orderlist extends HttpServlet {
             throws ServletException, IOException {
         DAOOrder d = new DAOOrder();
         String service = request.getParameter("service");
-        if (service == null) {
-            doGet(request, response);
-        } else if (service.equals("search")) {
+        if (service == null || service.equals("search")) {
             String id = request.getParameter("id");
             String name = request.getParameter("customer");
+            ArrayList<OrderItems> orderItems = null;
+            Map<Integer, Integer> quantity = null;
+
             if (id != null && !id.isEmpty() && (name == null || name.isEmpty())) {
-                ArrayList<OrderItems> orderItems = d.getOrderById(id);
-                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
-                request.setAttribute("list1", orderItems);
-                request.setAttribute("quantity", quantity);
-                request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
+                orderItems = d.getOrderById(id);
             } else if (name != null && !name.isEmpty() && (id == null || id.isEmpty())) {
-                ArrayList<OrderItems> orderItems = d.getOrderByFullName(name);
-                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
+                orderItems = d.getOrderByFullName(name);
+            }
+
+            if (orderItems != null) {
+                quantity = d.getOrderQuantities(orderItems);
                 request.setAttribute("list1", orderItems);
                 request.setAttribute("quantity", quantity);
                 request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
-            } else {
-                doGet(request, response);
             }
         } else if (service.equals("filter")) {
-            Date from = formatDate(request.getParameter("fromDate"));
-            Date to = formatDate(request.getParameter("toDate"));
-            String sale = request.getParameter("sale");
+            String from = request.getParameter("fromDate");
+            String to = request.getParameter("toDate");
+            String saleName = request.getParameter("salename");
             String status = request.getParameter("status");
-            ArrayList<OrderItems> orderItems;
-            Map<Integer, Integer> quantity;
 
-// Check if date range is provided
+            Map<String, String> list1 = new LinkedHashMap<>();
+            ArrayList<String> list2 = new ArrayList<>();
+
             if (from != null && to != null) {
-                orderItems = d.getOrderbyDate(from, to);
-            } else if (sale != null && !sale.isEmpty()) { // Check if sale name is provided
-           //     orderItems = d.getOrderbySaleName(sale);
-            } else if (status != null && !status.isEmpty()) { // Check if status is provided
-             //   orderItems = d.getOrderbyStatus(status);
-            } else { // Default case if no parameters are provided
-                orderItems = new ArrayList<>(); // Or you can fetch a default list
+                list2.add("o.order_date BETWEEN ? AND ?");
+                list1.put("fromDate", from);
+                list1.put("toDate", to);
             }
 
-            //quantity = d.getOrderQuantities(orderItems);
+            if (!saleName.equalsIgnoreCase("all")) {
+                list2.add("CONCAT(u.first_name, ' ', u.last_name) LIKE ?");
+                list1.put("sale", saleName);
+            }
+            if (!status.equalsIgnoreCase("all")) {
+                list2.add("st.Status_Name = ?");
+                list1.put("status", status);
+            }
+
+            ArrayList<OrderItems> orderItems;
+            if (list2.isEmpty()) {
+                orderItems = d.getOrderInfor();
+            } else {
+                String all1 = " WHERE ";
+                for (int i = 0; i < list2.size(); i++) {
+                    if (i == list2.size() - 1) {
+                        all1 += list2.get(i);
+                    } else {
+                        all1 += list2.get(i) + " AND ";
+                    }
+                }
+                orderItems = d.getOrder(list1, all1);
+            }
 
             request.setAttribute("sale", d.getSaleName());
-//            request.setAttribute("list1", orderItems);
-//            request.setAttribute("quantity", quantity);
+            request.setAttribute("list1", orderItems);
             request.setAttribute("status", d.getStatusOrder());
-
             request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
         } else {
-            doHead(request, response);
+            doGet(request, response);
         }
-
     }
 
     private Date formatDate(String dob) {

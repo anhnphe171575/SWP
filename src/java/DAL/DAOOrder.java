@@ -969,33 +969,37 @@ public class DAOOrder extends DBContext {
         return list;
     }
 
-    public ArrayList<OrderItems> getOrderbyDate(Date fromDate, Date toDate) {
+    public ArrayList<OrderItems> getOrder(Map<String, String> aa1, String all) {
         ArrayList<OrderItems> orderItems = new ArrayList<>();
         try {
-            String query = "SELECT o.orderID, o.order_date, c.first_name, c.last_name, STRING_AGG(p.product_name, ', ') AS Product_name, "
-                    + "SUM(ot.list_price * ot.quantity) AS total_cost, "
-                    + "st.Status_OrderID, st.Status_Name "
-                    + "FROM [Order] o "
-                    + "INNER JOIN Order_items ot ON o.orderID = ot.orderID "
-                    + "INNER JOIN Customer c ON o.customerID = c.customerID "
-                    + "INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID "
-                    + "INNER JOIN Product p ON ot.productID = p.productID "
-                    + "WHERE (o.order_date BETWEEN ? AND ?) "
+            String query = "SELECT o.orderID, o.order_date, c.first_name, c.last_name, \n"
+                    + "       STRING_AGG(p.product_name, ', ') AS Product_name, \n"
+                    + "       SUM(ot.list_price * ot.quantity) AS total_cost, \n"
+                    + "       st.Status_OrderID, st.Status_Name \n"
+                    + "FROM [Order] o \n"
+                    + "INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
+                    + "INNER JOIN Customer c ON o.customerID = c.customerID \n"
+                    + "INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
+                    + "INNER JOIN Product p ON ot.productID = p.productID \n"
+                    + "INNER JOIN [User] u ON u.UserID = o.UserID \n"
+                    + all
                     + "GROUP BY o.orderID, o.order_date, c.first_name, c.last_name, st.Status_OrderID, st.Status_Name";
 
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setDate(1, new java.sql.Date(fromDate.getTime()));
-            stm.setDate(2, new java.sql.Date(toDate.getTime()));
+            int i = 1;
+            for (Map.Entry<String, String> item : aa1.entrySet()) {
+                stm.setString(i, item.getValue());
+                i++;
+            }
+
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
-                        rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
+                        rs.getInt("Status_OrderID"),
+                        rs.getString("Status_Name"),
                         null
                 );
 
-                // Create Customer object
                 Customer c = new Customer(
                         0,
                         rs.getString("first_name"),
@@ -1012,8 +1016,10 @@ public class DAOOrder extends DBContext {
                         null,
                         null
                 );
-                Product p = new Product(0,
-                        rs.getString("Product_name"),
+
+                Product p = new Product(
+                        0,
+                        rs.getString("product_name"),
                         0,
                         0,
                         null,
@@ -1025,8 +1031,9 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null);
-                // Create Order object
+                        null
+                );
+
                 Order o = new Order(
                         rs.getInt("orderID"),
                         st,
@@ -1038,7 +1045,6 @@ public class DAOOrder extends DBContext {
                         null, null
                 );
 
-                // Create OrderItems object
                 OrderItems ot = new OrderItems(
                         0,
                         o,
@@ -1050,7 +1056,7 @@ public class DAOOrder extends DBContext {
                 orderItems.add(ot);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Handle or log the exception properly
         }
         return orderItems;
     }
@@ -1347,6 +1353,7 @@ public class DAOOrder extends DBContext {
     }
       
     public static void main(String[] args) {
+
         DAOOrder db = new DAOOrder();
         db.getOrderByOrderID(17);
 //        HashMap<Integer, Integer> countMap = db.Countorder();
@@ -1379,5 +1386,22 @@ public class DAOOrder extends DBContext {
 //        System.out.println("UserID được chọn ngẫu nhiên: " + randomUserID);
 
         //  db.addOrder(0, 4, 1,java.sql.Date.valueOf("2024-06-01"), java.sql.Date.valueOf("2024-05-20"), 3, 1, "Deliver before noon", null);
+
+        Map<String, String> parameters = new LinkedHashMap<>();
+        parameters.put("fromDate", "2024-05-20");
+        parameters.put("toDate", "2024-05-21");
+        parameters.put("status", "Submit");
+
+        String conditions = "WHERE o.order_date BETWEEN ? AND ? AND st.Status_Name = ? ";
+
+        // Gọi phương thức getOrder
+        DAOOrder test = new DAOOrder();
+        ArrayList<OrderItems> orderItems = test.getOrder(parameters, conditions);
+
+        // In kết quả
+        for (OrderItems item : orderItems) {
+            System.out.println(item);
+        }
+
     }
 }
