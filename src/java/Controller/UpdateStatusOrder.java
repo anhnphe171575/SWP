@@ -11,13 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author MANH VINH
  */
-public class OrderDetails extends HttpServlet {
+public class UpdateStatusOrder extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +35,10 @@ public class OrderDetails extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetails</title>");
+            out.println("<title>Servlet UpdateStatusOrder</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetails at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateStatusOrder at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,13 +56,6 @@ public class OrderDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOOrder d = new DAOOrder();
-        String id = request.getParameter("id");
-        int id_raw = Integer.parseInt(id);
-        request.setAttribute("list1",d.getOrderDetails1(id_raw));
-        request.setAttribute("list2", d.getReceiverInfor(id_raw));
-        request.setAttribute("list3", d.getOrderedProduct(id_raw));
-        request.getRequestDispatcher("Views/orderdetails.jsp").forward(request, response);
     }
 
     /**
@@ -77,7 +69,19 @@ public class OrderDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        DAOOrder d = new DAOOrder();
+        int orderID = Integer.parseInt(request.getParameter("orderID"));
+        String newStatusID = request.getParameter("newStatus");
+        System.out.println(orderID);
+        System.out.println(newStatusID);
+        int newID = d.getStatusOrderIdByStatusName(newStatusID);
+        d.updateStatusOrder(newID, orderID);
+        if ("Reject".equalsIgnoreCase(newStatusID) || "Fail".equalsIgnoreCase(newStatusID)) {
+            d.RestoreOrderQuantity(orderID);
+        }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"message\": \"Cập nhật trạng thái đơn hàng thành công!\"}");
     }
 
     /**

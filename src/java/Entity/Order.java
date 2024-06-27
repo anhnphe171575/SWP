@@ -124,6 +124,12 @@ public class Order {
         int randomUserID = userIdsWithMinCount.get(randomIndex);
         return randomUserID;
    } 
+
+    @Override
+    public String toString() {
+        return "Order{" + "orderID=" + orderID + ", status=" + status + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receivers=" + receivers + ", notes=" + notes + ", PaymentMethod=" + PaymentMethod + '}';
+    }
+   
 }
 
 

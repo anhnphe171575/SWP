@@ -1,23 +1,23 @@
+package Controller;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package Controller;
 
-import DAL.DAOOrder;
+import DAL.DAOFeedback;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author MANH VINH
+ * @author phuan
  */
-public class OrderDetails extends HttpServlet {
+public class FeedbackDetail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +36,10 @@ public class OrderDetails extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetails</title>");
+            out.println("<title>Servlet FeedbackDetail</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetails at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FeedbackDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,13 +57,11 @@ public class OrderDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOOrder d = new DAOOrder();
-        String id = request.getParameter("id");
-        int id_raw = Integer.parseInt(id);
-        request.setAttribute("list1",d.getOrderDetails1(id_raw));
-        request.setAttribute("list2", d.getReceiverInfor(id_raw));
-        request.setAttribute("list3", d.getOrderedProduct(id_raw));
-        request.getRequestDispatcher("Views/orderdetails.jsp").forward(request, response);
+        DAOFeedback daoFB = new DAOFeedback();
+                   String FID = request.getParameter("FID");
+                   int id = Integer.parseInt(FID);
+                   request.setAttribute("feedback", daoFB.getFeedBackByFeedbackID(id));
+        request.getRequestDispatcher("Views/FeedbackDetail.jsp").forward(request, response);
     }
 
     /**

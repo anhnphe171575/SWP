@@ -69,7 +69,7 @@ public class AddProduct extends HttpServlet {
     throws ServletException, IOException {
        
         String productName = request.getParameter("productName");
-        float price = Float.parseFloat(request.getParameter("price"));
+      
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         int year = Integer.parseInt(request.getParameter("year"));
         int categoryID = Integer.parseInt(request.getParameter("categoryID"));
@@ -81,7 +81,7 @@ public class AddProduct extends HttpServlet {
         float salePrice = Float.parseFloat(request.getParameter("salePrice"));
         String brand = request.getParameter("brand");
         DAOProduct d = new DAOProduct();
-        d.addProduct( productName, price, quantity, year, categoryID, description, featured, thumbnail, briefInfo, originalPrice, salePrice, brand);
+        d.addProduct( productName, quantity, year, categoryID, description, featured, thumbnail, briefInfo, originalPrice, salePrice, brand);
         request.setAttribute("list",d.getProduct());
         request.setAttribute("msg", "Add product successfull!");
         request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);

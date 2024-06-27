@@ -5,19 +5,24 @@
 package Controller;
 
 import DAL.DAOOrder;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
  * @author MANH VINH
  */
-public class OrderDetails extends HttpServlet {
+public class SaleName extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +41,10 @@ public class OrderDetails extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderDetails</title>");
+            out.println("<title>Servlet SaleName</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderDetails at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SaleName at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,13 +62,21 @@ public class OrderDetails extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOOrder d = new DAOOrder();
-        String id = request.getParameter("id");
-        int id_raw = Integer.parseInt(id);
-        request.setAttribute("list1",d.getOrderDetails1(id_raw));
-        request.setAttribute("list2", d.getReceiverInfor(id_raw));
-        request.setAttribute("list3", d.getOrderedProduct(id_raw));
-        request.getRequestDispatcher("Views/orderdetails.jsp").forward(request, response);
+       try {
+    response.setContentType("application/json");
+    DAOOrder d = new DAOOrder();
+    HashMap<String, Integer> sales = d.CountorderSale();
+    Gson gson = new Gson();
+    JsonElement element = gson.toJsonTree(sales);
+    JsonObject jsonObject = element.getAsJsonObject();
+    PrintWriter out = response.getWriter();
+    out.print(jsonObject);
+    out.flush();
+} catch (Exception e) {
+    e.printStackTrace();
+    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    response.getWriter().write("An error occurred: " + e.getMessage());
+}
     }
 
     /**

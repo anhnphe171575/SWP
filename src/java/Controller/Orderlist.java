@@ -6,15 +6,18 @@ package Controller;
 
 import DAL.DAOOrder;
 import DAL.DAOProduct;
+import DAL.DAOUser;
 import Entity.OrderItems;
 import Entity.Product;
 import Entity.StatusOrder;
+import Entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,15 +70,40 @@ public class Orderlist extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DAOOrder d = new DAOOrder();
-        ArrayList<OrderItems> list = d.getOrderInfor();
-        ArrayList<OrderItems> orderItems = d.getOrderInfor();
-        Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
-        List<String> st = d.getStatusOrder();
-        request.setAttribute("sale", d.getSaleName());
-        request.setAttribute("list1", orderItems);
-        request.setAttribute("quantity", quantity);
-        request.setAttribute("status", st);
-        request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
+        DAOUser du = new DAOUser();
+        HttpSession session = request.getSession(false);
+
+        if (session.getAttribute("username") != null) {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                user = du.getUserByLogin((String) session.getAttribute("username"));
+                session.setAttribute("user", user);
+            }
+            if (user.getRole().getRoleID() == 2) {
+                int id = user.getUserID();
+                ArrayList<OrderItems> orderItems = d.getOrderbyUserID(id);
+                request.setAttribute("list1", orderItems);
+                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
+                request.setAttribute("saleid", id);
+                request.setAttribute("quantity", quantity);
+            } else if (user.getRole().getRoleID() == 3) {
+                ArrayList<OrderItems> orderItems = d.getOrderInfor();
+                request.setAttribute("sale", d.getSaleName());
+                request.setAttribute("list1", orderItems);
+                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
+                request.setAttribute("quantity", quantity);
+            } else if (user.getRole().getRoleID() == 4) {
+                ArrayList<OrderItems> orderItems = d.getPackingOrder();
+                request.setAttribute("list1", orderItems);
+                Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
+                request.setAttribute("quantity", quantity);
+            }
+            List<String> st = d.getStatusOrder();
+            request.setAttribute("status", st);
+            request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("LoginController");
+        }
     }
 
     /**
@@ -102,7 +130,6 @@ public class Orderlist extends HttpServlet {
             } else if (name != null && !name.isEmpty() && (id == null || id.isEmpty())) {
                 orderItems = d.getOrderByFullName(name);
             }
-
             if (orderItems != null) {
                 quantity = d.getOrderQuantities(orderItems);
                 request.setAttribute("list1", orderItems);
@@ -114,17 +141,20 @@ public class Orderlist extends HttpServlet {
             String to = request.getParameter("toDate");
             String saleName = request.getParameter("salename");
             String status = request.getParameter("status");
-
+            String sale_ID = request.getParameter("saleid");
             Map<String, String> list1 = new LinkedHashMap<>();
             ArrayList<String> list2 = new ArrayList<>();
 
-            if (from != null && to != null) {
+            if (from.length() != 0 && to.length() != 0) {
                 list2.add("o.order_date BETWEEN ? AND ?");
                 list1.put("fromDate", from);
                 list1.put("toDate", to);
             }
-
-            if (!saleName.equalsIgnoreCase("all")) {
+            if(sale_ID != null){
+                list2.add("u.UserID = ?");
+                list1.put("saleid", sale_ID);
+            }
+            if (saleName != null && !saleName.equalsIgnoreCase("all")) {
                 list2.add("CONCAT(u.first_name, ' ', u.last_name) LIKE ?");
                 list1.put("sale", saleName);
             }
@@ -134,10 +164,10 @@ public class Orderlist extends HttpServlet {
             }
 
             ArrayList<OrderItems> orderItems;
+             String all1 = " WHERE ";
             if (list2.isEmpty()) {
                 orderItems = d.getOrderInfor();
             } else {
-                String all1 = " WHERE ";
                 for (int i = 0; i < list2.size(); i++) {
                     if (i == list2.size() - 1) {
                         all1 += list2.get(i);
@@ -146,12 +176,15 @@ public class Orderlist extends HttpServlet {
                     }
                 }
                 orderItems = d.getOrder(list1, all1);
-            }
-
+            }                          
+            request.setAttribute("saleid", sale_ID);
             request.setAttribute("sale", d.getSaleName());
             request.setAttribute("list1", orderItems);
             request.setAttribute("status", d.getStatusOrder());
             request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
+         
+//         request.setAttribute("a", all1);
+//          request.getRequestDispatcher("Views/newjsp4.jsp").forward(request, response);
         } else {
             doGet(request, response);
         }
