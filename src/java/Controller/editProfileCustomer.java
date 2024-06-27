@@ -35,7 +35,7 @@ import java.util.Vector;
 public class editProfileCustomer extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "D:\\SWPOnline\\SWP\\SWP\\web\\image";
+    private static final String UPLOAD_DIR = "C:\\Users\\phuan\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProfile";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -101,8 +101,9 @@ public class editProfileCustomer extends HttpServlet {
         File file = new File(UPLOAD_DIR, fileName);
 
         // Write the file to the specified directory
+        
         filePart.write(file.getAbsolutePath());
-         String fileUrl = "image/" + fileName;
+         String fileUrl = "imgProfile/" + fileName;
        
         String customerID = request.getParameter("customerID");
         String fname = request.getParameter("first_name");
