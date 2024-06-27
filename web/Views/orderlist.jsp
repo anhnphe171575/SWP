@@ -420,7 +420,9 @@
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- Sidebar -->
             <jsp:include page="sidebar1.jsp"></jsp:include>
+
                 <div class="container-xl" style="width: 1200">
+
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">

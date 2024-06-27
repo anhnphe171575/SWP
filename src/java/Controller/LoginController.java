@@ -83,6 +83,7 @@ public class LoginController extends HttpServlet {
         String service = request.getParameter("service");
         HttpSession session = request.getSession(true);
         if (service.equals("login")) {
+
             boolean check = dao.login(username, password);
             if (check) {
                 session.setAttribute("username", username);
@@ -108,6 +109,7 @@ public class LoginController extends HttpServlet {
                 doGet(request, response);
 
             } else {
+
                 request.setAttribute("error", "Error");
                 request.getRequestDispatcher("Views/loginUser.jsp").forward(request, response);
             }
