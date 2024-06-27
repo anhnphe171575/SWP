@@ -91,6 +91,9 @@ public class FeedBackList extends HttpServlet {
             String sort = request.getParameter("sort");
             list = db.Sort(sort);
 
+        } else if(service.equals("search")){
+            String name = request.getParameter("name");
+            list= db.search(name);
         } else if (service.equals("filter")) {
             String status_raw = request.getParameter("status");
             String star = request.getParameter("star");

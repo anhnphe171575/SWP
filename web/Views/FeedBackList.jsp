@@ -269,22 +269,35 @@
                 font-weight: normal;
             }
             .filter-container {
-            margin-bottom: 20px;
-        }
-        .feedback-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        td a {
-    margin-right: 10px; /* Khoảng cách giữa các liên kết */
-    display: inline-block; /* Đảm bảo các thẻ a nằm cùng một hàng */
-    vertical-align: middle; /* Căn giữa theo chiều dọc */
-}
+                margin-bottom: 20px;
+            }
+            .feedback-item {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            td a {
+                margin-right: 10px; /* Khoảng cách giữa các liên kết */
+                display: inline-block; /* Đảm bảo các thẻ a nằm cùng một hàng */
+                vertical-align: middle; /* Căn giữa theo chiều dọc */
+            }
 
-.material-icons {
-    font-size: 24px; /* Kích thước biểu tượng */
-}
+            .material-icons {
+                font-size: 24px; /* Kích thước biểu tượng */
+            }
+            .filter-container {
+                margin-bottom: 20px;
+            }
+            .filter-container label {
+                margin-right: 10px;
+            }
+            .filter-container .form-group {
+                margin-right: 20px;
+            }
+            .filter-container .btn {
+                margin-top: 24px;
+            }
+            
         </style>
         <script>
             $(document).ready(function () {
@@ -333,15 +346,13 @@
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="FeedBackList" method="post">
-                                            <input type="text" name="title"><!-- comment -->
+                                            <input type="text" name="name"><!-- comment -->
                                             <input type="submit" name="submit" value="Search"><!-- comment -->
                                             <input type="hidden" name="service" value="search">
                                         </form>					
                                     </div>
 
                                     <div class="col-sm-6">
-                                       
-                                      
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal">
                                             <i class="material-icons">&#xe164;</i> <span>Sort</span>         
                                         </a>
@@ -349,46 +360,61 @@
                                 </div>
                             </div>
                         </div>
-                                <form action="FeedBackList" method="post">
-                        <div class="filter-container">
-                            <label for="status-filter">Status:</label>
-                            <select id="status-filter" name="status">
-                                <option value="all">All</option>
-                                <option value="0">Hide</option>
-                                <option value="1">Show</option>
-                            </select>
 
-                            <label for="product-filter">Product:</label>
-                            <select id="product-filter" name="proid">
-                                <option value="all">All</option>
-                                <c:forEach items="${requestScope.product}" var="p">
-                                <option value="${p.productID}">${p.product_name}</option>
-                                </c:forEach>
-                            </select>
+                        <form action="FeedBackList" method="post">
+                            <div class="filter-container d-flex flex-wrap align-items-center">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Product:</span>
+                                        </div>
+                                        <select id="product-filter" name="proid" class="form-control">
+                                        <option value="all">All</option>
+                                        <c:forEach items="${requestScope.product}" var="p">
+                                            <option value="${p.productID}">${p.product_name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Rated Star:</span>
+                                        </div>
+                                        <select class="custom-select" id="salename" name="salename">
+                                            <option value="all">All</option>
+                                            <option value="1">1 Star</option>
+                                            <option value="2">2 Stars</option>
+                                            <option value="3">3 Stars</option>
+                                            <option value="4">4 Stars</option>
+                                            <option value="5">5 Stars</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Status:</span>
+                                        </div>
+                                        <select class="custom-select" id="status" name="status">
+                                            <option value="all">All</option>
+                                            <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <label for="star-filter">Rated Star:</label>
-                            <select id="star-filter" name = "star">
-                                <option value="all">All</option>
-                                <option value="1">1 Star</option>
-                                <option value="2">2 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="5">5 Stars</option>
-                            </select>
-                            <input type="hidden" value="filter" name="service">
-                            <input type="submit" value="Filter">
-                        </div>
-                                    
-                                    </form>
+                                <input type="hidden" value="filter" name="service">
+                                <div class="col-md-3" >
+                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                </div>
+                                
+                            </div>
+                        </form>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <span class="custom-checkbox">
-                                            <input type="checkbox" id="selectAll">
-                                            <label for="selectAll"></label>
-                                        </span>
-                                    </th>
+
                                     <th>Customer Name</th>
                                     <th>Product Name</th>
                                     <th>Rate Star</th>
@@ -399,22 +425,14 @@
                             <tbody>
                                 <c:forEach items="${requestScope.list}" var="l">
                                     <tr>
-                                        <td>
-                                            <span class="custom-checkbox">
-                                                <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                                                <label for="checkbox2"></label>
-                                            </span>
-                                        </td>
-
-
                                         <td>${l.customer.first_name} ${l.customer.last_name}</td>
                                         <td>${l.product.product_name}</td>
                                         <td>${l.rate_star}</td>
                                         <td>
                                             <c:if test="${l.status == '1'}">Show</c:if>
                                             <c:if test="${l.status != '1'}">Hide</c:if> 
-                                        </td>
-                                        <td>
+                                            </td>
+                                            <td>
                                             <c:if test="${l.status == '1'}">
                                                 <a href="StatusFeedBack?FID=${l.feedbackID}&status=0"  class="fa fa-eye"></a>
                                             </c:if>
@@ -422,8 +440,7 @@
 
                                                 <a href="StatusFeedBack?FID=${l.feedbackID}&status=1" class="fa fa-eye-slash"></a>
                                             </c:if>
-                                            <a href="EditPost?postID=${p.postID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                            <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
+                                            <a href="FeedbackDetail?service=viewDetail&FID=${l.feedbackID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
 
                                         </td>
                                     </tr>
@@ -436,9 +453,9 @@
             </div>
 
             <!-- Filter Modal HTML -->
-            
+
             <!-- Add Modal HTML -->
-           
+
             <!-- Sort -->
             <div id="Sort" class="modal fade">
                 <div class="modal-dialog">
