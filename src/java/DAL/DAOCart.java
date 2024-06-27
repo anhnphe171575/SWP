@@ -22,8 +22,9 @@ import java.util.List;
  * @author phuan
  */
 public class DAOCart extends DBContext {
-    public void Add2CartItem(int cartItemID, int cartID, int productID, int quantity){
-         try {
+
+    public void Add2CartItem(int cartItemID, int cartID, int productID, int quantity) {
+        try {
             String sql = "INSERT INTO [dbo].[CartItems]\n"
                     + "           ([cartItemID]\n"
                     + "           ,[cartID]\n"
@@ -38,18 +39,18 @@ public class DAOCart extends DBContext {
             pre.setInt(3, productID);
             pre.setInt(4, quantity);
 
-
             pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }  
-    public void Add2Cart( int customerID){
-         try {
+    }
+
+    public void Add2Cart(int customerID) {
+        try {
             String sql = "INSERT INTO [dbo].[Cart]\n"
-                    + "           ,[customerID]\n"
+                    + "           ([customerID])\n"
                     + "     VALUES\n"
-                    + "           (?,?)";
+                    + "           (?)";
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, customerID);
             pre.executeUpdate();
@@ -57,32 +58,46 @@ public class DAOCart extends DBContext {
             ex.printStackTrace();
         }
     }
-    public List<CartItems> getCartItemsByCartID( int cartID){
+
+    public List<CartItems> getCartItemsByCartID(int cartID) {
         List<CartItems> list = new ArrayList<>();
         try {
-            String sql ="select * from CartItems where cartID = ?";
+            String sql = "select * from CartItems where cartID = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setInt(1, cartID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-
-                CartItems p = new CartItems(rs.getInt("cartItemID"),
+                   Product p = new Product(rs.getInt("productID"),
+                        "",
+                        0,
+                        0,
+                      "",
+                        0,
+                        "",
+                      "",
+                        0,
+                        0,
                         null,
-                  
+                        "",
+                       null,
+                        null);
+                CartItems c = new CartItems(rs.getInt("cartItemID"),
                         null,
+                        p,
                         rs.getInt("quantity"));
-                      
-               list.add(p);
+
+                list.add(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public CartItems getCartItemsSelect( int cartID, int cartItemID){
+
+    public CartItems getCartItemsSelect(int cartID, int cartItemID) {
         CartItems ci = null;
         try {
-            String sql ="select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
+            String sql = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
                     + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
                     + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
                     + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
@@ -109,7 +124,7 @@ public class DAOCart extends DBContext {
                         rs.getDate("activity_history"),
                         null,
                         rs.getString("securityAnswer"),
-                null);
+                        null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),
@@ -126,32 +141,33 @@ public class DAOCart extends DBContext {
                         rs.getString("brand"),
                         rs.getDate("update_date"),
                         rs.getBoolean("status"));
-                 ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
+                ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return ci;
     }
-    public Cart checkCart(int cusid){
-         Cart c = null;
-        try{
-             String sql = "select * from Cart where customerID = ?";
-                 PreparedStatement stm = conn.prepareStatement(sql);
-                   stm.setInt(1, cusid);
-                     ResultSet rs = stm.executeQuery();
-              while (rs.next()) {
-                  c = new Cart(rs.getInt("cartID"), null);
-                  
-              }
-        }
-        catch(Exception e){
-            
+
+    public Cart checkCart(int cusid) {
+        Cart c = null;
+        try {
+            String sql = "select * from Cart where customerID = ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setInt(1, cusid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                c = new Cart(rs.getInt("cartID"), null);
+
+            }
+        } catch (Exception e) {
+
         }
         return c;
     }
+
     public CartItems chekcProductInCart(int pid) {
-        CartItems ci =null;
+        CartItems ci = null;
         try {
             String query = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
                     + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
@@ -163,7 +179,7 @@ public class DAOCart extends DBContext {
                     + "where p.productID = ? ";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, pid);
-     
+
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
 
@@ -180,7 +196,7 @@ public class DAOCart extends DBContext {
                         rs.getDate("activity_history"),
                         null,
                         rs.getString("securityAnswer"),
-                null);
+                        null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),
@@ -197,25 +213,26 @@ public class DAOCart extends DBContext {
                         rs.getString("brand"),
                         rs.getDate("update_date"),
                         rs.getBoolean("status"));
-                 ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
-                
+                ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return ci;
     }
+
     public List<CartItems> getListCart(int cusid) {
         List<CartItems> list = new ArrayList<>();
         try {
-                String query = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
-                        + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
-                        + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
-                        + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
-                        + "inner join Cart ca on ci.cartID = ca.cartID\n"
-                        + "inner join Product p on p.productID = ci.productID\n"
-                        + "inner join Customer c on c.customerID = ca.customerID\n"
-                        + "where c.customerID = ?";
+            String query = "select c.customerID,c.dob,c.activity_history, c.address, c.email, c.first_name, c.gender, c.last_name, c.password\n"
+                    + ",c.phone, c.securityAnswer, c.username, p.brand,p.brief_information,p.category_productID,p.featured,p.original_price\n"
+                    + ",p.product_description,p.product_name,p.productID,p.quantity as 'pquantity',p.sale_price,p.status,\n"
+                    + "p.thumbnail,p.update_date, p.year, ci.cartID,ci.cartItemID,ci.quantity from CartItems ci \n"
+                    + "inner join Cart ca on ci.cartID = ca.cartID\n"
+                    + "inner join Product p on p.productID = ci.productID\n"
+                    + "inner join Customer c on c.customerID = ca.customerID\n"
+                    + "where c.customerID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, cusid);
             ResultSet rs = stm.executeQuery();
@@ -234,7 +251,7 @@ public class DAOCart extends DBContext {
                         rs.getDate("activity_history"),
                         null,
                         rs.getString("securityAnswer"),
-                null);
+                        null);
 
                 Cart ca = new Cart(rs.getInt("cartID"), c);
                 Product p = new Product(rs.getInt("productID"),
@@ -259,25 +276,43 @@ public class DAOCart extends DBContext {
         }
         return list;
     }
-      public void UpdateCartQuantity(int cardid , int quantity, int pid) {
-           String sql = "UPDATE [CartItems]\n"
+
+    public void UpdateCartQuantity(int cardid, int quantity, int pid) {
+        String sql = "UPDATE [CartItems]\n"
                 + "   SET \n"
                 + "           [quantity]=?\n"
                 + " WHERE [cartID] = ? and productID = ?";
-           try {
-                PreparedStatement pre = conn.prepareStatement(sql);
-               pre.setInt(1, quantity);
-                pre.setInt(2, cardid);
-                 pre.setInt(3, pid);
-                pre.executeUpdate();
-          
-           }
-           catch(Exception e){
-               e.printStackTrace();
-           }
-           
-      }
-       public void DeleteCardItems(int CID, int CartItemID) {
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, quantity);
+            pre.setInt(2, cardid);
+            pre.setInt(3, pid);
+            pre.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+      public void UpdateCartItemID(int cardid , int cartItemID, int productID) {
+        String sql = "UPDATE [CartItems]\n"
+                + "   SET \n"
+                + "           [cartItemID]=?\n"
+                + " WHERE [cartID] = ? and productID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+           pre.setInt(1, cartItemID);
+           pre.setInt(2, cardid);
+           pre.setInt(3, productID);
+            pre.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void DeleteCardItems(int CID, int CartItemID) {
         String sql = "DELETE FROM [dbo].[CartItems]\n"
                 + "      WHERE cartID=? and cartItemID=?";
         try {
@@ -290,8 +325,22 @@ public class DAOCart extends DBContext {
 
         }
     }
+
+    public void DeleteCard(int CID) {
+        String sql = "DELETE FROM [dbo].[Cart]\n"
+                + "      WHERE cartID=?";
+        try {
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, CID);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+
+        }
+    }
+
     public static void main(String[] args) {
         DAOCart db = new DAOCart();
-        System.out.println(db.getCartItemsByCartID(1).size());
+        db.Add2Cart(1);
     }
 }

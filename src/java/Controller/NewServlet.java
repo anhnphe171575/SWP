@@ -35,7 +35,7 @@ public class NewServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
+            out.println("<title>Servlet NewServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
@@ -56,7 +56,8 @@ public class NewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Views/newjsp1.jsp").forward(request, response);
+         String receiverId = request.getParameter("receiverId");
+         request.setAttribute("a", receiverId);
     }
 
     /**
@@ -70,22 +71,16 @@ public class NewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] checkboxValues = request.getParameterValues("checkbox");
 
-        // Check if any checkbox values are received
-        if (checkboxValues != null) {
-            // Print received checkbox values for debugging
-            System.out.println("Checkbox values: " + Arrays.toString(checkboxValues));
-        } else {
-            // If no checkboxes were selected
-            System.out.println("No checkbox selected");
-        }
+        String productDescription = request.getParameter("productDescription");
 
-        // Set the checkbox values as a request attribute
-        request.setAttribute("checkboxValues", checkboxValues);
+        // Process the data
+        // Example: Print values to console
+        System.out.println("Product Description: " + productDescription);
+           
+        request.setAttribute("a", productDescription);
+                request.getRequestDispatcher("Views/newjsp4.jsp").forward(request, response);
 
-        // Forward the request to the JSP page
-        request.getRequestDispatcher("Views/newjsp.jsp").forward(request, response);
     }
 
     /**

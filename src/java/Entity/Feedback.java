@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class Feedback {
     int feedbackID;
+    Order order;
     Product product;
     Customer customer;
     String comment;
@@ -20,8 +21,9 @@ public class Feedback {
         int status;
     Date update_date_feedback;
 
-    public Feedback(int feedbackID, Product product, Customer customer, String comment, int rate_star, String image, int status, Date update_date_feedback) {
+    public Feedback(int feedbackID, Order order, Product product, Customer customer, String comment, int rate_star, String image, int status, Date update_date_feedback) {
         this.feedbackID = feedbackID;
+        this.order = order;
         this.product = product;
         this.customer = customer;
         this.comment = comment;
@@ -37,6 +39,14 @@ public class Feedback {
 
     public void setFeedbackID(int feedbackID) {
         this.feedbackID = feedbackID;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Product getProduct() {
@@ -95,10 +105,7 @@ public class Feedback {
         this.update_date_feedback = update_date_feedback;
     }
 
-    @Override
-    public String toString() {
-        return "Feedback{" + "feedbackID=" + feedbackID + ", product=" + product + ", customer=" + customer + ", comment=" + comment + ", rate_star=" + rate_star + ", image=" + image + ", status=" + status + ", update_date_feedback=" + update_date_feedback + '}';
-    }
+  
 
    
     
