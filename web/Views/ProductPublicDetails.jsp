@@ -172,30 +172,23 @@
                                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                                 </div>        
                                 <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.cus}">
+                                <c:choose>
+                                    <c:when test="${not empty sessionScope.cus}">
 
-                                    <div class="navbar-nav ml-auto py-0">
-                                          <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <div class="dropdown-menu ml-auto py-0">
-                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
-                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
+                                        <div class="navbar-nav ml-auto py-0">
+                                            <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <a href="LogOut">Log out</a>
+
                                         </div>
-                                        <!--<a href="LogOut">Log out</a>-->
-                                        
-                                          </div>
-                                        <a href="LogOut" class="nav-link ">Log out</a>
-                                    </div>
 
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                        <a href="signup" class="nav-item nav-link">Register</a>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="navbar-nav ml-auto py-0">
+                                            <a href="LoginCusController" class="nav-item nav-link">Login</a>
+                                            <a href="signup" class="nav-item nav-link">Register</a>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </nav>
                     </div>
@@ -281,7 +274,7 @@
                                     <h4 class="mb-4">Review for ${p.product_name}</h4>
                                     <c:forEach items="${requestScope.feedback}" var="fb">
                                         <div class="media mb-4">
-                                            <img src="${fb.image}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                            <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                             <div class="media-body">
                                                 <h6>${fb.customer.first_name} ${fb.customer.getLast_name()}<small> - <i>${fb.update_date_feedback}</i></small></h6>
                                                 <div class="star-rating1">
@@ -297,9 +290,9 @@
 
                                 <div class="col-md-6">
                                     <c:choose>
-                                        <c:when test="${not empty requestScope.activate}">
+                                        <c:when test="${not empty sessionScope.cus}">
                                             <h4 class="mb-4">Review</h4>
-                                            <form action="ProductDetailsPublic" method="post"  enctype="multipart/form-data">
+                                            <form action="ProductDetailsPublic" method="post">
                                                 <div class="d-flex my-3">
                                                     <p class="mb-0 mr-2 ">Your Rating * :</p>                         
                                                     <div class="star-rating">
@@ -313,16 +306,21 @@
 
                                                 <div class="form-group">
                                                     <label for="message">Your Review *</label><br>
-                                                    Image: <input type="file" name="file" id="file" style="margin-bottom: 10px"><br>
+                                                    Image: <input type="file" name="image" style="margin-bottom: 10px"><br>
                                                     Content:<textarea id="message" cols="30" rows="5" class="form-control" name="comment" required=""></textarea>
                                                 </div>                                 
                                                 <div class="form-group mb-0">
                                                     <input type="submit" value="submit" class="btn btn-primary px-3">
                                                 </div>
                                                 <input type="hidden" value="${p.productID}" name ="pid">
-                                                <input type="hidden" value="${orderid}" name ="orderid">
                                             </form>
-                                        </c:when>                                      
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="container">
+                                                <h3>Login to reviews</h3>
+                                                <button onclick="location.href = 'LoginCusController'">Login</button>
+                                            </div>
+                                        </c:otherwise>
                                     </c:choose>
                                 </div>
 
