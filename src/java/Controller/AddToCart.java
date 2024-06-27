@@ -72,6 +72,8 @@ public class AddToCart extends HttpServlet {
       Customer cus = (Customer)session.getAttribute("cus");
       List<CartItems> cart = ( List<CartItems>) session.getAttribute("cart");
       DAOCart db = new DAOCart();
+  
+      
      if(db.checkCart(cus.getCustomerID()) == null){
          db.Add2Cart(cus.getCustomerID());
          db.Add2CartItem(1, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, 1);
@@ -89,7 +91,7 @@ public class AddToCart extends HttpServlet {
          }
      }
   
-  response.sendRedirect("CartDetails");
+        response.sendRedirect("CartDetails");
     }
 
     /**

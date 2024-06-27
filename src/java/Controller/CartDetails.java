@@ -7,6 +7,7 @@ package Controller;
 import DAL.DAOCart;
 import DAL.DAOCategoryProduct;
 import DAL.DAOProduct;
+import Entity.CartItems;
 import Entity.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
@@ -97,7 +99,13 @@ public class CartDetails extends HttpServlet {
       
        if(CardID != null && CartItem !=null && delete != null){
            db.DeleteCardItems(Integer.parseInt(CardID), Integer.parseInt(CartItem));
+       
        }
+        HttpSession session = request.getSession();
+       List<CartItems> list = (List<CartItems>)  session.getAttribute("cart");
+        if(db.getCartItemsByCartID(list.get(0).getCart().getCartID()).isEmpty()){
+                db.DeleteCard(list.get(0).getCart().getCartID());
+            }
        request.setAttribute("scroll", "scroll");
         doGet(request, response);
     }

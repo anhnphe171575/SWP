@@ -32,7 +32,10 @@
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <style>
-
+              .disabled {
+            pointer-events: none;
+            color: grey;
+        }  
             .nav-item.dropdown:hover {
                 background-color: #f0f0f0; /* Màu xám */
             }
@@ -59,7 +62,7 @@
             </div>
             <div class="col-lg-3 col-6 text-right">
 
-                <a href="" class="btn border">
+                <a href="CartDetails" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
@@ -96,14 +99,21 @@
                                 </div>
                                 <a href="contact.html" class="nav-item nav-link">Contact</a>
                             </div>        
-                            <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
+                           <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                             <c:choose>
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <a href="LogOut">Log out</a>
-
+                                          <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                        <div class="dropdown-menu ml-auto py-0">
+                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
+                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
+                                        </div>
+                                        <!--<a href="LogOut">Log out</a>-->
+                                        
+                                          </div>
+                                        <a href="LogOut" class="nav-link ">Log out</a>
                                     </div>
 
                                 </c:when>
@@ -247,8 +257,9 @@
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="AddToCart?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1 "></i>View Detail</a>
+                                       
+                                        <a href="AddToCart?pid=${l.productID}" class="btn btn-sm text-dark p-0 ${l.quantity < 1 ? 'disabled' : '' }"><i class="fas fa-shopping-cart text-primary mr-1 "></i>Add To Cart</a>
                                     </div>
                                 </div>
                             </div>
