@@ -13,8 +13,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-      ${a}
-               
-               
+        ${requestScope.a}
     </body>
 </html>
