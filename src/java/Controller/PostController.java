@@ -194,8 +194,8 @@ public class PostController extends HttpServlet {
             } catch (Exception e) {
                 doGet(request, response);
             }
-        }else{
-        Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
+        }
+        
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
@@ -220,13 +220,11 @@ public class PostController extends HttpServlet {
         request.setAttribute("numpage", num);
         request.setAttribute("page", page);
         request.setAttribute("numberOfPage", numberOfPage);
-   
-        request.setAttribute("category", vec2);
+         request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);
-        request.setAttribute("status", vec4);
         request.setAttribute("category_product", vec5);
         request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
-        }
+        
     }
 
     /**

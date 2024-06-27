@@ -78,7 +78,7 @@ public class BlogController extends HttpServlet {
         } catch (Exception e) {
             request.getRequestDispatcher("HomePage").forward(request, response);
         }
-        if (cname != null) {
+if (cname != null) {
             cid_raw = daoCP.getCategoryProductbyName(cname).getCategory_productID();
         }
         if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank())) {
@@ -144,7 +144,7 @@ public class BlogController extends HttpServlet {
         if (service.equals("search")) {
             String title = request.getParameter("title");
             request.setAttribute("blog", daoP.search(title));
-            request.setAttribute("category_product", daoCP.getCategoryProductProduct());
+request.setAttribute("category_product", daoCP.getCategoryProductProduct());
             request.getRequestDispatcher("Views/listBlog.jsp").forward(request, response);
         } else if (service.equals("viewDetail")) {
             int postID = Integer.parseInt(request.getParameter("postID"));

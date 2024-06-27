@@ -113,7 +113,7 @@ public Vector<Post> getPostByCPId(int id) {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                                p.featured,p.status,p.brief_information,\n"
-                + "                                 p.description,p.flag, p.date_create_by,\n"
+                + "                                 p.description, p.date_create_by,\n"
                 + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
@@ -218,7 +218,7 @@ public Vector<Post> getPostByCPId(int id) {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
-                + "                 p.description,p.flag, p.date_create_by,\n"
+                + "                 p.description, p.date_create_by,\n"
                 + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
@@ -441,7 +441,7 @@ public Vector<Post> getPostByCPId(int id) {
         return vector;
     }
 
-    public Vector<Post> search(String title) {
+        public Vector<Post> search(String title) {
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
@@ -621,7 +621,7 @@ public Vector<Post> getPostByCPId(int id) {
 //        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "","");
 //        Post obj = new Post(0, "ddd", "ooo", cp, 1, 1, "aaa", "aaa", u, date_create_by);
 //        daoP.addPost(obj);
-          System.out.println(daoP.getBlog());
+          System.out.println(daoP.search("a"));
         
 
 //        String category = "all";
