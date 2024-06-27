@@ -160,6 +160,50 @@
         <servlet-name>editProfileCustomer</servlet-name>
         <servlet-class>Controller.editProfileCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CancelOrder</servlet-name>
+        <servlet-class>Controller.CancelOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyOrder</servlet-name>
+        <servlet-class>Controller.MyOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyOrderDetail</servlet-name>
+        <servlet-class>Controller.MyOrderDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderStatus</servlet-name>
+        <servlet-class>Controller.OrderStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSale</servlet-name>
+        <servlet-class>Controller.UpdateSale</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateStatusOrder</servlet-name>
+        <servlet-class>Controller.UpdateStatusOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaleName</servlet-name>
+        <servlet-class>Controller.SaleName</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CartCompletion</servlet-name>
+        <servlet-class>Controller.CartCompletion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedbackDetail</servlet-name>
+        <servlet-class>Controller.FeedbackDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PayAgain</servlet-name>
+        <servlet-class>Controller.PayAgain</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashboard</servlet-name>
+        <servlet-class>Controller.AdminDashboard</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -319,5 +363,49 @@
     <servlet-mapping>
         <servlet-name>editProfileCustomer</servlet-name>
         <url-pattern>/editProfileCustomerURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelOrder</servlet-name>
+        <url-pattern>/CancelOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyOrder</servlet-name>
+        <url-pattern>/MyOrderURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyOrderDetail</servlet-name>
+        <url-pattern>/MyOrderDetailURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderStatus</servlet-name>
+        <url-pattern>/orderstatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSale</servlet-name>
+        <url-pattern>/updatesale</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStatusOrder</servlet-name>
+        <url-pattern>/updatestatusorder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleName</servlet-name>
+        <url-pattern>/sales</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartCompletion</servlet-name>
+        <url-pattern>/CartCompletion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackDetail</servlet-name>
+        <url-pattern>/FeedbackDetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PayAgain</servlet-name>
+        <url-pattern>/PayAgain</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboard</servlet-name>
+        <url-pattern>/AdminDashboard</url-pattern>
     </servlet-mapping>
 </web-app>

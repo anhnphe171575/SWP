@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
+                        <a href="CustomerServletURL" target="_blank">
                             <span class="material-icons-outlined">groups</span> Customers
                         </a>
                     </li>
@@ -35,7 +35,7 @@
                         </a>
                     </li>
                     <li class="sidebar-list-item">
-                        <a href="#" target="_blank">
+                        <a href="SliderServletURL" target="_blank">
                             <span class="material-icons-outlined">poll</span> Slide
                         </a>
                     </li>

@@ -20,6 +20,17 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+           <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
         <style>
             td img {
@@ -283,13 +294,21 @@
         </script>
     </head>
     <body>
+                <div class="grid-container">
+
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h2>Manage <b>Post</b></h2>
+                                <h2>Manage <b>Slider</b></h2>
                             </div>
                             <div style="text-align: right"class="col-sm-3">
                                 <form action="SliderServletURL" method="get">
@@ -306,7 +325,6 @@
                               
                                          
                                 
-                                <h5>${sessionScope.username}</h5>
                             </div>
                         </div>
                     </div>
@@ -551,6 +569,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </body>
 </html>
 
