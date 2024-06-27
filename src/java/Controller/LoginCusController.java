@@ -79,9 +79,9 @@ public class LoginCusController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         DAOCart db = new DAOCart();
-        boolean check = daoC.loginCus(username, password);
-        int cusid = daoC.getCusByUserName(username).getCustomerID();
+        boolean check = daoC.loginCus(username, password);      
         if (check==true) {
+             int cusid = daoC.getCusByUserName(username).getCustomerID();
             session.setAttribute("cus", daoC.getCus(username));
               
             session.setAttribute("cart", db.getListCart(cusid));
