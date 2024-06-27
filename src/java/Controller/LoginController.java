@@ -80,17 +80,37 @@ public class LoginController extends HttpServlet {
         DAOUser dao = new DAOUser();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String service = request.getParameter("service");
         HttpSession session = request.getSession(true);
-      
+        if (service.equals("login")) {
+            boolean check = dao.login(username, password);
+            if (check) {
+                session.setAttribute("username", username);
+                User user = dao.getUserByLogin(username);
+                if (user.getRole().getRoleID() == 1) {
+                    session.setAttribute("user", user);
+                    session.setMaxInactiveInterval(1800);
+                    response.sendRedirect("MKTDashboard");
+                } else if (user.getRole().getRoleID() == 3) {
+                    session.setAttribute("user", user);
+                    session.setMaxInactiveInterval(1800);    
+                    response.sendRedirect("SaleDashboardURL");
+                } else if (user.getRole().getRoleID() == 2 || user.getRole().getRoleID() == 4) {
+                    session.setAttribute("user", user);
+                    session.setMaxInactiveInterval(1800);
+                    response.sendRedirect("orderlist");
+                } else {
+                    session.setAttribute("user", user);
+                    response.sendRedirect("");
+                }
+            } else if (service.equals("logout")) {
+                session.invalidate(); // Hủy bỏ session hiện tại
+                doGet(request, response);
 
-      
-        boolean check = dao.login(username, password);
-        if (check==true) {
-            session.setAttribute("username", username);
-            response.sendRedirect("PostController");
-        } else {
-            request.setAttribute("error", "error");
-            doGet(request, response);
+            } else {
+                request.setAttribute("error", "Error");
+                request.getRequestDispatcher("Views/loginUser.jsp").forward(request, response);
+            }
         }
     }
 

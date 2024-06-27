@@ -335,12 +335,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <span class="custom-checkbox">
-                                            <input type="checkbox" id="selectAll">
-                                            <label for="selectAll"></label>
-                                        </span>
-                                    </th>
+                                   
                                     <th>Post ID</th>
                                     <th>Thumbnail</th>
                                     <th>Title</th>
@@ -353,12 +348,7 @@
                             <tbody>
                                 <c:forEach items="${requestScope.post}" var="p">
                                     <tr>
-                                        <td>
-                                            <span class="custom-checkbox">
-                                                <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                                                <label for="checkbox2"></label>
-                                            </span>
-                                        </td>
+                                       
                                         <td>${p.postID}</td>
                                         <td><img src="${p.thumbnail}" alt="Image"/></td>
                                         <td>${p.title}</td>
@@ -578,9 +568,7 @@
                                 <label>featured</label>
                                 <input type="text" class="form-control" name="featured" required>
                             </div>
-                            <!--                            <div class="form-group">
-                                                            <label>status</label>
-                                                            <select id="status-select" class="form-control" name="status">
+
                             <c:forEach items="${requestScope.status}" var="s">
                                 <option value="${s}">${s}</option>
                             </c:forEach>
