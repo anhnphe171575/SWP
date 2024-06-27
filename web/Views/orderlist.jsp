@@ -18,20 +18,16 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- JS Libraries -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <!-- Montserrat Font -->
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-        <!-- Material Icons -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-
-        <!-- Custom CSS -->
         <link rel="stylesheet" href="./mktcss/styles.css">
-        <link rel="stylesheet" href="/qcss/style.css">
         <style>
             .filter-form {
                 font-size: 12px; /* Adjust this value as needed */
@@ -119,10 +115,8 @@
                 cursor: pointer;
             }
             table.table th, table.table td {
-                text-align: center; /* Canh giá»¯a ná»i dung trong cÃ¡c cá»t */
+                text-align: center;
             }
-
-            /* Náº¿u báº¡n muá»n canh giá»¯a cáº£ tiÃªu Äá» cá»§a cá»t */
             table.table th {
                 text-align: center;
             }
@@ -290,14 +284,120 @@
                     "paging": true,
                     "lengthChange": false,
                     "searching": false,
-                    "ordering": true,
-                    "info": true,
+                    "ordering": false,
+                    "info": false,
                     "autoWidth": false,
-                    "pageLength": 2
-
+                    "pageLength": 10
                 });
             });
+            $(document).on('click', '.edit-sale-icon', function () {
+                var orderID = $(this).data('order-id');
+                fetchSaleOptions(orderID);
+            });
 
+            $(document).on('click', '.edit-status-icon', function () {
+                var statusOrderid = $(this).data('status-orderid');
+                var orderID = $(this).data('order-id');
+                console.log("Status Order ID:", statusOrderid); // Debugging statement
+                console.log("Order ID:", orderID);
+                fetchOrderStatuses(statusOrderid, orderID);
+            });
+             function fetchSaleOptions(orderID) {
+                    $.ajax({
+                        url: 'sales',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (sales) {
+                            console.log('Sales data received:', sales); // Debugging line
+                            var dropdown = '<select id="saleDropdown-' + orderID + '" class="form-control">';
+                            $.each(sales, function (sale, count) {
+                                dropdown += '<option value="' + sale + '">' + sale + ' (' + count + ' orders)</option>';
+                            });
+                            dropdown += '</select>';
+                            var form = '<form id="editSaleForm-' + orderID + '" style="display: inline-block;">' +
+                                    dropdown +
+                                    '<button type="submit" class="btn btn-primary">Save</button>' +
+                                    '</form>';
+                            $('#saleContainer-' + orderID).html(form);
+
+                            // Add event listener for the newly created form
+                            $('#editSaleForm-' + orderID).on('submit', function (e) {
+                                e.preventDefault();
+                                var selectedSale = $('#saleDropdown-' + orderID).val();
+                                console.log('Selected sale for order ' + orderID + ': ' + selectedSale);
+                                // Submit the data to the server or handle further as needed
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                        }
+                    });
+                }
+            $(document).on('submit', 'form[id^="editSaleForm-"]', function (e) {
+                e.preventDefault();
+                var formID = $(this).attr('id');
+                var orderID = formID.replace('editSaleForm-', '');
+                var newSale = $('#saleDropdown-' + orderID).val();
+                $.ajax({
+                    url: 'updatesale',
+                    method: 'POST',
+                    data: {
+                        orderID: orderID,
+                        newSale: newSale
+                    },
+                    success: function (response) {
+                        alert('Cập nhật người bán của đơn hàng thành công!');
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Lỗi khi cập nhật người bán của đơn hàng: ' + error);
+                    }
+                });
+            });
+            function fetchOrderStatuses(statusOrderid, orderID) {
+                $.ajax({
+                    url: 'orderstatus', // Adjust the URL to your API endpoint
+                    method: 'GET',
+                    data: {statusOrderid: statusOrderid}, // Include the statusOrderid as a parameter
+                    dataType: 'json',
+                    success: function (statuses) {
+                        var dropdown = '<select id="statusDropdown-' + statusOrderid + '" class="form-control">';
+                        $.each(statuses, function (index, status) {
+                            dropdown += '<option value="' + status + '">' + status + '</option>';
+                        });
+                        dropdown += '</select>';
+                        var form = '<form id="editStatusForm-' + statusOrderid + '" style="display: inline-block;" onsubmit="return updateOrderStatus(event, \'' + orderID + '\', \'' + statusOrderid + '\')">' +
+                                dropdown +
+                                '<button type="submit" class="btn btn-primary">Save</button>' +
+                                '</form>';
+                        $('#statusContainer-' + statusOrderid).html(form);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching statuses:', error);
+                    }
+                });
+            }
+
+            function updateOrderStatus(event, orderID, statusOrderid) {
+                event.preventDefault();
+                var newStatus = $('#statusDropdown-' + statusOrderid).val();
+                console.log("Updating Order ID:", orderID, "with Status:", newStatus);
+
+                $.ajax({
+                    url: 'updatestatusorder',
+                    method: 'POST',
+                    data: {
+                        orderID: orderID,
+                        newStatus: newStatus
+                    },
+                    success: function (response) {
+                        alert('Cập nhật trạng thái đơn hàng thành công!');
+                        location.reload(); // Tải lại trang sau khi cập nhật thành công
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Lỗi khi cập nhật trạng thái đơn hàng: ' + error);
+                    }
+                });
+            }
             function validateForm() {
                 var orderID = document.forms["searchForm"]["id"].value;
                 var customerName = document.forms["searchForm"]["customer"].value;
@@ -316,15 +416,11 @@
     </head>
     <body>
         <div class="grid-container">
-
             <!-- Header -->
             <jsp:include page="header.jsp"></jsp:include>
-                <!-- End Header -->
-
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
-
-                <div class="container-xl">
+            <jsp:include page="sidebar1.jsp"></jsp:include>
+                <div class="container-xl" style="width: 1200">
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
@@ -343,122 +439,168 @@
                                 </div>
                             </div>
                             <div class="container">
-                                <form action="orderlist" method="post" class="filter-form">
-                                    <div class="row mb-3">
-                                        <div class="col-md-5">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Order Date:</span>
+                            <c:choose>
+                                <c:when test="${sessionScope.user.role.getRoleID() == 2}">
+                                    <!-- Form for Role 2 -->
+                                    <form action="orderlist" method="post" class="filter-form">
+                                        <input type="hidden" value="${saleid}" name="saleid"  >
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Order Date:</span>
+                                                    </div>
+                                                    <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
+                                                    <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
                                                 </div>
-                                                <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
-                                                <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Status:</span>
+                                                    </div>
+                                                    <select class="custom-select" id="status" name="status">
+                                                        <option value="all">All</option>
+                                                        <c:forEach items="${requestScope.status}" var="c">
+                                                            <option value="${c}">${c}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
+                                                <input type="hidden" name="service" value="filter">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">Sale Name:</span>
+                                    </form>
+                                </c:when>
+                                <c:when test="${sessionScope.user.getRole().getRoleID() == 3}">
+                                    <!-- Form for Role 3 -->
+                                    <form action="orderlist" method="post" class="filter-form">
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Order Date:</span>
+                                                    </div>
+                                                    <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
+                                                    <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
                                                 </div>
-                                                <select class="custom-select" id="salename" name="salename">
-                                                    <option value="all">All</option>
-                                                <c:forEach items="${requestScope.sale}" var="c">
-                                                    <option value="${c}">${c}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Status:</span>
                                             </div>
-                                            <select class="custom-select" id="status" name="status">
-                                                <option value="all">All</option>
-                                                <c:forEach items="${requestScope.status}" var="c">
-                                                    <option value="${c}">${c}</option>
-                                                </c:forEach>
-                                            </select>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Sale Name:</span>
+                                                    </div>
+                                                    <select class="custom-select" id="salename" name="salename">
+                                                        <option value="all">All</option>
+                                                        <c:forEach items="${requestScope.sale}" var="c">
+                                                            <option value="${c}">${c}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Status:</span>
+                                                    </div>
+                                                    <select class="custom-select" id="status" name="status">
+                                                        <option value="all">All</option>
+                                                        <c:forEach items="${requestScope.status}" var="c">
+                                                            <option value="${c}">${c}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
+                                                <input type="hidden" name="service" value="filter">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12 mt-3">
-                                        <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
-                                        <input type="hidden" name="service" value="filter">
-                                    </div>
-                                </div>
-                            </form>
+                                    </form>
+                                </c:when>
+                                <c:when test="${sessionScope.user.role.getRoleID() == 4}">
+                                    <!-- Form for Role 4 -->
+                                    <form action="orderlist" method="post" class="filter-form">
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Order Date:</span>
+                                                    </div>
+                                                    <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
+                                                    <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">Status:</span>
+                                                    </div>
+                                                    <select class="custom-select" id="status" name="status">
+                                                        <option value="all">All</option>
+                                                        <c:forEach items="${requestScope.status}" var="c">
+                                                            <option value="${c}">${c}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
+                                                <input type="hidden" name="service" value="filter">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </c:when>
+                            </c:choose>
                         </div>
-                    </div>
-                    <div class="container">
-                        <form action="orderlist" method="post">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Order Date:</span>
-                                        </div>
-                                        <input type="date" class="form-control" id="from-date" name="fromDate" placeholder="From">
-                                        <input type="date" class="form-control" id="to-date" name="toDate" placeholder="To">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Sale Name:</span>
-                                        </div>
-                                        <select class="custom-select" id="status" name="sale">
-                                            <option value="all">All</option>
-                                            <c:forEach items="${requestScope.sale}" var="c">
-                                                <option value="${c}">${c}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Status:</span>
-                                        </div>
-                                        <select class="custom-select" id="status" name="status">
-                                            <option value="all">All</option>
-                                            <c:forEach items="${requestScope.status}" var="c">
-                                                <option value="${c}">${c}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
-                                    <input type="hidden" name="service" value="filter">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>  
-                                <th>Order ID</th>
-                                <th>Customer Name</th>
-                                <th>Ordered Date</th>
-                                <th>First Product Name</th>
-                                <th>Number of All Products</th>
-                                <th>Total Cost</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${list1}" var="item" varStatus="status">
-                                <tr>
-                                    <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
-                                    <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
-                                    <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                    <td>${fn:split(item.product.product_name, ',')[0]}</td>
-                                    <td>${quantity[item.order.orderID]}</td>
-                                    <td><fmt:formatNumber value="${item.list_price}"/></td>   
-                                    <td>${item.order.status.status_name}</td>
-
-                                </tr>                          
-                            </tbody>
-                        </table>
+                        <c:if test="${list1 != null && not empty list1}">
+                            <!-- Order list table -->
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>OrderID</th>
+                                        <th>Order Date</th>
+                                        <th>Sale Name</th>
+                                        <th>First Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${list1}" var="item" varStatus="status">
+                                        <tr>
+                                            <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
+                                            <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
+                                            <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
+                                            <td>${fn:split(item.product.product_name, ',')[0]}</td>
+                                            <td>${quantity[item.order.orderID]}</td>
+                                            <td><fmt:formatNumber value="${item.list_price}"/></td>
+                                            <td>${item.order.status.status_name}</td>
+                                            <td style="width: 130px">
+                                                <span id="statusContainer-${item.order.status.getStatus_orderid()}">
+                                                    <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
+                                                                  (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">
+                                                          <i class="fas fa-edit edit-status-icon" 
+                                                             data-order-id="${item.order.getOrderID()}" 
+                                                             data-status-orderid="${item.order.status.getStatus_orderid()}" 
+                                                             style="cursor:pointer; color: #007bff;"></i>
+                                                    </c:if>
+                                                    <c:if test="${sessionScope.user.getRole().getRoleID() == 3}">                                       
+                                                        <span id="saleContainer-${item.order.orderID}">
+                                                            ${item.order.user.first_name}
+                                                            <i class="fas fa-edit edit-sale-icon" data-order-id="${item.order.orderID}" style="cursor:pointer; color: #007bff;"></i>
+                                                        </span>
+                                                    </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:if>
                     </div>
                 </div>
             </div>

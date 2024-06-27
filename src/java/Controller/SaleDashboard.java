@@ -38,7 +38,7 @@ public class SaleDashboard extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String date = formatter.format(date_create_by);
         request.setAttribute("date", date);
-        request.setAttribute("sale", dao1.getUser("select * from [User] where RoleID = 4"));
+        request.setAttribute("sale", dao1.getUser("select * from [User] where RoleID = 2"));
         String saleid = request.getParameter("sale");
         String startdate = request.getParameter("startdate");
         String enddate = request.getParameter("enddate");
@@ -84,7 +84,7 @@ public class SaleDashboard extends HttpServlet {
             request.setAttribute("total1", dao.TotalOrder1(saleId, startdate, enddate));
             request.setAttribute("dataOrder1", dao.trend7dayTotalOrderBySale(saleId, startdate, enddate));
         } else {
-            saleid = String.valueOf(dao1.getUser("select * from [User] where RoleID = 4").get(0).getUserID());
+            saleid = String.valueOf(dao1.getUser("select * from [User] where RoleID = 2").get(0).getUserID());
             int saleId = Integer.parseInt(saleid);
             startdate = localDate.minusDays(7).toString();
             enddate = localDate.toString();
