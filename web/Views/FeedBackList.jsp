@@ -381,7 +381,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Rated Star:</span>
                                         </div>
-                                        <select class="custom-select" id="salename" name="salename">
+                                        <select class="custom-select" id="salename" name="star">
                                             <option value="all">All</option>
                                             <option value="1">1 Star</option>
                                             <option value="2">2 Stars</option>
