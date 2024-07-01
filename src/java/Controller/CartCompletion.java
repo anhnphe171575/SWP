@@ -175,10 +175,10 @@ public class CartCompletion extends HttpServlet {
                 DAOProduct db2 = new DAOProduct();
                 for (int i = 0; i < db.getOrderByOrderID(maxElement + 1).size(); i++) {
                     Product p = db2.getProductByID(db.getOrderByOrderID(maxElement + 1).get(i).getProduct().getProductID());
-                    int quantity = p.getQuantity() - db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
+                    int quantity = p.getQuantity_hold() + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
                     System.out.println("quantity order:" + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity());
-                    System.out.println("quantity" +quantity);
-                    db2.UpdateQuantity(quantity, p.getProductID());
+                    System.out.println("quantity" + quantity);
+                    db2.UpdateQuantityHold(quantity, p.getProductID());
                 }
                 try {
                     sendEmail("Your Order has been Successfully Placed!",
@@ -239,21 +239,23 @@ public class CartCompletion extends HttpServlet {
                     }
                 }
                 DAOProduct db2 = new DAOProduct();
-                for (int i = 0; i < db.getOrderByOrderID(maxElement + 1).size(); i++) {
-                    Product p = db2.getProductByID(db.getOrderByOrderID(maxElement + 1).get(i).getProduct().getProductID());
-                    int quantity = p.getQuantity() - db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
-                    db2.UpdateQuantity(quantity, p.getProductID());
-                }
+            for (int i = 0; i < db.getOrderByOrderID(maxElement + 1).size(); i++) {
+                Product p = db2.getProductByID(db.getOrderByOrderID(maxElement + 1).get(i).getProduct().getProductID());
+                int quantity = p.getQuantity_hold() + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
+                 System.out.println("quantity order:" + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity());
+                    System.out.println("quantity" +quantity);
+                db2.UpdateQuantityHold(quantity, p.getProductID());
+            }
                 request.getRequestDispatcher("Views/OrderFail.jsp").forward(request, response);
             }
         } else {
             if (vnp_TransactionStatus.equals("00")) {
-                LocalDate localDate = LocalDate.now();    
+                LocalDate localDate = LocalDate.now();
                 // Cộng thêm 3 ngày vào order_date để tính shipped_date
                 LocalDate shippedLocalDate = localDate.plusDays(3);
-               
+
                 String order_id = (String) session.getAttribute("orderid_payagain");
-                db.UpdateStatus(Integer.parseInt(order_id), 1,shippedLocalDate);
+                db.UpdateStatus(Integer.parseInt(order_id), 1, shippedLocalDate);
                 session.removeAttribute("payagain");
                 request.getRequestDispatcher("Views/OrderSuccess.jsp").forward(request, response);
 
