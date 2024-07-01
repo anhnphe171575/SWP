@@ -80,7 +80,7 @@ public class DAOCart extends DBContext {
                         null,
                         "",
                        null,
-                        null);
+                        null,0);
                 CartItems c = new CartItems(rs.getInt("cartItemID"),
                         null,
                         p,
@@ -140,7 +140,7 @@ public class DAOCart extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
             }
         } catch (SQLException e) {
@@ -212,7 +212,7 @@ public class DAOCart extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
 
             }
@@ -267,7 +267,7 @@ public class DAOCart extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 CartItems ci = new CartItems(rs.getInt("cartItemID"), ca, p, rs.getInt("quantity"));
                 list.add(ci);
             }

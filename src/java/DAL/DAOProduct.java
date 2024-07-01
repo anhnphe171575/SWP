@@ -48,6 +48,7 @@ public class DAOProduct extends DBContext {
 //            e.printStackTrace();
 //        }
 //    }
+
     public List<Product> getListbyPage(List<Product> list, int start, int end) {
         ArrayList<Product> l = new ArrayList();
         for (int i = start; i < end; i++) {
@@ -96,7 +97,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -126,7 +127,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -157,7 +158,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 p.add(pr);
             }
@@ -167,37 +168,37 @@ public class DAOProduct extends DBContext {
         return p;
     }
 
-        public List<Product> getProductByTitleByCid(String title, int cid) {
-            List<Product> p = new ArrayList();
-            try {
-                String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ?";
-                PreparedStatement stm = conn.prepareStatement(query);
-                stm.setInt(1, cid);
-                ResultSet rs = stm.executeQuery();
-                while (rs.next()) {
-                    Product pr = new Product(
-                            rs.getInt("productID"),
-                            rs.getString("product_name"),
-                            rs.getInt("quantity"),
-                            rs.getInt("year"),
-                            rs.getString("product_description"),
-                            rs.getInt("featured"),
-                            rs.getString("thumbnail"),
-                            rs.getString("brief_information"),
-                            rs.getFloat("original_price"),
-                            rs.getFloat("sale_price"),
-                            null,
-                            rs.getString("brand"),
-                            rs.getDate("update_date"),
-                            rs.getBoolean("status")
-                    );
-                    p.add(pr);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public List<Product> getProductByTitleByCid(String title, int cid) {
+        List<Product> p = new ArrayList();
+        try {
+            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, cid);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product pr = new Product(
+                        rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        rs.getInt("year"),
+                        rs.getString("product_description"),
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        rs.getString("brief_information"),
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        rs.getString("brand"),
+                        rs.getDate("update_date"),
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
+                );
+                p.add(pr);
             }
-            return p;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return p;
+    }
 
     public List<Product> getProductFeatureByTitleByCid(String title, int cid, int feature) {
         List<Product> p = new ArrayList();
@@ -222,7 +223,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 p.add(pr);
             }
@@ -254,7 +255,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 p.add(pr);
             }
@@ -287,7 +288,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 p.add(pr);
             }
@@ -320,7 +321,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), 0
                 );
                 p.add(pr);
             }
@@ -361,7 +362,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(product);
             }
         } catch (SQLException e) {
@@ -393,7 +394,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), 0
                 );
                 productList.add(product);
             }
@@ -431,7 +432,7 @@ public class DAOProduct extends DBContext {
                         cp, // Chưa có CategoryProduct trong ResultSet, bạn có thể thêm sau
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), 0
                 );
                 productList.add(product);
             }
@@ -469,7 +470,7 @@ public class DAOProduct extends DBContext {
                         cp, // Chưa có CategoryProduct trong ResultSet, bạn có thể thêm sau
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 productList.add(product);
             }
@@ -504,7 +505,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -533,7 +534,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -563,7 +564,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -593,7 +594,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -623,7 +624,7 @@ public class DAOProduct extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), 0);
                 productList.add(p);
             }
         } catch (SQLException e) {
@@ -664,9 +665,9 @@ public class DAOProduct extends DBContext {
         List<Product> product = new ArrayList();
         try {
             String query = "select p.productID,p.product_name,p.quantity,p.year,p.product_description,\n"
-                    + "                    p.featured,p.thumbnail,p.brief_information,p.original_price,p.sale_price,p.category_productID, p.brand, p.update_date,p.status,\n"
+                    + "                    p.featured,p.thumbnail,p.brief_information,p.quantity_hold,p.original_price,p.sale_price,p.category_productID, p.brand, p.update_date,p.status,\n"
                     + "                    cp.category_name,cp.category_description from [Product] p inner join CategoryProduct cp \n"
-                    + "                    on p.category_productID = cp.category_productID where p.featured ='1' and p.quantity  > 0 and p.status = 1";
+                    + "                    on p.category_productID = cp.category_productID where p.featured ='1' and p.status = 1";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -685,7 +686,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"), rs.getInt("quantity_hold"));
                 product.add(p);
             }
         } catch (SQLException e) {
@@ -719,7 +720,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         null,
-                        null);
+                        null, 0);
                 product.add(p);
             }
         } catch (SQLException e) {
@@ -750,12 +751,13 @@ public class DAOProduct extends DBContext {
     public HashMap<Integer, Integer> CountProductByProduct() {
         HashMap<Integer, Integer> product = new HashMap<>();
         try {
-            String query = "select p.quantity , p.productID  from Product p\n"
-                    + "group by p.productID,p.quantity";
+            String query = "SELECT p.productID, (p.quantity - p.quantity_hold) AS available_quantity\n"
+                    + "FROM Product p\n"
+                    + "GROUP BY p.productID, p.quantity, p.quantity_hold;";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                product.put(rs.getInt("productID"), rs.getInt("quantity"));
+                product.put(rs.getInt("productID"), rs.getInt("available_quantity"));
             }
         } catch (SQLException e) {
             java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
@@ -810,7 +812,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
 
             }
@@ -846,7 +848,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), 0
                 );
                 product.add(p);
             }
@@ -867,7 +869,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductBySorted() {
         List<Product> product = new ArrayList();
         try {
-            String query = "Select p.productID, p.product_name, p.quantity, p.year,p.category_productID, p.product_description, p.featured, p.thumbnail, "
+            String query = "Select p.productID, p.product_name, p.quantity_hold,p.quantity, p.year,p.category_productID, p.product_description, p.featured, p.thumbnail, "
                     + "p.brief_information,p.original_price,p.sale_price,p.update_date,p.brand, p.status, cp.category_name, cp.category_name, cp.category_description, cp.image "
                     + "from Product p inner join CategoryProduct cp "
                     + "on p.category_productID =cp.category_productID Order by p.update_date";
@@ -890,7 +892,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status")
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 product.add(p);
             }
@@ -900,7 +902,7 @@ public class DAOProduct extends DBContext {
         return product;
     }
 
-    public void addProduct(String product_name,  int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand) {
+    public void addProduct(String product_name, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand) {
         try {
             String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -951,6 +953,23 @@ public class DAOProduct extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public void UpdateQuantityHold(int quantity, int productID) {
+        String sql = "UPDATE [Product]\n"
+                + "   SET \n"
+                + "           [quantity_hold]=?\n"
+                + " WHERE productID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, quantity);
+            pre.setInt(2, productID);
+            pre.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
      public void UpdateQuantity(int quantity, int productID) {
         String sql = "UPDATE [Product]\n"
                 + "   SET \n"
@@ -958,8 +977,8 @@ public class DAOProduct extends DBContext {
                 + " WHERE productID = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-           pre.setInt(1, quantity);
-           pre.setInt(2, productID);     
+            pre.setInt(1, quantity);
+            pre.setInt(2, productID);
             pre.executeUpdate();
 
         } catch (Exception e) {
@@ -1007,6 +1026,6 @@ public class DAOProduct extends DBContext {
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        System.out.println(p.getProductByID(1));
+        System.out.println(p.getProductFeature());
     }
 }

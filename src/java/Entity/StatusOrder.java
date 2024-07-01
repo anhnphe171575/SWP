@@ -10,15 +10,13 @@ import java.lang.*;
 public class StatusOrder {
     private int status_orderid;
     private String status_name;
-    private Role role;
 
     public StatusOrder() {
     }
 
-    public StatusOrder(int status_orderid, String status_name, Role role) {
+    public StatusOrder(int status_orderid, String status_name) {
         this.status_orderid = status_orderid;
         this.status_name = status_name;
-        this.role = role;
     }
 
     public int getStatus_orderid() {
@@ -37,16 +35,11 @@ public class StatusOrder {
         this.status_name = status_name;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
-        return "StatusOrder{" + "status_orderid=" + status_orderid + ", status_name=" + status_name + ", role=" + role + '}';
-    }    
+        return "StatusOrder{" + "status_orderid=" + status_orderid + ", status_name=" + status_name + '}';
+    }
+
+    
+    
 }
