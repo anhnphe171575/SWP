@@ -5,6 +5,7 @@
 package Controller;
 
 import DAL.DAOOrder;
+import Entity.StatusOrder;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -55,29 +56,29 @@ public class OrderStatus extends HttpServlet {
 //        out.flush();
 
         response.setContentType("application/json");
-        String statusOrderid = request.getParameter("statusOrderid"); 
+        String statusOrderid = request.getParameter("statusOrderid");
         int statusid = Integer.parseInt(statusOrderid);
         DAOOrder daoOrder = new DAOOrder();
-        List<String> statuses = new ArrayList<>();
+        List<StatusOrder> statuses = new ArrayList<>();
         try {
             if (statusid == 1) {
-                statuses.add("Submit");
-                statuses.add("Reject");
-                statuses.add("Approve");
+                statuses.add(daoOrder.getStatusOrder2().get(0));
+                statuses.add(daoOrder.getStatusOrder2().get(1));
+                statuses.add(daoOrder.getStatusOrder2().get(2));
 
             } else if (statusid == 2) {
-                statuses.add("Reject");
-                statuses.add("Submit");
+                statuses.add(daoOrder.getStatusOrder2().get(2));
             } else if (statusid == 3) {
-                statuses.add("Approve");
-                statuses.add("Packing");
+                statuses.add(daoOrder.getStatusOrder2().get(2));
+                statuses.add(daoOrder.getStatusOrder2().get(3));
+
             } else if (statusid == 4) {
-                statuses.add("Packing");
-                statuses.add("Delivering");
+                statuses.add(daoOrder.getStatusOrder2().get(3));
+                statuses.add(daoOrder.getStatusOrder2().get(4));
             } else if (statusid == 5) {
-                statuses.add("Delivering");
-                statuses.add("Success");
-                statuses.add("Fail");
+                statuses.add(daoOrder.getStatusOrder2().get(4));
+                statuses.add(daoOrder.getStatusOrder2().get(5));
+                statuses.add(daoOrder.getStatusOrder2().get(6));
             }
             Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(statuses);
