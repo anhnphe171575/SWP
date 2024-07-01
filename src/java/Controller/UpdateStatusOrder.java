@@ -5,12 +5,31 @@
 package Controller;
 
 import DAL.DAOOrder;
+import DAL.DAOProduct;
+import Entity.Customer;
+import Entity.OrderItems;
+import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -68,20 +87,85 @@ public class UpdateStatusOrder extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, UnsupportedEncodingException {
         DAOOrder d = new DAOOrder();
+        HttpSession session = request.getSession();
+
         int orderID = Integer.parseInt(request.getParameter("orderID"));
-        String newStatusID = request.getParameter("newStatus");
+        ArrayList<OrderItems> order = d.getOrderByOrderID(orderID);
+        int newID = Integer.parseInt(request.getParameter("newStatus"));
         System.out.println(orderID);
-        System.out.println(newStatusID);
-        int newID = d.getStatusOrderIdByStatusName(newStatusID);
-        d.updateStatusOrder(newID, orderID);
-        if ("Reject".equalsIgnoreCase(newStatusID) || "Fail".equalsIgnoreCase(newStatusID)) {
+        System.out.println(newID);
+        
+        if (newID == 5) {
+            DAOProduct db2 = new DAOProduct();
+            for (int i = 0; i < d.getOrderByOrderID(orderID).size(); i++) {
+                Product p = db2.getProductByID(d.getOrderByOrderID(orderID).get(i).getProduct().getProductID());
+                int quantity = p.getQuantity() - d.getOrderByOrderID(orderID).get(i).getQuantity();
+                int quantity1 = p.getQuantity_hold() - d.getOrderByOrderID(orderID).get(i).getQuantity();
+                System.out.println("quantity order:" + d.getOrderByOrderID(orderID).get(i).getQuantity());
+                System.out.println("quantity" + quantity);
+                db2.UpdateQuantity(quantity, p.getProductID());
+                db2.UpdateQuantityHold(quantity1, p.getProductID());
+            }
+        }
+        if (newID == 7) {
             d.RestoreOrderQuantity(orderID);
         }
+        if (newID == 6) {
+            try {
+                sendEmail("Feedback Product", "Thanks for shopping. Please click to the following link to feedback in My Order", order.get(0).getOrder().getCustomer().getEmail());
+            } catch (MessagingException ex) {
+                Logger.getLogger(UpdateStatusOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                d.updateStatusOrder(newID, orderID);
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"message\": \"Cập nhật trạng thái đơn hàng thành công!\"}");
+    }
+
+    public void sendEmail(String subject, String body, String to) throws MessagingException, UnsupportedEncodingException {
+        final String fromEmail = "anhnphe171575@fpt.edu.vn";
+        // Mat khai email cua ban
+        final String password = "jull jeex qjzb cdtn";
+        // dia chi email nguoi nhan
+        final String toEmail = to;
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587"); //TLS Port
+        props.put("mail.smtp.auth", "true"); //enable authentication
+        props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+
+        Authenticator auth = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        };
+        Session session = Session.getInstance(props, auth);
+
+        MimeMessage msg = new MimeMessage(session);
+        //set message headers
+        msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+        msg.addHeader("format", "flowed");
+        msg.addHeader("Content-Transfer-Encoding", "8bit");
+
+        msg.setFrom(new InternetAddress(fromEmail, "NoReply-JD"));
+
+        msg.setReplyTo(InternetAddress.parse(fromEmail, false));
+
+        msg.setSubject(subject, "UTF-8");
+
+        msg.setText(body, "UTF-8");
+
+        msg.setSentDate(new Date());
+
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
+        Transport.send(msg);
     }
 
     /**
