@@ -32,7 +32,10 @@
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
         <style>
-
+            .disabled {
+                pointer-events: none;
+                color: grey;
+            }
             .nav-item.dropdown:hover {
                 background-color: #f0f0f0; /* Màu xám */
             }
@@ -40,6 +43,32 @@
                 background-color: #C17A74; /* Màu nền cho mục được chọn */
                 color: white; /* Màu chữ cho mục được chọn */
             }
+            /* Đặt khoảng cách giữa hình ảnh và tiêu đề */
+            .carousel-item img {
+                margin-bottom: 15px;
+            }
+
+            /* Tùy chỉnh tiêu đề sản phẩm */
+            .product-title {
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                color: #333; /* Màu chữ */
+                margin-top: 10px;
+            }
+
+            /* Tùy chỉnh liên kết bên trong tiêu đề sản phẩm */
+            .product-title a {
+                text-decoration: none;
+                color: inherit; /* Kế thừa màu chữ từ .product-title */
+                transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu */
+            }
+
+            /* Hiệu ứng khi hover chuột vào liên kết */
+            .product-title a:hover {
+                color: #007bff; /* Màu chữ khi hover */
+            }
+
         </style>
     </head>
 
@@ -49,17 +78,17 @@
 
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="HomePage" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
-              
+
             </div>
             <div class="col-lg-6 col-6 text-left">
 
             </div>
             <div class="col-lg-3 col-6 text-right">
 
-                <a href="" class="btn border">
+                <a href="CartDetails" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
@@ -101,9 +130,14 @@
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <a href="LogOut">Log out</a>
-
+                                        <div class="nav-item dropdown">
+                                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <div class="dropdown-menu ml-auto py-0">
+                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
+                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
+                                            </div>
+                                        </div>
+                                        <a href="LogOut" class="nav-link ">Log out</a>
                                     </div>
 
                                 </c:when>
@@ -180,16 +214,18 @@
 
                         </form>
                     </div>
-                    <h5 class="font-weight-semi-bold mb-4" style="text-align: center">Feature Products</h5>
+                    <h5 class="font-weight-semi-bold mb-4" style="text-align: center">SẢN PHẨM ĐẶC BIỆT MỚI RA</h5>
                     <div class="border-bottom mb-4 pb-4">
                         <div id="header-carousel" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
                                 <c:forEach items="${requestScope.LatedProducts}" var="lp" varStatus="status">
                                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}" data-bs-interval="10000">
                                         <img src="${lp.thumbnail}" class="d-block w-100" alt="Product image">
+                                        <h4 class="product-title"><a href="ProductDetailsPublic?pid=${lp.productID}">${lp.product_name}</a></h4>
                                     </div>
                                 </c:forEach>
                             </div>
+
                             <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
                                 <div class="btn btn-dark" style="width: 45px; height: 45px;">
                                     <span class="carousel-control-prev-icon mb-n2"></span>
@@ -237,7 +273,7 @@
                                         <img class="img-fluid w-100" src="${l.thumbnail}" alt="">
                                     </div>
                                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                        <h6 class="text-truncate mb-3"><a href="ProductDetailsPublic?pid=${l.productID}">${l.product_name}</a></h6>
+                                        <h6 class="text-truncate mb-3">${l.product_name}</h6>
                                         <p>${l.brief_information}</p>
                                         <div class="d-flex justify-content-center">
                                             <h6>${l.original_price}</h6>
@@ -247,8 +283,10 @@
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                        <a href="AddToCart?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                        <a href="ProductDetailsPublic?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                        <a href="javascript:void(0);" class="btn btn-sm text-dark p-0 add-to-cart-btn ${l.quantity - l.quantity_hold == 0 ? 'disabled' : ''}" data-product-id="${l.productID}">
+                                            <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -344,7 +382,7 @@
                 </div>
                 <div class="col-lg-8 col-md-12">
                     <div class="row">
-                        <div class="col-md-4 mb-5">
+                        <div class="col-md-6 mb-5">
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
@@ -355,18 +393,8 @@
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-5">
-                            <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                            <div class="d-flex flex-column justify-content-start">
-                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
-                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-5">
+
+                        <div class="col-md-6 mb-5">
                             <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
 
                             <div><p>HKD Nguyen Phu Anh </p>
@@ -423,6 +451,54 @@
                                         function submitForm() {
                                             document.getElementById("select-radio").submit();
                                         }
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+
+                        // Lấy ID sản phẩm từ thuộc tính data
+                        const productId = this.getAttribute('data-product-id');
+
+                        // Tạo hiệu ứng thêm vào giỏ hàng
+                        const cartIcon = document.querySelector('.fa-shopping-cart');
+
+                        // Tạo bản sao của hình ảnh sản phẩm
+                        ;
+
+                        // Lấy vị trí của hình ảnh sản phẩm và giỏ hàng
+                        const cartIconRect = cartIcon.getBoundingClientRect();
+
+                        // Đặt vị trí ban đầu của hình ảnh bản sao
+                       
+
+                        // Di chuyển hình ảnh bản sao đến vị trí của giỏ hàng
+                        
+
+                        // Loại bỏ hình ảnh bản sao sau khi di chuyển
+                        
+
+                            // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+                            $.ajax({
+                                url: 'AddToCart',
+                                method: 'GET',
+                                data: {pid: productId},
+                                success: function (response) {
+                                    // Xử lý phản hồi thành công, ví dụ cập nhật giỏ hàng
+                                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                                },
+                                error: function (error) {
+                                    // Xử lý lỗi
+                                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                                }
+                            });
+                        }, 1100);
+                    });
+                });
+            
         </script>
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
