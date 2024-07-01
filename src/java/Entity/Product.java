@@ -25,8 +25,13 @@ public class Product {
     private String brand;
     private Date update_date;
     private Boolean status;
+    private int quantity_hold;
 
-    public Product(int productID, String product_name, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status) {
+    public Product() {
+    }
+     
+    
+    public Product(int productID, String product_name, int quantity, int year, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, CategoryProduct categoryProduct, String brand, Date update_date, Boolean status, int quantity_hold) {
         this.productID = productID;
         this.product_name = product_name;
         this.quantity = quantity;
@@ -41,6 +46,7 @@ public class Product {
         this.brand = brand;
         this.update_date = update_date;
         this.status = status;
+        this.quantity_hold = quantity_hold;
     }
 
     public int getProductID() {
@@ -155,9 +161,19 @@ public class Product {
         this.status = status;
     }
 
+    public int getQuantity_hold() {
+        return quantity_hold;
+    }
+
+    public void setQuantity_hold(int quantity_hold) {
+        this.quantity_hold = quantity_hold;
+    }
+
     @Override
     public String toString() {
-        return "Product{" + "productID=" + productID + ", product_name=" + product_name + ", quantity=" + quantity + ", year=" + year + ", product_description=" + product_description + ", featured=" + featured + ", thumbnail=" + thumbnail + ", brief_information=" + brief_information + ", original_price=" + original_price + ", sale_price=" + sale_price + ", categoryProduct=" + categoryProduct + ", brand=" + brand + ", update_date=" + update_date + ", status=" + status + '}';
+        return "Product{" + "productID=" + productID + ", product_name=" + product_name + ", quantity=" + quantity + ", year=" + year + ", product_description=" + product_description + ", featured=" + featured + ", thumbnail=" + thumbnail + ", brief_information=" + brief_information + ", original_price=" + original_price + ", sale_price=" + sale_price + ", categoryProduct=" + categoryProduct + ", brand=" + brand + ", update_date=" + update_date + ", status=" + status + ", quantity_hold=" + quantity_hold + '}';
     }
+
+   
 
 }

@@ -89,8 +89,7 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null // Assuming there is no parent status or any other detail required here
+                        rs.getString("Status_Name")
                 );
 
                 Customer c = new Customer(
@@ -103,7 +102,7 @@ public class DAOOrder extends DBContext {
                 Product p = new Product(
                         0, // Assuming productID is not needed for this object creation
                         rs.getString("product_names"),
-                        0, 0, null, 0, null, null, 0, 0, null, null, null, null
+                        0, 0, null, 0, null, null, 0, 0, null, null, null, null,0
                 );
 
                 Order o = new Order(
@@ -168,8 +167,7 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder statusOrder = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null // Assuming there is no parent status or any other detail required here
+                        rs.getString("Status_Name")
                 );
 
                 Customer customer = new Customer(
@@ -182,7 +180,7 @@ public class DAOOrder extends DBContext {
                 Product product = new Product(
                         0, // Assuming productID is not needed for this object creation
                         rs.getString("product_names"),
-                        0, 0, null, 0, null, null, 0, 0, null, null, null, null
+                        0, 0, null, 0, null, null, 0, 0, null, null, null, null,0
                 );
 
                 Order order = new Order(
@@ -245,8 +243,8 @@ public class DAOOrder extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 StatusOrder statusOrder = new StatusOrder(rs.getInt("Status_OrderID"),
-                        rs.getString("status"),
-                        null);
+                        rs.getString("status")
+                        );
                 Customer customer = new Customer(0,
                         rs.getString("customer_name"),
                         null,
@@ -330,8 +328,8 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 status.add(st);
@@ -364,8 +362,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 // Create Customer object
@@ -401,7 +399,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 // Create Order object
@@ -457,8 +455,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 // Create Customer object
@@ -494,7 +492,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 // Create Order object
@@ -551,8 +549,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
-                        null
+                        rs.getString("status_name")
+                        
                 );
 
                 // Create Customer object
@@ -585,7 +583,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null);
+                        null,0);
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -690,8 +688,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
-                        null
+                        rs.getString("status_name")
+                        
                 );
 
                 // Create Customer object
@@ -724,7 +722,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null);
+                        null,0);
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -779,8 +777,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 // Create Customer object
@@ -816,7 +814,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 // Create Order object
@@ -1275,7 +1273,7 @@ public class DAOOrder extends DBContext {
                     + "                        u.gender, u.status,ri.ReceiverID, ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
-                    + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, st.RoleID, \n"
+                    + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, u.RoleID, \n"
                     + "                        ot.orderitemID, ot.list_price, ot.quantity \n"
                     + "                        FROM [Order] o \n"
                     + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
@@ -1291,8 +1289,8 @@ public class DAOOrder extends DBContext {
                 Role r = new Role(rs.getInt("RoleID"),
                         null);
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
-                        r);
+                        rs.getString("status_name")
+                        );
                 User u = new User(
                         rs.getInt("UserID"),
                         rs.getString("first_name"),
@@ -1305,7 +1303,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getInt("status"),
-                        null,
+                        r,
                         null,
                         null,
                         null);
@@ -1324,7 +1322,7 @@ public class DAOOrder extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("product_status"));
+                        rs.getBoolean("product_status"),0);
 
                 Customer c = new Customer(
                         rs.getInt("customerID"),
@@ -1383,7 +1381,7 @@ public class DAOOrder extends DBContext {
                     + "                        u.gender, u.status, ri.ReceiverID,ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
-                    + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, st.RoleID, \n"
+                    + "                        p.brand, p.update_date, p.status AS product_status, st.Status_Name, u.RoleID, \n"
                     + "                        ot.orderitemID, ot.list_price, ot.quantity as QuantityO\n"
                     + "                        FROM [Order] o \n"
                     + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
@@ -1400,8 +1398,8 @@ public class DAOOrder extends DBContext {
                 Role r = new Role(rs.getInt("RoleID"),
                         null);
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
-                        r);
+                        rs.getString("status_name")
+                        );
                 User u = new User(
                         rs.getInt("UserID"),
                         rs.getString("first_name"),
@@ -1414,7 +1412,7 @@ public class DAOOrder extends DBContext {
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
                         rs.getInt("status"),
-                        null,
+                        r,
                         null,
                         null,
                         null);
@@ -1433,7 +1431,7 @@ public class DAOOrder extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("product_status"));
+                        rs.getBoolean("product_status"),0);
 
                 Customer c = new Customer(
                         rs.getInt("customerID"),
@@ -1517,8 +1515,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("status_orderid"),
-                        rs.getString("status_name"),
-                        null
+                        rs.getString("status_name")
+                        
                 );
 
                 // Create Customer object
@@ -1551,7 +1549,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null);
+                        null,0);
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -1632,8 +1630,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 // Create Customer object
@@ -1669,7 +1667,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 // Create Order object
@@ -1725,8 +1723,8 @@ public class DAOOrder extends DBContext {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
+                        
                 );
 
                 // Create Customer object
@@ -1762,7 +1760,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 // Create Order object
@@ -1821,8 +1819,7 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
-                        rs.getString("Status_Name"),
-                        null
+                        rs.getString("Status_Name")
                 );
 
                 Customer c = new Customer(
@@ -1856,7 +1853,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null
+                        null,0
                 );
 
                 Order o = new Order(
@@ -1900,7 +1897,23 @@ public class DAOOrder extends DBContext {
         }
         return status;
     }
-
+    public List<StatusOrder> getStatusOrder2( ) {
+        List<StatusOrder> status = new ArrayList<>();
+        try {
+            String query = "select * from Status_Order ";
+            PreparedStatement stm = conn.prepareStatement(query);
+       
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("Status_OrderID");
+                String name = rs.getString("Status_Name");
+                StatusOrder so = new StatusOrder(id, name);
+                status.add(so);
+            }
+        } catch (Exception e) {
+        }
+        return status;
+    }
     public List<String> getSaleName() {
         List<String> names = new ArrayList<>();
         String query = "SELECT u.first_name, u.last_name FROM [User] u WHERE u.RoleID = 2;";
@@ -1942,8 +1955,8 @@ public class DAOOrder extends DBContext {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 StatusOrder statusOrder = new StatusOrder(rs.getInt("Status_OrderID"),
-                        rs.getString("status"),
-                        null);
+                        rs.getString("status")
+                        );
                 Customer customer = new Customer(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -1997,8 +2010,8 @@ public class DAOOrder extends DBContext {
         return orderList;
     }
 
-     public HashMap<String, Integer> CountorderSale() {
-        HashMap<String, Integer> count = new HashMap<>();
+     public HashMap<Integer, ArrayList<String>> CountorderSale() {
+        HashMap<Integer, ArrayList<String>> count = new HashMap<>();
         try {
             String query = "select Count(o.orderID) as count , u.first_name, u.last_name, u.UserID\n"
                     + "from [Order] o right join [User] u on o.UserID = u.UserID \n"
@@ -2010,7 +2023,10 @@ public class DAOOrder extends DBContext {
                  String firstName = rs.getString("first_name");
                 String lastName = rs.getString("last_name");
                 String fullName = firstName + " " + lastName;
-                count.put( fullName, rs.getInt("count"));
+                ArrayList<String> a = new ArrayList();
+                a.add(rs.getString("count"));
+                a.add(fullName);
+                count.put( rs.getInt("UserID"),a );
             }
         } catch (SQLException e) {
             java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
@@ -2107,7 +2123,6 @@ public class DAOOrder extends DBContext {
             stm.setInt(1, orderid);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-
                 CategoryProduct categoryProduct = new CategoryProduct(
                         0,
                         rs.getString("category_name"),
@@ -2129,7 +2144,7 @@ public class DAOOrder extends DBContext {
                         categoryProduct,
                         "",
                         null,
-                        false
+                        false,0
                 );
 
                 OrderItems orderItem = new OrderItems(0,
@@ -2264,7 +2279,7 @@ public class DAOOrder extends DBContext {
     public static void main(String[] args) {
 
         DAOOrder db = new DAOOrder();
-
+        System.out.println(db.getStatusOrder2());
 //        HashMap<Integer, Integer> countMap = db.Countorder();
 //        int minCount = Integer.MAX_VALUE;
 //
@@ -2317,7 +2332,6 @@ public class DAOOrder extends DBContext {
         // In ra kết quả
 //        System.out.println(sqlDate);
 //         db.addOrder1(27, 8, 1,date, 3, 1, "kk", "vnpay");
-        System.out.println(db.CountorderSale());
 
     }
 }
