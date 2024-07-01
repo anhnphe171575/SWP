@@ -72,9 +72,9 @@ public class UpdateSale extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         DAOOrder d = new DAOOrder();
         String order_id = request.getParameter("orderID");
-        String sale_name = request.getParameter("newSale");
+        int sale_id = Integer.parseInt(request.getParameter("newSale"));
+        System.out.println(sale_id);
         int id_raw = Integer.parseInt(order_id);
-        int sale_id = d.getSalebIDbyName(sale_name);
         d.updateSaleName(sale_id, id_raw);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

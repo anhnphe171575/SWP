@@ -15,6 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,21 +63,21 @@ public class SaleName extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       try {
-    response.setContentType("application/json");
-    DAOOrder d = new DAOOrder();
-    HashMap<String, Integer> sales = d.CountorderSale();
-    Gson gson = new Gson();
-    JsonElement element = gson.toJsonTree(sales);
-    JsonObject jsonObject = element.getAsJsonObject();
-    PrintWriter out = response.getWriter();
-    out.print(jsonObject);
-    out.flush();
-} catch (Exception e) {
-    e.printStackTrace();
-    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-    response.getWriter().write("An error occurred: " + e.getMessage());
-}
+        try {
+            response.setContentType("application/json");
+            DAOOrder d = new DAOOrder();
+            HashMap<Integer, ArrayList<String>> sales = d.CountorderSale();
+            Gson gson = new Gson();
+            JsonElement element = gson.toJsonTree(sales);
+            JsonObject jsonObject = element.getAsJsonObject();
+            PrintWriter out = response.getWriter();
+            out.print(jsonObject);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("An error occurred: " + e.getMessage());
+        }
     }
 
     /**

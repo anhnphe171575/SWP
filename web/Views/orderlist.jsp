@@ -302,36 +302,40 @@
                 console.log("Order ID:", orderID);
                 fetchOrderStatuses(statusOrderid, orderID);
             });
-             function fetchSaleOptions(orderID) {
-                    $.ajax({
-                        url: 'sales',
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (sales) {
-                            console.log('Sales data received:', sales); // Debugging line
-                            var dropdown = '<select id="saleDropdown-' + orderID + '" class="form-control">';
-                            $.each(sales, function (sale, count) {
-                                dropdown += '<option value="' + sale + '">' + sale + ' (' + count + ' orders)</option>';
-                            });
-                            dropdown += '</select>';
-                            var form = '<form id="editSaleForm-' + orderID + '" style="display: inline-block;">' +
-                                    dropdown +
-                                    '<button type="submit" class="btn btn-primary">Save</button>' +
-                                    '</form>';
-                            $('#saleContainer-' + orderID).html(form);
+            function fetchSaleOptions(orderID) {
+                $.ajax({
+                    url: 'sales',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (sales) {
+                        console.log('Sales data received:', sales); // Debugging line
+                        var dropdown = '<select id="saleDropdown-' + orderID + '" class="form-control">';
+                        $.each(sales, function (saleID, saleDetails) {
+                            var saleName = saleDetails[1];
+                            var orderCount = saleDetails[0];
+                            dropdown += '<option value="' + saleID + '">' + saleName + ' (' + orderCount + ' orders)</option>';
+                        });
+                        dropdown += '</select>';
+                        var form = '<form id="editSaleForm-' + orderID + '" style="display: inline-block;">' +
+                                dropdown +
+                                '<button type="submit" class="btn btn-primary">Save</button>' +
+                                '</form>';
+                        $('#saleContainer-' + orderID).html(form);
 
-                            // Add event listener for the newly created form
-                            $('#editSaleForm-' + orderID).on('submit', function (e) {
-                                e.preventDefault();
-                                var selectedSale = $('#saleDropdown-' + orderID).val();
-                                console.log('Selected sale for order ' + orderID + ': ' + selectedSale);
-                                // Submit the data to the server or handle further as needed
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                        }
-                    });
-                }
+                        // Add event listener for the newly created form
+                        $('#editSaleForm-' + orderID).on('submit', function (e) {
+                            e.preventDefault();
+                            var selectedSale = $('#saleDropdown-' + orderID).val();
+                            console.log('Selected sale for order ' + orderID + ': ' + selectedSale);
+                            // Submit the data to the server or handle further as needed
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching sales:', error);
+                    }
+                });
+            }
+
             $(document).on('submit', 'form[id^="editSaleForm-"]', function (e) {
                 e.preventDefault();
                 var formID = $(this).attr('id');
@@ -362,7 +366,7 @@
                     success: function (statuses) {
                         var dropdown = '<select id="statusDropdown-' + statusOrderid + '" class="form-control">';
                         $.each(statuses, function (index, status) {
-                            dropdown += '<option value="' + status + '">' + status + '</option>';
+                            dropdown += '<option value="' + status.status_orderid + '">' + status.status_name + '</option>';
                         });
                         dropdown += '</select>';
                         var form = '<form id="editStatusForm-' + statusOrderid + '" style="display: inline-block;" onsubmit="return updateOrderStatus(event, \'' + orderID + '\', \'' + statusOrderid + '\')">' +
@@ -420,9 +424,7 @@
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- Sidebar -->
             <jsp:include page="sidebar1.jsp"></jsp:include>
-
                 <div class="container-xl" style="width: 1200">
-
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
@@ -582,11 +584,11 @@
                                             <td>${quantity[item.order.orderID]}</td>
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
                                             <td>${item.order.status.status_name}</td>
+                                           
                                             <td style="width: 130px">
                                                 <span id="statusContainer-${item.order.status.getStatus_orderid()}">
                                                     <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
-                                                                  (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">
-                                                          <i class="fas fa-edit edit-status-icon" 
+                                                        (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          <i class="fas fa-edit edit-status-icon" 
                                                              data-order-id="${item.order.getOrderID()}" 
                                                              data-status-orderid="${item.order.status.getStatus_orderid()}" 
                                                              style="cursor:pointer; color: #007bff;"></i>
@@ -598,6 +600,7 @@
                                                         </span>
                                                     </c:if>
                                             </td>
+                                           
                                         </tr>
                                     </c:forEach>
                                 </tbody>
