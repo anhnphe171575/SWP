@@ -99,7 +99,11 @@ public class Orderlist extends HttpServlet {
                 request.setAttribute("quantity", quantity);
             }
             List<String> st = d.getStatusOrder();
+                       
+
             request.setAttribute("status", st);
+                  
+
             request.getRequestDispatcher("Views/orderlist.jsp").forward(request, response);
         } else {
             response.sendRedirect("LoginController");
