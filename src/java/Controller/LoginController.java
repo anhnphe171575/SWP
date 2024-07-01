@@ -83,7 +83,6 @@ public class LoginController extends HttpServlet {
         String service = request.getParameter("service");
         HttpSession session = request.getSession(true);
         if (service.equals("login")) {
-
             boolean check = dao.login(username, password);
             if (check) {
                 session.setAttribute("username", username);
@@ -95,7 +94,7 @@ public class LoginController extends HttpServlet {
                 } else if (user.getRole().getRoleID() == 3) {
                     session.setAttribute("user", user);
                     session.setMaxInactiveInterval(1800);    
-                    response.sendRedirect("SaleDashboardURL");
+                    response.sendRedirect("AdminDashboard");
                 } else if (user.getRole().getRoleID() == 2 || user.getRole().getRoleID() == 4) {
                     session.setAttribute("user", user);
                     session.setMaxInactiveInterval(1800);
@@ -109,7 +108,6 @@ public class LoginController extends HttpServlet {
                 doGet(request, response);
 
             } else {
-
                 request.setAttribute("error", "Error");
                 request.getRequestDispatcher("Views/loginUser.jsp").forward(request, response);
             }
