@@ -11,16 +11,188 @@ import org.apache.catalina.util.CustomObjectInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  *
  * @author phuan
  */
 public class DAOCustomer extends DBContext {
+    public List<Customer> sortByActivityHistory() {
+        List<Customer> custo = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Customer ORDER BY activity_history";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                Date activity_history = rs.getDate("activity_history");
+                int securityID = rs.getInt("securityID");
+                //String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                //sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
+                custo.add(cus);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custo;
+    }
+    public List<Customer> sortByPhone() {
+        List<Customer> custo = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Customer ORDER BY phone";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                Date activity_history = rs.getDate("activity_history");
+                int securityID = rs.getInt("securityID");
+                //String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                //sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
+                custo.add(cus);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custo;
+    }
+    public List<Customer> sortByEmail() {
+        List<Customer> custo = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Customer ORDER BY email";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                Date activity_history = rs.getDate("activity_history");
+                int securityID = rs.getInt("securityID");
+                //String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                //sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
+                custo.add(cus);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custo;
+    }
+    public List<Customer> sortByFullname() {
+        List<Customer> custo = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Customer ORDER BY first_name + last_name";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                Date activity_history = rs.getDate("activity_history");
+                int securityID = rs.getInt("securityID");
+                //String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                //sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                Customer cus = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
+                custo.add(cus);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return custo;
+    }
+    public Customer getCustomerID(int id) {
+        Customer sl =null;
+        String sql = "SELECT c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer, c.image FROM Customer c INNER JOIN SecurityQuestion sq ON c.securityID = sq.securityID WHERE c.customerID ="+id; 
+        try {
+            PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String first_name = rs.getString("first_name");
+                String last_name = rs.getString("last_name");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                Date activity_history = rs.getDate("activity_history");
+                int securityID = rs.getInt("securityID");
+                String sercurityquestion = rs.getString("security_question");
+                Security sq = new Security();
+                sq.setSecurityID(securityID);
+                sq.setSecurity_question(sercurityquestion);
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                sl = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
+                
+            }
+        } catch (SQLException ex) {
+
+        }
+        return sl;
+    }
 
     public Customer getCusByEmail(String email) {
         Customer c = null;
@@ -123,7 +295,7 @@ public class DAOCustomer extends DBContext {
             String date2 = spd.format(obj.getActivity_history());
             pre.setDate(8, java.sql.Date.valueOf(date1));
             pre.setBoolean(9, obj.isGender());
-            pre.setDate(10, java.sql.Date.valueOf(date2) );
+            pre.setDate(10, java.sql.Date.valueOf(date2));
             pre.setInt(11, obj.getSecurity().getSecurityID());
             pre.setString(12, obj.getSecutityAnswer());
             pre.setString(13, obj.getImage());
@@ -254,11 +426,10 @@ public class DAOCustomer extends DBContext {
         return false;
     }
 
-    public int insertCustomer(Customer obj) {
+   public int insertCustomer(Customer obj) {
         int n = 0;
         String sql = "INSERT INTO [Customer]\n"
-                + "           ([customerID]\n"
-                + "           ,[first_name]\n"
+                + "           ([first_name]\n"
                 + "           ,[last_name]\n"
                 + "           ,[phone]\n"
                 + "           ,[email]\n"
@@ -271,27 +442,34 @@ public class DAOCustomer extends DBContext {
                 + "           ,[securityID]\n"
                 + "           ,[securityAnswer])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?,?,?,?,?,?)";
+        PreparedStatement pre = null;
         try {
-            PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, obj.getCustomerID());
-            pre.setString(2, obj.getFirst_name());
-            pre.setString(3, obj.getLast_name());
-            pre.setString(4, obj.getPhone());
-            pre.setString(5, obj.getEmail());
-            pre.setString(6, obj.getAddress());
-            pre.setString(7, obj.getUsername());
-            pre.setString(8, obj.getPassword());
-            pre.setDate(9, (java.sql.Date) obj.getDob());
-            pre.setBoolean(10, obj.isGender());
-            pre.setDate(11, (java.sql.Date) obj.getActivity_history());
-            pre.setInt(12, obj.getSecurity().getSecurityID());
-            pre.setString(13, obj.getSecutityAnswer());
+            pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getFirst_name());
+            pre.setString(2, obj.getLast_name());
+            pre.setString(3, obj.getPhone());
+            pre.setString(4, obj.getEmail());
+            pre.setString(5, obj.getAddress());
+            pre.setString(6, obj.getUsername());
+            pre.setString(7, obj.getPassword());
+            pre.setDate(8, new java.sql.Date(obj.getDob().getTime())); // Convert java.util.Date to java.sql.Date
+            pre.setBoolean(9, obj.isGender());
+            pre.setDate(10, new java.sql.Date(obj.getActivity_history().getTime())); // Convert java.util.Date to java.sql.Date
+            pre.setInt(11, obj.getSecurity().getSecurityID());
+            pre.setString(12, obj.getSecutityAnswer());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
-
+            ex.printStackTrace(); // Or use a logger to log the exception
+        } finally {
+            if (pre != null) {
+                try {
+                    pre.close();
+                } catch (SQLException e) {
+                    e.printStackTrace(); // Or use a logger to log the exception
+                }
+            }
         }
-
         return n;
     }
 
@@ -333,7 +511,7 @@ public class DAOCustomer extends DBContext {
                         rs.getBoolean("gender"),
                         rs.getDate("activity_history"),
                         s, rs.getString("securityAnswer"),
-                            rs.getString("image"));
+                        rs.getString("image"));
                 customer.add(c);
             }
         } catch (Exception e) {
@@ -550,8 +728,23 @@ public class DAOCustomer extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
+   public static void main(String[] args) {
         DAOCustomer dao = new DAOCustomer();
-        System.out.println(dao.getCusByUserName("user1"));
+//        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+//        java.util.Date dob = null;
+//        try {
+//            dob = formatter1.parse("1990-01-01");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        LocalDate activityHistory1 = LocalDate.now();
+//        java.util.Date dateCreateBy = Date.from(activityHistory1.atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        Security sq = new Security(1, ""); // Assume Security class with a constructor that takes an int and a string
+//        Customer cus = new Customer(
+//                4, "Johnnew", "Doe", "1234567890", "john.doe@example.com",
+//                "123 Main St", "johndoe", "password123", dob, true,
+//                dateCreateBy, sq, "My first pet's name?", null
+//        );
+        System.out.println();
     }
 }
