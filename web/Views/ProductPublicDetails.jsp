@@ -12,7 +12,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>EShopper - Bootstrap Shop Template</title>
+        <title>Product Public Detail</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
@@ -86,6 +86,13 @@
             .star-rating .filled {
                 color: #f5b301; /* Filled star color */
             }
+            .product-availability {
+                color: #333; /* Text color */
+                font-size: 14px; /* Font size */
+                font-weight: bold; /* Font weight */
+                margin-top: 10px; /* Margin top */
+            }
+
         </style>
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
@@ -96,7 +103,7 @@
         <!-- Topbar Start -->
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
-                <a href="" class="text-decoration-none">
+                <a href="HomePage" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
             </div>
@@ -115,7 +122,7 @@
             </div>
             <div class="col-lg-3 col-6 text-right">
 
-                <a href="" class="btn border">
+                <a href="CartDetails" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">${sessionScope.cart.size()}</span>
                 </a>
@@ -176,9 +183,16 @@
                                     <c:when test="${not empty sessionScope.cus}">
 
                                         <div class="navbar-nav ml-auto py-0">
-                                            <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                            <a href="LogOut">Log out</a>
+                                            <div class="nav-item dropdown">
+                                                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                                <div class="dropdown-menu ml-auto py-0">
+                                                    <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
+                                                    <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
+                                                </div>
+                                                <!--<a href="LogOut">Log out</a>-->
 
+                                            </div>
+                                            <a href="LogOut" class="nav-link ">Log out</a>
                                         </div>
 
                                     </c:when>
@@ -228,7 +242,7 @@
                     <h3 class="font-weight-semi-bold">${p.product_name}</h3>
                     <div class="d-flex mb-3">
                         <div class="star-rating1">
-                            
+
                         </div>
                         <small class="pt-1">(${requestScope.qreview} Reviews)</small>
                     </div>
@@ -236,29 +250,32 @@
                         <c:if test="${not empty p.sale_price}">
                             <h3 class="font-weight-semi-bold mb-4" style="margin-right: 10px;"><del>$${p.sale_price}</del></h3>
                         </c:if>
-                        <h3 class="font-weight-semi-bold mb-4">$150.00</h3>
+                        <h3 class="font-weight-semi-bold mb-4">$${p.original_price}</h3>
 
                     </div>
-                    <p class="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit clita ea. Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo dolor no sea nonumy. Accus labore stet, est lorem sit diam sea et justo, amet at lorem et eirmod ipsum diam et rebum kasd rebum.</p>
+                    <p class="mb-4">${p.product_description}</p>
 
 
                     <div class="d-flex align-items-center mb-4 pt-2">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-minus" >
+                                <button class="btn btn-primary btn-minus">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary text-center" value="1">
+                            <input type="text" class="form-control bg-secondary text-center" value="1" id="quantity-input" min = "1"  max="${p.quantity - p.quantity_hold}">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary btn-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3" onclick="location.href = 'AddToCart?pid=${p.productID}'"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
-                    </div>
 
+                        <p class="product-availability">${p.quantity - p.quantity_hold} sản phẩm còn khả dụng</p>
+                    </div>
+                    <button type="button" class="btn btn-primary px-3 add-to-cart-btn ${p.quantity - p.quantity_hold == 0 ? 'disabled' : ''}" data-product-id="${p.productID}">
+                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                    </button>
                 </div>
             </div>
             <div class="row px-xl-5">
@@ -274,7 +291,6 @@
                                     <h4 class="mb-4">Review for ${p.product_name}</h4>
                                     <c:forEach items="${requestScope.feedback}" var="fb">
                                         <div class="media mb-4">
-                                            <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                                             <div class="media-body">
                                                 <h6>${fb.customer.first_name} ${fb.customer.getLast_name()}<small> - <i>${fb.update_date_feedback}</i></small></h6>
                                                 <div class="star-rating1">
@@ -283,6 +299,8 @@
                                                     </c:forEach>
                                                 </div>
                                                 <p>${fb.comment}</p>
+                                                <img src="${fb.image}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 115px;">
+                                                <hr/>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -290,9 +308,9 @@
 
                                 <div class="col-md-6">
                                     <c:choose>
-                                        <c:when test="${not empty sessionScope.cus}">
+                                        <c:when test="${not empty requestScope.activate}">
                                             <h4 class="mb-4">Review</h4>
-                                            <form action="ProductDetailsPublic" method="post">
+                                            <form action="ProductDetailsPublic" method="post"  enctype="multipart/form-data">
                                                 <div class="d-flex my-3">
                                                     <p class="mb-0 mr-2 ">Your Rating * :</p>                         
                                                     <div class="star-rating">
@@ -306,21 +324,16 @@
 
                                                 <div class="form-group">
                                                     <label for="message">Your Review *</label><br>
-                                                    Image: <input type="file" name="image" style="margin-bottom: 10px"><br>
+                                                    Image: <input type="file" name="file" id="file" style="margin-bottom: 10px" required=""><br>
                                                     Content:<textarea id="message" cols="30" rows="5" class="form-control" name="comment" required=""></textarea>
                                                 </div>                                 
                                                 <div class="form-group mb-0">
                                                     <input type="submit" value="submit" class="btn btn-primary px-3">
                                                 </div>
                                                 <input type="hidden" value="${p.productID}" name ="pid">
+                                                <input type="hidden" value="${orderid}" name ="orderid">
                                             </form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="container">
-                                                <h3>Login to reviews</h3>
-                                                <button onclick="location.href = 'LoginCusController'">Login</button>
-                                            </div>
-                                        </c:otherwise>
+                                        </c:when>                                      
                                     </c:choose>
                                 </div>
 
@@ -350,10 +363,10 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3"><a href="ProductDetailsPublic?pid=${rp.productID}">${rp.product_name}</a></h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>${rp.original_price}</h6>
+                                        <h6>$${rp.original_price}</h6>
                                         <c:if test="${not empty l.sale_price}">
-                                            <h6 class="text-muted ml-2"><del>${rp.sale_price}</del></h6>
-                                                </c:if>
+                                            <h6 class="text-muted ml-2"><del>$${rp.sale_price}</del></h6>
+                                        </c:if>
                                     </div>
                                 </div>
 
@@ -380,7 +393,8 @@
                 </div>
                 <div class="col-lg-8 col-md-12">
                     <div class="row">
-                        <div class="col-md-4 mb-5">
+
+                        <div class="col-md-6 mb-5">
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
@@ -391,18 +405,7 @@
                                 <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-5">
-                            <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                            <div class="d-flex flex-column justify-content-start">
-                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
-                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-5">
+                        <div class="col-md-6 mb-5">
                             <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
 
                             <div><p>HKD Nguyen Phu Anh </p>
@@ -446,6 +449,65 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+        
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInput = document.getElementById('quantity-input');
+        const btnMinus = document.querySelector('.btn-minus');
+        const btnPlus = document.querySelector('.btn-plus');
+        const addToCartButton = document.querySelector('.add-to-cart-btn');
+        const maxQuantity = ${p.quantity - p.quantity_hold};
+
+        function updateQuantity(value) {
+            if (value < 1) {
+                value = 1;
+            } else if (value > maxQuantity) {
+                value = maxQuantity;
+            }
+            quantityInput.value = value;
+        }
+
+        btnMinus.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value) || 1;
+            updateQuantity(currentValue - 1);
+        });
+
+        btnPlus.addEventListener('click', function() {
+            let currentValue = parseInt(quantityInput.value) || 1;
+            updateQuantity(currentValue + 1);
+        });
+
+        quantityInput.addEventListener('input', function() {
+            let currentValue = parseInt(quantityInput.value) || 1;
+            updateQuantity(currentValue);
+        });
+
+        addToCartButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const productId = this.getAttribute('data-product-id');
+            const quantity = parseInt(quantityInput.value);
+
+            if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+                alert('Vui lòng chọn số lượng hợp lệ.');
+                return;
+            }
+
+            $.ajax({
+                url: 'AddToCart',
+                method: 'GET',
+                data: { pid: productId, quantity: quantity},
+                success: function(response) {
+                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                    // Xử lý cập nhật giỏ hàng tại đây (nếu cần)
+                },
+                error: function(error) {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+</script>
 
     </body>
 
