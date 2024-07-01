@@ -5,8 +5,10 @@
 package Controller;
 
 import DAL.DAOCart;
+import DAL.DAOProduct;
 import Entity.CartItems;
 import Entity.Customer;
+import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -39,7 +41,7 @@ public class AddToCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddToCart</title>");            
+            out.println("<title>Servlet AddToCart</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
@@ -60,36 +62,48 @@ public class AddToCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      String pid = request.getParameter("pid");
-      int pid_raw = 0;
-      try{
-          pid_raw = Integer.parseInt(pid);
-      }
-      catch(Exception e){
-          request.getRequestDispatcher("HomePage").forward(request, response);
-      }
-      HttpSession session = request.getSession();
-      Customer cus = (Customer)session.getAttribute("cus");
-      List<CartItems> cart = ( List<CartItems>) session.getAttribute("cart");
-      DAOCart db = new DAOCart();
-     if(db.checkCart(cus.getCustomerID()) == null){
-         db.Add2Cart(cus.getCustomerID());
-         db.Add2CartItem(1, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, 1);
-          request.setAttribute("error", "error2");
-     }
-     else{
-         if(db.chekcProductInCart(pid_raw) == null){
-         int cartItemsID = db.getCartItemsByCartID(cart.get(0).getCart().getCartID()).size() +1;
-         db.Add2CartItem(cartItemsID,db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, 1);
-         request.setAttribute("error", "error");
-         }
-         else{
-             db.UpdateCartQuantity(db.checkCart(cus.getCustomerID()).getCartID(),db.chekcProductInCart(pid_raw).getQuantity() + 1 , pid_raw);
-           request.setAttribute("error", "error1");        
-         }
-     }
-  
-  response.sendRedirect("CartDetails");
+        String pid = request.getParameter("pid");
+        String quantity = request.getParameter("quantity");
+        int pid_raw = 0;
+        try {
+            pid_raw = Integer.parseInt(pid);
+        } catch (Exception e) {
+            request.getRequestDispatcher("HomePage").forward(request, response);
+        }
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("cus");
+        List<CartItems> cart = (List<CartItems>) session.getAttribute("cart");
+        DAOCart db = new DAOCart();
+        System.out.println(pid);
+        int quantity1 = 1;
+        if (quantity != null) {
+            quantity1 = Integer.parseInt(quantity);
+        }
+        DAOProduct db1 = new DAOProduct();
+        if (db.checkCart(cus.getCustomerID()) == null) {
+            db.Add2Cart(cus.getCustomerID());
+            db.Add2CartItem(1, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
+            request.setAttribute("error", "error2");
+        } else {
+            if (db.chekcProductInCart(pid_raw) == null) {
+                int cartItemsID = db.getCartItemsByCartID(cart.get(0).getCart().getCartID()).size() + 1;
+                db.Add2CartItem(cartItemsID, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
+                request.setAttribute("error", "error");
+            } else {
+                Product p = new Product();
+                int quantity2= 1;
+                p =  db1.getProductByID(pid_raw);
+                if((db.chekcProductInCart(pid_raw).getQuantity() + quantity1) > (p.getQuantity() - p.getQuantity_hold())){
+                    quantity2 = p.getQuantity() - p.getQuantity_hold();
+                }
+                else{
+                    quantity2  = db.chekcProductInCart(pid_raw).getQuantity() + quantity1;
+                }
+                db.UpdateCartQuantity(db.checkCart(cus.getCustomerID()).getCartID(), quantity2, pid_raw);
+                request.setAttribute("error", "error1");
+            }
+        }
+        response.sendRedirect("CartDetails");
     }
 
     /**
@@ -109,7 +123,7 @@ public class AddToCart extends HttpServlet {
     /**
      * Returns a short description of the servlet.
      *
-     * 
+     *
      * @return a String containing servlet description
      */
     @Override
