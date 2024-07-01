@@ -82,8 +82,8 @@ public class CancelOrder extends HttpServlet {
                     int quantity = Integer.parseInt(quantities[i]);
                     Product p = db1.getProductByID(pid);
                     // Cập nhật số lượng sản phẩm
-                     quantity += p.getQuantity();
-                    db1.UpdateQuantity(quantity, pid);
+                   int quantity1 = p.getQuantity_hold() - quantity;
+                    db1.UpdateQuantityHold(quantity1, pid);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
