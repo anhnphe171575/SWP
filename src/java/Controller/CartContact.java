@@ -220,10 +220,10 @@ public class CartContact extends HttpServlet {
             DAOProduct db2 = new DAOProduct();
             for (int i = 0; i < db.getOrderByOrderID(maxElement + 1).size(); i++) {
                 Product p = db2.getProductByID(db.getOrderByOrderID(maxElement + 1).get(i).getProduct().getProductID());
-                int quantity = p.getQuantity() - db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
+                int quantity = p.getQuantity_hold() + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity();
                  System.out.println("quantity order:" + db.getOrderByOrderID(maxElement + 1).get(i).getQuantity());
                     System.out.println("quantity" +quantity);
-                db2.UpdateQuantity(quantity, p.getProductID());
+                db2.UpdateQuantityHold(quantity, p.getProductID());
             }
             request.getRequestDispatcher("Views/OrderSuccess.jsp").forward(request, response);
         }
