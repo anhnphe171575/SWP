@@ -99,7 +99,7 @@ public class DAOFeedback extends DBContext {
                         null,
                         null,
                         null,
-                        null);
+                        null,0);
 
                 Customer c = new Customer(
                         rs.getInt("customerID"),
@@ -241,7 +241,7 @@ public class DAOFeedback extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 Customer cus = new Customer(rs.getInt("customerID"), rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, null, null, "", "");
                 Feedback fb = new Feedback(
                         rs.getInt("feedbackID"),
@@ -292,7 +292,7 @@ public class DAOFeedback extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 Customer cus = new Customer(rs.getInt("customerID"), rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, null, null, "", "");
                 Feedback fb = new Feedback(
                         rs.getInt("feedbackID"),
@@ -337,7 +337,7 @@ public class DAOFeedback extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 Customer cus = new Customer(rs.getInt("customerID"), rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, null, null, "", "");
                 Feedback fb = new Feedback(
                         rs.getInt("feedbackID"),
@@ -381,7 +381,7 @@ public class DAOFeedback extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"));
+                        rs.getBoolean("status"),0);
                 Customer cus = new Customer(rs.getInt("customerID"), rs.getString("first_name"), rs.getString("last_name"), "", "", "", "", "", null, true, null, null, "", "");
                 Feedback fb = new Feedback(
                         rs.getInt("feedbackID"),
