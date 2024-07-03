@@ -4,21 +4,19 @@
  */
 package Controller;
 
-import DAL.DAOSecurityQuestion;
+import DAL.DAOMTKDashboard;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Vector;
-import Entity.Security;
 
 /**
  *
  * @author admin
  */
-public class SecurityQuestionController extends HttpServlet {
+public class DBcus extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class SecurityQuestionController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SecurityQuestionController</title>");
+            out.println("<title>Servlet DBcus</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SecurityQuestionController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DBcus at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,19 +56,9 @@ public class SecurityQuestionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String service = request.getParameter("service");
-        DAOSecurityQuestion dao = new DAOSecurityQuestion();
-
-        if (service == null) {
-            Vector<Security> vec = dao.getAll("select * from SecurityQuestion");
-            request.setAttribute("listsq", vec);
-            request.getRequestDispatcher("Views/listSecurityQuestion.jsp").forward(request, response);
-        } else if (service.equals("delete")) {
-            String id = request.getParameter("id");
-            int id1 = Integer.parseInt(id);
-            dao.removeSecurityQuestion(id1);
-            response.sendRedirect("SecurityQuestion");
-        }
+        DAOMTKDashboard daoM = new DAOMTKDashboard();
+        request.setAttribute("cus", daoM.trendCus_Mon());
+        request.getRequestDispatcher("Views/DBcus.jsp").forward(request, response);
     }
 
     /**
@@ -84,29 +72,10 @@ public class SecurityQuestionController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String service = request.getParameter("service");
-        DAOSecurityQuestion dao = new DAOSecurityQuestion();
-        Vector<Security> vec = dao.getAll("select * from SecurityQuestion");
-//        Vector<SecurityQuestion> vec1 = dao.getAll("select * from SecurityQuestion where security_question like '%"+security_question+"%'");
-        if (service.equals("add")) {
-            String security_question = request.getParameter("security_question");
-            Security obj = new Security(0, security_question);
-            dao.addSecurityQuestion(obj);
-            response.sendRedirect("SecurityQuestion");
-        } else if (service.equals("search")) {
-            String title = request.getParameter("title");
-            request.setAttribute("listsq", dao.search(title));
-            request.getRequestDispatcher("Views/listSecurityQuestion.jsp").forward(request, response);
+        DAOMTKDashboard daoM = new DAOMTKDashboard();
+        request.setAttribute("cus", daoM.trendCus_Mon2(Integer.parseInt(request.getParameter("month")), Integer.parseInt(request.getParameter("year"))));
+        request.getRequestDispatcher("Views/DBcus.jsp").forward(request, response);
 
-        } else if (service.equals("edit")) {
-            String security_question = request.getParameter("security_question");
-            Security obj = new Security(0, security_question);
-            dao.addSecurityQuestion(obj);
-            response.sendRedirect("SecurityQuestion");
-        } else {
-            doGet(request, response);
-
-        }
     }
 
     /**

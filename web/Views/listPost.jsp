@@ -11,7 +11,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+        <title>Post Controller</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -328,6 +328,7 @@
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal">
                                             <i class="material-icons">&#xe164;</i> <span>Sort</span>         
                                         </a>
+                                        <h5>${sessionScope.username}</h5>
                                 </div>
                             </div>
                         </div>
@@ -394,7 +395,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
-
                                 <li class="page-item"><a href="#" class="page-link">Next</a></li>
                             </ul>
                         </div>
@@ -474,8 +474,7 @@
                             </div>
                             <div class="form-group">
                                 <label>thumbnail</label>
-                                <input type="text" class="form-control" name="thumbnail" >
-                            </div>
+                            <input type="file" name="thumbnail" id="file" accept="image/*" >
                             <div class="form-group">
                                 <label>Category Post</label>
                                 <select id="category-select" class="form-control" name="category_post">                                   

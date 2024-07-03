@@ -4,6 +4,7 @@ package Controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+import DAL.DAOAdminDashboard;
 import DAL.DAOMTKDashboard;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -34,6 +35,8 @@ public class MKTDashboard extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOMTKDashboard daoMTK = new DAOMTKDashboard();
+        DAOAdminDashboard daoAd = new DAOAdminDashboard();
+
         String submit = request.getParameter("submit");
         String service = request.getParameter("service");
         if (submit != null) {
@@ -45,6 +48,9 @@ public class MKTDashboard extends HttpServlet {
                 String date1 = formatter1.format(date_create_by1);
                 request.setAttribute("date1", dateinput);
                 request.setAttribute("date", date1);
+                request.setAttribute("fb", daoAd.trendFeedbackstar());
+                request.setAttribute("newCus", daoAd.trendCusNew());
+
                 request.setAttribute("total_product", daoMTK.allProduct());
                 request.setAttribute("total_post", daoMTK.allPost());
                 request.setAttribute("total_customer", daoMTK.allCustomer());
@@ -63,10 +69,12 @@ public class MKTDashboard extends HttpServlet {
                 SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
                 String datemax = formatter1.format(date_create_by1);
                 request.setAttribute("date", datemax);
+                request.setAttribute("fb", daoAd.trendFeedbackstar());
+                request.setAttribute("newCus", daoAd.trendCusNew());
+
                 request.setAttribute("total_product", daoMTK.allProduct());
                 request.setAttribute("total_post", daoMTK.allPost());
                 request.setAttribute("total_customer", daoMTK.allCustomer());
-                request.setAttribute("total_feedback", daoMTK.allFeedback());
 
                 request.setAttribute("dataProduct", daoMTK.trendProAutoday(start_date, end_date));
                 request.setAttribute("dataPost", daoMTK.trendPostAutoday(start_date, end_date));
@@ -81,6 +89,9 @@ public class MKTDashboard extends HttpServlet {
             String date = formatter.format(date_create_by);
             request.setAttribute("date", date);
             request.setAttribute("date1", "null");
+            request.setAttribute("fb", daoAd.trendFeedbackstar());
+            request.setAttribute("newCus", daoAd.trendCusNew());
+
             request.setAttribute("total_product", daoMTK.allProduct());
             request.setAttribute("total_post", daoMTK.allPost());
             request.setAttribute("total_customer", daoMTK.allCustomer());

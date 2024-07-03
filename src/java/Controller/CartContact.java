@@ -132,6 +132,7 @@ public class CartContact extends HttpServlet {
         request.setAttribute("carItemIDs", carItemIDsStr);
         request.setAttribute("cartIDs", cartIDsStr);
         request.setAttribute("list1", db1.getReceiver(cus.getCustomerID()));
+                request.setAttribute("numberA", db1.getReceiver(cus.getCustomerID()).size());
         request.setAttribute("list", list1);
         request.getRequestDispatcher("Views/CartContact.jsp").forward(request, response);
        

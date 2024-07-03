@@ -16,7 +16,10 @@
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
@@ -208,54 +211,68 @@
         <!-- Checkout Start -->
         <div class="container-fluid pt-5">
             <div class="col-lg-12 selectAddress">
-
-
             </div>
             <div class="row px-xl-5">
                 <div class="col-lg-7">  
                     <div class="mb-4">
                         <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4> 
-                        <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Change</span></a>
+                        <c:if test="${numberA == null}">
+                            <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> Add</a>
+                        </c:if>
+                        <c:if test="${numberA != null}">
+                            <a href="#Change" class="btn btn-success" data-toggle="modal"><i class="material-icons">edit</i><span>Receive Address</span></a>
+                        </c:if>
                         <form action="CartContact" method="post">
                             <c:set value="${info}" var="cus1"></c:set>
+                            <c:if test="${cus1 == null}">
+                                <h4 style="color: red; font-weight: bold; text-shadow: 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.5); margin-top:10px ">
+                                    You don't have any receive address.</h4>
+                                <h4 style="color: red; font-weight: bold; text-shadow: 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.5);">
+                                    Please add your receive address!
+                                </h4>                            
+                            </c:if>
+                            <c:if test="${cus1 != null}">
                                 <div id="ListPro"></div>
                                 <input type="hidden" name="recieverid" value="${cus1.getReceiverID()}">
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label>Full Name</label>
-                                    <input class="form-control" type="text" value="${cus1.getReceiverFullName()}" readonly="">
-                                </div>   
-                                <div class="col-md-6 form-group">
-                                    <label>Gender</label>
-                                    <c:choose>
-                                        <c:when test="${cus1.customer.gender == true}">
-                                            <input class="form-control" type="text" value="Female" readonly>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input class="form-control" type="text" value="Male" readonly>
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>Full Name</label>
+                                        <input class="form-control" type="text" value="${cus1.getReceiverFullName()}" readonly="">
+                                    </div>   
+                                    <div class="col-md-6 form-group">
+                                        <label>Gender</label>
+                                        <c:choose>
+                                            <c:when test="${cus1.customer.gender == true}">
+                                                <input class="form-control" type="text" value="Female" readonly>
+                                            </c:when>
+                                            <c:when test="${cus1.customer.gender == false}">                                            
+                                                <input class="form-control" type="text" value="Male" readonly>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <input class="form-control" type="text" value="" readonly>
 
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label>E-mail</label>
-                                    <input class="form-control" type="text" value="${cus1.customer.email}" readonly="">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label>Mobile No</label>
-                                    <input class="form-control" type="text" value="${cus1.getReceiverMobile()}" readonly="">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label>Address</label>
-                                    <input class="form-control" type="text" value="${cus1.getReceiverAddress()}" readonly="">
-                                </div>
-                                <div class="col-md-12 form-group">
-                                    <label>Notes</label>
-                                    <textarea class="form-control" name="notes" style="width: 100%; max-width: 1000px; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); font-size: 16px; line-height: 1.5; color: #555; background-color: #fff; transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;"></textarea>
-                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
 
-
-                            </div>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>E-mail</label>
+                                        <input class="form-control" type="text" value="${cus1.customer.email}" readonly="">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Mobile No</label>
+                                        <input class="form-control" type="text" value="${cus1.getReceiverMobile()}" readonly="">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Address</label>
+                                        <input class="form-control" type="text" value="${cus1.getReceiverAddress()}" readonly="">
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Notes</label>
+                                        <textarea class="form-control" name="notes" style="width: 100%; max-width: 1000px; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); font-size: 16px; line-height: 1.5; color: #555; background-color: #fff; transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;"></textarea>
+                                    </div>
+                                </div>
+                            </c:if>
                     </div>
 
                 </div>
@@ -350,13 +367,23 @@
                 </div>
             </div>
         </div>
-
-        <div id="Add" class="modal fade">
+        <!-- Change -->
+        <div id="Change" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="CartContact" method="GET" enctype="multipart/form-data">
-                        <div class="modal-header">						
+
+                        <div class="modal-header">	
+
                             <h4 class="modal-title">My Address</h4>
+                            <c:choose>
+                                <c:when test="${numberA < 3}">
+                                    <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> Add</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- Content for otherwise case -->
+                                </c:otherwise>
+                            </c:choose>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">					
@@ -369,21 +396,62 @@
                                     </label>
                                     <label> ${c.getReceiverMobile()} </label>
                                     <label>${c.getReceiverAddress()}</label>
-                                     <hr>
+                                    <label>
+                                        <a href="EditReceive?id=${c.getReceiverID()}">
+                                            <i class="material-icons" style="color: yellow;">edit</i>
+                                        </a>
+                                    </label>
+                                    <label>
+                                        <a href="ReceiverAddress?ReceiveID=${c.getReceiverID()}">
+                                            <i class="material-icons" style="color: red;">delete</i>
+                                        </a>
+                                    </label>
+                                    <hr>
                                     <br>
-                                </c:forEach>                              
+                                </c:forEach>
                                 <c:forEach items="${requestScope.carItemIDs}" var="a">
                                     <input type="hidden" name="carItemIDs" value="${a}">
                                 </c:forEach>
                                 <c:forEach items="${requestScope.cartIDs}" var="b">
                                     <input type="hidden" name="cartIDs" value="${b}">
                                 </c:forEach>
+
                             </div>                          
                         </div>
                         <div class="modal-footer">
 
                             <input type="submit" class="btn btn-info" value="OK">
                             <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- add -->
+        <div id="Add" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="ReceiverAddress" method="post">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Add Address</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Name of receiver:</label>
+                                <input type="text" name="name">                           
+                            </div>
+                            <div class="form-group">
+                                <label>Phone:</label>
+                                <input type="text" name="phone"></br>
+                            </div>
+                            <div class="form-group">
+                                <label>Address:</label>
+                                <input type="text" name="address"></br>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-info" value="OK">
                         </div>
                     </form>
                 </div>

@@ -408,4 +408,52 @@
         <servlet-name>AdminDashboard</servlet-name>
         <url-pattern>/AdminDashboard</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>DBcus</servlet-name>
+        <servlet-class>Controller.DBcus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DBpost</servlet-name>
+        <servlet-class>Controller.DBpost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DBpro</servlet-name>
+        <servlet-class>Controller.DBpro</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DBfeedback</servlet-name>
+        <servlet-class>Controller.DBfeedback</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DBpost</servlet-name>
+        <url-pattern>/DBpost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DBpro</servlet-name>
+        <url-pattern>/DBpro</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DBfeedback</servlet-name>
+        <url-pattern>/DBfeedback</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DBcus</servlet-name>
+        <url-pattern>/DBcus</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditReceive</servlet-name>
+        <servlet-class>Controller.EditReceive</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditReceive</servlet-name>
+        <url-pattern>/EditReceive</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>EditSQ</servlet-name>
+        <servlet-class>Controller.EditSQ</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditSQ</servlet-name>
+        <url-pattern>/EditSQ</url-pattern>
+    </servlet-mapping>
 </web-app>

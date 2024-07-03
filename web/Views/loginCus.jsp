@@ -20,37 +20,46 @@
                 
         <!-- Boxicons CSS -->
         <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-                        
+            
+        <style>
+            
+            .body{
+            }
+            .container{
+                                background-color: white
+
+            }
+        </style>
     </head>
     <body>
-        <section class="container forms">
+        <section class="container forms" style="background-color: #D19C97"">
             <div class="form login">
                 <div class="form-content">
-                    <header>Login</header>
+                    <header>Đăng Nhập</header>
                     <form action="LoginCusController" method="post">
                         <div class="field input-field">
-                            <input type="text" name="username" placeholder="Email" class="input">
+                            <input type="text" name="username" placeholder="Tên Đăng Nhập" class="input">
                         </div>
 
                         <div class="field input-field">
-                            <input type="password" name="password" placeholder="Password" class="password">
+                            <input type="password" name="password" placeholder="Mật Khẩu" class="password">
                             <i class='bx bx-hide eye-icon'></i>
                         </div>
                         <p style="color: red">${error}</p>
                         <div class="form-link">
-                            <a href="ResetPassword?role=1" class="forgot-pass">Forgot password?</a>
+                            <a href="ResetPassword?role=1" class="cl" style="color: #D19C97">Quên mật khẩu?</a>
                         </div>
 
-                        <div class="field button-field">
-                            <button>Login</button>
+                        <div class="field button-field" >
+                            <button style="background-color:  #D19C97">Đăng Nhập</button>
                         </div>
                     </form>
 
                     <div class="form-link">
-                        <span>Don't have an account? <a href="signup" class="link signup-link">Signup</a></span>
+                        <span>Bạn chưa có tài khoản? <a href="signup" class="cl" style="color: #D19C97">Đăng Ký</a></span>
                     </div>
                     <div class="form-link">
-                            <a href="HomePage" class="forgot-pass">Back to login</a>
+                            <a href="HomePage" class="forgot-pass" style="color: #D19C97">Quay lại trang chủ</a>
                         </div>
                 </div>
 

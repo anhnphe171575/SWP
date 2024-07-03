@@ -21,9 +21,10 @@ import java.util.List;
  * @author admin
  */
 public class DAOSecurityQuestion extends DBContext {
-    public int removeSecurityQuestion(int securityID){
+
+    public int removeSecurityQuestion(int securityID) {
         int n = 0;
-         try {
+        try {
             String sql = "delete from SecurityQuestion where securityID =" + securityID;
             Statement st = conn.createStatement();
             n = st.executeUpdate(sql);
@@ -32,6 +33,7 @@ public class DAOSecurityQuestion extends DBContext {
         }
         return n;
     }
+
     public int updateSecurityQuestion(Security obj) {
         int n = 0;
         String sql = "UPDATE [dbo].[SecurityQuestion]\n"
@@ -68,18 +70,18 @@ public class DAOSecurityQuestion extends DBContext {
     public int addSecurityQuestion(Security obj) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[SecurityQuestion]\n"
-                + "           ([securityID]\n"
-                + "           ,[security_question])\n"
-                + "     VALUES(?,?)";
+                + "           ([security_question])\n"
+                + "     VALUES\n"
+                + "           (?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, obj.getSecurityID());
-            pre.setString(2, obj.getSecurity_question());
+            pre.setString(1, obj.getSecurity_question());
             n = pre.executeUpdate();
         } catch (SQLException e) {
         }
         return n;
     }
+
     public List<String> getSecurityQuestions() {
         List<String> securityQuestions = new ArrayList<>();
         try {
@@ -91,11 +93,12 @@ public class DAOSecurityQuestion extends DBContext {
                 securityQuestions.add(question);
             }
         } catch (SQLException e) {
-            e.printStackTrace();            
+            e.printStackTrace();
         }
         return securityQuestions;
     }
-     public int getSecurityQuestionID(String questionText) {
+
+    public int getSecurityQuestionID(String questionText) {
         try {
             String query = "SELECT securityID FROM SecurityQuestion WHERE security_question = ?";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -109,15 +112,44 @@ public class DAOSecurityQuestion extends DBContext {
         }
         return -1;
     }
-    public static void main(String[] args) {
-        DAOSecurityQuestion dao = new DAOSecurityQuestion();
-//        SecurityQuestion obj = new SecurityQuestion(1, " what old is your dog?");
-//        int n = dao.updateSecurityQuestion(obj);
-//    dao.removeSecurityQuestion(20);
-        Vector<Security> vec = dao.getAll("select * from SecurityQuestion");
-        for (Security securityQuestion : vec) {
-            System.out.println(securityQuestion);
+
+    public Vector<Security> search(String title) {
+        Vector<Security> vector = new Vector<>();
+        try {
+            String sql = "select * from SecurityQuestion where security_question like '%" + title + "%'";
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                int securityID = rs.getInt(1);
+                String security_question = rs.getString(2);
+                Security obj = new Security(securityID, security_question);
+                vector.add(obj);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DAOSecurityQuestion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return vector;
+    }
+    public Security getSQbyID(int id) {
+        Security obj = null;
+        try {
+            String sql = "select * from SecurityQuestion where securityID ="+id;
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                int securityID = rs.getInt(1);
+                String security_question = rs.getString(2);
+                obj = new Security(securityID, security_question);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DAOSecurityQuestion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return obj;
+    }
+    public static void main(String[] args) {
+        DAOSecurityQuestion dao = new DAOSecurityQuestion();
+
+        System.out.println(dao.getSQbyID(6));
     }
 }

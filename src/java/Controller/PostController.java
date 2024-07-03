@@ -21,6 +21,9 @@ import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
 import Entity.User;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,6 +40,9 @@ import java.util.Map;
  */
 @MultipartConfig
 public class PostController extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+    private static final String UPLOAD_DIR = "C:\\Users\\admin\\Downloads\\20t6\\SWP\\web\\imgPost";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -86,8 +94,8 @@ public class PostController extends HttpServlet {
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-           int page = 0;
-        int numberOfPage = 10;
+        int page = 0;
+        int numberOfPage = 6;
         String xpage = request.getParameter("page");
         int size = vec1.size();
         int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
@@ -173,36 +181,21 @@ public class PostController extends HttpServlet {
             listPost = vector;
 
         } else if (service.equals("add")) {
-            String thumbnail = request.getParameter("thumbnail");
-            String title = request.getParameter("title");
-            String category_post_raw = request.getParameter("category_post");
-            String featured_raw = request.getParameter("featured");
-            String brief_information = request.getParameter("brief_information");
-            String description = request.getParameter("description");
             try {
-                int category_post_id = Integer.parseInt(category_post_raw);
-                int status = 1;
-                String username = (String) session.getAttribute("username");
-                User u = daoU.getUserByLogin(username);
-                LocalDate localDate = LocalDate.now();
-                Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                int featured = Integer.parseInt(featured_raw);
-                CategoryPost cp = new CategoryPost(category_post_id, daoCPR.getCategoryProductbyID(category_post_id));
-                Post post = new Post(0, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
-                daoP.addPost(post);
-                response.sendRedirect("PostController");
-            } catch (Exception e) {
-                doGet(request, response);
+                handleAdd(request, response, session);
+                return;
+            } catch (Exception ex) {
+                Logger.getLogger(PostController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
         Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
         int page = 0;
-        int numberOfPage = 10;
+        int numberOfPage = 6;
         String xpage = request.getParameter("page");
         int size = listPost.size();
         int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
@@ -220,11 +213,45 @@ public class PostController extends HttpServlet {
         request.setAttribute("numpage", num);
         request.setAttribute("page", page);
         request.setAttribute("numberOfPage", numberOfPage);
-         request.setAttribute("category", vec2);
+        request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);
         request.setAttribute("category_product", vec5);
         request.getRequestDispatcher("Views/listPost.jsp").forward(request, response);
-        
+
+    }
+
+    private void handleAdd(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+        DAOPost daoP = new DAOPost();
+        DAOUser daoU = new DAOUser();
+        DAOCategoryProduct daoCPR = new DAOCategoryProduct();
+        Part filePart = request.getPart("thumbnail");
+        // Get the file name
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        // Create a file path
+        File file = new File(UPLOAD_DIR, fileName);
+        // Write the file to the specified directory
+        filePart.write(file.getAbsolutePath());
+        String fileUrl = "imgPost/" + fileName;
+        String title = request.getParameter("title");
+        String category_post_raw = request.getParameter("category_post");
+        String featured_raw = request.getParameter("featured");
+        String brief_information = request.getParameter("brief_information");
+        String description = request.getParameter("description");
+        try {
+            int category_post_id = Integer.parseInt(category_post_raw);
+            int status = 1;
+            String username = (String) session.getAttribute("username");
+            User u = daoU.getUserByLogin(username);
+            LocalDate localDate = LocalDate.now();
+            Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int featured = Integer.parseInt(featured_raw);
+            CategoryPost cp = new CategoryPost(category_post_id, daoCPR.getCategoryProductbyID(category_post_id));
+            Post post = new Post(0, fileUrl, title, cp, featured, status, brief_information, description, u, date_create_by);
+            daoP.addPost(post);
+            response.sendRedirect("PostController");
+        } catch (Exception e) {
+            doGet(request, response);
+        }
     }
 
     /**

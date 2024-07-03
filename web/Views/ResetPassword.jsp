@@ -67,17 +67,17 @@ button[type="submit"]:active {
             }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Send password to email</h1>
+<body  style="background-color: #D19C97">
+    <div class="container"style="background-color: white">
+        <h1>Gửi đến email</h1>
         <form action="ResetPassword" method="post">
             <input type="hidden"  name="role" value="${requestScope.role}">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" placeholder="Enter your email">
-            <button type="submit">Send</button>
+            <h3 for="email" style="color: #D19C97">Email:</h3>
+            <input type="text" id="email" name="email" placeholder="Nhập email">
+            <button type="submit" style="background-color: #D19C97">Gửi</button>
            
         </form>
-         <button onclick="location.href='LoginCusController'">Back to login</button>
+         <button onclick="location.href='LoginCusController'"  style="background-color: #D19C97">Quay lại đăng nhập</button>
          <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("errorMessage") %>

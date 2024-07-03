@@ -4,21 +4,22 @@
  */
 package Controller;
 
-import DAL.DAOSecurityQuestion;
+import DAL.DAOReceiver;
+import Entity.Customer;
+import Entity.Receiver;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Vector;
-import Entity.Security;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author admin
  */
-public class SecurityQuestionController extends HttpServlet {
+public class ReceiverAddress extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +38,10 @@ public class SecurityQuestionController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SecurityQuestionController</title>");
+            out.println("<title>Servlet ReceiverAddress</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SecurityQuestionController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ReceiverAddress at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,19 +59,12 @@ public class SecurityQuestionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String service = request.getParameter("service");
-        DAOSecurityQuestion dao = new DAOSecurityQuestion();
+                DAOReceiver daoR = new DAOReceiver();
 
-        if (service == null) {
-            Vector<Security> vec = dao.getAll("select * from SecurityQuestion");
-            request.setAttribute("listsq", vec);
-            request.getRequestDispatcher("Views/listSecurityQuestion.jsp").forward(request, response);
-        } else if (service.equals("delete")) {
-            String id = request.getParameter("id");
-            int id1 = Integer.parseInt(id);
-            dao.removeSecurityQuestion(id1);
-            response.sendRedirect("SecurityQuestion");
-        }
+        int id = Integer.parseInt(request.getParameter("ReceiveID"));
+        daoR.deleteRecei(id);
+                response.sendRedirect("CartContact?carItemIDs=1%2C2%2C3&cartIDs=4%2C4%2C4#Change");
+
     }
 
     /**
@@ -84,29 +78,15 @@ public class SecurityQuestionController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String service = request.getParameter("service");
-        DAOSecurityQuestion dao = new DAOSecurityQuestion();
-        Vector<Security> vec = dao.getAll("select * from SecurityQuestion");
-//        Vector<SecurityQuestion> vec1 = dao.getAll("select * from SecurityQuestion where security_question like '%"+security_question+"%'");
-        if (service.equals("add")) {
-            String security_question = request.getParameter("security_question");
-            Security obj = new Security(0, security_question);
-            dao.addSecurityQuestion(obj);
-            response.sendRedirect("SecurityQuestion");
-        } else if (service.equals("search")) {
-            String title = request.getParameter("title");
-            request.setAttribute("listsq", dao.search(title));
-            request.getRequestDispatcher("Views/listSecurityQuestion.jsp").forward(request, response);
-
-        } else if (service.equals("edit")) {
-            String security_question = request.getParameter("security_question");
-            Security obj = new Security(0, security_question);
-            dao.addSecurityQuestion(obj);
-            response.sendRedirect("SecurityQuestion");
-        } else {
-            doGet(request, response);
-
-        }
+        DAOReceiver daoR = new DAOReceiver();
+        HttpSession session = request.getSession();
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        Customer cus = (Customer) session.getAttribute("cus");
+        Receiver r = new Receiver(0, name, phone, address, cus);
+        daoR.addReceive(r);
+        response.sendRedirect("CartContact?#Change");
     }
 
     /**
