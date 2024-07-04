@@ -14,10 +14,10 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <!-- Material Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <link rel="stylesheet" href="./mktcss/styles.css">
-        <link rel="stylesheet" href="/qcss/style.css">
         <style>
             td img {
                 width: 100px; /* Sets the width of the image */
@@ -261,13 +261,68 @@
                     }
                 });
             });
+            $(document).ready(function () {
+                $('.table').DataTable({
+                    "paging": true,
+                    "searching": false,
+                    "ordering": false,
+                    "info": false,
+                    "pageLength": 10
 
+                });
+            });
+            $(document).ready(function () {
+                $('.edit-quantity-icon').click(function () {
+                    var productId = $(this).data('product-id');
+                    var quantity = $(this).data('quantity');
+
+                    $('#productId').val(productId);
+                    $('#quantity').val(quantity);
+
+                    $('#editQuantityModal').modal('show');
+                });
+
+                $('#saveQuantityBtn').click(function () {
+                    var productId = $('#productId').val();
+                    var quantity = $('#quantity').val();
+
+                    $.ajax({
+                        url: 'updateQuantity', // Endpoint để cập nhật số lượng
+                        type: 'POST',
+                        data: {
+                            productId: productId,
+                            quantity: quantity
+                        },
+                        success: function (response) {
+                            // Cập nhật số lượng trong bảng
+                            $('#quantityContainer-' + productId).html(quantity + ' <i class="fas fa-edit edit-quantity-icon" data-product-id="' + productId + '" data-quantity="' + quantity + '" style="cursor:pointer; color: #007bff;"></i>');
+                            $('#editQuantityModal').modal('hide');
+                            alert('Update successfull');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error updating quantity');
+                        }
+                    });
+                });
+            });
+            function validateForm() {
+                var title = document.forms["searchForm"]["title"].value;
+                var brief = document.forms["searchForm"]["brief"].value;
+
+                if (title && brief) {
+                    alert("Please enter only one search criteria.");
+                    return false;
+                }
+                if (!title && !brief) {
+                    alert("Please enter a search criteria.");
+                    return false;
+                }
+                return true;
+            }
         </script>
     </head>
     <body>
         <div class="grid-container">
-
-            <!-- Header -->
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- End Header -->
 
@@ -282,68 +337,124 @@
                                     <div class="col-sm-3">
                                         <a href="productslist" style="color: white"><h2>Manage <b>Products</b></h2></a>
                                     </div>
+                                    <div style="text-align: right" class="col-sm-3">
+                                        <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
+                                            <div><input type="text" id="searchTitle" name="title" placeholder="Title"></div>
+                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="brief" placeholder="Brief Information"></div>                     
+                                            <input type="submit" name="submit" value="Search">
+                                            <input type="hidden" name="service" value="search">                                                                      
+                                        </form>                    
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
+                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                        <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                                    </div>
+                                </div>
+                                <div>
                                 <c:if test="${not empty msg}">
-                                    <div style="color: white">${msg}</div>
+                                    <div style="color: red; font-size: 20px;">${msg}</div>
                                 </c:if>
                                 <c:if test="${not empty msgUpdate}">
-                                    <div style="color: white">${msgUpdate}</div>
-                                </c:if>
-
-                                <div style="text-align: right" class="col-sm-3">
-                                    <form action="productslist" method="post">
-                                        <input type="text" name="title" placeholder="Title or brief_information"><!-- comment -->
-                                        <input type="submit" name="submit" value="Search"><!-- comment -->
-                                        <input type="hidden" name="service" value="search">                                                                      
-                                    </form>                    
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
-                                    <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
-                                    <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
-                                </div>
+                                    <div style="color: red; font-size: 20px;">${msgUpdate}</div>
+                                </c:if> 
                             </div>
                         </div>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Thumbnail</th>
-                                    <th>Price</th>
-                                    <th>Sale Price</th>
-                                    <th>Featured</th>
-                                    <th>Status</th>
-                                    <th class="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${list}" var="product" >
-
-                                    <tr>                                  
-                                        <td>${product.productID}</td>
-                                        <td>${product.product_name}</td>
-                                        <td><img src="${product.thumbnail}" class="img"></td>
-                                        <td>${product.original_price}</td>
-                                        <td>${product.sale_price}</td>
-                                        <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
-                                        <td>${product.status ? 'Show' : 'Hide'}</td>
-                                        <td class="actions">
-                                            <c:if test="${product.status == true}">
-                                                <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
-                                                </c:if>
-                                                <c:if test="${product.status == false}">
-                                                <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
-                                                </c:if>
-
-                                            <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
-                                            <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
-                                        </td>
+                        <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Thumbnail</th>
+                                        <th>Price</th>
+                                        <th>Sale Price</th>
+                                        <th>Featured</th>
+                                        <th>Status</th>
+                                        <th class="actions">Actions</th>
                                     </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${list}" var="product" >
+                                        <tr>                                  
+                                            <td>${product.productID}</td>
+                                            <td>${product.product_name}</td>
+                                            <td><img src="${product.thumbnail}" class="img"></td>
+                                            <td>${product.original_price}</td>
+                                            <td>${product.sale_price}</td>
+                                            <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
+                                            <td>${product.status ? 'Show' : 'Hide'}</td>
+                                            <td class="actions">
+                                                <c:if test="${product.status == true}">
+                                                    <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
+                                                    </c:if>
+                                                    <c:if test="${product.status == false}">
+                                                    <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
+                                                    </c:if>
+                                                <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
+                                                <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:if>
+                        <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Thumbnail</th>
+                                        <th>Quantity</th>
+                                        <th>Quantity Hold</th>
+                                        <th>Featured</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${list}" var="product">
+                                        <tr>
+                                            <td>${product.productID}</td>
+                                            <td>${product.product_name}</td>
+                                            <td><img src="${product.thumbnail}" class="img"></td>
+                                            <td>
+                                                <span id="quantityContainer-${product.productID}">
+                                                    ${product.quantity}
+                                                    <i class="fas fa-edit edit-quantity-icon" data-product-id="${product.productID}" data-quantity="${product.quantity}" style="cursor:pointer; color: #007bff;"></i>
+                                                </span>
+                                            </td>
+                                            <td>${product.quantity_hold}</td>
+                                            <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
+                                            <td>${product.status ? 'Show' : 'Hide'}</td>                                        
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:if>
                     </div>        
+                </div>
+                <!-- Edit quantity -->    
+                <div id="editQuantityModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Quantity</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="productId">
+                                <div class="form-group">
+                                    <label for="quantity">Quantity:</label>
+                                    <input type="number" id="quantity" class="form-control" min="0">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="saveQuantityBtn">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Filter Modal HTML -->
                 <div id="Filter" class="modal fade">
@@ -415,12 +526,6 @@
                         </div>
                     </div>
                 </div>
-                <c:set var="page" value="${requestScope.page}"/> 
-                <div class="pagination">
-                    <c:forEach begin="${1}" end ="${requestScope.number}" var="i">
-                        <a class="${i==page?"active":""}" href="productslist?page=${i}">${i}</a>
-                    </c:forEach>
-                </div> 
             </div>
         </div>    
     </body>

@@ -579,28 +579,32 @@
                                         <tr>
                                             <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
                                             <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                            <td>${item.order.customer.first_name} ${item.order.customer.last_name}</td>
+                                            <td>${item.order.user.first_name} ${item.order.user.last_name}</td>
                                             <td>${fn:split(item.product.product_name, ',')[0]}</td>
                                             <td>${quantity[item.order.orderID]}</td>
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
                                             <td>${item.order.status.status_name}</td>
-                                           
-                                            <td style="width: 130px">
-                                                <span id="statusContainer-${item.order.status.getStatus_orderid()}">
-                                                    <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
-                                                        (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          <i class="fas fa-edit edit-status-icon" 
+
+                                            <td style="width: 200px">
+
+                                                <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
+                                                              (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          
+                                                      <span id="statusContainer-${item.order.status.getStatus_orderid()}">
+                                                          <i class="fas fa-edit edit-status-icon" 
                                                              data-order-id="${item.order.getOrderID()}" 
                                                              data-status-orderid="${item.order.status.getStatus_orderid()}" 
                                                              style="cursor:pointer; color: #007bff;"></i>
-                                                    </c:if>
-                                                    <c:if test="${sessionScope.user.getRole().getRoleID() == 3}">                                       
-                                                        <span id="saleContainer-${item.order.orderID}">
-                                                            ${item.order.user.first_name}
-                                                            <i class="fas fa-edit edit-sale-icon" data-order-id="${item.order.orderID}" style="cursor:pointer; color: #007bff;"></i>
-                                                        </span>
-                                                    </c:if>
+                                                      </span>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 3}">                                       
+                                                    <span id="saleContainer-${item.order.orderID}">
+                                                        <i class="fas fa-edit edit-sale-icon" 
+                                                           data-order-id="${item.order.orderID}" 
+                                                           style="cursor:pointer; color: #007bff;"></i>
+                                                    </span>
+                                                </c:if>
                                             </td>
-                                           
+
                                         </tr>
                                     </c:forEach>
                                 </tbody>

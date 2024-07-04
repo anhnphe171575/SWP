@@ -5,7 +5,7 @@
 package Controller;
 
 import DAL.DAOProduct;
-import Entity.Product;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author MANH VINH
  */
-public class ViewProduct extends HttpServlet {
+public class CheckProductName extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +36,10 @@ public class ViewProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProduct</title>");
+            out.println("<title>Servlet CheckProductName</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CheckProductName at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,15 +57,7 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOProduct d = new DAOProduct();
-        try {
-            int id = Integer.parseInt(request.getParameter("vid"));
-            Product product = d.getProductByID(id);
-            request.setAttribute("brand", d.getAllBrand());
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
-        } catch (NumberFormatException e){
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -77,9 +69,33 @@ public class ViewProduct extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String productName = request.getParameter("productName");
+        DAOProduct d = new DAOProduct();
+        boolean exists = d.checkProductNameExists(productName);
+        response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        Gson gson = new Gson();
+        String json = gson.toJson(new CheckProductNameResponse(exists));
+        out.write(json);
+        out.close();
+    }
+
+    private class CheckProductNameResponse {
+
+        private boolean exists;
+
+        public CheckProductNameResponse(boolean exists) {
+            this.exists = exists;
+        }
+
+        public boolean isExists() {
+            return exists;
+        }
+
+        public void setExists(boolean exists) {
+            this.exists = exists;
+        }
     }
 
     /**

@@ -205,12 +205,16 @@
         <servlet-class>Controller.AdminDashboard</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>editStatusOrder</servlet-name>
         <servlet-class>Controller.editStatusOrder</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>editProfileUser</servlet-name>
         <servlet-class>Controller.editProfileUser</servlet-class>
+
+        <servlet-name>CheckProductName</servlet-name>
+        <servlet-class>Controller.CheckProductName</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
@@ -416,6 +420,7 @@
         <servlet-name>AdminDashboard</servlet-name>
         <url-pattern>/AdminDashboard</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>DBcus</servlet-name>
         <servlet-class>Controller.DBcus</servlet-class>
@@ -471,5 +476,10 @@
     <servlet-mapping>
         <servlet-name>editProfileUser</servlet-name>
         <url-pattern>/editProfileUserURL</url-pattern>
+
+    <servlet-mapping>
+        <servlet-name>CheckProductName</servlet-name>
+        <url-pattern>/checkproductname</url-pattern>
+
     </servlet-mapping>
 </web-app>
