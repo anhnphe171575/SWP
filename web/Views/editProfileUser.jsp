@@ -5,8 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Vector,Entity.Customer"%>
+<%@page import="java.util.Vector,Entity.User"%>
 <%@page import="Entity.Security"%>
+<%@page import="Entity.Role"%>
 <!DOCTYPE html>
 <html>
 
@@ -75,10 +76,10 @@
     </head>
     <body>
          <% 
-               Vector<Customer> vector = (Vector<Customer>) request.getAttribute("vector");
-               Customer obj = vector.get(0);
+               Vector<User> vector = (Vector<User>) request.getAttribute("vector");
+               User obj = vector.get(0);
                 %>
-                <form action="editProfileCustomerURL" method="post" enctype="multipart/form-data">
+                <form action="editProfileUserURL" method="post" enctype="multipart/form-data">
         <div class="container rounded bg-white mt-5 mb-5"> 
             <div class="row">
                 <div class="col-md-3 border-right">
@@ -102,7 +103,7 @@
                                 <h4 class="text-right">Profile Settings</h4>
                             </div>
                             <div class="row mt-2">
-                                <div class="col-md-12"><label class="labels">CustomerID</label><input type="text" class="form-control" name="customerID" value="<%=obj.getCustomerID()%>"readonly></div>
+                                <div class="col-md-12"><label class="labels">UserID</label><input type="text" class="form-control" name="UserID" value="<%=obj.getUserID()%>"readonly></div>
 
                             </div>
                             <div class="row mt-2">
@@ -113,7 +114,7 @@
                                 <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" name="phone"  value="<%=obj.getPhone()%>"></div>
                                 <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" name="email" value="<%=obj.getEmail()%>" readonly> </div>
                                 <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" name="address" value="<%=obj.getAddress()%>"></div>
-                                <div class="col-md-12"><label class="labels">Username</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>"></div>
+                                <div class="col-md-12"><label class="labels">Username</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>" readonly=""></div>
                                 <div class="col-md-12"><label class="labels">Password</label><input type="text" class="form-control" name="password" value="<%=obj.getPassword()%>"></div>
                                 <div class="col-md-12"><label class="labels">Date of birth</label><input type="date" class="form-control" name="dob" value="<%=obj.getDob()%>"></div>
                                 <div class="col-md-12"><label class="labels">Gender</label>
@@ -128,8 +129,11 @@
                                     </label>
                                 </div>
                                 </div>
-                                <div class="col-md-12"><label class="labels">Status</label><input type="text" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
-                                <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
+                                <div class="col-md-12"><label class="labels">Status</label><input type="text" class="form-control" name="status" value="<%=obj.getStatus()%>"></div>
+                                <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="RoleID" value="<%= obj.getRole().getRoleID()%> " readonly ></div> 
+                                <div class="col-md-12"><label class="labels">Role</label><input type="text" class="form-control" name="role" value="<%= obj.getRole().getRole_Name()%> " readonly ></div> 
+                                <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="RoleID" value="<%= obj.getRole().getRoleID()%> " readonly ></div> 
+                                
                                 <div class="col-md-12"><label class="labels">Question</label>
                                     <select name="security">
                                         <%Vector<Security> vector1=(Vector<Security>)request.getAttribute("security");
@@ -138,15 +142,15 @@
                                         <option value="<%=obj1.getSecurityID()%>"> <%=obj1.getSecurity_question()%></option>
                                         <% }%>
                                     </select></div>
-                                <div class="col-md-12"><label class="labels">Answer</label><input type="text" class="form-control" name="secutityAnswer" value="<%=obj.getSecutityAnswer()%>"></div>
+                                <div class="col-md-12"><label class="labels">Answer</label><input type="text" class="form-control" name="securityAnswer" value="<%=obj.getSecurityAnswer()%>"></div>
 
                             </div>
 
                             <div class="mt-5 text-center">
-                                 <a href="HomePage" class="nav-item nav-link active">Home</a>
+                               <a href="orderlist" class="button-field">Back To Order List</a>
                                 <input type="submit" name="submit" value="Save">
 
-                                <input type="hidden" name="service" value="editProfileCustomer">
+                                <input type="hidden" name="service" value="editProfileUser">
 
 
                             </div>

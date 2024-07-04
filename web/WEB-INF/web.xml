@@ -204,6 +204,14 @@
         <servlet-name>AdminDashboard</servlet-name>
         <servlet-class>Controller.AdminDashboard</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>editStatusOrder</servlet-name>
+        <servlet-class>Controller.editStatusOrder</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editProfileUser</servlet-name>
+        <servlet-class>Controller.editProfileUser</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/ResetPassword</url-pattern>
@@ -455,5 +463,13 @@
     <servlet-mapping>
         <servlet-name>EditSQ</servlet-name>
         <url-pattern>/EditSQ</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editStatusOrder</servlet-name>
+        <url-pattern>/editStatusOrderURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editProfileUser</servlet-name>
+        <url-pattern>/editProfileUserURL</url-pattern>
     </servlet-mapping>
 </web-app>

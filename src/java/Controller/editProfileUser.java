@@ -4,35 +4,36 @@
  */
 package Controller;
 
-import DAL.DAOCustomer;
 import DAL.DAOSecurityQuestion;
-import Entity.Customer;
+import DAL.DAOStatusOrder;
+import DAL.DAOUser;
+import Entity.Role;
 import Entity.Security;
-import java.io.File;
+import Entity.StatusOrder;
+import Entity.User;
 import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
+import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Nguyễn Đăng
  */
 @MultipartConfig
-public class editProfileCustomer extends HttpServlet {
+public class editProfileUser extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private static final String UPLOAD_DIR = "D:\\SWPShopping\\web\\img";
@@ -48,7 +49,19 @@ public class editProfileCustomer extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet editProfileUser</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet editProfileUser at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,17 +76,17 @@ public class editProfileCustomer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        DAOCustomer dao = new DAOCustomer();
-
-        Vector<Customer> vector
-                = (Vector<Customer>) dao.getCustomer("select c.image, c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
-                        + "inner join SecurityQuestion sq on c.securityID = sq.securityID where customerID="
-                        + Integer.parseInt(request.getParameter("customerid")));
+        DAOUser dao = new DAOUser();
+        Vector<User> vector
+                = (Vector<User>) dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password, u.dob,u.gender,u.status, u.RoleID,r.Role_Name,u.securityID,u.securityAnswer,s.security_question,u.image from [User] u\n"
+                        + "                inner join SecurityQuestion s on u.securityID=s.securityID \n"
+                        + "                inner join [Role] r on r.RoleID=u.RoleID where u.UserID="
+                        + Integer.parseInt(request.getParameter("userid")));
         request.setAttribute("vector", vector);
         DAOSecurityQuestion db = new DAOSecurityQuestion();
         request.setAttribute("security", db.getAll("select * from SecurityQuestion"));
-        request.getRequestDispatcher("/Views/editProfileCustomer.jsp").forward(request, response);
+        //request.setAttribute("role", dao.getRole("select * from Role"));
+        request.getRequestDispatcher("/Views/editProfileUser.jsp").forward(request, response);
     }
 
     /**
@@ -87,10 +100,11 @@ public class editProfileCustomer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomer dao = new DAOCustomer();
+       DAOUser dao = new DAOUser();
+
         Part filePart = request.getPart("file");
         String fileUrl = "";
-
+        
         try {
             // Get the file name
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -107,7 +121,7 @@ public class editProfileCustomer extends HttpServlet {
             // You can add appropriate error handling logic here, like logging or showing an error message to the user
         }
 
-        String customerID = request.getParameter("customerID");
+        String UserID = request.getParameter("UserID");
         String fname = request.getParameter("first_name");
         String lname = request.getParameter("last_name");
         String phone = request.getParameter("phone");
@@ -115,32 +129,38 @@ public class editProfileCustomer extends HttpServlet {
         String address = request.getParameter("address");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String date = request.getParameter("dob");
+        String dob = request.getParameter("dob");
+        String gender = request.getParameter("gender");
+        String status = request.getParameter("status");
+        String roleID = request.getParameter("RoleID");
+        String rolename = request.getParameter("role");
+        int roleid = Integer.parseInt(roleID.trim());
+        Role role = new Role(roleid, rolename);
+        String securityid = request.getParameter("security");
+        int securityId = Integer.parseInt(securityid);
+        
+        Security sq = new Security(securityId, "");
+        String securityAnswer = request.getParameter("securityAnswer");
+        String image = request.getParameter("image");
+        // check data: empty, length...
+        //check primary key 
+
+        boolean gender1 = Boolean.parseBoolean(gender);
         SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         try {
-            date1 = formatter1.parse(date);
+            date1 = formatter1.parse(dob);
         } catch (ParseException ex) {
             ex.printStackTrace();
             // Handle date parsing error
             // You can add appropriate error handling logic here, like logging or showing an error message to the user
         }
-        String gender = request.getParameter("gender");
-        boolean gen = Boolean.parseBoolean(gender);
+        int status1 = Integer.parseInt(status);
+        int UserId = Integer.parseInt(UserID);
 
-        String securityid = request.getParameter("security");
-        int securityId = Integer.parseInt(securityid);
-
-        Security sq = new Security(securityId, "");
-
-        String securityAnswer = request.getParameter("securityAnswer");
-        int customerid = Integer.parseInt(customerID);
-
-        LocalDate localDate = LocalDate.now();
-        Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer, fileUrl);
-        dao.updateCustomer(cus);
-        response.sendRedirect("editProfileCustomerURL?customerid=" + customerID);
+        User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+        dao.UpdateUser(user);
+        response.sendRedirect("editProfileUserURL?userid=" + UserID);
     }
 
     /**
