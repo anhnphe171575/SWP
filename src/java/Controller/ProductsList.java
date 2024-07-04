@@ -7,6 +7,7 @@ package Controller;
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
 import DAL.DAOProduct;
+import DAL.DAOUser;
 
 import Entity.CategoryProduct;
 import Entity.Post;
@@ -18,6 +19,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -70,25 +72,21 @@ public class ProductsList extends HttpServlet {
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
         DAOCategoryProduct cp = new DAOCategoryProduct();
-        int page, numberperpage = 5;
-        String xpage = request.getParameter("page");
-        List<Product> list = d.getProduct();
-        int size = list.size();
-        int number = (size % numberperpage == 0 ? (size / numberperpage) : ((size / numberperpage)) + 1);
-        if (xpage == null) {
-            page = 1;
+        DAOUser du = new DAOUser();
+        HttpSession session = request.getSession(false);
+        if (session.getAttribute("username") != null) {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                user = du.getUserByLogin((String) session.getAttribute("username"));
+                session.setAttribute("user", user);
+            }
+            request.setAttribute("list", d.getProduct1());
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
+            request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         } else {
-            page = Integer.parseInt(xpage);
+            response.sendRedirect("LoginController");
         }
-        int start = (page - 1) * numberperpage;
-        int end = Math.min(page * numberperpage, size);
-        List<Product> l  = d.getListbyPage(list, start, end);
-        request.setAttribute("list", l);
-        request.setAttribute("page", page);
-        request.setAttribute("number", number);
-        request.setAttribute("category", cp.getCategoryProductName());
-        request.setAttribute("status", cp.getCategoryStatus());
-        request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
     }
 
     /**
@@ -116,6 +114,8 @@ public class ProductsList extends HttpServlet {
             if (brief != null && !brief.isEmpty()) {
                 request.setAttribute("list", d.getProductByBrief(brief));
             }
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         } else if (service.equals("filter")) {
             String category = request.getParameter("category");
@@ -134,7 +134,7 @@ public class ProductsList extends HttpServlet {
             request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
 
-        } else {
+        } else if (service.equals("sort")) {
             String sort = request.getParameter("sort");
             if ("title".equals(sort)) {
                 request.setAttribute("list", d.sortByTitle());
@@ -149,6 +149,8 @@ public class ProductsList extends HttpServlet {
             } else {
                 request.setAttribute("list", d.sortByStatus());
             }
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         }
     }

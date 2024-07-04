@@ -1,19 +1,55 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Edit Product</title>
-        <link rel="stylesheet" href="vncss/vn5.css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+            .container {
+                background-color: #fff;
+                border-radius: 8px;
+                padding: 30px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            h2 {
+                margin-bottom: 20px;
+                color: #343a40;
+            }
+            .form-group label {
+                font-weight: bold;
+                color: #495057;
+            }
+            .form-control {
+                border-radius: 4px;
+            }
+            .btn-success {
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+            .btn-secondary {
+                background-color: #6c757d;
+                border-color: #6c757d;
+            }
+            .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
+        </style>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Lấy ngày hiện tại
                 var today = new Date().toISOString().split('T')[0];
-                // Thiết lập giá trị tối đa cho trường ngày
                 document.getElementById("updateDate").setAttribute("max", today);
 
-                // Kiểm tra giá trị của Original Price và Sale Price
                 document.getElementById("editProductForm").addEventListener("submit", function (event) {
                     var originalPrice = parseFloat(document.getElementById("originalPrice").value);
                     var salePrice = parseFloat(document.getElementById("salePrice").value);
@@ -33,12 +69,12 @@
         </script>
     </head>
     <body>
-        <div class="container">
+        <div class="container mt-5">
             <h2>Edit Product</h2>
-            <form action="editp" method="post">
+            <form id="editProductForm" action="editp" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>Product ID:</label>
-                    <input type="text" name="productID" value="${product.productID}" readonly>
+                    <input type="text" name="productID" value="${product.productID}" readonly class="form-control-plaintext">
                 </div>
 
                 <div class="form-group">
@@ -48,7 +84,7 @@
 
                 <div class="form-group">
                     <label>Quantity:</label>
-                    <input type="number" name="quantity" value="${product.quantity}" class="form-control" required>
+                    <input type="number" name="quantity" value="${product.quantity}" class="form-control" readonly required>
                 </div>
 
                 <div class="form-group">
@@ -58,7 +94,13 @@
 
                 <div class="form-group">
                     <label>Category:</label>
-                    <input type="number" name="category" value="${product.categoryProduct.category_productID}" class="form-control" required>
+                    <select name="category" class="form-control" required>
+                        <c:forEach var="category" items="${category}">
+                            <option value="${category.category_productID}" ${category.category_productID == product.categoryProduct.category_productID ? 'selected' : ''}>
+                                ${category.category_name}
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="form-group">
@@ -72,8 +114,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Thumbnail:</label>
-                    <input type="text" name="thumbnail" value="${product.thumbnail}" class="form-control" required>
+                    <label>Thumbnail</label><br>
+                    <input type="file" name="file" id="file" style="margin-bottom: 10px" required="">
                 </div>
 
                 <div class="form-group">
@@ -98,19 +140,28 @@
 
                 <div class="form-group">
                     <label>Brand:</label>
-                    <input type="text" name="brand" value="${product.brand}" class="form-control" required>
+                    <select name="brand" class="form-control" required>
+                        <c:forEach var="brand" items="${brand}">
+                            <option value="${brand}" ${brand == product.brand ? 'selected' : ''}>${brand}</option>
+                        </c:forEach>
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label>Status:</label>
-                    <select name="status" class="form-control" required> 
+                    <select name="status" class="form-control" required>
                         <option value="true" ${product.status ? 'selected' : ''}>Show</option>
                         <option value="false" ${!product.status ? 'selected' : ''}>Hide</option>
                     </select>
                 </div>
-                    <a href="productslist" class="btn btn-default">Back to Product List</a>
+
+                <div class="form-group d-flex justify-content-between">
+                    <a href="productslist" class="btn btn-secondary">Back to Product List</a>
                     <input type="submit" class="btn btn-success" value="Save">
+                </div>
             </form>
         </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     </body>
 </html>

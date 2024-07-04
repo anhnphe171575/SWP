@@ -11,6 +11,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta content="Free HTML Templates" name="keywords">
+        <meta content="Free HTML Templates" name="description">
         <title>Product Details</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -20,6 +22,9 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
         <style>
             td img {
                 width: 300px;
@@ -213,6 +218,20 @@
             </style>
             <script>
                 $(document).ready(function () {
+                    var currentDate = new Date().toISOString().split('T')[0];
+                    var currentYear = new Date().getFullYear();
+
+                    // Set the max attribute for the update_date input to the current date
+                    $("#update_date").attr("max", currentDate);
+
+                    // Restrict the year input to the current year
+                    $("#year").on("input", function () {
+                        var year = parseInt($(this).val());
+                        if (year > currentYear) {
+                            $(this).val(currentYear);
+                        }
+                    });
+
                     // Edit button click event
                     $(document).on("click", ".edit", function () {
                         var productId = "${product.productID}";
@@ -227,65 +246,27 @@
                         var salePrice = "${product.sale_price}";
                         var featured = "${product.featured}";
                         var status = "${product.status}";
+                        var year = "${product.year}";
+                        var updateDate = "${product.update_date}";
 
-                        $("#editProductModal #productId").val(productId);
-                        $("#editProductModal #productName").val(productName);
-                        $("#editProductModal #productThumbnail").val(productThumbnail);
-                        $("#editProductModal #productPrice").val(productPrice);
-                        $("#editProductModal #productCategory").val(productCategory);
-                        $("#editProductModal #briefInformation").val(briefInformation);
-                        $("#editProductModal #attachedImages").val(attachedImages);
-                        $("#editProductModal #productDescription").val(productDescription);
-                        $("#editProductModal #quantity").val(quantity);
-                        $("#editProductModal #salePrice").val(salePrice);
-                        $("#editProductModal #featured").val(featured);
-                        $("#editProductModal #status").val(status);
+                        // Populate the edit form with the existing product data
+                        $("#product_id").val(productId);
+                        $("#product_name").val(productName);
+                        $("#thumbnail").val(productThumbnail);
+                        $("#price").val(productPrice);
+                        $("#category").val(productCategory);
+                        $("#brief_information").val(briefInformation);
+                        $("#attached_images").val(attachedImages);
+                        $("#product_description").val(productDescription);
+                        $("#quantity").val(quantity);
+                        $("#sale_price").val(salePrice);
+                        $("#featured").val(featured);
+                        $("#status").val(status);
+                        $("#year").val(year);
+                        $("#update_date").val(updateDate);
 
-                        $("#editProductModal").modal("show");
-                    });
-
-                    // Save changes button click event
-                    $("#saveChangesBtn").click(function () {
-                        var productId = $("#editProductModal #productId").val();
-                        var productName = $("#editProductModal #productName").val();
-                        var productThumbnail = $("#editProductModal #productThumbnail").val();
-                        var productPrice = $("#editProductModal #productPrice").val();
-                        var productCategory = $("#editProductModal #productCategory").val();
-                        var briefInformation = $("#editProductModal #briefInformation").val();
-                        var attachedImages = $("#editProductModal #attachedImages").val();
-                        var productDescription = $("#editProductModal #productDescription").val();
-                        var quantity = $("#editProductModal #quantity").val();
-                        var salePrice = $("#editProductModal #salePrice").val();
-                        var featured = $("#editProductModal #featured").val();
-                        var status = $("#editProductModal #status").val();
-
-                        // Use AJAX to update the product information
-                        $.ajax({
-                            url: "editProductDetails",
-                            type: "POST",
-                            data: {
-                                id: productId,
-                                name: productName,
-                                thumbnail: productThumbnail,
-                                price: productPrice,
-                                category: productCategory,
-                                briefInformation: briefInformation,
-                                attachedImages: attachedImages,
-                                description: productDescription,
-                                quantity: quantity,
-                                salePrice: salePrice,
-                                featured: featured,
-                                status: status
-                            },
-                            success: function (response) {
-                                // Handle success response
-                                location.reload(); // Reload the page to reflect the changes
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle error response
-                                alert("An error occurred while updating the product.");
-                            }
-                        });
+                        // Show the edit modal
+                        $("#editModal").modal("show");
                     });
                 });
             </script>
@@ -358,23 +339,23 @@
                                     </tr>
                                     <tr>
                                         <td>Status:</td>
-                                        <td>${product.status ? "Show" : "Hide"}</td>
-                                        <c:if test="${product.status == true}">
-                                    <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
-                                    </c:if>
-                                    <c:if test="${product.status == false}">
-                                    <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
-                                    </c:if>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="text-right">
-                                        <button><a href="productslist">Back To Products List</a></button>
-                                        <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                    </td>
-                                </tr>
-                            </c:if>
+                                        <td>${product.status ? "Show" : "Hide"}
+                                            <c:if test="${product.status == true}">
+                                                <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
+                                                </c:if>
+                                                <c:if test="${product.status == false}">
+                                                <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
+                                            </c:if></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-right">
+                                            <button><a href="productslist">Back To Products List</a></button>
+                                            <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </tbody>
                         </table>
                     </div>
@@ -384,7 +365,7 @@
             <div id="editProductModal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="editProductDetails" method="post">
+                        <form action="editp" method="post" enctype="multipart/form-data">
                             <div class="modal-header">
                                 <h4 class="modal-title">Edit Product</h4>
                             </div>
@@ -392,72 +373,73 @@
                                 <input type="hidden" name="productID" value="${product.productID}">
                                 <div class="form-group">
                                     <label>Product Name</label>
-                                    <input type="text" name="product_name" class="form-control" value="${product.product_name}">
+                                    <input type="text" name="productName" class="form-control" value="${product.product_name}">
                                 </div>
                                 <div class="form-group">
                                     <label>Quantity</label>
-                                    <input type="number" name="quantity" class="form-control" value="${product.quantity}">
+                                    <input type="number" name="quantity" class="form-control" readonly value="${product.quantity}">
                                 </div>
                                 <div class="form-group">
-                                    <label>Year</label>
-                                    <input type="number" name="year" class="form-control" value="${product.year}">
+                                    <label for="year">Year:</label>
+                                    <input type="number" class="form-control" id="year" name="year" value="${product.year}" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Category Product ID</label>
-                                    <input type="number" name="category_productID" class="form-control" value="${product.categoryProduct.category_productID}">
+                                    <input type="number" name="category" class="form-control" value="${product.categoryProduct.category_productID}">
                                 </div>
                                 <div class="form-group">
                                     <label>Product Description</label>
-                                    <textarea name="product_description" class="form-control">${product.product_description}</textarea>
+                                    <textarea name="description" class="form-control">${product.product_description}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label>Featured</label>
-                                    <input type="number" name="featured" class="form-control" value="${product.featured}">
+                                    <label>Thumbnail</label><br>
+                                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                        <input type="file" name="file" id="file" style="margin-bottom: 10px" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Brief Information</label>
+                                        <textarea name="briefInfo" class="form-control">${product.brief_information}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Original Price</label>
+                                        <input type="number" step="0.01" name="originalPrice" class="form-control" value="${product.original_price}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sale Price</label>
+                                        <input type="number" step="0.01" name="salePrice" class="form-control" value="${product.sale_price}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="update_date">Update Date:</label>
+                                        <input type="date" class="form-control" id="update_date" name="updateDate" value="${product.update_date}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Brand:</label>
+                                        <select name="brand" class="form-control" required>
+                                            <c:forEach var="brand" items="${brand}">
+                                                <option value="${brand}" ${brand == product.brand ? 'selected' : ''}>${brand}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Featured:</label>
+                                        <input type="number" id="featured" name="featured" value="${product.featured}" min="0" max="1" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <select name="status" class="form-control" required>
+                                            <option value="0">Hide</option>
+                                            <option value="1">Show</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Thumbnail</label>
-                                    <input type="text" name="thumbnail" class="form-control" value="${product.thumbnail}">
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <input type="submit" class="btn btn-success" value="Save Changes">
                                 </div>
-                                <div class="form-group">
-                                    <label>Brief Information</label>
-                                    <textarea name="brief_information" class="form-control">${product.brief_information}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Original Price</label>
-                                    <input type="number" step="0.01" name="original_price" class="form-control" value="${product.original_price}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Sale Price</label>
-                                    <input type="number" step="0.01" name="sale_price" class="form-control" value="${product.sale_price}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Update Date</label>
-                                    <input type="date" name="update_date" class="form-control" value="${product.update_date}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Brand</label>
-                                    <input type="text" name="brand" class="form-control" value="${product.brand}">
-                                </div>
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <input type="checkbox" name="status" ${product.status ? "checked" : ""}>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <select name="status" class="form-control" required>
-                                        <option value="0">Hide</option>
-                                        <option value="1">Show</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                <input type="submit" class="btn btn-success" value="Save Changes">
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </body>
-    </html>
+            </body>
+        </html>

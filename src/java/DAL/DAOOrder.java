@@ -27,7 +27,8 @@ import java.time.ZoneId;
 import java.util.logging.Level;
 
 public class DAOOrder extends DBContext {
-     public void updateSaleName(int SaleID, int OrderID) {
+
+    public void updateSaleName(int SaleID, int OrderID) {
         try {
             String query = "UPDATE [Order] SET [UserID] = ? WHERE orderID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
@@ -38,7 +39,8 @@ public class DAOOrder extends DBContext {
             e.printStackTrace();
         }
     }
-     public int getSalebIDbyName(String name) {
+
+    public int getSalebIDbyName(String name) {
         int userID = -1;
         try {
             // SQL query to retrieve UserID based on concatenated first_name and last_name
@@ -53,10 +55,11 @@ public class DAOOrder extends DBContext {
         }
         return userID;
     }
-     public ArrayList<OrderItems> getOrderbyUserID(int UserID) {
+
+    public ArrayList<OrderItems> getOrderbyUserID(int UserID) {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
-            String query = " SELECT \n"
+            String query = " SELECT  \n"
                     + "    o.orderID, \n"
                     + "    o.order_date, \n"
                     + "    c.first_name AS customer_first_name, \n"
@@ -64,16 +67,23 @@ public class DAOOrder extends DBContext {
                     + "    STRING_AGG(p.product_name, ', ') AS product_names, \n"
                     + "    SUM(ot.list_price * ot.quantity) AS total_cost, \n"
                     + "    st.Status_OrderID, \n"
-                    + "    st.Status_Name,u.first_name, \n"
+                    + "    st.Status_Name, \n"
+                    + "    u.first_name, \n"
                     + "    u.last_name\n"
                     + "FROM \n"
                     + "    [Order] o \n"
-                    + "    INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
-                    + "    INNER JOIN Customer c ON o.customerID = c.customerID \n"
-                    + "    INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
-                    + "    INNER JOIN [User] u ON u.UserID = o.UserID\n"
-                    + "    INNER JOIN Product p ON ot.productID = p.productID \n"
-                    + "	where o.UserID = ?\n"
+                    + "INNER JOIN \n"
+                    + "    Order_items ot ON o.orderID = ot.orderID \n"
+                    + "INNER JOIN \n"
+                    + "    Customer c ON o.customerID = c.customerID \n"
+                    + "INNER JOIN \n"
+                    + "    Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
+                    + "INNER JOIN \n"
+                    + "    [User] u ON u.UserID = o.UserID\n"
+                    + "INNER JOIN \n"
+                    + "    Product p ON ot.productID = p.productID \n"
+                    + "WHERE \n"
+                    + "    o.UserID = ?\n"
                     + "GROUP BY \n"
                     + "    o.orderID, \n"
                     + "    o.order_date, \n"
@@ -82,7 +92,9 @@ public class DAOOrder extends DBContext {
                     + "    st.Status_OrderID, \n"
                     + "    st.Status_Name, \n"
                     + "    u.first_name, \n"
-                    + "    u.last_name";
+                    + "    u.last_name\n"
+                    + "ORDER BY \n"
+                    + "    o.order_date DESC;";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, UserID);
             ResultSet rs = stm.executeQuery();
@@ -91,7 +103,21 @@ public class DAOOrder extends DBContext {
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
                 );
-
+                User u = new User(0,
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        true,
+                        0,
+                        null,
+                        null,
+                        "",
+                        "");
                 Customer c = new Customer(
                         0, // Assuming customerID is not needed for this object creation
                         rs.getString("customer_first_name"),
@@ -102,7 +128,7 @@ public class DAOOrder extends DBContext {
                 Product p = new Product(
                         0, // Assuming productID is not needed for this object creation
                         rs.getString("product_names"),
-                        0, 0, null, 0, null, null, 0, 0, null, null, null, null,0
+                        0, 0, null, 0, null, null, 0, 0, null, null, null, null, 0
                 );
 
                 Order o = new Order(
@@ -111,7 +137,7 @@ public class DAOOrder extends DBContext {
                         c,
                         null, // Assuming order type or related information is not needed
                         rs.getDate("order_date"),
-                        null, null, null, null
+                        u, null, null, null
                 );
 
                 OrderItems ot = new OrderItems(
@@ -129,7 +155,8 @@ public class DAOOrder extends DBContext {
         }
         return list;
     }
-      public ArrayList<OrderItems> getPackingOrder() {
+
+    public ArrayList<OrderItems> getPackingOrder() {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
             String query = "SELECT\n"
@@ -148,8 +175,8 @@ public class DAOOrder extends DBContext {
                     + "    INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID\n"
                     + "    INNER JOIN [User] u ON u.UserID = o.UserID\n"
                     + "    INNER JOIN Product p ON ot.productID = p.productID\n"
-//                    + "WHERE\n"
-//                    + "    st.Status_Name LIKE 'Packing'\n"
+                    //                    + "WHERE\n"
+                    //                    + "    st.Status_Name LIKE 'Packing'\n"
                     + "GROUP BY\n"
                     + "    o.orderID,\n"
                     + "    o.order_date,\n"
@@ -180,7 +207,7 @@ public class DAOOrder extends DBContext {
                 Product product = new Product(
                         0, // Assuming productID is not needed for this object creation
                         rs.getString("product_names"),
-                        0, 0, null, 0, null, null, 0, 0, null, null, null, null,0
+                        0, 0, null, 0, null, null, 0, 0, null, null, null, null, 0
                 );
 
                 Order order = new Order(
@@ -207,7 +234,8 @@ public class DAOOrder extends DBContext {
         }
         return list;
     }
-       public OrderItems getOrderDetails1(int orderid) {
+
+    public OrderItems getOrderDetails1(int orderid) {
         OrderItems ot = null;
         try {
             String query = "SELECT "
@@ -244,7 +272,7 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder statusOrder = new StatusOrder(rs.getInt("Status_OrderID"),
                         rs.getString("status")
-                        );
+                );
                 Customer customer = new Customer(0,
                         rs.getString("customer_name"),
                         null,
@@ -297,7 +325,8 @@ public class DAOOrder extends DBContext {
         }
         return ot;
     }
-        public void RestoreOrderQuantity(int orderID) {
+
+    public void RestoreOrderQuantity(int orderID) {
         try {
             String query = "UPDATE Product \n"
                     + "SET quantity = quantity + \n"
@@ -317,7 +346,7 @@ public class DAOOrder extends DBContext {
         } catch (Exception e) {
         }
     }
-        
+
     public List<StatusOrder> getStatusOrder1() {
         List<StatusOrder> status = new ArrayList<>();
         try {
@@ -329,7 +358,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 status.add(st);
@@ -363,7 +391,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 // Create Customer object
@@ -399,7 +426,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 // Create Order object
@@ -456,7 +483,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 // Create Customer object
@@ -492,7 +518,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 // Create Order object
@@ -550,7 +576,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("status_orderid"),
                         rs.getString("status_name")
-                        
                 );
 
                 // Create Customer object
@@ -574,7 +599,7 @@ public class DAOOrder extends DBContext {
                         rs.getString("Product_name"),
                         0,
                         0,
-                         rs.getString("Product_id"),
+                        rs.getString("Product_id"),
                         0,
                         null,
                         null,
@@ -583,7 +608,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0);
+                        null, 0);
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -644,7 +669,7 @@ public class DAOOrder extends DBContext {
         return od;
     }
 
-    public void UpdateStatus(int orderID, int statusid , LocalDate sDate) {
+    public void UpdateStatus(int orderID, int statusid, LocalDate sDate) {
         String sql = "UPDATE [Order]\n"
                 + "   SET \n"
                 + "           [Status_OrderID]=?\n"
@@ -653,9 +678,9 @@ public class DAOOrder extends DBContext {
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, statusid);
-                    pre.setDate(2, java.sql.Date.valueOf(sDate));   
+            pre.setDate(2, java.sql.Date.valueOf(sDate));
             pre.setInt(3, orderID);
-    
+
             pre.executeUpdate();
 
         } catch (Exception e) {
@@ -689,7 +714,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("status_orderid"),
                         rs.getString("status_name")
-                        
                 );
 
                 // Create Customer object
@@ -722,7 +746,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0);
+                        null, 0);
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -778,7 +802,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 // Create Customer object
@@ -814,7 +837,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 // Create Order object
@@ -1290,7 +1313,7 @@ public class DAOOrder extends DBContext {
                         null);
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
                         rs.getString("status_name")
-                        );
+                );
                 User u = new User(
                         rs.getInt("UserID"),
                         rs.getString("first_name"),
@@ -1322,7 +1345,7 @@ public class DAOOrder extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("product_status"),0);
+                        rs.getBoolean("product_status"), 0);
 
                 Customer c = new Customer(
                         rs.getInt("customerID"),
@@ -1367,8 +1390,7 @@ public class DAOOrder extends DBContext {
         }
         return orderitems;
     }
-    
-    
+
     public ArrayList<OrderItems> getOrderByOrderID(int orderID) {
         ArrayList<OrderItems> orderitems = new ArrayList<>();
         try {
@@ -1399,7 +1421,7 @@ public class DAOOrder extends DBContext {
                         null);
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
                         rs.getString("status_name")
-                        );
+                );
                 User u = new User(
                         rs.getInt("UserID"),
                         rs.getString("first_name"),
@@ -1431,7 +1453,7 @@ public class DAOOrder extends DBContext {
                         null,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("product_status"),0);
+                        rs.getBoolean("product_status"), 0);
 
                 Customer c = new Customer(
                         rs.getInt("customerID"),
@@ -1495,35 +1517,72 @@ public class DAOOrder extends DBContext {
     public ArrayList<OrderItems> getOrderInfor() {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
-            String query = "SELECT  o.orderID, o.order_date, c.first_name, c.last_name, STRING_AGG(p.product_name, ', ') AS Product_name, SUM(ot.list_price * ot.quantity) AS total_cost,\n"
-                    + "                    st.Status_OrderID ,st.Status_Name\n"
-                    + "                    FROM \n"
-                    + "                        [Order] o\n"
-                    + "                    INNER JOIN \n"
-                    + "                       Order_items ot ON o.orderID = ot.orderID\n"
-                    + "                    INNER JOIN \n"
-                    + "                     Customer c ON o.customerID = c.customerID\n"
-                    + "                    INNER JOIN \n"
-                    + "                       Status_Order st ON o.Status_OrderID = st.Status_OrderID\n"
-                    + "                    INNER JOIN \n"
-                    + "                      Product p ON ot.productID = p.productID\n"
-                    + "                    GROUP BY \n"
-                    + "                        o.orderID, o.order_date, c.first_name, c.last_name, st.Status_OrderID,st.Status_Name";
+            String query = "SELECT  \n"
+                    + "    o.orderID, \n"
+                    + "    o.order_date, \n"
+                    + "    c.first_name AS customer_first_name, \n"
+                    + "    c.last_name AS customer_last_name, \n"
+                    + "    STRING_AGG(p.product_name, ', ') AS Product_name, \n"
+                    + "    SUM(ot.list_price * ot.quantity) AS total_cost,\n"
+                    + "    st.Status_OrderID,\n"
+                    + "    st.Status_Name,\n"
+                    + "    u.first_name AS user_first_name,\n"
+                    + "    u.last_name AS user_last_name\n"
+                    + "FROM \n"
+                    + "    [Order] o\n"
+                    + "INNER JOIN \n"
+                    + "    Order_items ot ON o.orderID = ot.orderID\n"
+                    + "INNER JOIN \n"
+                    + "    Customer c ON o.customerID = c.customerID\n"
+                    + "INNER JOIN \n"
+                    + "    Status_Order st ON o.Status_OrderID = st.Status_OrderID\n"
+                    + "INNER JOIN \n"
+                    + "    Product p ON ot.productID = p.productID\n"
+                    + "INNER JOIN \n"
+                    + "    [User] u ON u.UserID = o.UserID\n"
+                    + "GROUP BY \n"
+                    + "    o.orderID, \n"
+                    + "    o.order_date, \n"
+                    + "    c.first_name, \n"
+                    + "    c.last_name, \n"
+                    + "    st.Status_OrderID,\n"
+                    + "    st.Status_Name,\n"
+                    + "    u.first_name,\n"
+                    + "    u.last_name\n"
+                    + "ORDER BY \n"
+                    + "    o.order_date DESC";
+
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 // Create StatusOrder object
                 StatusOrder st = new StatusOrder(
-                        rs.getInt("status_orderid"),
-                        rs.getString("status_name")
-                        
+                        rs.getInt("Status_OrderID"),
+                        rs.getString("Status_Name")
                 );
+
+                // Create User object
+                User u = new User(0,
+                        rs.getString("user_first_name"),
+                        rs.getString("user_last_name"),
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        false,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null);
 
                 // Create Customer object
                 Customer c = new Customer(
                         0,
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
+                        rs.getString("customer_first_name"),
+                        rs.getString("customer_last_name"),
                         null,
                         null,
                         null,
@@ -1536,6 +1595,8 @@ public class DAOOrder extends DBContext {
                         null,
                         null
                 );
+
+                // Create Product object
                 Product p = new Product(0,
                         rs.getString("Product_name"),
                         0,
@@ -1549,7 +1610,8 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0);
+                        null, 0);
+
                 // Create Order object
                 Order o = new Order(
                         rs.getInt("orderID"),
@@ -1557,7 +1619,7 @@ public class DAOOrder extends DBContext {
                         c,
                         null,
                         rs.getDate("order_date"),
-                        null,
+                        u,
                         null,
                         null, null
                 );
@@ -1631,7 +1693,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 // Create Customer object
@@ -1667,7 +1728,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 // Create Order object
@@ -1724,7 +1785,6 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
-                        
                 );
 
                 // Create Customer object
@@ -1760,7 +1820,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 // Create Order object
@@ -1853,7 +1913,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null,0
+                        null, 0
                 );
 
                 Order o = new Order(
@@ -1897,12 +1957,13 @@ public class DAOOrder extends DBContext {
         }
         return status;
     }
-    public List<StatusOrder> getStatusOrder2( ) {
+
+    public List<StatusOrder> getStatusOrder2() {
         List<StatusOrder> status = new ArrayList<>();
         try {
             String query = "select * from Status_Order ";
             PreparedStatement stm = conn.prepareStatement(query);
-       
+
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("Status_OrderID");
@@ -1914,6 +1975,7 @@ public class DAOOrder extends DBContext {
         }
         return status;
     }
+
     public List<String> getSaleName() {
         List<String> names = new ArrayList<>();
         String query = "SELECT u.first_name, u.last_name FROM [User] u WHERE u.RoleID = 2;";
@@ -1956,7 +2018,7 @@ public class DAOOrder extends DBContext {
             while (rs.next()) {
                 StatusOrder statusOrder = new StatusOrder(rs.getInt("Status_OrderID"),
                         rs.getString("status")
-                        );
+                );
                 Customer customer = new Customer(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -2010,7 +2072,7 @@ public class DAOOrder extends DBContext {
         return orderList;
     }
 
-     public HashMap<Integer, ArrayList<String>> CountorderSale() {
+    public HashMap<Integer, ArrayList<String>> CountorderSale() {
         HashMap<Integer, ArrayList<String>> count = new HashMap<>();
         try {
             String query = "select Count(o.orderID) as count , u.first_name, u.last_name, u.UserID\n"
@@ -2020,20 +2082,20 @@ public class DAOOrder extends DBContext {
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                 String firstName = rs.getString("first_name");
+                String firstName = rs.getString("first_name");
                 String lastName = rs.getString("last_name");
                 String fullName = firstName + " " + lastName;
                 ArrayList<String> a = new ArrayList();
                 a.add(rs.getString("count"));
                 a.add(fullName);
-                count.put( rs.getInt("UserID"),a );
+                count.put(rs.getInt("UserID"), a);
             }
         } catch (SQLException e) {
             java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
         }
         return count;
     }
-    
+
     public HashMap<Integer, Integer> Countorder() {
         HashMap<Integer, Integer> count = new HashMap<>();
         try {
@@ -2044,7 +2106,7 @@ public class DAOOrder extends DBContext {
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                
+
                 count.put(rs.getInt("UserID"), rs.getInt("count"));
             }
         } catch (SQLException e) {
@@ -2144,7 +2206,7 @@ public class DAOOrder extends DBContext {
                         categoryProduct,
                         "",
                         null,
-                        false,0
+                        false, 0
                 );
 
                 OrderItems orderItem = new OrderItems(0,
@@ -2279,7 +2341,7 @@ public class DAOOrder extends DBContext {
     public static void main(String[] args) {
 
         DAOOrder db = new DAOOrder();
-        System.out.println(db.getStatusOrder2());
+        System.out.println(db.getOrderbyUserID(3));
 //        HashMap<Integer, Integer> countMap = db.Countorder();
 //        int minCount = Integer.MAX_VALUE;
 //
