@@ -211,8 +211,10 @@
     <servlet>
         <servlet-name>editProfileUser</servlet-name>
         <servlet-class>Controller.editProfileUser</servlet-class>
+
     </servlet>
-    <servlet>
+<servlet>
+
         <servlet-name>CheckProductName</servlet-name>
         <servlet-class>Controller.CheckProductName</servlet-class>
     </servlet>
