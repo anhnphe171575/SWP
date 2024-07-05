@@ -88,12 +88,14 @@
                             <tr>
                                 <td colspan="2">
                                     <a href="CustomerServletURL?service=updateCustomer&customerid=${listAllCustomer.customerID}" class="btn btn-primary" title="update" data-toggle="tooltip">Update</a>
+                                     <a href="CustomerServletURL" class="button-field">Back To Customer List</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+                                
         </div>
     </body>
 </html>

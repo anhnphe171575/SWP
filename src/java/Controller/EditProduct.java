@@ -1,40 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controller;
 
+import DAL.DAOCategoryProduct;
 import DAL.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author MANH VINH
- */
+@MultipartConfig
 public class EditProduct extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final long serialVersionUID = 1L;
+    private static final String UPLOAD_DIR = "C:\\Users\\MANH VINH\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProducts";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -47,82 +38,72 @@ public class EditProduct extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
+        DAOCategoryProduct cp = new DAOCategoryProduct();
         int id = Integer.parseInt(request.getParameter("eid"));
         request.setAttribute("product", d.getProductByID(id));
+        request.setAttribute("brand", d.getAllBrand());
+        request.setAttribute("category", cp.getCategoryProductProduct());
         request.getRequestDispatcher("Views/editp.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOProduct d = new DAOProduct();
-        int id = Integer.parseInt(request.getParameter("productID"));
-        String productName = request.getParameter("productName");
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        int year = Integer.parseInt(request.getParameter("year"));
-        int category = Integer.parseInt(request.getParameter("category"));
-        String description = request.getParameter("description");
-        int featured = Integer.parseInt(request.getParameter("featured"));
-        String thumbnail = request.getParameter("thumbnail");
-        String briefInfo = request.getParameter("briefInfo");
-        float originalPrice = Float.parseFloat(request.getParameter("originalPrice"));
-        float salePrice = Float.parseFloat(request.getParameter("salePrice"));
-        String updateDate = request.getParameter("updateDate");
-        String brand = request.getParameter("brand");
-        boolean status = Boolean.parseBoolean(request.getParameter("status"));
-        Date formattedDate = formatDate(updateDate);
-        if (status == true) {
-            d.updateProduct(id, productName, quantity, year, category,
-                    description, featured, thumbnail, briefInfo, originalPrice, salePrice,
-                    formattedDate, brand, true);
+        Part filePart = request.getPart("file");
+
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            File file = new File(UPLOAD_DIR, fileName);
+            try {
+                filePart.write(file.getAbsolutePath());
+            } catch (IOException e) {
+                throw new ServletException("Cannot write uploaded file to disk! " + e.getMessage());
+            }
+
+            String fileUrl = "imgProducts/" + fileName;
+            DAOProduct d = new DAOProduct();
+            int id = Integer.parseInt(request.getParameter("productID"));
+            String productName = request.getParameter("productName");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            int year = Integer.parseInt(request.getParameter("year"));
+            int category = Integer.parseInt(request.getParameter("category"));
+            String description = request.getParameter("description");
+            int featured = Integer.parseInt(request.getParameter("featured"));
+//            String image = request.getParameter("image");
+            String briefInfo = request.getParameter("briefInfo");
+            float originalPrice = Float.parseFloat(request.getParameter("originalPrice"));
+            float salePrice = Float.parseFloat(request.getParameter("salePrice"));
+            String updateDate = request.getParameter("updateDate");
+            String brand = request.getParameter("brand");
+            boolean status = Boolean.parseBoolean(request.getParameter("status"));
+            Date formattedDate = formatDate(updateDate);
+            if (status) {
+                d.updateProduct(id, productName, quantity, year, category, description, featured, fileUrl, briefInfo, originalPrice, salePrice, formattedDate, brand, true);
+            } else {
+                d.updateProduct(id, productName, quantity, year, category, description, featured, fileUrl, briefInfo, originalPrice, salePrice, formattedDate, brand, false);
+            }
+
+            response.sendRedirect("productslist");
         } else {
-            d.updateProduct(id, productName, quantity, year, category,
-                    description, featured, thumbnail, briefInfo, originalPrice, salePrice,
-                    formattedDate, brand, false);
+            response.getWriter().write("No file uploaded or file size is zero.");
         }
-        request.setAttribute("msg", "Edit successfully!");
-        request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
     }
 
     private Date formatDate(String dob) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = dateFormat.parse(dob);
-            return date;
+            return dateFormat.parse(dob);
         } catch (ParseException e) {
             return null;
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

@@ -21,11 +21,6 @@ import java.util.Date;
  */
 public class MyOrder extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        // Sample output can be placed here for debugging
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,6 +61,7 @@ public class MyOrder extends HttpServlet {
             doGet(request, response);
 
         } else if (service.equals("search")) {
+            System.out.println("aa");
             String id = request.getParameter("id");
             String name = request.getParameter("product_name");
             String cus_id = request.getParameter("customerid");

@@ -49,10 +49,48 @@ public class DAOProduct extends DBContext {
 //        }
 //    }
 
-    public List<Product> getListbyPage(List<Product> list, int start, int end) {
+    public List<String> getAllBrand() {
+        List l = new ArrayList();
+        String brand = null;
+        try {
+            String query = "select distinct p.brand from Product p";
+            PreparedStatement stm = conn.prepareStatement(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                brand = rs.getString("brand");
+                l.add(brand);
+            }
+        } catch (Exception e) {
+        }
+        return l;
+    }
+
+    public List<Product> getProduct1() {
         ArrayList<Product> l = new ArrayList();
-        for (int i = start; i < end; i++) {
-            l.add(list.get(i));
+        try {
+            String query = "  select p.productID,p.product_name,p.thumbnail,p.quantity,p.quantity_hold,p.featured,p.original_price,\n" +
+"                    p.sale_price,p.featured,p.status from Product p ORDER BY p.productID DESC";
+            PreparedStatement stm = conn.prepareCall(query);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(rs.getInt("productID"),
+                        rs.getString("product_name"),
+                        rs.getInt("quantity"),
+                        0,
+                        "",
+                        rs.getInt("featured"),
+                        rs.getString("thumbnail"),
+                        "",
+                        rs.getFloat("original_price"),
+                        rs.getFloat("sale_price"),
+                        null,
+                        null,
+                        null,
+                        rs.getBoolean("status"),
+                        rs.getInt("quantity_hold"));
+                l.add(p);
+            }
+        } catch (Exception e) {
         }
         return l;
     }
@@ -139,9 +177,9 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductByTitle(String title) {
         List<Product> p = new ArrayList();
         try {
-            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%'";
+            String query = "SELECT * FROM Product WHERE product_name = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-
+            stm.setString(1, title);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product pr = new Product(
@@ -301,10 +339,9 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductByBrief(String Brief) {
         List<Product> p = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Product WHERE brief_information LIKE ?";
-            String searchTerm = "%" + Brief + "%";
+            String query = "SELECT * FROM Product WHERE brief_information = ?";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setString(1, searchTerm);
+            stm.setString(1, Brief);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Product pr = new Product(
@@ -902,12 +939,11 @@ public class DAOProduct extends DBContext {
         return product;
     }
 
-    public void addProduct(String product_name, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand) {
+    public void addProduct(String product_name, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand, Boolean status) {
         try {
-            String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, product_name);
-
             stm.setInt(2, quantity);
             stm.setInt(3, year);
             stm.setInt(4, category_productID);
@@ -920,6 +956,7 @@ public class DAOProduct extends DBContext {
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
             stm.setDate(11, currentDate);
             stm.setString(12, brand);
+            stm.setBoolean(13, status);
             stm.executeUpdate();
 
         } catch (SQLException e) {
@@ -970,7 +1007,8 @@ public class DAOProduct extends DBContext {
         }
 
     }
-     public void UpdateQuantity(int quantity, int productID) {
+
+    public void UpdateQuantity(int quantity, int productID) {
         String sql = "UPDATE [Product]\n"
                 + "   SET \n"
                 + "           [quantity]=?\n"
@@ -986,6 +1024,7 @@ public class DAOProduct extends DBContext {
         }
 
     }
+
     public int getProductFeaturedbyID(int id) {
         int featured = 0;
         try {
@@ -1014,6 +1053,22 @@ public class DAOProduct extends DBContext {
         }
     }
 
+    public boolean checkProductNameExists(String productName) {
+        boolean exists = false;
+        try {
+            String query = "SELECT 1 FROM Product WHERE product_name = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setString(1, productName);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                exists = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return exists;
+    }
+
     public Date formatDate(String dob) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1026,6 +1081,6 @@ public class DAOProduct extends DBContext {
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        System.out.println(p.getProductFeature());
+        System.out.println(p.getProductByBrief("aaaa"));
     }
 }

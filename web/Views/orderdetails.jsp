@@ -6,20 +6,30 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Order Details</title>
+        <!-- CSS Libraries -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+        <!-- JS Libraries -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
         <style>
             td img {
                 width: 100px; /* Sets the width of the image */
@@ -264,7 +274,120 @@
                 font-weight: normal;
             }
         </style>
+        <script>
+            $(document).on('click', '.edit-sale-icon', function () {
+                var orderID = $(this).data('order-id');
+                fetchSaleOptions(orderID);
+            });
 
+            $(document).on('click', '.edit-status-icon', function () {
+                var statusOrderid = $(this).data('status-orderid');
+                var orderID = $(this).data('order-id');
+                console.log("Status Order ID:", statusOrderid); // Debugging statement
+                console.log("Order ID:", orderID);
+                fetchOrderStatuses(statusOrderid, orderID);
+            });
+            function fetchSaleOptions(orderID) {
+                $.ajax({
+                    url: 'sales',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (sales) {
+                        console.log('Sales data received:', sales); // Debugging line
+                        var dropdown = '<select id="saleDropdown-' + orderID + '" class="form-control">';
+                        $.each(sales, function (saleID, saleDetails) {
+                            var saleName = saleDetails[1];
+                            var orderCount = saleDetails[0];
+                            dropdown += '<option value="' + saleID + '">' + saleName + ' (' + orderCount + ' orders)</option>';
+                        });
+                        dropdown += '</select>';
+                        var form = '<form id="editSaleForm-' + orderID + '" style="display: inline-block;">' +
+                                dropdown +
+                                '<button type="submit" class="btn btn-primary">Save</button>' +
+                                '</form>';
+                        $('#saleContainer-' + orderID).html(form);
+
+                        // Add event listener for the newly created form
+                        $('#editSaleForm-' + orderID).on('submit', function (e) {
+                            e.preventDefault();
+                            var selectedSale = $('#saleDropdown-' + orderID).val();
+                            console.log('Selected sale for order ' + orderID + ': ' + selectedSale);
+                            // Submit the data to the server or handle further as needed
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching sales:', error);
+                    }
+                });
+            }
+
+            $(document).on('submit', 'form[id^="editSaleForm-"]', function (e) {
+                e.preventDefault();
+                var formID = $(this).attr('id');
+                var orderID = formID.replace('editSaleForm-', '');
+                var newSale = $('#saleDropdown-' + orderID).val();
+                $.ajax({
+                    url: 'updatesale',
+                    method: 'POST',
+                    data: {
+                        orderID: orderID,
+                        newSale: newSale
+                    },
+                    success: function (response) {
+                        alert('Cập nhật người bán của đơn hàng thành công!');
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Lỗi khi cập nhật người bán của đơn hàng: ' + error);
+                    }
+                });
+            });
+            function fetchOrderStatuses(statusOrderid, orderID) {
+                $.ajax({
+                    url: 'orderstatus', // Adjust the URL to your API endpoint
+                    method: 'GET',
+                    data: {statusOrderid: statusOrderid}, // Include the statusOrderid as a parameter
+                    dataType: 'json',
+                    success: function (statuses) {
+                        var dropdown = '<select id="statusDropdown-' + statusOrderid + '" class="form-control">';
+                        $.each(statuses, function (index, status) {
+                            dropdown += '<option value="' + status.status_orderid + '">' + status.status_name + '</option>';
+                        });
+                        dropdown += '</select>';
+                        var form = '<form id="editStatusForm-' + statusOrderid + '" style="display: inline-block;" onsubmit="return updateOrderStatus(event, \'' + orderID + '\', \'' + statusOrderid + '\')">' +
+                                dropdown +
+                                '<button type="submit" class="btn btn-primary">Save</button>' +
+                                '</form>';
+                        $('#statusContainer-' + statusOrderid).html(form);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching statuses:', error);
+                    }
+                });
+            }
+
+            function updateOrderStatus(event, orderID, statusOrderid) {
+                event.preventDefault();
+                var newStatus = $('#statusDropdown-' + statusOrderid).val();
+                console.log("Updating Order ID:", orderID, "with Status:", newStatus);
+
+                $.ajax({
+                    url: 'updatestatusorder',
+                    method: 'POST',
+                    data: {
+                        orderID: orderID,
+                        newStatus: newStatus
+                    },
+                    success: function (response) {
+                        alert('Cập nhật trạng thái đơn hàng thành công!');
+                        location.reload(); // Tải lại trang sau khi cập nhật thành công
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Lỗi khi cập nhật trạng thái đơn hàng: ' + error);
+                    }
+                });
+            }
+        </script>
     </head>
     <body>
         <div class="container order-details">
@@ -295,7 +418,9 @@
                                 <p><strong>Sale Name:</strong> 
                                     <span id="saleContainer-${item.order.orderID}">
                                         ${item.order.user.first_name}
-                                        <i class="fas fa-edit edit-sale-icon" data-order-id="${item.order.orderID}" style="cursor:pointer; color: #007bff;"></i>
+                                        <i class="fas fa-edit edit-sale-icon" 
+                                           data-order-id="${item.order.orderID}" 
+                                           style="cursor:pointer; color: #007bff;"></i>
                                     </span>
                                 </p>
                             </c:if>
@@ -308,15 +433,14 @@
                                     ${item.order.status.status_name}
                                     <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
                                                   (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">
-                                          \                                        <i class="fas fa-edit edit-status-icon" 
-                                                                                      data-order-id="${item.order.getOrderID()}" 
-                                                                                      data-status-orderid="${item.order.status.getStatus_orderid()}" 
-                                                                                      style="cursor:pointer; color: #007bff;"></i>
+                                          <i class="fas fa-edit edit-status-icon" 
+                                             data-order-id="${item.order.getOrderID()}" 
+                                             data-status-orderid="${item.order.status.getStatus_orderid()}" 
+                                             style="cursor:pointer; color: #007bff;"></i>
                                     </c:if>
                                 </span>
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -369,123 +493,5 @@
             </div>
             <a href="orderlist" class="button-field">Back To Order List</a>
         </div>
-        <script>
-            $(document).ready(function () {
-                $(document).on('click', '.edit-sale-icon', function () {
-                    var orderID = $(this).data('order-id');
-                    fetchSaleOptions(orderID);
-                });
-                $(document).on('click', '.edit-status-icon', function () {
-                    var statusOrderid = $(this).data('status-orderid');
-                    console.log("Status Order ID:", statusOrderid); // Debugging statement
-                    fetchOrderStatuses(statusOrderid);
-                });
-                function fetchOrderStatuses(statusOrderid) {
-                    $.ajax({
-                        url: 'orderstatus', // Adjust the URL to your API endpoint
-                        method: 'GET',
-                        data: {statusOrderid: statusOrderid}, // Include the statusOrderid as a parameter
-                        dataType: 'json',
-                        success: function (statuses) {
-                            var dropdown = '<select id="statusDropdown-' + statusOrderid + '" class="form-control">';
-                            $.each(statuses, function (index, status) {
-                                dropdown += '<option  value="' + status + '">' + status + '</option>';
-                            });
-                            dropdown += '</select>';
-                            var form = '<form id="editStatusForm-' + statusOrderid + '" style="display: inline-block;">' +
-                                    dropdown +
-                                    '<button type="submit" class="btn btn-primary">Save</button>' +
-                                    '</form>';
-                            $('#statusContainer-' + statusOrderid).html(form);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error fetching statuses:', error);
-                        }
-                    });
-                }
-            <c:set value="${requestScope.list1}" var="item"></c:set>
-                $(document).on('submit', 'form[id^="editStatusForm-"]', function (e) {
-                    e.preventDefault();
-                    var formID = $(this).attr('id');
-                    var statusOrderid = formID.replace('editStatusForm-', '');
-                    var orderID = ${item.order.getOrderID()};
-                    var newStatus = $('#statusDropdown-' + statusOrderid).val();
-
-                    console.log("Form ID:", formID);
-                    console.log("Status Order ID:", statusOrderid);
-                    console.log("Order ID:", orderID);
-                    console.log("New Status:", newStatus);
-                    $.ajax({
-                        url: 'updatestatusorder',
-                        method: 'POST',
-                        data: {
-                            orderID: orderID,
-                            statusOrderid: statusOrderid,
-                            newStatus: newStatus
-                        },
-                        success: function (response) {
-                            alert('Cập nhật trạng thái đơn hàng thành công!');
-                            location.reload(); // Tải lại trang sau khi cập nhật thành công
-                        },
-                        error: function (xhr, status, error) {
-                            alert('Lỗi khi cập nhật trạng thái đơn hàng: ' + error);
-                        }
-                    });
-                });
-
-                function fetchSaleOptions(orderID) {
-                    $.ajax({
-                        url: 'sales',
-                        method: 'GET',
-                        dataType: 'json',
-                        success: function (sales) {
-                            console.log('Sales data received:', sales); // Debugging line
-                            var dropdown = '<select id="saleDropdown-' + orderID + '" class="form-control">';
-                            $.each(sales, function (sale, count) {
-                                dropdown += '<option value="' + sale + '">' + sale + ' (' + count + ' orders)</option>';
-                            });
-                            dropdown += '</select>';
-                            var form = '<form id="editSaleForm-' + orderID + '" style="display: inline-block;">' +
-                                    dropdown +
-                                    '<button type="submit" class="btn btn-primary">Save</button>' +
-                                    '</form>';
-                            $('#saleContainer-' + orderID).html(form);
-
-                            // Add event listener for the newly created form
-                            $('#editSaleForm-' + orderID).on('submit', function (e) {
-                                e.preventDefault();
-                                var selectedSale = $('#saleDropdown-' + orderID).val();
-                                console.log('Selected sale for order ' + orderID + ': ' + selectedSale);
-                                // Submit the data to the server or handle further as needed
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                        }
-                    });
-                }
-
-                $(document).on('submit', 'form[id^="editSaleForm-"]', function (e) {
-                    e.preventDefault();
-                    var formID = $(this).attr('id');
-                    var orderID = formID.replace('editSaleForm-', '');
-                    var newSale = $('#saleDropdown-' + orderID).val();
-                    $.ajax({
-                        url: 'updatesale',
-                        method: 'POST',
-                        data: {
-                            orderID: orderID,
-                            newSale: newSale
-                        },
-                        success: function (response) {
-                            alert('Cập nhật người bán của đơn hàng thành công!');
-                            location.reload();
-                        },
-                        error: function (xhr, status, error) {
-                            alert('Lỗi khi cập nhật người bán của đơn hàng: ' + error);
-                        }
-                    });
-                });
-            });
-        </script>
     </body>
 </html>

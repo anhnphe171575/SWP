@@ -4,8 +4,8 @@
  */
 package Controller;
 
+import DAL.DAOPost;
 import DAL.DAOProduct;
-import Entity.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author MANH VINH
  */
-public class ViewProduct extends HttpServlet {
+public class UpdateQuantity extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +36,10 @@ public class ViewProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProduct</title>");
+            out.println("<title>Servlet UpdateQuantity</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateQuantity at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,15 +57,7 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOProduct d = new DAOProduct();
-        try {
-            int id = Integer.parseInt(request.getParameter("vid"));
-            Product product = d.getProductByID(id);
-            request.setAttribute("brand", d.getAllBrand());
-            request.setAttribute("product", product);
-            request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
-        } catch (NumberFormatException e){
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -79,7 +71,13 @@ public class ViewProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        DAOProduct d = new DAOProduct();
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        d.UpdateQuantity(quantity,productId);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"status\":\"success\"}");
     }
 
     /**
