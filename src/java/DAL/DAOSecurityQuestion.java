@@ -21,6 +21,25 @@ import java.util.List;
  * @author admin
  */
 public class DAOSecurityQuestion extends DBContext {
+    public Vector<Security> getSecurtityQuestion(String sql) {
+        Vector<Security> vector = new Vector<Security>();
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                
+
+                // System.out.println(obj);
+                Security obj = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                vector.add(obj);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return vector;
+      
+    }
 
     public int removeSecurityQuestion(int securityID) {
         int n = 0;
