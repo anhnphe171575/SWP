@@ -348,10 +348,7 @@
                     alert("Please enter only one search criteria.");
                     return false;
                 }
-//                if (!orderID && !customerName) {
-//                    alert("Please enter a search criteria.");
-//                    return false;
-//                }
+
                 return true;
 
             }
@@ -359,36 +356,11 @@
                 var form = document.forms["searchForm"];
                 form.onsubmit = function () {
                     var customerid = form["customerid"].value;
-                    this.action = this.action + "?customerid=1";
                     return validateForm();
                 };
             });
         </script>
-        <!--        <script>
-                    function validateForm1() {
-                        var orderID = document.forms["searchStatus"]["id1"].value;
-                        var customerName = document.forms["searchStatus"]["product_name1"].value;
-        
-                        if (orderID && customerName) {
-                            alert("Please enter only one search criteria.");
-                            return false;
-                        }
-        //                if (!orderID && !customerName) {
-        //                    alert("Please enter a search criteria.");
-        //                    return false;
-        //                }
-                        return true;
-        
-                    }
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var form = document.forms["searchStatus"];
-                        form.onsubmit = function () {
-                            var customerid = form["customerid"].value;
-                            this.action = this.action + "?customerid=1";
-                            return validateForm();
-                        };
-                    });
-                </script>-->
+
         <link href="css/style.css" rel="stylesheet">
     </head>
     <body>
