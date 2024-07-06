@@ -1,0 +1,162 @@
+<%-- 
+    Document   : addUser
+    Created on : Jul 5, 2024, 2:30:33 PM
+    Author     : admin
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f2f2f2;
+                margin: 0;
+                padding: 0;
+            }
+            form {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            }
+            table {
+                width: 100%;
+            }
+            table td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+            table td:first-child {
+                font-weight: bold;
+                width: 30%;
+            }
+            input[type="text"],
+            input[type="email"],
+            input[type="date"],
+            input[type="radio"],
+            input[type="file"] {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
+                margin-top: 4px;
+                margin-bottom: 10px;
+            }
+            input[type="submit"],
+            input[type="reset"] {
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                float: right;
+                margin-left: 10px;
+            }
+            input[type="reset"] {
+                background-color: #f44336;
+            }
+        </style>
+    </head>
+    <body>
+
+        <form action="AddUser" method="post" >
+            <table>
+                ${error}
+<!--                <tr>
+                    <td>Image</td>
+                    <td><input type="file" name="file" id="file" accept="image/*"></td>
+                </tr>-->
+                <tr>
+                    <td>First Name</td>
+                    <td><input type="text" name="fname" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><input type="text" name="lname" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><input type="text" name="phone" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="email" name="email" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><input type="text" name="address" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="username" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" name="password" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td><input type="date" name="dob" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td style="display: flex; justify-content: space-between;">
+                        <input type="radio" name="gender" value="true" id="male">
+                        <label for="male">Male</label>
+                        <input type="radio" name="gender" value="false" id="female">
+                        <label for="female">Female</label>
+                    </td>
+                </tr>
+<!--                <tr>
+                    <td>Status</td>
+                    <td>
+                        <select name="status">
+                            <option value="1">Active</option>
+                            <option value="0">Not Active</option>
+                        </select>
+                    </td>
+                </tr>-->
+                 <tr>
+                    <td>Role</td>
+                    <td> <select name="role">
+                    <c:forEach items="${role}" var="r">
+                    <option value="${r.roleID}">${r.role_Name}</option>
+                    </c:forEach>
+                    </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>Security Question</td>
+                    <td>
+                        <select name="securityQuestion">
+                            <c:forEach items="${question}" var="q">
+                                <option value="${q.securityID}">${q.securityID} -${q.security_question}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Security Answer</td>
+                    <td><input type="text" name="securityAnswer" id="" value=""></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" name="submit" value="Add User"></td>
+                    <td><input type="reset" value="Reset">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+    </body>
+</html>
+

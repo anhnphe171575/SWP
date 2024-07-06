@@ -181,6 +181,10 @@
                 margin-top: 10px;
                 font-size: 13px;
             }
+            .image-responsive {
+                max-width: 100%;
+                height: auto;
+            }
         </style>
         <script>
             $(document).ready(function () {
@@ -195,7 +199,7 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-5">
-                                <h2>SLider <b> Detail</b></h2>
+                                <h2>Slider <b> Detail</b></h2>
                             </div>
                             <div class="col-sm-7">
                             </div>
@@ -204,40 +208,58 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>sliderID</th>
-                                <th>title</th>
-                                <th>image</th>
-                                <th>link</th>
-                                <th>status</th>
-                                <th>notes</th>
-                                <th>page_order</th>
-                                <th>slider_date_createby</th>
-                                <th>UserID</th>
+                                <th>Slider Attribute</th>
+                                <th>Value</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:set value="${requestScope.sliderDetail}" var="c"></c:set>
                                 <tr>
-                                    <td>${c.sliderID}</td>
-                                    <td>${c.title}</td> 
-                                    <td><img src="${c.image}" alt="anh"></td>
-                                    <td>${c.link}</td>
-                                    <td><c:if test="${c.status == '1'}">Show</c:if>
-                                        <c:if test="${c.status != '1'}">Hide</c:if>
+                                    <td>image</td>
+                                    <td><img src="${c.image}" alt="Slider Image" class="image-responsive"></td>
+                            </tr>    
+                            <tr>
+                                <td>sliderID</td>
+                                <td>${c.sliderID}</td>
+                            </tr> 
+                            <tr>
+                                <td>title</td>
+                                <td>${c.title}</td> 
+                            </tr>
+                            <tr>
+                                <td>link</td>
+                                <td>${c.link}</td> 
+                            </tr>
+                            <tr>
+                                <td>status</td>
+                                <td><c:if test="${c.status == '1'}">Show</c:if>
+                                    <c:if test="${c.status != '1'}">Hide</c:if>
+                                </tr>
+                                <tr>
+                                    <td>notes</td>
                                     <td>${c.notes}</td>
+                            </tr>
+                            <tr>
+                                    <td>page_order</td>
                                     <td>${c.page_order}</td>
+                            </tr>
+                            <tr>
+                                    <td>slider_date_createby</td>
                                     <td>${c.slider_date_createby}</td>
+                            </tr>
+                            <tr>
+                                    <td>UserID</td>
                                     <td>${c.user.userID}</td>
-                                </tr>   
+                            </tr>
+                            <td colspan="2">
+                                     <a href="SliderServletURL" class="button-field">Back To Slider List</a>
+                                </td>
+
                         </tbody>
                     </table>
-                  
+
                 </div>
             </div>
         </div>    
-    </div>
-</div>
-</body> 
-</html>
-</body>
+    </body> 
 </html>

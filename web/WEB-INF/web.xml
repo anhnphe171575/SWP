@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
+        <servlet-name>userDetail</servlet-name>
+        <servlet-class>Controller.userDetail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddPost</servlet-name>
+        <servlet-class>Controller.AddPost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUser</servlet-name>
+        <servlet-class>Controller.AddUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateUser</servlet-name>
+        <servlet-class>Controller.updateUser</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>userDetail</servlet-name>
+        <url-pattern>/userDetail</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>userListServlet</servlet-name>
+        <servlet-class>Controller.userListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>userListServlet</servlet-name>
+        <url-pattern>/userList</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ResetPassword</servlet-name>
         <servlet-class>Controller.ResetPassword</servlet-class>
     </servlet>
@@ -485,9 +513,17 @@
         <url-pattern>/EditSQ</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AddUser</servlet-name>
+        <url-pattern>/AddUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateUser</servlet-name>
+        <url-pattern>/updateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>editStatusOrder</servlet-name>
         <url-pattern>/editStatusOrderURL</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> 
     <servlet-mapping>
         <servlet-name>editProfileUser</servlet-name>
         <url-pattern>/editProfileUserURL</url-pattern>

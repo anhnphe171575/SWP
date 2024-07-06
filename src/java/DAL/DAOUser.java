@@ -15,9 +15,9 @@ import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Role;
 import Entity.Security;
+import java.sql.Date;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +27,21 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class DAOUser extends DBContext {
+
+    public Role getRoleName(int id) {
+        Role r = null;
+        String sql = "select * from [Role] where RoleID=" + id;
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                r = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
+            }
+        } catch (Exception e) {
+        }
+        return r;
+    }
+
      public int insertUser(User obj) {
         int n = 0;
         String sql = "INSERT INTO [User]\n"
@@ -219,7 +234,7 @@ public class DAOUser extends DBContext {
         Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
     }
     return vector;
-}
+    }
 
     public int removeUser(int UserID) {
         //check foreign key
@@ -239,20 +254,6 @@ public class DAOUser extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-//        ResultSet rsCustomer = this.getData("select * from customers "
-//                + " where "+CustomerID+" in (select distinct customer_id from customers)");
-//        
-//        //check manager
-//        try {
-//            //if exist
-//            if(rsCustomer.next()){
-//                return n;
-//            
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DAOCustomer.class.getName()).log(Level.SEVERE, null, ex);        
-//        }
         String sql = "delete from User where UserID=" + UserID;
         System.out.println(sql);
         try {
@@ -298,7 +299,6 @@ public class DAOUser extends DBContext {
             System.out.println(ex);
         }
         return vector;
-
     }
 
     public User getUsersByID(int id) {
@@ -374,12 +374,12 @@ public class DAOUser extends DBContext {
         }
         return flag;
     }
-    
+
     public User getUserByLogin(String var1, String sql) {
         User u = null;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-            
+
             pre.setString(1, var1);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
@@ -409,14 +409,14 @@ public class DAOUser extends DBContext {
     public void UpdateNewPass(String email, String passWord) {
         String query = "UPDATE User SET password=? WHERE email=?";
         try {
-            
+
             PreparedStatement pre = conn.prepareStatement(query);
-            
+
             pre.setString(1, passWord);
             pre.setString(2, email);
             pre.executeUpdate();
         } catch (Exception e) {
-            
+
         }
         //return false;
     }
@@ -485,15 +485,248 @@ public class DAOUser extends DBContext {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return vector;
     }
+
+   
+
+    public Vector<User> getUsers() {
+        Vector<User> vector = new Vector<User>();
+        String sql = "select u.UserID,u.first_name, u.last_name,u.phone,u.email,u.address,\n"
+                + "u.username,u.password,u.dob,u.gender,u.status,u.RoleID,u.securityID,u.securityID,u.securityAnswer,u.image,\n"
+                + "r.Role_Name,s.security_question from [User] u \n"
+                + "inner join [Role] r on u.RoleID=r.RoleID\n"
+                + "inner join SecurityQuestion s on s.securityID=u.securityID";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //dataType varName=rs.getdataType(index,fieldName);
+                int UserID = rs.getInt("UserID");
+                // int staff_id=rs.getInt("staff_id");
+                String first_name = rs.getString("first_name");
+                // String first_name=rs.getString(2);
+                String last_name = rs.getString("last_name"),
+                        phone = rs.getString("phone"),
+                        email = rs.getString("email"),
+                        address = rs.getString("address"),
+                        username = rs.getString("username"),
+                        password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), "security_question");
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                User obj = new User(UserID, first_name, last_name,
+                        phone, email, address, username, password, dob, gender, status, role, securityID, securityAnswer, image);
+                // System.out.println(obj);
+                vector.add(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return vector;
+    }
+
+  
+
+   
+
+    public User getUsersByemail(String email1) {
+        User u = null;
+        String sql = "select u.UserID,u.first_name, u.last_name,u.phone,u.email,u.address,\n"
+                + "u.username,u.password,u.dob,u.gender,u.status,u.RoleID,u.securityID,u.securityID,u.securityAnswer,u.image,\n"
+                + "r.Role_Name,s.security_question from [User] u \n"
+                + "inner join [Role] r on u.RoleID=r.RoleID\n"
+                + "inner join SecurityQuestion s on s.securityID=u.securityID where u.email='" + email1 + "'";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //dataType varName=rs.getdataType(index,fieldName);
+                int UserID = rs.getInt("UserID");
+                // int staff_id=rs.getInt("staff_id");
+                String first_name = rs.getString("first_name");
+                // String first_name=rs.getString(2);
+                String last_name = rs.getString("last_name"),
+                        phone = rs.getString("phone"),
+                        email = rs.getString("email"),
+                        address = rs.getString("address"),
+                        username = rs.getString("username"),
+                        password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                u = new User(UserID, first_name, last_name,
+                        phone, email, address, username, password, dob, gender, status, role, securityID, securityAnswer, image);
+                // System.out.println(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return u;
+    }
+
+    public User getUsersByUsername(String username1) {
+        User u = null;
+        String sql = "select u.UserID,u.first_name, u.last_name,u.phone,u.email,u.address,\n"
+                + "u.username,u.password,u.dob,u.gender,u.status,u.RoleID,u.securityID,u.securityID,u.securityAnswer,u.image,\n"
+                + "r.Role_Name,s.security_question from [User] u \n"
+                + "inner join [Role] r on u.RoleID=r.RoleID\n"
+                + "inner join SecurityQuestion s on s.securityID=u.securityID where u.username='" + username1 + "'";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //dataType varName=rs.getdataType(index,fieldName);
+                int UserID = rs.getInt("UserID");
+                // int staff_id=rs.getInt("staff_id");
+                String first_name = rs.getString("first_name");
+                // String first_name=rs.getString(2);
+                String last_name = rs.getString("last_name"),
+                        phone = rs.getString("phone"),
+                        email = rs.getString("email"),
+                        address = rs.getString("address"),
+                        username = rs.getString("username"),
+                        password = rs.getString("password");
+                Date dob = rs.getDate("dob");
+                Boolean gender = rs.getBoolean("gender");
+                int status = rs.getInt("status");
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                String securityAnswer = rs.getString("securityAnswer");
+                String image = rs.getString("image");
+                u = new User(UserID, first_name, last_name,
+                        phone, email, address, username, password, dob, gender, status, role, securityID, securityAnswer, image);
+                // System.out.println(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return u;
+    }
+
     
-    public static void main(String[] args) {
-        DAOUser dao = new DAOUser();
-//        System.out.println(dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-//                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-//                + "inner join SecurityQuestion s on u.securityID=s.securityID"));
-        System.out.println(dao.getUser("select * from [User]"));
+
+    public User notUserbyEmail(String emailU, String emailI) {
+        User u = null;
+        String sql = "	SELECT \n"
+                + "    u.UserID, \n"
+                + "    u.first_name, \n"
+                + "    u.last_name, \n"
+                + "    u.phone, \n"
+                + "    u.email, \n"
+                + "    u.address,\n"
+                + "    u.username, \n"
+                + "    u.password, \n"
+                + "    u.dob, \n"
+                + "    u.gender, \n"
+                + "    u.status, \n"
+                + "    u.RoleID, \n"
+                + "    u.securityID, \n"
+                + "    u.securityAnswer, \n"
+                + "    u.image,\n"
+                + "    r.Role_Name, \n"
+                + "    s.security_question \n"
+                + "FROM [User] u \n"
+                + "INNER JOIN [Role] r ON u.RoleID = r.RoleID\n"
+                + "INNER JOIN SecurityQuestion s ON s.securityID = u.securityID \n"
+                + "WHERE u.email <> '" + emailU + "'\n"
+                + "  AND u.email = '" + emailI + "';";
+
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), "");
+                u = new User(rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        role,
+                        securityID,
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
+
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return u;
+
+    }
+
+    public User notUserbyUsername(String usernameU, String usernameI) {
+        User u = null;
+        String sql = "	SELECT \n"
+                + "    u.UserID, \n"
+                + "    u.first_name, \n"
+                + "    u.last_name, \n"
+                + "    u.phone, \n"
+                + "    u.email, \n"
+                + "    u.address,\n"
+                + "    u.username, \n"
+                + "    u.password, \n"
+                + "    u.dob, \n"
+                + "    u.gender, \n"
+                + "    u.status, \n"
+                + "    u.RoleID, \n"
+                + "    u.securityID, \n"
+                + "    u.securityAnswer, \n"
+                + "    u.image,\n"
+                + "    r.Role_Name, \n"
+                + "    s.security_question \n"
+                + "FROM [User] u \n"
+                + "INNER JOIN [Role] r ON u.RoleID = r.RoleID\n"
+                + "INNER JOIN SecurityQuestion s ON s.securityID = u.securityID \n"
+                + "WHERE u.username <>'" + usernameU + "'\n"
+                + "  AND u.username ='" + usernameI + "';";
+
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), "");
+                 u = new User(rs.getInt("UserID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        role,
+                        securityID,
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
+
+                
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return u;
     }
 }
