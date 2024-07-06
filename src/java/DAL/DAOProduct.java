@@ -49,6 +49,36 @@ public class DAOProduct extends DBContext {
 //        }
 //    }
 
+    public void UpdatePrice(int productID, float price) {
+        try {
+            String query = "UPDATE Product\n"
+                    + "   SET \n"
+                    + "      [original_price] = ?\n"
+                    + " WHERE productID = ?\n";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setFloat(1, price);
+            stm.setInt(2, productID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void UpdateSalePrice(int productID, float saleprice) {
+        try {
+            String query = "UPDATE Product\n"
+                    + "   SET \n"
+                    + "      [sale_price] = ?\n"
+                    + " WHERE productID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setFloat(1, saleprice);
+            stm.setInt(2, productID);
+            stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<String> getAllBrand() {
         List l = new ArrayList();
         String brand = null;
@@ -68,8 +98,8 @@ public class DAOProduct extends DBContext {
     public List<Product> getProduct1() {
         ArrayList<Product> l = new ArrayList();
         try {
-            String query = "  select p.productID,p.product_name,p.thumbnail,p.quantity,p.quantity_hold,p.featured,p.original_price,\n" +
-"                    p.sale_price,p.featured,p.status from Product p ORDER BY p.productID DESC";
+            String query = "  select p.productID,p.product_name,p.thumbnail,p.quantity,p.quantity_hold,p.featured,p.original_price,\n"
+                    + "                    p.sale_price,p.featured,p.status from Product p ORDER BY p.productID DESC";
             PreparedStatement stm = conn.prepareCall(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -939,26 +969,41 @@ public class DAOProduct extends DBContext {
         return product;
     }
 
-    public void addProduct(String product_name, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand, Boolean status) {
+    public void addProduct(String product_name, int hold, int quantity, int year, int category_productID, String product_description, int featured, String thumbnail, String brief_information, float original_price, float sale_price, String brand, Boolean status) {
         try {
-            String query = "INSERT INTO Product(product_name, quantity, year, category_productID, product_description, featured, thumbnail, brief_information, original_price, sale_price, update_date, brand, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+            String query = "INSERT INTO Product(\n"
+                    + "    product_name,\n"
+                    + "    quantity_hold,\n"
+                    + "    quantity,\n"
+                    + "    year,\n"
+                    + "    category_productID,\n"
+                    + "    product_description,\n"
+                    + "    featured,\n"
+                    + "    thumbnail,\n"
+                    + "    brief_information,\n"
+                    + "    original_price,\n"
+                    + "    sale_price,\n"
+                    + "    update_date,\n"
+                    + "    brand,\n"
+                    + "    status\n"
+                    + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);\n";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, product_name);
-            stm.setInt(2, quantity);
-            stm.setInt(3, year);
-            stm.setInt(4, category_productID);
-            stm.setString(5, product_description);
-            stm.setInt(6, featured);
-            stm.setString(7, thumbnail);
-            stm.setString(8, brief_information);
-            stm.setFloat(9, original_price);
-            stm.setFloat(10, sale_price);
+            stm.setInt(2, hold);
+            stm.setInt(3, quantity);
+            stm.setInt(4, year);
+            stm.setInt(5, category_productID);
+            stm.setString(6, product_description);
+            stm.setInt(7, featured);
+            stm.setString(8, thumbnail);
+            stm.setString(9, brief_information);
+            stm.setFloat(10, original_price);
+            stm.setFloat(111, sale_price);
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-            stm.setDate(11, currentDate);
-            stm.setString(12, brand);
-            stm.setBoolean(13, status);
+            stm.setDate(12, currentDate);
+            stm.setString(13, brand);
+            stm.setBoolean(14, status);
             stm.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -1079,8 +1124,19 @@ public class DAOProduct extends DBContext {
         }
     }
 
+    public void DeleteProduct(int id) {
+        try {
+            String query = " DELETE FROM Product\n"
+                    + "      WHERE productID = ?";
+            PreparedStatement stm = conn.prepareStatement(query);
+            stm.setInt(1, id);
+            stm.executeUpdate();
+        } catch (SQLException ex) {
+        }
+    }
+
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        System.out.println(p.getProductByBrief("aaaa"));
+        p.DeleteProduct(39);
     }
 }

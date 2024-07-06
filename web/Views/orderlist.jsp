@@ -290,6 +290,34 @@
                     "pageLength": 10
                 });
             });
+            document.addEventListener('DOMContentLoaded', function () {
+                const fromDateInput = document.getElementById('from-date');
+                const toDateInput = document.getElementById('to-date');
+                const today = new Date().toISOString().split('T')[0];
+
+                // Giới hạn ngày kết thúc tối đa là ngày hiện tại
+                toDateInput.setAttribute('max', today);
+
+                // Kiểm tra và đặt giới hạn ngày khi ngày bắt đầu thay đổi
+                fromDateInput.addEventListener('change', function () {
+                    const fromDate = fromDateInput.value;
+                    if (fromDate) {
+                        toDateInput.setAttribute('min', fromDate);
+                    } else {
+                        toDateInput.removeAttribute('min');
+                    }
+                });
+
+                // Kiểm tra và đặt giới hạn ngày khi ngày kết thúc thay đổi
+                toDateInput.addEventListener('change', function () {
+                    const toDate = toDateInput.value;
+                    if (toDate) {
+                        fromDateInput.setAttribute('max', toDate);
+                    } else {
+                        fromDateInput.setAttribute('max', today);
+                    }
+                });
+            });
             $(document).on('click', '.edit-sale-icon', function () {
                 var orderID = $(this).data('order-id');
                 fetchSaleOptions(orderID);
@@ -584,9 +612,7 @@
                                             <td>${quantity[item.order.orderID]}</td>
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
                                             <td>${item.order.status.status_name}</td>
-
                                             <td style="width: 200px">
-
                                                 <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
                                                               (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          
                                                       <span id="statusContainer-${item.order.status.getStatus_orderid()}">

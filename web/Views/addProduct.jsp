@@ -57,7 +57,12 @@
 
                 <div class="form-group">
                     <div class="label">Quantity:</div>
-                    <input type="number" name="quantity" min="0" required>
+                    <input type="number" name="quantity" value="0" readonly required>
+                </div>
+                
+                <div class="form-group">
+                    <div class="label">Hold:</div>
+                    <input type="number" name="hold" value="0" readonly required>
                 </div>
 
                 <div class="form-group">
@@ -72,12 +77,12 @@
 
                 <div class="form-group">
                     <div class="label">Original Price:</div>
-                    <input type="number" name="originalPrice" min="0" step="0.01" required>
+                    <input type="number" name="originalPrice" value ="0" readonly required>
                 </div>
 
                 <div class="form-group">
                     <div class="label">Sale Price:</div>
-                    <input type="number" name="salePrice" min="0" step="0.01" required>
+                    <input type="number" name="salePrice" value ="0" readonly required>
                 </div>
 
                 <div class="form-group">

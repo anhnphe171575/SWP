@@ -164,6 +164,8 @@ public class DAOOrder extends DBContext {
                     + "    o.order_date,\n"
                     + "    c.first_name AS customer_first_name,\n"
                     + "    c.last_name AS customer_last_name,\n"
+                    + "	u.first_name,\n"
+                    + "	u.last_name,\n"
                     + "    STRING_AGG(p.product_name, ', ') AS product_names,\n"
                     + "    SUM(ot.list_price * ot.quantity) AS total_cost,\n"
                     + "    st.Status_OrderID,\n"
@@ -175,15 +177,16 @@ public class DAOOrder extends DBContext {
                     + "    INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID\n"
                     + "    INNER JOIN [User] u ON u.UserID = o.UserID\n"
                     + "    INNER JOIN Product p ON ot.productID = p.productID\n"
-                    //                    + "WHERE\n"
-                    //                    + "    st.Status_Name LIKE 'Packing'\n"
                     + "GROUP BY\n"
                     + "    o.orderID,\n"
                     + "    o.order_date,\n"
                     + "    c.first_name,\n"
                     + "    c.last_name,\n"
                     + "    st.Status_OrderID,\n"
-                    + "    st.Status_Name";
+                    + "    st.Status_Name,\n"
+                    + "	u.first_name,\n"
+                    + "	u.last_name\n"
+                    + "ORDER BY o.order_date DESC;";
 
             // Prepare the statement
             PreparedStatement stm = conn.prepareStatement(query);
@@ -203,7 +206,21 @@ public class DAOOrder extends DBContext {
                         rs.getString("customer_last_name"),
                         null, null, null, null, null, null, false, null, null, null, null
                 );
-
+                User user = new User(0,
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        false,
+                        0,
+                        null,
+                        null,
+                        "",
+                        "");
                 Product product = new Product(
                         0, // Assuming productID is not needed for this object creation
                         rs.getString("product_names"),
@@ -216,7 +233,7 @@ public class DAOOrder extends DBContext {
                         customer,
                         null, // Assuming order type or related information is not needed
                         rs.getDate("order_date"),
-                        null, null, null, null
+                        user, null, null, null
                 );
 
                 OrderItems orderItem = new OrderItems(

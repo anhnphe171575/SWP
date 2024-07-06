@@ -211,16 +211,26 @@
     <servlet>
         <servlet-name>editProfileUser</servlet-name>
         <servlet-class>Controller.editProfileUser</servlet-class>
-
     </servlet>
-<servlet>
-
+    <servlet>
         <servlet-name>CheckProductName</servlet-name>
         <servlet-class>Controller.CheckProductName</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateQuantity</servlet-name>
         <servlet-class>Controller.UpdateQuantity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteProduct</servlet-name>
+        <servlet-class>Controller.DeleteProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateSalePrice</servlet-name>
+        <servlet-class>Controller.updateSalePrice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePrice</servlet-name>
+        <servlet-class>Controller.updatePrice</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
@@ -489,5 +499,17 @@
     <servlet-mapping>
         <servlet-name>UpdateQuantity</servlet-name>
         <url-pattern>/updateQuantity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProduct</servlet-name>
+        <url-pattern>/deleteProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateSalePrice</servlet-name>
+        <url-pattern>/updateSalePrice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePrice</servlet-name>
+        <url-pattern>/updatePrice</url-pattern>
     </servlet-mapping>
 </web-app>
