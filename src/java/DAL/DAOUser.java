@@ -472,11 +472,6 @@ public class DAOUser extends DBContext {
     }
 
    
-
-   
-
-    
-
     public Vector<User> getUsers() {
         Vector<User> vector = new Vector<User>();
         String sql = "select u.UserID,u.first_name, u.last_name,u.phone,u.email,u.address,\n"
@@ -517,13 +512,7 @@ public class DAOUser extends DBContext {
         }
         return vector;
     }
-
- 
-   
-
-   
-
-   
+}
 
     public User getUsersByemail(String email1) {
         User u = null;
@@ -605,24 +594,7 @@ public class DAOUser extends DBContext {
         return u;
     }
 
-    public Vector<Role> getRole(String sql) {
-        Vector<Role> vector = new Vector<Role>();
-        try {
-            Statement st = conn.createStatement(
-                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-
-                // System.out.println(obj);
-                Role obj = new Role(rs.getInt("roleID"), rs.getString("role_name"));
-                vector.add(obj);
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return vector;
-
-    }
+    
 
     public User notUserbyEmail(String emailU, String emailI) {
         User u = null;

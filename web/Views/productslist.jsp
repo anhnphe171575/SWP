@@ -239,10 +239,82 @@
         </style>
         <script>
             $(document).ready(function () {
-                // Activate tooltip
+                // Edit Price Modal
+                $('.edit-price-icon').click(function () {
+                    var productId = $(this).data('product-id');
+                    var price = $(this).data('price');
+
+                    $('#productIdPrice').val(productId);
+                    $('#price').val(price);
+
+                    $('#editPriceModal').modal('show');
+                });
+
+                $('#savePriceBtn').click(function () {
+                    var productId = $('#productIdPrice').val();
+                    var price = $('#price').val();
+
+                    $.ajax({
+                        url: 'updatePrice',
+                        type: 'POST',
+                        data: {
+                            productId: productId,
+                            price: price
+                        },
+                        success: function (response) {
+                            $('#editPriceModal').modal('hide');
+                            alert('Price updated successfully');
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error updating price');
+                        }
+                    });
+                });
+
+                // Edit Sale Price Modal
+                $('.edit-sale-price-icon').click(function () {
+                    var productId = $(this).data('product-id');
+                    var salePrice = $(this).data('sale-price');
+                    var originalPrice = $(this).data('original-price');
+
+                    $('#productIdSalePrice').val(productId);
+                    $('#salePrice').val(salePrice);
+                    $('#originalPrice').val(originalPrice); // Lưu giá gốc vào thẻ đầu vào ẩn
+                    $('#editSalePriceModal').modal('show');
+                });
+
+                $('#saveSalePriceBtn').click(function () {
+                    var productId = $('#productIdSalePrice').val();
+                    var salePrice = $('#salePrice').val();
+                    var originalPrice = $('#originalPrice').val(); 
+
+                    if (parseFloat(salePrice) >= parseFloat(originalPrice)) {
+                        alert('Sale Price must be less than Price');
+                        return;
+                    }
+
+                    $.ajax({
+                        url: 'updateSalePrice',
+                        type: 'POST',
+                        data: {
+                            productId: productId,
+                            salePrice: salePrice
+                        },
+                        success: function (response) {
+                            $('#editSalePriceModal').modal('hide');
+                            alert('Sale Price updated successfully');
+                            location.reload(); // Reload lại trang sau khi cập nhật thành công
+                        },
+                        error: function (xhr, status, error) {
+                            alert('Error updating sale price');
+                        }
+                    });
+                });
+
+                // Other existing JavaScript code
                 $('[data-toggle="tooltip"]').tooltip();
 
-                // Select/Deselect checkboxes
                 var checkbox = $('table tbody input[type="checkbox"]');
                 $("#selectAll").click(function () {
                     if (this.checked) {
@@ -260,18 +332,15 @@
                         $("#selectAll").prop("checked", false);
                     }
                 });
-            });
-            $(document).ready(function () {
+
                 $('.table').DataTable({
                     "paging": true,
                     "searching": false,
                     "ordering": false,
                     "info": false,
                     "pageLength": 10
-
                 });
-            });
-            $(document).ready(function () {
+
                 $('.edit-quantity-icon').click(function () {
                     var productId = $(this).data('product-id');
                     var quantity = $(this).data('quantity');
@@ -297,28 +366,29 @@
                             // Cập nhật số lượng trong bảng
                             $('#quantityContainer-' + productId).html(quantity + ' <i class="fas fa-edit edit-quantity-icon" data-product-id="' + productId + '" data-quantity="' + quantity + '" style="cursor:pointer; color: #007bff;"></i>');
                             $('#editQuantityModal').modal('hide');
-                            alert('Update successfull');
+                            alert('Update successful');
                         },
                         error: function (xhr, status, error) {
                             alert('Error updating quantity');
                         }
                     });
                 });
-            });
-            function validateForm() {
-                var title = document.forms["searchForm"]["title"].value;
-                var brief = document.forms["searchForm"]["brief"].value;
 
-                if (title && brief) {
-                    alert("Please enter only one search criteria.");
-                    return false;
+                function validateForm() {
+                    var title = document.forms["searchForm"]["title"].value;
+                    var brief = document.forms["searchForm"]["brief"].value;
+
+                    if (title && brief) {
+                        alert("Please enter only one search criteria.");
+                        return false;
+                    }
+                    if (!title && !brief) {
+                        alert("Please enter a search criteria.");
+                        return false;
+                    }
+                    return true;
                 }
-                if (!title && !brief) {
-                    alert("Please enter a search criteria.");
-                    return false;
-                }
-                return true;
-            }
+            });
         </script>
     </head>
     <body>
@@ -367,6 +437,7 @@
                                         <th>ID</th>
                                         <th>Title</th>
                                         <th>Thumbnail</th>
+                                        <th>Quantity</th>
                                         <th>Price</th>
                                         <th>Sale Price</th>
                                         <th>Featured</th>
@@ -380,6 +451,7 @@
                                             <td>${product.productID}</td>
                                             <td>${product.product_name}</td>
                                             <td><img src="${product.thumbnail}" class="img"></td>
+                                            <td>${product.quantity}</td>
                                             <td>${product.original_price}</td>
                                             <td>${product.sale_price}</td>
                                             <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
@@ -393,6 +465,10 @@
                                                     </c:if>
                                                 <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
                                                 <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
+                                                    <c:if test="${product.quantity == 0}">
+                                                    <a title="Delete" onclick="if (confirm('Are you sure you want to delete this product?'))
+                                                                location.href = 'deleteProduct?did=${product.productID}'"><i class="fas fa-trash-alt"></i></a>
+                                                    </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -408,8 +484,8 @@
                                         <th>Thumbnail</th>
                                         <th>Quantity</th>
                                         <th>Quantity Hold</th>
-                                        <th>Featured</th>
-                                        <th>Status</th>
+                                        <th>Price</th>
+                                        <th>Sale Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -425,14 +501,64 @@
                                                 </span>
                                             </td>
                                             <td>${product.quantity_hold}</td>
-                                            <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
-                                            <td>${product.status ? 'Show' : 'Hide'}</td>                                        
+                                            <td>${product.original_price}
+                                                <i class="fas fa-edit edit-price-icon" data-product-id="${product.productID}" data-price="${product.original_price}" style="cursor:pointer; color: #007bff;"></i>
+                                            </td>
+                                            <td>${product.sale_price}
+                                                <i class="fas fa-edit edit-sale-price-icon" data-product-id="${product.productID}" data-sale-price="${product.sale_price}" data-original-price="${product.original_price}" style="cursor:pointer; color: #007bff;"></i>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </c:if>
                     </div>        
+                </div>
+                <!-- Edit Price Modal -->
+                <div id="editPriceModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Price</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="productIdPrice">
+                                <div class="form-group">
+                                    <label for="price">Price:</label>
+                                    <input type="number" id="price" class="form-control" min="0">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="savePriceBtn">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Sale Price Modal -->
+                <div id="editSalePriceModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Sale Price</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="productIdSalePrice">
+                                <input type="hidden" id="originalPrice"> 
+                                <div class="form-group">
+                                    <label for="salePrice">Sale Price:</label>
+                                    <input type="number" id="salePrice" class="form-control" min="0">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="saveSalePriceBtn">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Edit quantity -->    
                 <div id="editQuantityModal" class="modal fade">

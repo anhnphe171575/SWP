@@ -16,6 +16,10 @@
         <servlet-name>updateUser</servlet-name>
         <servlet-class>Controller.updateUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>editRole</servlet-name>
+        <servlet-class>Controller.editRole</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userDetail</servlet-name>
         <url-pattern>/userDetail</url-pattern>
@@ -239,16 +243,26 @@
     <servlet>
         <servlet-name>editProfileUser</servlet-name>
         <servlet-class>Controller.editProfileUser</servlet-class>
-
     </servlet>
-<servlet>
-
+    <servlet>
         <servlet-name>CheckProductName</servlet-name>
         <servlet-class>Controller.CheckProductName</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateQuantity</servlet-name>
         <servlet-class>Controller.UpdateQuantity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteProduct</servlet-name>
+        <servlet-class>Controller.DeleteProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateSalePrice</servlet-name>
+        <servlet-class>Controller.updateSalePrice</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePrice</servlet-name>
+        <servlet-class>Controller.updatePrice</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
@@ -513,7 +527,7 @@
     <servlet-mapping>
         <servlet-name>editStatusOrder</servlet-name>
         <url-pattern>/editStatusOrderURL</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>editProfileUser</servlet-name>
         <url-pattern>/editProfileUserURL</url-pattern>
@@ -526,5 +540,20 @@
         <servlet-name>UpdateQuantity</servlet-name>
         <url-pattern>/updateQuantity</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>DeleteProduct</servlet-name>
+        <url-pattern>/deleteProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateSalePrice</servlet-name>
+        <url-pattern>/updateSalePrice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePrice</servlet-name>
+        <url-pattern>/updatePrice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editRole</servlet-name>
+        <url-pattern>/editRoleURL</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -9,24 +9,15 @@ import DAL.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.List;
 
 /**
  *
  * @author MANH VINH
  */
-@MultipartConfig
-public class AddProduct extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\MANH VINH\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProducts";
+public class DeleteProduct extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +36,10 @@ public class AddProduct extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddProduct</title>");
+            out.println("<title>Servlet DeleteProduct</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteProduct at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,9 +59,12 @@ public class AddProduct extends HttpServlet {
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
         DAOCategoryProduct cp = new DAOCategoryProduct();
-        request.setAttribute("brand", d.getAllBrand());
-        request.setAttribute("category", cp.getCategoryProductProduct());
-        request.getRequestDispatcher("Views/addProduct.jsp").forward(request, response);
+        int id = Integer.parseInt(request.getParameter("did"));
+        d.DeleteProduct(id);
+        request.setAttribute("list", d.getProduct1());
+        request.setAttribute("category", cp.getCategoryProductName());
+        request.setAttribute("status", cp.getCategoryStatus());
+        request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
     }
 
     /**
@@ -84,34 +78,7 @@ public class AddProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = request.getPart("file");
-        if (filePart != null && filePart.getSize() > 0) {
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            File file = new File(UPLOAD_DIR, fileName);
-            try {
-                filePart.write(file.getAbsolutePath());
-            } catch (IOException e) {
-                throw new ServletException("Cannot write uploaded file to disk! " + e.getMessage());
-            }
-            String fileUrl = "imgProducts/" + fileName;
-            String productName = request.getParameter("productName");
-            int hold = Integer.parseInt(request.getParameter("hold"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            int year = Integer.parseInt(request.getParameter("year"));
-            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-            String description = request.getParameter("description");
-            int featured = Integer.parseInt(request.getParameter("featured"));
-            String briefInfo = request.getParameter("briefInfo");
-            float originalPrice = Float.parseFloat(request.getParameter("originalPrice"));
-            float salePrice = Float.parseFloat(request.getParameter("salePrice"));
-            String brand = request.getParameter("brand");
-            boolean status = Boolean.parseBoolean(request.getParameter("status"));
-            DAOProduct d = new DAOProduct();
-            d.addProduct(productName, hold, quantity, year, categoryID, description, featured, fileUrl, briefInfo, originalPrice, salePrice, brand, status);
-            request.setAttribute("list", d.getProduct1());
-            request.setAttribute("msg", "Add product successfull!");
-            request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
