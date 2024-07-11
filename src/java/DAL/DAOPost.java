@@ -621,8 +621,7 @@ public Vector<Post> getPostByCPId(int id) {
 //        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "","");
 //        Post obj = new Post(0, "ddd", "ooo", cp, 1, 1, "aaa", "aaa", u, date_create_by);
 //        daoP.addPost(obj);
-          System.out.println(daoP.search("a"));
-        
+        System.out.println(daoP.getStatus("select status from Post group by status"));
 
 //        String category = "all";
 //        String author = "all";

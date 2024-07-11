@@ -11,9 +11,9 @@
     </div>
 
     <ul class="sidebar-list">
-        <li class="sidebar-list-item"">
+        <li class="sidebar-list-item">
             <a href="MKTDashboard">
-                                <span class="material-icons-outlined">dashboard</span> Dashboard
+                <span class="material-icons-outlined">dashboard</span> Dashboard
             </a>
             <ul class="submenu">
                 <li class="sidebar-list-item"><a href="DBpost" >Post</a></li>
@@ -23,27 +23,27 @@
             </ul>
         </li>
         <li class="sidebar-list-item">
-            <a href="productslist" target="_blank">
+            <a href="productslist">
                 <span class="material-icons-outlined">inventory_2</span> Products
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="FeedBackList" target="_blank">
+            <a href="FeedBackList">
                 <span class="material-icons-outlined">feedback</span> FeedBack
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="CustomerServletURL" target="_blank">
+            <a href="CustomerServletURL">
                 <span class="material-icons-outlined">groups</span> Customers
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="PostController" target="_blank">
+            <a href="PostController">
                 <span class="material-icons-outlined">fact_check</span> Post
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="SliderServletURL" target="_blank">
+            <a href="SliderServletURL">
                 <span class="material-icons-outlined">poll</span> Slide
             </a>
         </li>

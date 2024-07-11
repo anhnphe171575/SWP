@@ -323,7 +323,6 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
                                         <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal">
                                             <i class="material-icons">&#xe164;</i> <span>Sort</span>         
@@ -332,10 +331,58 @@
                                 </div>
                             </div>
                         </div>
+                        <form action="PostController" method="post">
+                            <div class="filter-container d-flex flex-wrap align-items-center">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">category:</span>
+                                        </div>
+                                        <select id="product-filter" name="category" class="form-control">
+                                            <option value="all">All</option>
+                                            <c:forEach items="${requestScope.category}" var="p">
+                                                <option value="${p}">${p}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">author:</span>
+                                        </div>
+                                        <select class="custom-select" id="salename" name="author">
+                                            <option value="all">All</option>
+                                            <c:forEach items="${requestScope.user}" var="u">
+                                                <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Status:</span>
+                                        </div>
+                                        <select class="custom-select" id="status" name="status">
+                                            <option value="3">All</option>
+                                            <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="filter" name="service">
+                                <div class="col-md-3" >
+                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                </div>
+
+                            </div>
+                        </form>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                   
+
                                     <th>Post ID</th>
                                     <th>Thumbnail</th>
                                     <th>Title</th>
@@ -348,7 +395,7 @@
                             <tbody>
                                 <c:forEach items="${requestScope.post}" var="p">
                                     <tr>
-                                       
+
                                         <td>${p.postID}</td>
                                         <td><img src="${p.thumbnail}" alt="Image"/></td>
                                         <td>${p.title}</td>
@@ -365,24 +412,21 @@
 
                                             <td>
                                             <c:if test="${p.status == '1'}">
-                                                <a href="Status?service=status&postID=${p.postID}&status=0"  class="fa fa-eye"></a>
+                                                <a href="Status?service=status&postID=${p.postID}&status=0"  class="fa fa-eye" style="color: red;"></a>
                                             </c:if>
                                             <c:if test="${p.status != '1'}">
 
-                                                <a href="Status?service=status&postID=${p.postID}&status=1" class="fa fa-eye-slash"></a>
+                                                <a href="Status?service=status&postID=${p.postID}&status=1" class="fa fa-eye-slash" style="color: red;"></a>
                                             </c:if>
-                                            <a href="EditPost?postID=${p.postID}&detail=1" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a href="EditPost?postID=${p.postID}&detail=1" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit" >&#xE254;</i></a>
                                             <!--                                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>-->
-                                            <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
-
+                                            <a href="PostDetail?service=viewDetail&postID=${p.postID}" ><i class="material-icons" data-toggle="tooltip" title="view" style="color: blue;">&#xE8B6;</i></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
                         <div class="clearfix">
-                            
-
                             <ul class="pagination">
                                 <li class="page-item disabled"><a href="#">Previous</a></li>
                                     <c:forEach begin="${1}" end="${numpage}" var="i">
@@ -391,10 +435,10 @@
                                             <li class="page-item active"><a href="PostController?page=${i}" class="page-link">${i}</a></li>
                                             </c:when>
                                             <c:otherwise>
-                                             <li class="page-item "><a href="PostController?page=${i}" class="page-link">${i}</a></li>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
+                                            <li class="page-item "><a href="PostController?page=${i}" class="page-link">${i}</a></li>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
                                 <li class="page-item"><a href="#" class="page-link">Next</a></li>
                             </ul>
                         </div>
@@ -474,34 +518,34 @@
                             </div>
                             <div class="form-group">
                                 <label>thumbnail</label>
-                            <input type="file" name="thumbnail" id="file" accept="image/*" >
-                            <div class="form-group">
-                                <label>Category Post</label>
-                                <select id="category-select" class="form-control" name="category_post">                                   
-                                    <c:forEach items="${requestScope.category_product}" var="c">
-                                        <option value="${c.category_productID}">${c.category_name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>featured</label>
-                                <input type="text" class="form-control" name="featured" required>
-                            </div>
+                                <input type="file" name="thumbnail" id="file" accept="image/*" >
+                                <div class="form-group">
+                                    <label>Category Post</label>
+                                    <select id="category-select" class="form-control" name="category_post">                                   
+                                        <c:forEach items="${requestScope.category_product}" var="c">
+                                            <option value="${c.category_productID}">${c.category_name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>featured</label>
+                                    <input type="text" class="form-control" name="featured" required>
+                                </div>
 
-                            <div class="form-group">
-                                <label>brief_information</label>
-                                <input type="text" class="form-control" name="brief_information" required>
+                                <div class="form-group">
+                                    <label>brief_information</label>
+                                    <input type="text" class="form-control" name="brief_information" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>description</label>
+                                    <input type="text" class="form-control" name="description" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>description</label>
-                                <input type="text" class="form-control" name="description" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
+                            <div class="modal-footer">
 
-                            <input type="submit" class="btn btn-info" value="OK">
-                            <input type="hidden" name="service" value="add">
-                        </div>
+                                <input type="submit" class="btn btn-info" value="OK">
+                                <input type="hidden" name="service" value="add">
+                            </div>
                     </form>
                 </div>
             </div>
@@ -570,50 +614,50 @@
                             <c:forEach items="${requestScope.status}" var="s">
                                 <option value="${s}">${s}</option>
                             </c:forEach>
-                        </select>
-                    </div>-->
-                            <div class="form-group">
-                                <label>brief_information</label>
-                                <input type="text" class="form-control" name="brief_information" required>
-                            </div>
-                            <div class="form-group">
-                                <label>description</label>
-                                <input type="text" class="form-control" name="description" required>
-                            </div>
+                            </select>
+                        </div>-->
+                        <div class="form-group">
+                            <label>brief_information</label>
+                            <input type="text" class="form-control" name="brief_information" required>
                         </div>
-                        <div class="modal-footer">
-
-                            <input type="submit" class="btn btn-info" value="OK">
-                            <input type="hidden" name="service" value="add">
+                        <div class="form-group">
+                            <label>description</label>
+                            <input type="text" class="form-control" name="description" required>
                         </div>
-                    </form>
                 </div>
-            </div>
-        </div>
+                <div class="modal-footer">
 
-        <!-- Delete Modal HTML -->
-        <div id="deleteEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">						
-                            <h4 class="modal-title">Delete Employee</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">					
-                            <p>Are you sure you want to delete these Records?</p>
-                            <p class="text-warning"><small>This action cannot be undone.</small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-danger" value="Delete">
-                        </div>
-                    </form>
+                    <input type="submit" class="btn btn-info" value="OK">
+                    <input type="hidden" name="service" value="add">
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    <script src="./mktjs/scripts.js"></script>
+
+    <!-- Delete Modal HTML -->
+    <div id="deleteEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Delete Employee</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <p>Are you sure you want to delete these Records?</p>
+                        <p class="text-warning"><small>This action cannot be undone.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./mktjs/scripts.js"></script>
 </body>
 
 

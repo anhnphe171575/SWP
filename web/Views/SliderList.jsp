@@ -328,15 +328,33 @@
                             </div>
                         </div>
                     </div>
+                    <form action="SliderServletURL" method="post">
+                            <div class="filter-container d-flex flex-wrap align-items-center">
+                                
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Status:</span>
+                                        </div>
+                                        <select class="custom-select" id="status" name="status">
+                                            <option value="all">All</option>
+                                            <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="filter" name="service">
+                                <div class="col-md-3" >
+                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                </div>
+                                
+                            </div>
+                        </form>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>
-                                    <span class="custom-checkbox">
-                                        <input type="checkbox" id="selectAll">
-                                        <label for="selectAll"></label>
-                                    </span>
-                                </th>
+                               
                                <th>SliderID</th>
                                 <th>title</th>
                                 <th>image</th>
@@ -347,12 +365,7 @@
                         <tbody>
                               <c:forEach items="${requestScope.listAllSlider}" var="c">
                                 <tr>
-                                    <td>
-                                        <span class="custom-checkbox">
-                                            <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                                            <label for="checkbox2"></label>
-                                        </span>
-                                    </td>
+                                    
                                     <td>${c.sliderID}</td>
                                     <td>${c.title}</td> 
                                     <td><img src="${c.image}" alt="Image"/></td>
@@ -365,14 +378,14 @@
                                    
                                     <td>
                                         <c:if test="${c.status == '1'}">
-                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=0"  class="fa fa-eye"></a>
+                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=0"  class="fa fa-eye" style="color: red;"></a>
                                         </c:if>
                                         <c:if test="${c.status != '1'}">
 
-                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=1" class="fa fa-eye-slash"></a>
+                                            <a href="SliderServletURL?service=status&sliderID=${c.sliderID}&status=1" class="fa fa-eye-slash" style="color: red;"></a>
                                         </c:if>
-                                        <a href="SliderServletURL?service=updateSlider&sliderid=${c.sliderID}" title="update" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                        <a href="SliderServletURL?service=viewDetailsSlider&sliderid=${c.sliderID}" title="ViewDetails" data-toggle="tooltip"><i class="material-icons">&#xE8B6;</i></a>
+                                        <a href="SliderServletURL?service=updateSlider&sliderid=${c.sliderID}" title="update" ><i class="material-icons" data-toggle="tooltip" title="Edit" style="color: #FFC107;">&#xE254;</i></a>
+                                        <a href="SliderServletURL?service=viewDetailsSlider&sliderid=${c.sliderID}" title="ViewDetails" data-toggle="tooltip"><i class="material-icons" style="color: blue;">&#xE8B6;</i></a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -396,7 +409,6 @@
                                     <label for="category-select">Status:</label>
                                     <select id="category-select" class="form-control" name="status">
                                         <option value="3">ALL</option>
-                                   
                                             <option value="1">Show</option>
                                             <option value="0">Hide</option>
                                     </select>
