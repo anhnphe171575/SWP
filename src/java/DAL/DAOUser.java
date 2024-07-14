@@ -424,7 +424,7 @@ public class DAOUser extends DBContext {
     public User getUserByLogin(String username) {
         User u = null;
         String sql = "select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question,u.image from [User] u\n"
+                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,r.Role_Name,u.securityAnswer,s.security_question,u.image from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID "
                 + "inner join [Role] r on r.RoleID=u.RoleID"
                 + " where username =?";
@@ -434,7 +434,7 @@ public class DAOUser extends DBContext {
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 Security sq = new Security(rs.getInt("securityID"), rs.getString("security_question"));
-                Role role = new Role(rs.getInt("RoleID"), "");
+                Role role = new Role(rs.getInt("RoleID"), "Role_Name");
                 u = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),

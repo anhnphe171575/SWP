@@ -311,7 +311,7 @@
                                 <h2>Manage <b>Slider</b></h2>
                             </div>
                             <div style="text-align: right"class="col-sm-3">
-                                <form action="SliderServletURL" method="get">
+                                <form action="SliderServletURL" method="get" enctype="multipart/form-data">
                                     <p>
                                         Search title: <input type="text" name="title"> 
                                         <input type="submit" name="submit" value="search">

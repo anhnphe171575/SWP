@@ -87,6 +87,7 @@ public class LoginController extends HttpServlet {
             if (check) {
                 session.setAttribute("username", username);
                 User user = dao.getUserByLogin(username);
+                session.setAttribute("role", user.getRole());
                 if (user.getRole().getRoleID() == 1) {
                     session.setAttribute("user", user);
                     session.setMaxInactiveInterval(1800);
