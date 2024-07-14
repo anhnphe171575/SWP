@@ -3,7 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/phuan/Downloads/New%20folder%20(3)/SWP%20(1)/SWP/src/java/Controller/ProductsListPublic.java</file>
+            <file>file:/D:/SWPShopping/web/Views/updateStatusOrder.jsp</file>
+            <file>file:/D:/SWPShopping/web/Views/orderlist.jsp</file>
+            <file>file:/D:/SWPShopping/web/Views/SaleDashboard.jsp</file>
+            <file>file:/D:/SWPShopping/web/Views/ViewRole.jsp</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/userDetail.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/ViewProduct.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/SaleDashboard.java</file>
+            <file>file:/D:/SWPShopping/web/Views/ViewUsers.jsp</file>
+            <file>file:/D:/SWPShopping/src/java/DAL/DBContext.java</file>
+            <file>file:/D:/SWPShopping/web/Views/AdminSettingList.jsp</file>
+            <file>file:/D:/SWPShopping/src/java/DAL/DAORole.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/MyOrder.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/VerifyServlet.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/editRole.java</file>
+            <file>file:/D:/SWPShopping/src/java/Controller/AdminDashboard.java</file>
+            <file>file:/D:/SWPShopping/web/Views/MyOrder.jsp</file>
         </group>
     </open-files>
 </project-private>
