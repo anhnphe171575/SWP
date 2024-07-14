@@ -10,12 +10,12 @@
 
     <ul class="sidebar-list">
         <li class="sidebar-list-item">
-            <a href="SaleDashboardURL" target="_blank">
+            <a href="SaleDashboardURL">
                 <span class="material-icons-outlined">dashboard</span> Sale Dashboard
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="orderlist" target="_blank">
+            <a href="orderlist">
                 <span class="material-icons-outlined">assignment</span> Order
             </a>
         </li>

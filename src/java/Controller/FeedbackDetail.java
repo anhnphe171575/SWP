@@ -4,7 +4,6 @@ package Controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 import DAL.DAOFeedback;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,7 +35,7 @@ public class FeedbackDetail extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FeedbackDetail</title>");            
+            out.println("<title>Servlet FeedbackDetail</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet FeedbackDetail at " + request.getContextPath() + "</h1>");
@@ -58,9 +57,9 @@ public class FeedbackDetail extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOFeedback daoFB = new DAOFeedback();
-                   String FID = request.getParameter("FID");
-                   int id = Integer.parseInt(FID);
-                   request.setAttribute("feedback", daoFB.getFeedBackByFeedbackID(id));
+        String FID = request.getParameter("FID");
+        int id = Integer.parseInt(FID);
+        request.setAttribute("feedback", daoFB.getFeedBackByFeedbackID(id));
         request.getRequestDispatcher("Views/FeedbackDetail.jsp").forward(request, response);
     }
 

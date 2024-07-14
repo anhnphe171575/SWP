@@ -87,7 +87,7 @@
                 <!-- End Header -->
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar1.jsp"></jsp:include>
+            <jsp:include page="sidebarAdmin.jsp"></jsp:include>
                 <!-- End Sidebar -->
 
                 <main class="main-container">

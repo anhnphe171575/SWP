@@ -25,6 +25,8 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
         <style>
             /* Reset CSS */
             * {
@@ -70,7 +72,6 @@
                 color: white;
                 border: none;
                 border-radius: 4px;
-                cursor: pointer;
             }
 
             /* Style cho các tab trạng thái đơn hàng */
@@ -170,7 +171,6 @@
             }
 
             table.table tr th, table.table tr td {
-                border-color: #e9e9e9;
                 padding: 12px 15px;
                 vertical-align: middle;
             }
@@ -288,7 +288,6 @@
 
             .custom-checkbox label:before {
                 content: '';
-                margin-right: 10px;
                 display: inline-block;
                 vertical-align: text-top;
                 background: white;
@@ -350,8 +349,16 @@
                 }
 
                 return true;
-
             }
+            $(document).ready(function () {
+                $('.table').DataTable({
+                    "paging": true,
+                    "pageLength": 10,
+                    "searching": false,
+                    "ordering": true,
+                    "info": true
+                });
+            });
             document.addEventListener('DOMContentLoaded', function () {
                 var form = document.forms["searchForm"];
                 form.onsubmit = function () {
@@ -369,10 +376,8 @@
             <jsp:include page="headerHomePage.jsp"></jsp:include>
             </header>
             <div class="container">
-
                 <div class="table-responsive">
                     <div class="table-wrapper">
-
                         <div class="table-title">
                             <div class="row">
                                 <div class="col-sm-2">
@@ -390,7 +395,6 @@
                         </div>
                     </div>
                     <div class="order-status-tabs">
-
                         <a href="MyOrderURL?customerid=${requestScope.customerid}" 
                            class="<c:out value="${empty status1 ? 'active' : ''}" />">All</a>
                         <c:forEach items="${status}" var="st1">
@@ -421,13 +425,11 @@
                     </div>
                     <table class="table table-striped table-hover">
                         <thead>
-                            <tr>  
-                                <th>Order ID</th>                               
+                            <tr>
+                                <th>Order ID</th>
                                 <th>Ordered Date</th>
                                 <th>First Product Name</th>
-
                                 <th>Number of All Products</th>
-
                                 <th>Total Cost</th>
                                 <th>Status</th>
                                     <c:if test="${requestScope.status1 == 8}">
@@ -439,19 +441,14 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             <c:forEach items="${list1}" var="item" varStatus="status">
                                 <tr>
                                     <td><a href="MyOrderDetailURL?id=${item.order.orderID}&customerid=${customerid}">${item.order.orderID}</a></td>
                                     <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
                                     <td>${item.product.product_name.split(',')[0]}</td>  
-
                                     <td>${quantityOrder[item.order.orderID]}</td>
-                                    <td>
-                                        <fmt:formatNumber value="${item.list_price}"/>
-                                    </td>   
+                                    <td><fmt:formatNumber value="${item.list_price}"/></td>   
                                     <td>${item.order.status.status_name}</td>
-
                                     <c:if test="${requestScope.status1 == 8}">
                                         <td><button onclick="location.href = 'PayAgain?total=${item.list_price}&orderid=${item.order.orderID}'">Pay Again</button></td>
                                     </c:if>
@@ -460,7 +457,6 @@
                                             <a href="#Add" class="btn btn-success" data-toggle="modal" data-orderid="${item.order.orderID}" data-products="${item.product.product_name}" data-descriptions="${item.product.product_description}">
                                                 <i class="material-icons">&#xE147;</i> <span>FeedBack</span>
                                             </a>
-
                                         </td>
                                     </c:if>
                                 </tr>
@@ -468,11 +464,6 @@
                         </tbody>
                     </table>
                 </div>
-                <ul class="pagination">
-                    <c:forEach var="i" begin="1" end="${totalPages}">
-                        <a href="MyOrderURL?page=${i}" class="page-link">${i}</a>
-                    </c:forEach>
-                </ul>
             </div>
         </div>
         <div id="Add" class="modal fade">
@@ -483,8 +474,7 @@
                             <h4 class="modal-title">Choose Product FeedBack</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">					
-                            <div class="form-group">
+                        <div class="modal-body">/-strong/-heart:>:o:-((:-h<div class="form-group">
                                 <label>Products</label>
                                 <select id="productSelect" name="pid" class="form-control">
                                     <!-- Options will be populated here -->

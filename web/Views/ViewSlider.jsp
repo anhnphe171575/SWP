@@ -211,6 +211,30 @@
                             </div>
                         </div>
                     </div>
+                    <form action="SliderServletURL" method="post">
+                            <div class="filter-container d-flex flex-wrap align-items-center">
+                                
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Status:</span>
+                                        </div>
+                                        <select class="custom-select" id="status" name="status">
+                                            <option value="all">All</option>
+                                            <c:forEach items="${requestScope.status}" var="s">
+                                        <option value="${s}">${s}</option>
+                                    </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="filter" name="service">
+                                <div class="col-md-3" >
+                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                </div>
+                                
+                            </div>
+                        </form>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>

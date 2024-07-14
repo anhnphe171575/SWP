@@ -405,8 +405,9 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <a href="productslist" style="color: white"><h2>Manage <b>Products</b></h2></a>
+                                        <a href="productslist" style="color: white"><h2>Manage <b>Product</b></h2></a>
                                     </div>
+                                    
                                     <div style="text-align: right" class="col-sm-3">
                                         <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
                                             <div><input type="text" id="searchTitle" name="title" placeholder="Title"></div>
@@ -416,11 +417,13 @@
                                         </form>                    
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                    <c:if test="${sessionScope.user.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                                    </c:if>
                                     </div>
                                 </div>
+                                
                                 <div>
                                 <c:if test="${not empty msg}">
                                     <div style="color: red; font-size: 20px;">${msg}</div>
@@ -429,8 +432,46 @@
                                     <div style="color: red; font-size: 20px;">${msgUpdate}</div>
                                 </c:if> 
                             </div>
+                            </div>
+                            
                         </div>
+                        <form action="productslist" method="post">
+                            <div class="filter-container d-flex flex-wrap align-items-center">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Category:</span>
+                                        </div>
+                                        <select id="product-filter" name="category" class="form-control">
+                                        <option value="all">All</option>
+                                        <c:forEach items="${requestScope.category}" var="p">
+                                            <option value="${c}">${c}</option>
+                                        </c:forEach>
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> Status:</span>
+                                        </div>
+                                        <select class="custom-select" id="status" name="status">
+                                            <option value="all">All</option>
+                                            <option value="0">Hide</option>
+                                        <option value="1">Show</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="filter" name="service">
+                                <div class="col-md-3" >
+                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                </div>
+                                
+                            </div>
+                        </form>
                         <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
+                            
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
@@ -458,10 +499,10 @@
                                             <td>${product.status ? 'Show' : 'Hide'}</td>
                                             <td class="actions">
                                                 <c:if test="${product.status == true}">
-                                                    <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
+                                                    <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash" style="color: red;"></i></a>
                                                     </c:if>
                                                     <c:if test="${product.status == false}">
-                                                    <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye"></i></a>
+                                                    <a title="Show" onclick="location.href = 'update?action=show&id=${product.productID}'"><i class="fas fa-eye" style="color: red;"></i></a>
                                                     </c:if>
                                                 <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
                                                 <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
@@ -583,44 +624,7 @@
                     </div>
                 </div>
                 <!-- Filter Modal HTML -->
-                <div id="Filter" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Filter</h5>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <form action="productslist" method="post">
-                                <div class="modal-body">
-                                    <!-- Category Filter -->
-                                    <div class="form-group">
-                                        <label for="category-select">Category:</label>
-                                        <select id="category-select" class="form-control" name="category">
-                                            <option value="3">ALL</option>                                        
-                                            <c:forEach items="${requestScope.category}" var="c">
-                                                <option value="${c}">${c}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>                                
-                                    <!-- Status Filter -->
-                                    <div class="form-group">
-                                        <label for="status-select">Status:</label>
-                                        <select id="status-select" class="form-control" name="status">
-                                            <option value="3">ALL</option>                                       
-                                            <c:forEach items="${requestScope.status}" var="s">
-                                                <option value="${s}">${s}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">OK</button>
-                                    <input type="hidden" name="service" value="filter">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                
                 <!-- Sort Modal HTML -->
                 <div id="Sort" class="modal fade">
                     <div class="modal-dialog">
