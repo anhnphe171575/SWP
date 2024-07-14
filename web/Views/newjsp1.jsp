@@ -24,5 +24,58 @@
                 });
             });
         </script>
-    </body>
+       <div id="Filter" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bộ lọc</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form action="PostController" method="post">
+                        <div class="modal-body">
+                            <!-- Category Filter -->
+                            <div class="form-group">
+                                <label for="category-select">category:</label>
+                                <select id="category-select" class="form-control" name="category">
+                                    <option value="all">ALL</option>
+                                    <c:forEach items="${requestScope.category}" var="c">
+                                        <option value="${c}">${c}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <!-- Author Filter -->
+                            <div class="form-group">
+                                <label for="author-select">author:</label>
+                                <select id="author-select" class="form-control" name="author">                               
+                                    <option value="all">ALL</option>
+                                    <c:forEach items="${requestScope.user}" var="u">
+                                        <option value="${u.first_name} ${u.last_name}">${u.first_name} ${u.last_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <!-- Status Filter -->
+                            <div class="form-group">
+                                <label for="status-select">status:</label>
+                                <select id="status-select" class="form-control" name="status">
+                                    <option value="3">ALL</option>
+                                    <c:forEach items="${requestScope.status}" var="p">
+                                        <c:if test="${p == '1'}">
+                                            <option value="${p}">Show</option>
+                                        </c:if>
+                                        <c:if test="${p != '1'}">
+
+                                            <option value="${p}">Hide</option>
+                                        </c:if>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">OK</button>
+                            <input type="hidden" name="service" value="filter">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 </html>

@@ -308,124 +308,33 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>Customer</b></h2>
+                                        <h2>Manage <b>Role</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
-                                        <form action="CustomerServletURL" method="get">
-                                            <p>
-                                                Search name: <input type="text" name="first_name"> <br/>
-                                             
-                                               
-                                                <input type="submit" name="submit" value="search">
-                                                <input type="reset" value="Clear"></p>
+                                        <form action="editRoleURL" method="get">
+                                           
                                             <input type="hidden" name="service" value="listAllCustomer">
                                         </form>				
                                     </div>
-
-                                    <div class="col-sm-6">
-                                        <a href="CustomerServletURL?service=addCustomer" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add Customer</span></a>
-                                       
-                                        <a href="#sort" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Sort</span></a>
-                                    </div>
                                 </div>
                             </div>
-                            <form action="FeedBackList" method="post">
-                            <div class="filter-container d-flex flex-wrap align-items-center">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Product:</span>
-                                        </div>
-                                        <select id="product-filter" name="proid" class="form-control">
-                                        <option value="all">All</option>
-                                        <c:forEach items="${requestScope.product}" var="p">
-                                            <option value="${p.productID}">${p.product_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Rated Star:</span>
-                                        </div>
-                                        <select class="custom-select" id="salename" name="star">
-                                            <option value="all">All</option>
-                                            <option value="1">1 Star</option>
-                                            <option value="2">2 Stars</option>
-                                            <option value="3">3 Stars</option>
-                                            <option value="4">4 Stars</option>
-                                            <option value="5">5 Stars</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Status:</span>
-                                        </div>
-                                        <select class="custom-select" id="status" name="status">
-                                            <option value="all">All</option>
-                                            <option value="0">Hide</option>
-                                        <option value="1">Show</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <input type="hidden" value="filter" name="service">
-                                <div class="col-md-3" >
-                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
-                                </div>
-                                
-                            </div>
-                        </form>
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>customerID</th>
-                                        <th>first_name</th>
-                                        <th>last_name</th>
-                                        <th>phone</th>
-<!--                                        <th>email</th>-->
-                                        <!--                                        <th>address</th>-->
-                                        <th>username</th>
-                                        <th>password</th>
-                                        <th>dob</th>
-                                        <th>gender</th>
-                                        <th>activity_history</th>
-
-                                        <!--                                        <th>security_question</th>
-                                                                                <th>securityAnswer</th>                            -->
+                                        
+                                        <th>RoleID</th>
+                                        <th>Role_Name</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${requestScope.listAllCustomer}" var="c">
                                     <tr>
-                                        <td>${c.customerID}</td>
-                                        <td>${c.first_name}</td> 
-                                        <td>${c.last_name}</td>
-                                        <td>${c.phone}</td>
-<!--                                        <td>${c.email}</td>-->
-<!--                                        <td>${c.address}</td>-->
-                                        <td>${c.username}</td>
-                                        <td>${c.password}</td>
-                                        <td>${c.dob}</td>
+                                        
+                                        <td>${c.getRoleID()}</td>
+                                        <td>${c.getRole_Name()}</td> 
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${c.gender}">
-                                                    Male
-                                                </c:when>
-                                                <c:otherwise>
-                                                    Female
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>${c.activity_history}</td>                                       
-<!--                                        <td>${c.security.security_question}</td>
-                                        <td>${c.secutityAnswer}</td>-->
-                                        <td>
-                                            <a href="CustomerServletURL?service=updateCustomer&customerid=${c.customerID}" class="" title="update" data-toggle="tooltip"><i class="material-icons" style="color: #FFC107;">&#xE254;</i></a>
-                                            <a href="CustomerServletURL?service=ViewDetailCustomer&customerid=${c.customerID}" title="ViewDetails" data-toggle="tooltip"><i class="material-icons" style="color: blue;">&#xE8B6;</i></a>
+                                            <a href="editRoleURL?service=updateRole&roleid=${c.getRoleID()}" class="" title="update" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
+                                           
                                         </td>
                                     </tr>   
                                 </c:forEach>

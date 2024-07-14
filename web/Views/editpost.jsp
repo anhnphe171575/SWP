@@ -37,50 +37,52 @@
             });
         </script>
         <style>
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group div {
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="number"], textarea, select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group div {
+                margin-bottom: 5px;
+            }
+            input[type="text"], input[type="number"], textarea, select {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+            input[type="submit"] {
+                padding: 10px 15px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            input[type="submit"]:hover {
+                background-color: #218838;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <h2>Edit Product</h2>
+            <h2>Edit Post</h2>
             <form action="EditPost" method="post">
                 <div class="form-group">
-                      <input type="hidden" name="postID" value="${post.postID}" >
+                    <input type="hidden" name="postID" value="${post.postID}" >
                     <div>Title:</div>
                     <input type="text" name="title" value="${post.title}" >
                 </div>
 
                 <div class="form-group">
                     <div>Thumbnail::</div>
-                    <input type="text" name="thumbnail" value="${post.thumbnail}">
+                    <img class="rounded-circle mt-5" width="150px" src="${post.thumbnail}">
+                    <input type="file" name="file" id="file" accept="image/*" >
+
                 </div>
 
                 <div class="form-group">
@@ -115,11 +117,11 @@
                     <textarea name="description">${post.description}</textarea>
                 </div>
                 <c:if test="${detail == '0'}">
-                                    <input type="hidden" name="service" value="editDetail">
-                                </c:if>
-                                   <c:if test="${detail == '1'}">
-                                    <input type="hidden" name="service" value="editList">
-                                </c:if> 
+                    <input type="hidden" name="service" value="editDetail">
+                </c:if>
+                <c:if test="${detail == '1'}">
+                    <input type="hidden" name="service" value="editList">
+                </c:if> 
                 <input type="submit" value="Submit">
             </form>
         </div>

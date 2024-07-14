@@ -434,13 +434,13 @@
                                             </td>
                                             <td>
                                             <c:if test="${l.status == '1'}">
-                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=0"  class="fa fa-eye"></a>
+                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=0"  class="fa fa-eye" style="color: red;"></a>
                                             </c:if>
                                             <c:if test="${l.status != '1'}">
 
-                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=1" class="fa fa-eye-slash"></a>
+                                                <a href="StatusFeedBack?FID=${l.feedbackID}&status=1" class="fa fa-eye-slash" style="color: red;"></a>
                                             </c:if>
-                                            <a href="FeedbackDetail?service=viewDetail&FID=${l.feedbackID}" ><i class="material-icons" data-toggle="tooltip" title="view">&#xE8B6;</i></a>
+                                            <a href="FeedbackDetail?service=viewDetail&FID=${l.feedbackID}" ><i class="material-icons" data-toggle="tooltip" title="view" style="color: blue;">&#xE8B6;</i></a>
 
                                         </td>
                                     </tr>

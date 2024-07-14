@@ -90,7 +90,7 @@ public class PostController extends HttpServlet {
         //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
         Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
+                + "u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
                 + "inner join SecurityQuestion s on u.securityID=s.securityID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
