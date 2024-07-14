@@ -418,7 +418,9 @@
                                     <div class="col-sm-6">
                                         <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>   
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                    <c:if test="${sessionScope.user.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                                    </c:if>
                                     </div>
                                 </div>
                                 <div>

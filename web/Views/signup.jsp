@@ -32,9 +32,8 @@
         <!-- Main CSS-->
         <link href="vncss/vn4.css" rel="stylesheet" media="all">
     </head>
-
     <body>
-        <div class="page-wrapper bg-gra-03 p-t-45 p-b-50">
+        <div class="page-wrapper p-t-45 p-b-50" style="background-color: pink">
             <div class="wrapper wrapper--w790">
                 <div class="card card-5">
                     <div class="card-heading">
@@ -168,14 +167,14 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn--radius-2 btn--red" type="submit">Register</button>
+                                <button class="btn btn--radius-2 btn--red" type="submit">Register</button>                                
                             </div>
+                            <a class="btn btn--radius-2 btn--blue" href="LoginController" style="margin-top: 25px">Back to Log-in</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Jquery JS-->
         <script src="vendor/jquery/jquery.min.js"></script>
         <!-- Vendor JS-->
