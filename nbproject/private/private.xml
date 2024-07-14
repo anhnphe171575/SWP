@@ -19,6 +19,11 @@
             <file>file:/D:/SWPShopping/src/java/Controller/editRole.java</file>
             <file>file:/D:/SWPShopping/src/java/Controller/AdminDashboard.java</file>
             <file>file:/D:/SWPShopping/web/Views/MyOrder.jsp</file>
+            <file>file:/C:/Users/phuan/OneDrive/Documents/GitHub/SWP/src/java/Controller/LoginController.java</file>
+            <file>file:/C:/Users/phuan/OneDrive/Documents/GitHub/SWP/src/java/Controller/LoginCusController.java</file>
+            <file>file:/C:/Users/phuan/OneDrive/Documents/GitHub/SWP/src/java/Filter/AutheticationFilter.java</file>
+            <file>file:/C:/Users/phuan/OneDrive/Documents/GitHub/SWP/src/java/DAL/DAOUser.java</file>
+            <file>file:/C:/Users/phuan/OneDrive/Documents/GitHub/SWP/web/WEB-INF/web.xml</file>
         </group>
     </open-files>
 </project-private>

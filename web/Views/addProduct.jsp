@@ -8,6 +8,18 @@
         <title>Add Product</title>
         <link rel="stylesheet" href="vncss/vn3.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        
         <script>
             $(document).ready(function () {
                 $('#productName').on('blur', function () {
@@ -28,8 +40,8 @@
             });
         </script>
     </head>
-    <body>
-        <div class="container">
+    <body style="background-color:lightblue ">
+        <div class="container" >
             <h1>Add Product</h1>      
             <form action="addp" method="post" enctype="multipart/form-data">
                 <div style="color: red">${requestScope.msg}</div>
@@ -117,6 +129,7 @@
 
                 <div class="form-group">
                     <input type="submit" value="Submit">
+                    <button style="margin-top: 10px; color: white; background-color: whitesmoke; border: 0px"><a href="productslist">Back To Products List</a></button>
                 </div>
             </form>
         </div>

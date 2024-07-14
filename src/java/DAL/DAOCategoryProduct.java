@@ -39,7 +39,7 @@ public class DAOCategoryProduct extends DBContext{
     public List<Integer> getCategoryStatus() {
     List<Integer> categoryStatusList = new ArrayList();
     try {
-        String query = "SELECT DISTINCT status FROM Product";
+        String query = "SELECT status FROM Product group by status";
         PreparedStatement stm = conn.prepareStatement(query);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
@@ -137,6 +137,6 @@ public class DAOCategoryProduct extends DBContext{
 }
     public static void main(String[] args) {
         DAOCategoryProduct db = new DAOCategoryProduct();
-        System.out.println(db.getCategoryProductbyName("Smartphones"));
+        System.out.println(db.getCategoryStatus());
     }
 }
