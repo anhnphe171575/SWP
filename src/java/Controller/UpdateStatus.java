@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAL.DAOCategoryProduct;
 import DAL.DAOProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,21 +59,28 @@ public class UpdateStatus extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         int productId = Integer.parseInt(request.getParameter("id"));
-        DAOProduct d = new DAOProduct();
+        DAOProduct d = new DAOProduct();        DAOCategoryProduct cp = new DAOCategoryProduct();
         boolean status = d.getProductStatusbyID(productId);
         if ("hide".equals(action) && status == true) {
             d.updateProductStatus(productId, false);
             request.setAttribute("msgUpdate", "Hide product sucessfull!");
-            request.setAttribute("list", d.getProduct());
+             request.setAttribute("list", d.getProduct1());
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         } else if ("show".equals(action) && status == false) {
             d.updateProductStatus(productId, true);
-            request.setAttribute("list", d.getProduct());
             request.setAttribute("msgUpdate", "Show product sucessfull!");
+             request.setAttribute("list", d.getProduct1());
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         } else {
             request.setAttribute("list", d.getProduct());
             request.setAttribute("msgUpdate", "Cannot change status of product");
+             request.setAttribute("list", d.getProduct1());
+            request.setAttribute("category", cp.getCategoryProductName());
+            request.setAttribute("status", cp.getCategoryStatus());
             request.getRequestDispatcher("Views/productslist.jsp").forward(request, response);
         }
     }
