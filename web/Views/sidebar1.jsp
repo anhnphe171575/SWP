@@ -19,5 +19,10 @@
                 <span class="material-icons-outlined">assignment</span> Order
             </a>
         </li>
+         <li class="sidebar-list-item">
+            <a href="productslist">
+                <span class="material-icons-outlined">assignment</span> Product List
+            </a>
+        </li>
     </ul>
 </aside>

@@ -1,12 +1,5 @@
-<%-- 
-    Document   : FeedbackDetail
-    Created on : Jun 19, 2024, 3:18:15 PM
-    Author     : phuan
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -20,58 +13,36 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <!-- Montserrat Font -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-                <link rel="stylesheet" href="/qcss/style.css">
+        <link rel="stylesheet" href="./qcss/style.css">
         <link rel="stylesheet" href="./mktcss/styles.css">
-
-
         <title>Feedback Detail</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
-                background-color: #f0f0f0;
-                padding: 20px;
+                font-family: 'Roboto', sans-serif;
+                background-color: #f5f5f5;
             }
             .container {
-                max-width: 600px;
+                max-width: 800px;
                 margin: auto;
-                background-color: #fff;
+                background-color: #ffffff;
                 padding: 20px;
                 border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
             .feedback {
                 margin-bottom: 20px;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                background-color: #f9f9f9;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                background-color: #fafafa;
             }
             .feedback-header {
-                font-size: 18px;
+                font-size: 24px;
                 font-weight: bold;
-                margin-bottom: 10px;
-            }
-            .feedback-details {
-                margin-bottom: 10px;
-            }
-            .feedback-details label {
-                font-weight: bold;
-            }
-            .feedback-details p {
-                margin: 5px 0;
-            }
-            .back-link {
-                margin-top: 20px;
-            }
-            .back-link a {
-                text-decoration: none;
-                color: #4CAF50;
-            }
-            .back-link a:hover {
-                text-decoration: underline;
+                margin-bottom: 15px;
+                color: #333;
             }
             .feedback-image {
                 text-align: center;
@@ -79,21 +50,51 @@
             }
             .feedback-image img {
                 max-width: 100%;
-                max-height: 400px;
-                border-radius: 4px;
-                box-shadow: 0 0 5px rgba(0,0,0,0.2);
+                max-height: 300px;
+                border-radius: 8px;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+            }
+            .feedback-details {
+                margin-bottom: 15px;
+            }
+            .feedback-details label {
+                font-weight: bold;
+                color: #555;
+            }
+            .feedback-details p {
+                margin: 5px 0;
+                color: #666;
+            }
+            .back-link {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .back-link a {
+                text-decoration: none;
+                color: #4CAF50;
+                font-size: 16px;
+            }
+            .back-link a:hover {
+                text-decoration: underline;
+            }
+            .status-link {
+                font-size: 18px;
+                color: #007bff;
+                cursor: pointer;
+                text-decoration: none;
+            }
+            .status-link:hover {
+                text-decoration: underline;
+            }
+            .container{
+                margin: 10px 0px 10px 350px;
             }
         </style>
     </head>
     <body>
         <div class="grid-container">
-            <!-- Header -->
             <jsp:include page="header.jsp"></jsp:include>
-                <!-- End Header -->
-
-                <!-- Sidebar -->
             <jsp:include page="sidebar.jsp"></jsp:include>
-                <!-- End Sidebar -->
                 <div class="container">
                     <div class="feedback">
                         <div class="feedback-header">Customer Feedback</div>
@@ -123,17 +124,15 @@
                     <div class="feedback-details">
                         <label>Status</label><br/>
                         <c:if test="${feedback.status == '1'}">
-                            Hide: <a href="StatusFeedBack?FID=${feedback.feedbackID}&status=0&service=detail"  class="fa fa-eye"></a>
+                            Hide: <a href="StatusFeedBack?FID=${feedback.feedbackID}&status=0&service=detail" class="status-link fa fa-eye"></a>
                         </c:if>
                         <c:if test="${feedback.status != '1'}">
-
-                            Show: <a href="StatusFeedBack?FID=${feedback.feedbackID}&status=1&service=detail" class="fa fa-eye-slash"></a>
-
+                            Show: <a href="StatusFeedBack?FID=${feedback.feedbackID}&status=1&service=detail" class="status-link fa fa-eye-slash"></a>
                         </c:if>
                     </div>
                 </div>
                 <div class="back-link">
-                    <a href="#">Back to Feedback List</a>
+                    <a href="FeedBackList">Back to Feedback List</a>
                 </div>
             </div>
         </div>
