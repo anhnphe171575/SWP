@@ -6,7 +6,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
     <head>
         <!-- Required meta tags-->
@@ -42,26 +42,26 @@
                     <div class="card-body">
                         <form method="POST" action="signup">
                             <div class="form-row m-b-55">
-                                <div class="name">Name</div>
+                                <div class="name">Họ và Tên</div>
                                 <div class="value">
                                     <div class="row row-space">
                                         <div class="col-2">
                                             <div class="input-group-desc">
                                                 <input class="input--style-5" type="text" name="firstName">
-                                                <label class="label--desc">First name</label>
+                                                <label class="label--desc">Họ</label>
                                             </div>
                                         </div>
                                         <div class="col-2">
                                             <div class="input-group-desc">
                                                 <input class="input--style-5" type="text" name="lastName">
-                                                <label class="label--desc">Last name</label>
+                                                <label class="label--desc">Tên</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="name">Phone</div>
+                                <div class="name">Số điện thoại</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="text" name="phone">
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="name">Address</div>
+                                <div class="name">Địa chỉ</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="text" name="address">
@@ -92,7 +92,7 @@
                             </div>
                             <!-- Date of Birth -->
                             <div class="form-row">
-                                <div class="name">Date of Birth</div>
+                                <div class="name">Ngày sinh</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="date" name="dob">
@@ -101,18 +101,18 @@
                             </div>
                             <!-- Gender -->
                             <div class="form-row">
-                                <div class="name">Gender</div>
+                                <div class="name">Giới tính</div>
                                 <div class="gender-options">
-                                    <label class="radio-container">Male <input type="radio" name="gender" value="true" required>
+                                    <label class="radio-container">Nam <input type="radio" name="gender" value="true" required>
                                         <span class="checkmark"></span>
                                     </label>
-                                    <label class="radio-container">Female <input type="radio" name="gender" value="false" required>
+                                    <label class="radio-container">Nữ <input type="radio" name="gender" value="false" required>
                                         <span class="checkmark"></span></label>
                                 </div>
                             </div>
                             <!-- Username -->
                             <div class="form-row">
-                                <div class="name">Username</div>
+                                <div class="name">Tên đăng nhập</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="text" name="username">
@@ -124,7 +124,7 @@
                             </div>
                             <!-- Password -->
                             <div class="form-row">
-                                <div class="name">Password</div>
+                                <div class="name">Mật khẩu</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="password" name="password">
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="name">Re-enter password</div>
+                                <div class="name">Nhập lại mật khẩu</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="password" name="repass">
@@ -144,7 +144,7 @@
                             </div>
                             <!-- Security Question -->
                             <div class="form-row">
-                                <div class="name">Security Question</div>
+                                <div class="name">Câu hỏi bảo mật</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <div class="rs-select2 js-select-simple select--no-search">
@@ -159,7 +159,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="name">Answer</div>
+                                <div class="name">Câu trả lời</div>
                                 <div class="value">
                                     <div class="input-group">
                                         <input class="input--style-5" type="text" name="answer">
@@ -167,9 +167,9 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn--radius-2 btn--red" type="submit">Register</button>                                
+                                <button class="btn btn--radius-2 btn--red" type="submit">Đăng ký</button>                                
                             </div>
-                            <a class="btn btn--radius-2 btn--blue" href="LoginController" style="margin-top: 25px">Back to Log-in</a>
+                            <a class="btn btn--radius-2 btn--blue" href="LoginCusController" style="margin-top: 25px">Đã có tài khoản</a>
                         </form>
                     </div>
                 </div>
