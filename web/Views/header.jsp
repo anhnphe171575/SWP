@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Vector,Entity.User"%>
+<%@page import="java.util.Vector,Entity.Staff"%>
 <%@page import="Entity.Security"%>
 <%@page import="Entity.Role"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -216,7 +216,7 @@
                         <c:set  value="${sessionScope.user}" var="cus1"></c:set>
                             
                                 <c:if test="${not empty sessionScope.user}">
-                                <a href="editProfileUserURL?userid=${cus1.getUserID()}" class="dropdown-item">Trang cá nhân</a>
+                                <a href="editProfileUserURL?userid=${cus1.getStaffID()}" class="dropdown-item">Trang cá nhân</a>
                                 <a href="LoginController?service=logout">Đăng xuất</a>
                             </c:if>
                         

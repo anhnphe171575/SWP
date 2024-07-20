@@ -622,7 +622,7 @@
                                         <tr>
                                             <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
                                             <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                            <td>${item.order.user.first_name} ${item.order.user.last_name}</td>
+                                            <td>${item.order.staff.first_name} ${item.order.staff.last_name}</td>
                                             <td>${fn:split(item.product.product_name, ',')[0]}</td>
                                             <td>${quantity[item.order.orderID]}</td>
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
