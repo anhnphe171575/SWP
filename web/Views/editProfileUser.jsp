@@ -52,10 +52,51 @@
             cursor: pointer;
             border: solid 1px #f5f1f6
         }
-        
-    </style>
-    <script>
-        $(document).ready(function () {
+    
+
+            .form-control:focus {
+                box-shadow: none;
+                border-color: #f7f5f7
+            }
+
+            .profile-button {
+                background: rgb(244, 243, 244);
+                box-shadow: none;
+                border: none
+            }
+
+            .profile-button:hover {
+                background: #f7f7f7
+            }
+
+            .profile-button:focus {
+                background: #faf8fb;
+                box-shadow: none
+            }
+
+            .profile-button:active {
+                background: #f8f5f9;
+                box-shadow: none
+            }
+
+            .back:hover {
+                color: #f8f4f8;
+                cursor: pointer
+            }
+
+            .labels {
+                font-size: 11px
+            }
+
+            .add-experience:hover {
+                background: #fcfbfc;
+                color: #fff;
+                cursor: pointer;
+                border: solid 1px #f5f1f6
+            }
+        </style>
+        <script>
+            $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
 
@@ -66,17 +107,18 @@
                 alert("Please enter a valid phone number (10 digits).");
                 return false;
             }
-            return true;
-        }
-    </script>
-</head>
-<body>
-    <% 
-        Vector<Staff> vector = (Vector<Staff>) request.getAttribute("vector");
-        Staff obj = vector.get(0);
-    %>
-    <form name="profileForm" action="editProfileUserURL" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-        <div class="container rounded bg-white mt-5 mb-5">
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    </head>
+    <body>
+         <% 
+               Vector<Staff> vector = (Vector<Staff>) request.getAttribute("vector");
+               Staff obj = vector.get(0);
+                %>
+                <form action="editProfileUserURL" method="post" enctype="multipart/form-data">
+        <div class="container rounded bg-white mt-5 mb-5"> 
             <div class="row">
                 <div class="col-md-3 border-right">
                     <div class="d-flex flex-column align-items-center text-center p-3 py-5">

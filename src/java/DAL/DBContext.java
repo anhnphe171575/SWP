@@ -38,9 +38,7 @@ public class DBContext {
     }
     
     public DBContext() {
-
-        this("jdbc:sqlserver://localhost:1433;databaseName=m10", "sa", "123");
-
+        this("jdbc:sqlserver://localhost:1433;databaseName=n7", "sa", "123");
 
                 
                 

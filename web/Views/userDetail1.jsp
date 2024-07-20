@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.ResultSet,java.util.Vector,Entity.User,Entity.Role"%>
+<%@page import="java.sql.ResultSet,java.util.Vector,Entity.Staff,Entity.Role"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -102,7 +102,7 @@
                             <div class="col-sm-8"><h2>Thông tin chi tiết</h2></div>
                             <div class="col-sm-4">
                               
-                                <a href="userList?service=updateUser&UserID=${user.userID}" class="btn btn-danger" ><i class="material-icons">&#XE15C;</i> <span>Edit</span></a>
+                                <a href="userList?service=updateUser&UserID=${user.StaffID}" class="btn btn-danger" ><i class="material-icons">&#XE15C;</i> <span>Edit</span></a>
 
                             </div>                       
 

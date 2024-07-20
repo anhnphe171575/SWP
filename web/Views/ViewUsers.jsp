@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.Vector,Entity.User,Entity.Role"%>
+<%@page import="java.util.Vector,Entity.Staff,Entity.Role"%>
 
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -347,11 +347,11 @@
                                     </thead>
                                     <tbody>
                                     <%
-                            Vector<User> vector=(Vector<User>)request.getAttribute("data");
-                             for (User obj : vector) {
+                            Vector<Staff> vector=(Vector<Staff>)request.getAttribute("data");
+                             for (Staff obj : vector) {
                                     %>
                                     <tr>
-                                        <td><%=obj.getUserID()%></td>
+                                        <td><%=obj.getStaffID()%></td>
                                         <td><%=obj.getFirst_name()%></td>
                                         <td><%=obj.getLast_name()%></td>
                                         <td><%=obj.getPhone()%></td>
@@ -361,8 +361,8 @@
                                         <td><%=obj.getStatus() == 1 ? "Hoạt động" : "Không hoạt động" %></td>
                                         <td><%=obj.getRole().getRole_Name()%></td>
                                         <td>
-                                            <a href="userDetail?UserID=<%=obj.getUserID()%>" style="color: red" class="fa fa-eye"></a>
-                                            <a href="updateUser?&UserID=<%=obj.getUserID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                            <a href="userDetail?UserID=<%=obj.getStaffID()%>" style="color: red" class="fa fa-eye"></a>
+                                            <a href="updateUser?&UserID=<%=obj.getStaffID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
                                             </a>
                                         </td>
                                     </tr>
