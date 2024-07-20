@@ -98,7 +98,45 @@
         <link href="css/style.css" rel="stylesheet">
 
     </head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.btn-minus').click(function () {
+                var $input = $(this).closest('.quantity').find('input');
+                var value = parseInt($input.val(), 10);
+                if (value > 1) {
+                    $input.val(value + 1);
+                }
+            });
 
+            $('.btn-plus').click(function () {
+                var $input = $(this).closest('.quantity').find('input');
+                var value = parseInt($input.val(), 10);
+                $input.val(value - 1);
+            });
+
+            $('#quantity-input').on('input', function () {
+                // Chỉ cho phép số nguyên dương
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value === '') this.value = 1; // Đặt giá trị mặc định nếu trống
+            });
+
+            $('#quantity-input').on('change', function () {
+                // Đảm bảo số lượng tối thiểu là 1
+                if (this.value < 1) this.value = 1;
+            });
+        });
+
+        function addToCart() {
+            var quantity = $('#quantity-input').val();
+            var productID = '123'; // Thay thế '123' bằng ID sản phẩm thực tế
+            // Thực hiện hành động khi nhấn nút "Add to Cart"
+            alert('Added ' + quantity + ' items to the cart.');
+            // Ví dụ về chuyển hướng với productID và quantity là các tham số truy vấn
+            location.href = 'AddToCart?pid=' + productID + '&quantity=' + quantity;
+        }
+    </script>
     <body>
         <!-- Topbar Start -->
         <div class="row align-items-center py-3 px-xl-5">

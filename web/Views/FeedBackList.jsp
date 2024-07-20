@@ -342,7 +342,7 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>FeedBack</b></h2>
+                                        <h2>Quản lí <b>FeedBack</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="FeedBackList" method="post">
@@ -354,7 +354,7 @@
 
                                     <div class="col-sm-6">
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal">
-                                            <i class="material-icons">&#xe164;</i> <span>Sort</span>         
+                                            <i class="material-icons">&#xe164;</i> <span>Sắp xếp</span>         
                                         </a>
                                         <h5>${sessionScope.username}</h5>
                                 </div>
@@ -366,10 +366,10 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Product:</span>
+                                            <span class="input-group-text">Sản phẩm: </span>
                                         </div>
                                         <select id="product-filter" name="proid" class="form-control">
-                                        <option value="all">All</option>
+                                        <option value="all">tất cả</option>
                                         <c:forEach items="${requestScope.product}" var="p">
                                             <option value="${p.productID}">${p.product_name}</option>
                                         </c:forEach>
@@ -379,34 +379,34 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Rated Star:</span>
+                                            <span class="input-group-text">Đánh giá sao:</span>
                                         </div>
                                         <select class="custom-select" id="salename" name="star">
-                                            <option value="all">All</option>
-                                            <option value="1">1 Star</option>
-                                            <option value="2">2 Stars</option>
-                                            <option value="3">3 Stars</option>
-                                            <option value="4">4 Stars</option>
-                                            <option value="5">5 Stars</option>
+                                            <option value="all">Tất cả</option>
+                                            <option value="1">1 sao</option>
+                                            <option value="2">2 sao</option>
+                                            <option value="3">3 sao</option>
+                                            <option value="4">4 sao</option>
+                                            <option value="5">5 sao</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Status:</span>
+                                            <span class="input-group-text">Trạng thái</span>
                                         </div>
                                         <select class="custom-select" id="status" name="status">
-                                            <option value="all">All</option>
-                                            <option value="0">Hide</option>
-                                        <option value="1">Show</option>
+                                            <option value="all">Tất cả</option>
+                                            <option value="0">Ẩn </option>
+                                        <option value="1">Hiện</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <input type="hidden" value="filter" name="service">
                                 <div class="col-md-3" >
-                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                    <input type="submit" value="Lọc" class="btn btn-primary" style="margin-top: 0px">
                                 </div>
                                 
                             </div>
@@ -414,12 +414,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-
-                                    <th>Customer Name</th>
-                                    <th>Product Name</th>
-                                    <th>Rate Star</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Tên người dùng</th>
+                                    
+                                    <th>Tên sản phẩm</th>
+                                    <th>Đánh giá sao</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hoạt động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -429,8 +429,8 @@
                                         <td>${l.product.product_name}</td>
                                         <td>${l.rate_star}</td>
                                         <td>
-                                            <c:if test="${l.status == '1'}">Show</c:if>
-                                            <c:if test="${l.status != '1'}">Hide</c:if> 
+                                            <c:if test="${l.status == '1'}">Hiện</c:if>
+                                            <c:if test="${l.status != '1'}">Ẩn</c:if> 
                                             </td>
                                             <td>
                                             <c:if test="${l.status == '1'}">
@@ -462,17 +462,17 @@
                     <div class="modal-content">
                         <form action="FeedBackList" method="post" >
                             <div class="modal-header">						
-                                <h4 class="modal-title">Sort</h4>
+                                <h4 class="modal-title">Sắp xếp</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div class="modal-body">					
                                 <div class="form-group">
-                                    <label>Option:</label>
+                                    <label>Lựa chọn:</label>
                                     <select id="category-select" class="form-control" name="sort">                                   
-                                        <option value="c.first_name">Customer Name</option>
-                                        <option value="p.product_name">Product Name</option>
-                                        <option value="f.rate_star">Rate Star</option>
-                                        <option value="f.status">Status</option>
+                                        <option value="c.first_name">tên người dùng</option>
+                                        <option value="p.product_name">tên sản phẩm </option>
+                                        <option value="f.rate_star">Đánh giá sao</option>
+                                        <option value="f.status">trạng thái</option>
                                     </select>
                                 </div>
                             </div>
@@ -485,62 +485,7 @@
                     </div>
                 </div>
             </div>
-            <!<!-- comment -->
-            <div id="Edit" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="PostController" method="post" enctype="multipart/form-data">
-                            <div class="modal-header">						
-                                <h4 class="modal-title">Edit Post</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">					
-                                <div class="form-group">
-                                    <label>title</label>
-                                    <input type="text" class="form-control" name="title" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>thumbnail</label>
-                                    <input type="text" class="form-control" name="thumbnail" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Category Post</label>
-                                    <select id="category-select" class="form-control" name="category_post">                                   
-                                        <c:forEach items="${requestScope.category_product}" var="c">
-                                            <option value="${c.category_productID}">${c.category_name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>featured</label>
-                                    <input type="text" class="form-control" name="featured" required>
-                                </div>
-                                <!--                            <div class="form-group">
-                                                                <label>status</label>
-                                                                <select id="status-select" class="form-control" name="status">
-                                <c:forEach items="${requestScope.status}" var="s">
-                                    <option value="${s}">${s}</option>
-                                </c:forEach>
-                            </select>
-                        </div>-->
-                                <div class="form-group">
-                                    <label>brief_information</label>
-                                    <input type="text" class="form-control" name="brief_information" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>description</label>
-                                    <input type="text" class="form-control" name="description" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-
-                                <input type="submit" class="btn btn-info" value="OK">
-                                <input type="hidden" name="service" value="add">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+           
 
             <!-- Delete Modal HTML -->
             <div id="deleteEmployeeModal" class="modal fade">

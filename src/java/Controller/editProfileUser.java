@@ -6,11 +6,11 @@ package Controller;
 
 import DAL.DAOSecurityQuestion;
 import DAL.DAOStatusOrder;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import Entity.Role;
 import Entity.Security;
 import Entity.StatusOrder;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -76,11 +76,11 @@ public class editProfileUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser dao = new DAOUser();
-        Vector<User> vector
-                = (Vector<User>) dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password, u.dob,u.gender,u.status, u.RoleID,r.Role_Name,u.securityID,u.securityAnswer,s.security_question,u.image from [User] u\n"
+        DAOStaff dao = new DAOStaff();
+        Vector<Staff> vector
+                = (Vector<Staff>) dao.getStaff("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password, u.dob,u.gender,u.status, u.RoleID,r.Role_Name,u.securityID,u.securityAnswer,s.security_question,u.image from [Staff] u\n"
                         + "                inner join SecurityQuestion s on u.securityID=s.securityID \n"
-                        + "                inner join [Role] r on r.RoleID=u.RoleID where u.UserID="
+                        + "                inner join [Role] r on r.RoleID=u.RoleID where u.StaffID="
                         + Integer.parseInt(request.getParameter("userid")));
         request.setAttribute("vector", vector);
         DAOSecurityQuestion db = new DAOSecurityQuestion();
@@ -100,11 +100,11 @@ public class editProfileUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       DAOUser dao = new DAOUser();
+        DAOStaff dao = new DAOStaff();
 
         Part filePart = request.getPart("file");
         String fileUrl = "";
-        
+
         try {
             // Get the file name
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -138,7 +138,7 @@ public class editProfileUser extends HttpServlet {
         Role role = new Role(roleid, rolename);
         String securityid = request.getParameter("security");
         int securityId = Integer.parseInt(securityid);
-        
+
         Security sq = new Security(securityId, "");
         String securityAnswer = request.getParameter("securityAnswer");
         String image = request.getParameter("image");
@@ -158,8 +158,8 @@ public class editProfileUser extends HttpServlet {
         int status1 = Integer.parseInt(status);
         int UserId = Integer.parseInt(UserID);
 
-        User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-        dao.UpdateUser(user);
+        Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+        dao.UpdateStaff(user);
         response.sendRedirect("editProfileUserURL?userid=" + UserID);
     }
 

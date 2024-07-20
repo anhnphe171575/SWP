@@ -7,12 +7,11 @@ package Controller;
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
 import DAL.DAOProduct;
-import DAL.DAOUser;
-
+import DAL.DAOStaff;
 import Entity.CategoryProduct;
 import Entity.Post;
 import Entity.Product;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -72,12 +71,12 @@ public class ProductsList extends HttpServlet {
             throws ServletException, IOException {
         DAOProduct d = new DAOProduct();
         DAOCategoryProduct cp = new DAOCategoryProduct();
-        DAOUser du = new DAOUser();
+        DAOStaff du = new DAOStaff();
         HttpSession session = request.getSession(false);
         if (session.getAttribute("username") != null) {
-            User user = (User) session.getAttribute("user");
+            Staff user = (Staff) session.getAttribute("user");
             if (user == null) {
-                user = du.getUserByLogin((String) session.getAttribute("username"));
+                user = du.getStaffByLogin((String) session.getAttribute("username"));
                 session.setAttribute("user", user);
             }
             request.setAttribute("list", d.getProduct1());

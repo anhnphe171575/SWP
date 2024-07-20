@@ -308,7 +308,7 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>Role</b></h2>
+                                        <h2> <b>Danh sách vai trò</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="editRoleURL" method="get">
@@ -322,8 +322,8 @@
                                 <thead>
                                     <tr>
                                         
-                                        <th>RoleID</th>
-                                        <th>Role_Name</th>
+                                        <th>ID</th>
+                                        <th>Vai trò</th>
                                     </tr>
                                 </thead>
                                 <tbody>

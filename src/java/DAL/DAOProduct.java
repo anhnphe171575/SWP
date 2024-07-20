@@ -98,7 +98,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProduct1() {
         ArrayList<Product> l = new ArrayList();
         try {
-            String query = "  select p.productID,p.product_name,p.thumbnail,p.quantity,p.quantity_hold,p.featured,p.original_price,\n"
+            String query = "select p.productID,p.product_name,p.thumbnail,p.quantity,p.quantity_hold,p.featured,p.original_price,\n"
                     + "                    p.sale_price,p.featured,p.status from Product p ORDER BY p.productID DESC";
             PreparedStatement stm = conn.prepareCall(query);
             ResultSet rs = stm.executeQuery();

@@ -5,10 +5,10 @@
 package Controller;
 
 import DAL.DAOSecurityQuestion;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import Entity.Role;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -73,12 +73,12 @@ public class updateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOSecurityQuestion db = new DAOSecurityQuestion();
         request.setAttribute("error", request.getParameter("error"));
         request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
         request.setAttribute("role", daoU.getRole("select * from Role"));
-        request.setAttribute("user", daoU.getUsersByID(Integer.parseInt(request.getParameter("UserID"))));
+        request.setAttribute("user", daoU.getStaffsByID(Integer.parseInt(request.getParameter("UserID"))));
         request.getRequestDispatcher("/Views/updateUsers.jsp").forward(request, response);
     }
 
@@ -93,7 +93,7 @@ public class updateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         Part filePart = request.getPart("file");
         // Get the file name
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -134,11 +134,11 @@ public class updateUser extends HttpServlet {
 
         Boolean a = true;
         String error = "";
-        if (daoU.notUserbyEmail(daoU.getUsersByID(UserId).getEmail(), email) != null) {
+        if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null) {
             error += "Error Mail";
             a = false;
         }
-        if (daoU.notUserbyUsername(daoU.getUsersByID(UserId).getUsername(), username) != null) {
+        if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null) {
             error += "Error UserName";
             a = false;
 
@@ -148,8 +148,8 @@ public class updateUser extends HttpServlet {
             //  request.getRequestDispatcher("userList?service=updateUser&UserID=" + UserID).forward(request, response);
             response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + error);
         } else {
-            User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-            daoU.UpdateUser(user);
+            Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+            daoU.UpdateStaff(user);
             response.sendRedirect("userList");
         }
 

@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>EShopper</title>
+        <title>Cửa hàng bán sách trực tuyến</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
@@ -57,7 +57,7 @@
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Cửa hàng</span>Sách</h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
@@ -99,9 +99,7 @@
                                     <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
                                         <c:forEach items="${requestScope.CategoryB}" var="c"> 
                                             <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-
                                                 <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
-
                                             </c:if>
                                         </c:forEach>
                                     </div>
@@ -311,23 +309,21 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="row">
                         <div class="col-md-4 mb-5">
-                            <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                            <h5 class="font-weight-bold text-dark mb-4">Đường dẫn nhanh</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-
-                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Giỏ hàng</a>
+                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Thanh toán</a>
+                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Liên hệ với chúng tôi</a>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
                             <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-
-                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                                <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Trang chủ</a>
+                                <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Giỏ hàng</a>
+                                <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Thanh toán</a>
+                                <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Liên hệ với chúng tôi</a>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
@@ -367,12 +363,8 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-        <!-- Contact Javascript File -->
         <script src="mail/jqBootstrapValidation.min.js"></script>
         <script src="mail/contact.js"></script>
-
-        <!-- Template Javascript -->
         <script src="js/main.js"></script>
         <!--        <script>
         
@@ -506,11 +498,5 @@
             }
             ;
         </script>
-
-
-
-
-
     </body>
-
 </html>

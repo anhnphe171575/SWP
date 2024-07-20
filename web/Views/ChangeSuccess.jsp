@@ -6,12 +6,12 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="vn">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Thay đổi</title>
     </head>
     <body>
-        <h1>Change Success</h1>
+        <h1>Thay đổi thành công</h1>
     </body>
 </html>

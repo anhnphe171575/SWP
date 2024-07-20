@@ -2,7 +2,7 @@ package Controller;
 
 import DAL.DAOAdminDashboard;
 import DAL.DAOOrder;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -115,7 +115,7 @@ public class SaleDashboard extends HttpServlet {
             throws ServletException, IOException {
         DAOAdminDashboard daoAd = new DAOAdminDashboard();
         DAOOrder dao = new DAOOrder();
-        DAOUser dao1 = new DAOUser();
+        DAOStaff dao1 = new DAOStaff();
         request.setAttribute("revenues", daoAd.trendRevenues());
         request.setAttribute("newCus", daoAd.trendCusNew());
         request.setAttribute("sucess", daoAd.trendO_Sucess1());

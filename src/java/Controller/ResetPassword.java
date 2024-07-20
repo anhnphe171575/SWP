@@ -5,7 +5,7 @@
 package Controller;
 
 import DAL.DAOCustomer;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -89,48 +89,45 @@ public class ResetPassword extends HttpServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
         String email = request.getParameter("email");
         DAOCustomer db = new DAOCustomer();
-        DAOUser db1 = new DAOUser();
+        DAOStaff db1 = new DAOStaff();
         String role = request.getParameter("role");
-        if(role.equals("1") && db.getCusByEmail(email) == null){  
-            request.setAttribute("role",role);
+        if (role.equals("1") && db.getCusByEmail(email) == null) {
+            request.setAttribute("role", role);
             request.setAttribute("errorMessage", "Email not registed!");
             request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
-        
-        }
-        else if(!role.equals("1")){
-             request.setAttribute("role",role);
-             if(db1.getUserByLogin(email, "select * from [User] where email =?") == null){
-             request.setAttribute("errorMessage", "Email not registed!");
-              request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
-        }
-        }
-        else{
-        String otp1 = OTP(4);
-        HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(15*60);
-        request.getSession().setAttribute(email + "_reset_otp", otp1);
-        request.getSession().setAttribute(email + "_reset_time", getExpiredTime());
-        request.getSession().setAttribute("ep", getExpiredTime());
-        String resetLink = "http://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath() + "/NewPassword?otp=" + otp1 + "&email=" + email + "&role=" + role;
-        try {
-            request.setAttribute("role",role);
-            sendEmail("Reset PassWord", resetLink, email);
-            request.setAttribute("errorMessage", "An email was sent!");
-            request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
-        } catch (MessagingException ex) {
-            Logger.getLogger(ResetPassword.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        } else if (!role.equals("1")) {
+            request.setAttribute("role", role);
+            if (db1.getStaffByLogin(email, "select * from [Staff] where email =?") == null) {
+                request.setAttribute("errorMessage", "Email not registed!");
+                request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
+            }
+        } else {
+            String otp1 = OTP(4);
+            HttpSession session = request.getSession();
+            session.setMaxInactiveInterval(15 * 60);
+            request.getSession().setAttribute(email + "_reset_otp", otp1);
+            request.getSession().setAttribute(email + "_reset_time", getExpiredTime());
+            request.getSession().setAttribute("ep", getExpiredTime());
+            String resetLink = "http://" + request.getServerName() + ":" + request.getServerPort()
+                    + request.getContextPath() + "/NewPassword?otp=" + otp1 + "&email=" + email + "&role=" + role;
+            try {
+                request.setAttribute("role", role);
+                sendEmail("Reset PassWord", resetLink, email);
+                request.setAttribute("errorMessage", "An email was sent!");
+                request.getRequestDispatcher("Views/ResetPassword.jsp").forward(request, response);
+            } catch (MessagingException ex) {
+                Logger.getLogger(ResetPassword.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
-   public void sendEmail(String subject,String body, String to) throws MessagingException, UnsupportedEncodingException{
+
+    public void sendEmail(String subject, String body, String to) throws MessagingException, UnsupportedEncodingException {
         final String fromEmail = "anhnphe171575@fpt.edu.vn";
         // Mat khai email cua ban
         final String password = "jull jeex qjzb cdtn";
         // dia chi email nguoi nhan
         final String toEmail = to;
-
-
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
@@ -138,7 +135,7 @@ public class ResetPassword extends HttpServlet {
         props.put("mail.smtp.port", "587"); //TLS Port
         props.put("mail.smtp.auth", "true"); //enable authentication
         props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-      
+
         Authenticator auth = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -146,7 +143,6 @@ public class ResetPassword extends HttpServlet {
             }
         };
         Session session = Session.getInstance(props, auth);
-
 
         MimeMessage msg = new MimeMessage(session);
         //set message headers
@@ -168,7 +164,7 @@ public class ResetPassword extends HttpServlet {
         Transport.send(msg);
         System.out.println("Gui mail thanh cong");
     }
-   
+
     static String OTP(int len) {
         System.out.println("Generating OTP using random() : ");
         System.out.print("You OTP is : ");
@@ -180,7 +176,7 @@ public class ResetPassword extends HttpServlet {
         Random rndm_method = new Random();
 
         char[] otp = new char[len];
-         String otp1 ="";
+        String otp1 = "";
         for (int i = 0; i < len; i++) {
             // Use of charAt() method : to get character value 
             // Use of nextInt() as it is scanning the value as int 

@@ -5,7 +5,7 @@ package Controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 import DAL.DAOSecurityQuestion;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -57,13 +57,13 @@ public class userDetail extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOSecurityQuestion db = new DAOSecurityQuestion();
 
         int UserID = Integer.parseInt(request.getParameter("UserID"));
         request.setAttribute("role", daoU.getRole("select * from Role"));
         request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
-        request.setAttribute("user", daoU.getUsersByID(UserID));
+        request.setAttribute("user", daoU.getStaffsByID(UserID));
         request.getRequestDispatcher("Views/userDetail1.jsp").forward(request, response);
     }
 

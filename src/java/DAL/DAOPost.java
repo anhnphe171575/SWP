@@ -24,7 +24,7 @@ import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Role;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 
 /**
  *
@@ -45,14 +45,14 @@ public class DAOPost extends DBContext {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.RoleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID where p.postID=" + id;
+                + "                inner join [Staff] u on p.StaffID = u.StaffID where p.postID=" + id;
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -60,7 +60,7 @@ public class DAOPost extends DBContext {
                 Security se = new Security(rs.getInt("securityID"), "");
                 Role role = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), role, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -79,14 +79,14 @@ public class DAOPost extends DBContext {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                                p.featured,p.status,p.brief_information,\n"
                 + "                                 p.description, p.date_create_by,\n"
-                + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
                 + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "                				 from Post p \n"
                 + "                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                                inner join [User] u on p.UserID = u.UserID where cpr.category_name='" + name + "'";
+                + "                                inner join [Staff] u on p.StaffID = u.StaffID where cpr.category_name='" + name + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -95,7 +95,7 @@ public class DAOPost extends DBContext {
                                 Role r = new Role(rs.getInt("RoleID"), "");
 
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -114,14 +114,14 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                                p.featured,p.status,p.brief_information,\n"
                 + "                                 p.description, p.date_create_by,\n"
-                + "                				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "                				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "                				 cp.category_postID,cp.category_productID,\n"
                 + "                				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "                				 from Post p \n"
                 + "                               inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                               inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                                inner join [User] u on p.UserID = u.UserID where cpr.category_productID='" + id + "'";
+                + "                                inner join [Staff] u on p.StaffID = u.StaffID where cpr.category_productID='" + id + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -130,7 +130,7 @@ public Vector<Post> getPostByCPId(int id) {
                                 Role r = new Role(rs.getInt("RoleID"), "");
 
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -185,14 +185,14 @@ public Vector<Post> getPostByCPId(int id) {
                 + "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID where date_create_by = (SELECT max_date FROM LatestDate)";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID where date_create_by = (SELECT max_date FROM LatestDate)";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -200,7 +200,7 @@ public Vector<Post> getPostByCPId(int id) {
                 Security se = new Security(rs.getInt("securityID"), "");
                                 Role r = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -219,14 +219,14 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID WHERE p.title like '%" + title + "%' and cpr.category_productID ="+id ;
+                + "                inner join [Staff] u on p.StaffID = u.StaffID WHERE p.title like '%" + title + "%' and cpr.category_productID ="+id ;
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -235,7 +235,7 @@ public Vector<Post> getPostByCPId(int id) {
                                 Role r = new Role(rs.getInt("RoleID"), "");
 
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -255,14 +255,14 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID ORDER BY  date_create_by DESC";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID ORDER BY  date_create_by DESC";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -271,7 +271,7 @@ public Vector<Post> getPostByCPId(int id) {
                                 Role r = new Role(rs.getInt("RoleID"), "");
 
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -320,14 +320,14 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID"
+                + "                inner join [Staff] u on p.StaffID = u.StaffID"
                 + "                  order by " + option + " ASC";
 
         try {
@@ -340,7 +340,7 @@ public Vector<Post> getPostByCPId(int id) {
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"),
                         rs.getString("category_name"),
                         rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"),
+                Staff u = new Staff(rs.getInt("StaffID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("phone"),
@@ -387,7 +387,7 @@ public Vector<Post> getPostByCPId(int id) {
                     + "           ,[status]\n"
                     + "           ,[brief_information]\n"
                     + "           ,[description]\n"
-                    + "           ,[UserID]\n"
+                    + "           ,[StaffID]\n"
                     + "           ,[date_create_by])\n"
                     + "     VALUES\n"
                     + "           (?,?,?,?,?,?,?,?,?)";
@@ -400,13 +400,10 @@ public Vector<Post> getPostByCPId(int id) {
             pre.setInt(5, obj.getStatus());
             pre.setString(6, obj.getBrief_information());
             pre.setString(7, obj.getDescription());
-    
-            pre.setInt(8, obj.getUser().getUserID());
+            pre.setInt(8, obj.getStaff().getStaffID());
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(obj.getDate_create_by());
-
             pre.setDate(9, Date.valueOf(date1));
-
             pre.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -446,23 +443,22 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID where title like '%" + title + "%'";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID where title like '%" + title + "%'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security();
                                 Role r = new Role(rs.getInt("RoleID"), "");
-
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -474,23 +470,20 @@ public Vector<Post> getPostByCPId(int id) {
 
         }
         return vector;
-
     }
-
     public Vector<Post> getAll1(Map<String, String> aa1, String all) {
-
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID " + all;
+                + "                inner join [Staff] u on p.StaffID = u.StaffID " + all;
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             int i = 1;
@@ -508,7 +501,7 @@ public Vector<Post> getPostByCPId(int id) {
                 Security se = new Security();
                 Role r = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"),r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -528,14 +521,14 @@ public Vector<Post> getPostByCPId(int id) {
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID ";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID ";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -543,7 +536,7 @@ public Vector<Post> getPostByCPId(int id) {
                 Security se = new Security(rs.getInt("securityID"), "");
                 Role r = new Role(rs.getInt("RoleID"), "");
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -558,19 +551,18 @@ public Vector<Post> getPostByCPId(int id) {
     }
 
     public Vector<Post> HotPost() {
-
         Vector<Post> vector = new Vector<>();
         String sql = "select p.postID,p.thumbnail,p.title,cpr.category_name,\n"
                 + "                p.featured,p.status,p.brief_information,\n"
                 + "                 p.description, p.date_create_by,\n"
-                + "				 u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "				 u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
                 + "				 u.roleID,u.dob,u.gender,u.status,u.securityID,u.securityAnswer,u.image, \n"
                 + "				 cp.category_postID,cp.category_productID,\n"
                 + "				 cpr.category_productID,cpr.category_name,cpr.category_description\n"
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [User] u on p.UserID = u.UserID where p.featured = 1 AND p.status = 1";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID where p.featured = 1 AND p.status = 1";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -579,7 +571,7 @@ public Vector<Post> getPostByCPId(int id) {
                 Role r = new Role(rs.getInt("RoleID"), "");
 
                 CategoryProduct cpr = new CategoryProduct(rs.getInt("category_productID"), rs.getString("category_name"), rs.getString("category_description"), "");
-                User u = new User(rs.getInt("UserID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
+                Staff u = new Staff(rs.getInt("StaffID"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("phone"),
                         rs.getString("email"), rs.getString("address"), rs.getString("username"), rs.getString("password"),
                         rs.getDate("dob"), rs.getBoolean("gender"), rs.getInt("status"), r, se, rs.getString("securityAnswer"),rs.getString("image"));
                 CategoryPost cp = new CategoryPost(rs.getInt("category_postID"), cpr);
@@ -618,7 +610,7 @@ public Vector<Post> getPostByCPId(int id) {
         CategoryProduct cp1 = new CategoryProduct();
         CategoryPost cp = new CategoryPost(1, cp1);
 //        Role r = new Role(1, "");
-//        User u = new User(2, "", "", "", "", "", "", "", null, true, 0, r, null, "","");
+//        Staff u = new Staff(2, "", "", "", "", "", "", "", null, true, 0, r, null, "","");
 //        Post obj = new Post(0, "ddd", "ooo", cp, 1, 1, "aaa", "aaa", u, date_create_by);
 //        daoP.addPost(obj);
         System.out.println(daoP.getStatus("select status from Post group by status"));
