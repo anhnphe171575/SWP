@@ -169,7 +169,7 @@
                             <div>
                                 <button class="btn btn--radius-2 btn--red" type="submit">Register</button>                                
                             </div>
-                            <a class="btn btn--radius-2 btn--blue" href="LoginController" style="margin-top: 25px">Back to Log-in</a>
+                            <a class="btn btn--radius-2 btn--blue" href="LoginCusController" style="margin-top: 25px">Back to Log-in</a>
                         </form>
                     </div>
                 </div>

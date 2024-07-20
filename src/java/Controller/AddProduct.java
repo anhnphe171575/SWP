@@ -26,7 +26,7 @@ import java.util.List;
 public class AddProduct extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\MANH VINH\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProducts";
+    private static final String UPLOAD_DIR = "C:\\Users\\phuan\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProducts";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

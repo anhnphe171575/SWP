@@ -337,7 +337,7 @@
                                             <span class="input-group-text">Status:</span>
                                         </div>
                                         <select class="custom-select" id="status" name="status">
-                                            <option value="all">All</option>
+                                            <option value="3">All</option>
                                             <option value="0">Hide</option>
                                         <option value="1">Show</option>
                                         </select>

@@ -329,7 +329,8 @@
                                         <td style="margin-left: 30px ">${p.securityID}</td>
                                         <td>${p.security_question}</td>
                                         <td>
-                                            <a href="EditSQ?id=${p.securityID}" class="edit" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a href="EditSQ?id=${p.securityID}" class="edit" ><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                            </a>
                                             <a href="SecurityQuestion?service=delete&id=${p.securityID}" class="delete" ><i class="material-icons" title="Delete">&#xE872;</i></a>
                                         </td>
                                     </tr>

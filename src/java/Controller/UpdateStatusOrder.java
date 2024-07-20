@@ -4,11 +4,14 @@
  */
 package Controller;
 
+import DAL.DAOInventoryTransaction;
 import DAL.DAOOrder;
 import DAL.DAOProduct;
 import Entity.Customer;
+import Entity.InventoryTransaction;
 import Entity.OrderItems;
 import Entity.Product;
+import Entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,6 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -94,11 +99,19 @@ public class UpdateStatusOrder extends HttpServlet {
         int orderID = Integer.parseInt(request.getParameter("orderID"));
         ArrayList<OrderItems> order = d.getOrderByOrderID(orderID);
         int newID = Integer.parseInt(request.getParameter("newStatus"));
+        User user = (User) session.getAttribute("user");
         System.out.println(orderID);
         System.out.println(newID);
-        
+        DAOProduct db2 = new DAOProduct();
+        DAOInventoryTransaction db3 = new DAOInventoryTransaction();
+        if (newID == 2) {
+            for (int i = 0; i < d.getOrderByOrderID(orderID).size(); i++) {
+                Product p = db2.getProductByID(d.getOrderByOrderID(orderID).get(i).getProduct().getProductID());
+                int quantity1 = p.getQuantity_hold() - d.getOrderByOrderID(orderID).get(i).getQuantity();
+                db2.UpdateQuantityHold(quantity1, p.getProductID());
+            }
+        }
         if (newID == 5) {
-            DAOProduct db2 = new DAOProduct();
             for (int i = 0; i < d.getOrderByOrderID(orderID).size(); i++) {
                 Product p = db2.getProductByID(d.getOrderByOrderID(orderID).get(i).getProduct().getProductID());
                 int quantity = p.getQuantity() - d.getOrderByOrderID(orderID).get(i).getQuantity();
@@ -106,11 +119,22 @@ public class UpdateStatusOrder extends HttpServlet {
                 System.out.println("quantity order:" + d.getOrderByOrderID(orderID).get(i).getQuantity());
                 System.out.println("quantity" + quantity);
                 db2.UpdateQuantity(quantity, p.getProductID());
+
                 db2.UpdateQuantityHold(quantity1, p.getProductID());
             }
         }
         if (newID == 7) {
-            d.RestoreOrderQuantity(orderID);
+            for (int i = 0; i < d.getOrderByOrderID(orderID).size(); i++) {
+                Product p = db2.getProductByID(d.getOrderByOrderID(orderID).get(i).getProduct().getProductID());
+
+                int quantity = d.getOrderByOrderID(orderID).get(i).getQuantity();
+                LocalDate localDate = LocalDate.now();
+                Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                d.RestoreOrderQuantity(orderID);
+                int quantity1 = db2.getProductByID(p.getProductID()).getQuantity();
+                String note = request.getParameter("note");
+                db3.AddInventoryTransaction(p.getProductID(), orderID, quantity, "Return", user.getUserID(), date_create_by, note, quantity1);
+            }
         }
         if (newID == 6) {
             try {
@@ -119,7 +143,7 @@ public class UpdateStatusOrder extends HttpServlet {
                 Logger.getLogger(UpdateStatusOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-                d.updateStatusOrder(newID, orderID);
+        d.updateStatusOrder(newID, orderID);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

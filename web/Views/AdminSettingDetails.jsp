@@ -174,12 +174,28 @@
             }
             .pagination li i {
                 font-size: 16px;
-                padding-top: 6px
+                padding-top: 6px;
             }
             .hint-text {
                 float: left;
                 margin-top: 10px;
                 font-size: 13px;
+            }
+            .button-field {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+                cursor: pointer;
+                text-decoration: none;
+                background-color: #435d7d;
+                color: white;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .button-field:hover {
+                background-color: #34495e;
             }
         </style>
         <script>
@@ -195,61 +211,44 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-5">
-                                <h2>Admin <b> Detail</b></h2>
+                                <h2>Admin <b>Detail</b></h2>
                             </div>
                             <div class="col-sm-7">
+                                <!-- Add any additional buttons here -->
                             </div>
                         </div>
                     </div>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>
-                                    <span class="custom-checkbox">
-                                        <input type="checkbox" id="selectAll">
-                                        <label for="selectAll"></label>
-                                    </span>
-                                </th>
                                 <th>SettingID</th>
-                                <th>Type</th>
                                 <th>Value</th>
-                                <th>Order</th>
                                 <th>Description</th>
+                                <th>Activity History</th>
                                 <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:set value="${requestScope.setting}" var="c"></c:set>
-                                <tr>
-                                    <td>
-                                        <span class="custom-checkbox">
-                                            <input type="checkbox" id="checkbox${c.settingID}" name="options[]" value="${c.settingID}">
-                                        <label for="checkbox${c.settingID}"></label>
-                                    </span>
-                                </td>
+                            <tr>
                                 <td>${c.settingID}</td>
-                                <td>${c.type}</td>
                                 <td>${c.value}</td>
-                                <td>${c.order}</td>
                                 <td>${c.description}</td>
+                                <td>${c.edit_log}</td>
                                 <td>
                                     <c:if test="${c.status == '1'}">Show</c:if>
                                     <c:if test="${c.status != '1'}">Hide</c:if>
-                                    </td>
-                                    <td> 
-                                        <a href="AdminSettingURL?service=updateSetting&settingid=${c.settingID}" title="Update" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <a href="AdminSettingURL" class="button-field">Back To Admin Setting</a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
-        </div>    
-    </div>
-</div>
-</body> 
-</html>
-</body>
+        </div>
+    </body> 
 </html>

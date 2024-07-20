@@ -113,7 +113,7 @@
                                 <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" name="phone"  value="<%=obj.getPhone()%>"></div>
                                 <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" name="email" value="<%=obj.getEmail()%>" readonly> </div>
                                 <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" name="address" value="<%=obj.getAddress()%>"></div>
-                                <div class="col-md-12"><label class="labels">Username</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>"></div>
+                                <div class="col-md-12"><label class="labels">Username</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>" readonly=""></div>
                                 <div class="col-md-12"><label class="labels">Password</label><input type="text" class="form-control" name="password" value="<%=obj.getPassword()%>"></div>
                                 <div class="col-md-12"><label class="labels">Date of birth</label><input type="date" class="form-control" name="dob" value="<%=obj.getDob()%>"></div>
                                 <div class="col-md-12"><label class="labels">Gender</label>
@@ -128,7 +128,7 @@
                                     </label>
                                 </div>
                                 </div>
-                                <div class="col-md-12"><label class="labels">Status</label><input type="text" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
+                                <div class="col-md-12"><label class="labels">Status</label><input type="text" class="form-control" name="status" value="<%=obj.getActivity_history()%>" readonly=""></div>
                                 <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
                                 <div class="col-md-12"><label class="labels">Question</label>
                                     <select name="security">

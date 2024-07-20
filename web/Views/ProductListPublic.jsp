@@ -115,36 +115,37 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link ">Home</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link active">Product</a>
+                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
-                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="BlogController" class="dropdown-item">Lasted Post</a>
+                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
                             </div>        
                             <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                             <c:choose>
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                        <div class="nav-item dropdown">
-                                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                            <div class="dropdown-menu ml-auto py-0">
-                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
-                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
-                                            </div>
+                                          <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                        <div class="dropdown-menu ml-auto py-0">
+                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
                                         </div>
-                                        <a href="LogOut" class="nav-link ">Log out</a>
+                                        <!--<a href="LogOut">Log out</a>-->
+                                        
+                                          </div>
+                                        <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
-
                                 </c:when>
                                 <c:otherwise>
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                        <a href="signup" class="nav-item nav-link">Register</a>
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -161,11 +162,11 @@
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Sản Phẩm</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="HomePage">Home</a></p>
+                    <p class="m-0"><a href="HomePage">Trang Chủ</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0">Products</p>
+                    <p class="m-0">Sản Phẩm</p>
 
                 </div>
             </div>
@@ -182,7 +183,7 @@
                     <div class="border-bottom mb-4 pb-4">
 
                         <a class="btn shadow-none d-flex align-items-center justify-content-center bg-primary text-white w-100" href="ProductsListPublic" style="height: 65px; margin-top: -1px; padding: 0 30px; text-align:center;border: 1px solid black">
-                            <h6 class="m-0">Categories</h6>
+                            <h6 class="m-0">Thể Loại</h6>
                         </a>
 
                         <div style="height: auto; text-align: center; padding: 5px;">
@@ -194,7 +195,7 @@
                         </div>
                     </div> 
                     <div class="border-bottom mb-4 pb-4">
-                        <h5 class="font-weight-semi-bold mb-4" style="text-align: center">Feature</h5>
+                        <h5 class="font-weight-semi-bold mb-4" style="text-align: center">Đặc Biệt</h5>
                         <form id="select-radio"action="ProductsListPublic" method="get">
 
                             <input type="hidden" name="cid" value="${requestScope.cid}">  
@@ -203,12 +204,12 @@
                                 <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
                                     <input type="radio" class="custom-control-input" id="price-yes" name="feature" value="yes" onchange="submitForm()"
                                            ${feature eq 'yes' ? 'checked' : ''}>
-                                    <label class="custom-control-label" for="price-yes">Yes</label>
+                                    <label class="custom-control-label" for="price-yes">Có</label>
                                 </div>
                                 <div class="custom-control custom-radio d-flex align-items-center justify-content-between mb-3">
                                     <input type="radio" class="custom-control-input" id="price-no" name="feature" value="no" onchange="submitForm()"
                                            ${feature eq 'no' ? 'checked' : ''}>
-                                    <label class="custom-control-label" for="price-no">No</label>
+                                    <label class="custom-control-label" for="price-no">Không</label>
                                 </div>
                             </div>
 
@@ -249,7 +250,7 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <form action="ProductsListPublic" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="search" placeholder="Search by name">
+                                        <input type="text" class="form-control" name="search" placeholder="Tìm theo tên sản phẩm">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-search"></i>
@@ -283,9 +284,10 @@
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-between bg-light border">
-                                        <a href="ProductDetailsPublic?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                        <a href="ProductDetailsPublic?pid=${l.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi Tiết</a>
                                         <a href="javascript:void(0);" class="btn btn-sm text-dark p-0 add-to-cart-btn ${l.quantity - l.quantity_hold == 0 ? 'disabled' : ''}" data-product-id="${l.productID}">
-                                            <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                            <i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng
+                                        </a>
                                         </a>
                                     </div>
                                 </div>
@@ -414,9 +416,7 @@
                         <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
                     </p>
                 </div>
-                <div class="col-md-6 px-xl-0 text-center text-md-right">
-                    <img class="img-fluid" src="img/payments.png" alt="">
-                </div>
+               
             </div>
         </div>
         <!-- Footer End -->

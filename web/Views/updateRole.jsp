@@ -76,6 +76,7 @@
 
             <div class="form-group">
                 <label>Role Name:</label>
+                <input type="hidden" name="status_nameo" value="${customer.getRole_Name()}" class="form-control" required>
                 <input type="text" name="Role_Name" value="${customer.getRole_Name()}" class="form-control" required>
             </div>
 

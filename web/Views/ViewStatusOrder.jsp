@@ -300,7 +300,7 @@
                 <!-- End Header -->
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
+            <jsp:include page="sidebarAdmin.jsp"></jsp:include>
 
                 <div class="container-xl">
                     <div class="table-responsive">
@@ -321,12 +321,7 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <span class="custom-checkbox">
-                                                <input type="checkbox" id="selectAll">
-                                                <label for="selectAll"></label>
-                                            </span>
-                                        </th>
+                                        
                                         <th>status_orderid</th>
                                         <th>status_name</th>
                                     </tr>
@@ -334,12 +329,7 @@
                                 <tbody>
                                 <c:forEach items="${requestScope.listAllCustomer}" var="c">
                                     <tr>
-                                        <td>
-                                            <span class="custom-checkbox">
-                                                <input type="checkbox" id="checkbox2" name="options[]" value="1">
-                                                <label for="checkbox2"></label>
-                                            </span>
-                                        </td>
+                                        
                                         <td>${c.status_orderid}</td>
                                         <td>${c.status_name}</td> 
                                         <td>

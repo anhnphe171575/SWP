@@ -76,6 +76,7 @@
         <label for="question">Question:</label>
         
         <input type="text" id="question" name="security_question" placeholder="Enter your question here..." required>
+      
         <input type="submit" name="add" value="Add Question">
         ${err}
     </form>

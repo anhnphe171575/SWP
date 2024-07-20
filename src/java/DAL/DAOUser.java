@@ -147,7 +147,7 @@ public class DAOUser extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
-                Role role = new Role(rs.getInt("RoleID"), "");
+                Role role = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
                 User obj = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),

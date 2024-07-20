@@ -12,8 +12,13 @@
 
     <ul class="sidebar-list">
         <li class="sidebar-list-item"">
-            <a href="AdminDashboard">
+            <a href="">
                 <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+        </li>
+                <li class="sidebar-list-item">
+            <a href="AdminSettingURL">
+                <span class="material-icons-outlined">settings</span> Setting
             </a>
         </li>
         <li class="sidebar-list-item">
@@ -27,15 +32,16 @@
             </a>
         </li>
         <li class="sidebar-list-item">
-            <a href="SecurityQuestion">
+            <a href="editStatusOrderURL">
                 <span class="material-icons-outlined">assignment_turned_in  </span> Status Order
             </a>
         </li>
-        <li class="sidebar-list-item">
-            <a href="SecurityQuestion">
-                <span class="material-icons-outlined">settings</span> Setting
+         <li class="sidebar-list-item">
+            <a href="editRoleURL">
+                <span class="material-icons-outlined">person </span> Role
             </a>
         </li>
+
     </ul>
 </aside>
 

@@ -99,7 +99,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="ProductsListPublic" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products" name = "search">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="search">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -125,7 +125,7 @@
             <div class="row border-top px-xl-5">
                 <div class="col-lg-3 d-none d-lg-block">
                     <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                        <h6 class="m-0">Categories</h6>
+                        <h6 class="m-0">Thể Loại</h6>
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
@@ -157,16 +157,15 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link">Home</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link">Shop</a>
-
+                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
-                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="BlogController" class="dropdown-item">Lasted Post</a>
+                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
                             </div>
                             <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                             <c:choose>
@@ -174,15 +173,15 @@
 
                                     <div class="navbar-nav ml-auto py-0">
                                         <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <a href="LogOut">Log out</a>
+                                        <a href="LogOut">Đăng Xuất</a>
 
                                     </div>
 
                                 </c:when>
                                 <c:otherwise>
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                        <a href="signup" class="nav-item nav-link">Register</a>
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -197,11 +196,11 @@
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Thanh Toán</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="">Home</a></p>
+                    <p class="m-0"><a href="">Trang Chủ</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0">Checkout</p>
+                    <p class="m-0">Thanh Toán</p>
                 </div>
             </div>
         </div>
@@ -215,12 +214,12 @@
             <div class="row px-xl-5">
                 <div class="col-lg-7">  
                     <div class="mb-4">
-                        <h4 class="font-weight-semi-bold mb-4">Shipping Address</h4> 
+                        <h4 class="font-weight-semi-bold mb-4">Địa chỉ giao hàng</h4> 
                         <c:if test="${numberA == null}">
                             <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> Add</a>
                         </c:if>
                         <c:if test="${numberA != null}">
-                            <a href="#Change" class="btn btn-success" data-toggle="modal"><i class="material-icons">edit</i><span>Receive Address</span></a>
+                            <a href="#Change" class="btn btn-success" data-toggle="modal"><i class="material-icons">edit</i><span>Địa Chỉ Nhận</span></a>
                         </c:if>
                         <form action="CartContact" method="post">
                             <c:set value="${info}" var="cus1"></c:set>
@@ -236,11 +235,11 @@
                                 <input type="hidden" name="recieverid" value="${cus1.getReceiverID()}">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label>Full Name</label>
+                                        <label>Họ Tên</label>
                                         <input class="form-control" type="text" value="${cus1.getReceiverFullName()}" readonly="">
                                     </div>   
                                     <div class="col-md-6 form-group">
-                                        <label>Gender</label>
+                                        <label>Giới Tính</label>
                                         <c:choose>
                                             <c:when test="${cus1.customer.gender == true}">
                                                 <input class="form-control" type="text" value="Female" readonly>
@@ -260,15 +259,15 @@
                                         <input class="form-control" type="text" value="${cus1.customer.email}" readonly="">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label>Mobile No</label>
+                                        <label>Điện Thoại</label>
                                         <input class="form-control" type="text" value="${cus1.getReceiverMobile()}" readonly="">
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label>Address</label>
+                                        <label>Địa Chỉ</label>
                                         <input class="form-control" type="text" value="${cus1.getReceiverAddress()}" readonly="">
                                     </div>
                                     <div class="col-md-12 form-group">
-                                        <label>Notes</label>
+                                        <label>Ghi Chú</label>
                                         <textarea class="form-control" name="notes" style="width: 100%; max-width: 1000px; height: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); font-size: 16px; line-height: 1.5; color: #555; background-color: #fff; transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;"></textarea>
                                     </div>
                                 </div>
@@ -279,21 +278,21 @@
                 <div class="col-lg-5">
                     <div class="card border-secondary mb-5">
                         <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Order Total</h4>
+                            <h4 class="font-weight-semi-bold m-0">Thanh Toán</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h6 class="font-weight-medium">Products</h6>
+                                    <h6 class="font-weight-medium">Sản Phẩm</h6>
                                 </div>
                                 <div class="col-lg">
-                                    <h6 class="font-weight-medium">Prices</h6>
+                                    <h6 class="font-weight-medium">Giá</h6>
                                 </div>
                                 <div class="col-lg">
-                                    <h6 class="font-weight-medium">Quantity</h6>
+                                    <h6 class="font-weight-medium">SL</h6>
                                 </div>
                                 <div class="col-lg">
-                                    <h6 class="font-weight-medium">Cost</h6>
+                                    <h6 class="font-weight-medium">Tổng</h6>
                                 </div>
                             </div>
 
@@ -335,7 +334,7 @@
                         </div>
                         <div class="card-footer border-secondary bg-transparent">
                             <div class="d-flex justify-content-between mt-2">
-                                <h5 class="font-weight-bold">Total</h5>
+                                <h5 class="font-weight-bold">Thành tiền</h5>
                                 <h5 class="font-weight-bold">$${totalOrderPrice}</h5>
                                 <input type="hidden" name ="total" value="${totalOrderPrice}">
                             </div>
@@ -343,13 +342,13 @@
                     </div>
                     <div class="card border-secondary mb-5">
                         <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Payment</h4>
+                            <h4 class="font-weight-semi-bold m-0">Phương Thức Thanh Toán</h4>
                         </div>
                         <div class="card-body">                          
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
                                     <input type="radio" class="custom-control-input" name="paymentMethod"  value="delivery" id="directcheck">
-                                    <label class="custom-control-label" for="directcheck">Payment on delivery</label>
+                                    <label class="custom-control-label" for="directcheck">Thanh toán khi giao hàng</label>
                                 </div>
                             </div>
                             <div class="">
@@ -360,7 +359,7 @@
                             </div>
                         </div>
                         <div class="card-footer border-secondary bg-transparent">
-                            <button type="submit"class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                            <button type="submit"class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Đặt Hàng</button>
                         </div>
                     </div>
                     </form>
@@ -375,10 +374,10 @@
 
                         <div class="modal-header">	
 
-                            <h4 class="modal-title">My Address</h4>
+                            <h4 class="modal-title">Địa chỉ của tôi</h4>
                             <c:choose>
                                 <c:when test="${numberA < 3}">
-                                    <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> Add</a>
+                                    <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> Thêm</a>
                                 </c:when>
                                 <c:otherwise>
                                     <!-- Content for otherwise case -->

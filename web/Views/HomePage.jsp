@@ -49,6 +49,14 @@
                 cursor: pointer;
 
             }
+            .product-img1 img {
+                width: 100%;
+                height: auto;
+            }
+            .product-img1 {
+                height: 200px; /* Set a fixed height for the image container */
+
+            }
         </style>
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
@@ -67,7 +75,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="ProductsListPublic" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products" name="search">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="search">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -95,7 +103,7 @@
             <div class="row border-top px-xl-5">
                 <div class="col-lg-3 d-none d-lg-block">
                     <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                        <h6 class="m-0">Categories</h6>
+                        <h6 class="m-0">Thể Loại</h6>
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
                     <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
@@ -117,38 +125,37 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link active">Home</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link">Product</a>
+                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
-                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="BlogController" class="dropdown-item">Lasted Post</a>
+                                        <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
                             </div>        
                             <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                             <c:choose>
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                          <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <div class="dropdown-menu ml-auto py-0">
-                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
-                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
+                                        <div class="nav-item dropdown">
+                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn Hàng</a>
+                                            </div>
                                         </div>
-                                        <!--<a href="LogOut">Log out</a>-->
-                                        
-                                          </div>
-                                        <a href="LogOut" class="nav-link ">Log out</a>
+                                        <a href="LogOut" class="nav-link ml-3">Đăng Xuất</a>
                                     </div>
+
 
                                 </c:when>
                                 <c:otherwise>
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                        <a href="signup" class="nav-item nav-link">Register</a>
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -163,7 +170,7 @@
                                         <div class="p-3" style="max-width: 700px;">
                                             <h4 class="text-light text-uppercase font-weight-medium mb-3">${l1.notes}</h4>
                                             <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l1.title}</h3>
-                                            <a href="${l1.link}" class="btn btn-light py-2 px-3">Shop Now</a>
+                                            <a href="${l1.link}" class="btn btn-light py-2 px-3">Chi tiết</a>
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +182,7 @@
                                         <div class="p-3" style="max-width: 700px;">
                                             <h4 class="text-light text-uppercase font-weight-medium mb-3">${l.notes}</h4>
                                             <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l.title}</h3>
-                                            <a href="${l.link}" class="btn btn-light py-2 px-3">Shop Now</a>
+                                            <a href="${l.link}" class="btn btn-light py-2 px-3">Tại Đây</a>
                                         </div>
                                     </div>
                                 </div>
@@ -204,25 +211,25 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
                         <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
-                        <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
+                        <h5 class="font-weight-semi-bold m-0">Chất Lượng</h5>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
                         <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
-                        <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
+                        <h5 class="font-weight-semi-bold m-0">Giao Hàng Miễn Phí</h5>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
                         <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
-                        <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
+                        <h5 class="font-weight-semi-bold m-0">Hoàn Trả Trong 7 Ngày</h5>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
                         <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
-                        <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
+                        <h5 class="font-weight-semi-bold m-0">Hỗ trợ 24/7</h5>
                     </div>
                 </div>
             </div>
@@ -236,7 +243,7 @@
                 <c:forEach items="${requestScope.CountP}" var="cp">
                     <div class="col-lg-4 col-md-6 pb-1">
                         <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                            <p class="text-right">${cp.value} Quantity</p>
+                            <p class="text-right">Số lượng: ${cp.value} </p>
                             <a href="ProductsListPublic?cname=${cp.key}" class="cat-img position-relative overflow-hidden mb-3">
                                 <c:forEach items="${requestScope.imageC}" var="ic">
                                     <c:if test="${ic.key == cp.key}">
@@ -260,7 +267,7 @@
             <!-- Products Start -->
             <div class="container-fluid pt-5">
                 <div class="text-center mb-4">
-                    <h2 class="section-title px-5"><span class="px-2">Trendy Products</span></h2>
+                    <h2 class="section-title px-5"><span class="px-2">Sản Phẩm Phổ Biến</span></h2>
                 </div>
                 <div class="row px-xl-5 pb-3">
                     <c:forEach items="${requestScope.AllP}"  begin="1" end="8" var="p">
@@ -270,7 +277,7 @@
                                     <img class="img-fluid w-100" src="${p.thumbnail}" alt="">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <a href="ProductDetailsPublic?pid=${p.productID}"> <h6 class="text-truncate mb-3">${p.product_name}</h6></a>
+                                    <h6 class="text-truncate mb-3">${p.product_name}</h6>
                                     <div class="d-flex justify-content-center">
                                         <h6>${p.original_price}</h6>
                                         <c:if test="${not empty p.sale_price}">
@@ -282,8 +289,20 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                    <a href="AddToCart?pid=${p.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <a href="ProductDetailsPublic?pid=${p.productID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi tiết</a>
+                                    <c:choose>
+                                        <c:when test="${not empty sessionScope.cus}">
+                                            <a href="javascript:void(0);" class="btn btn-sm text-dark p-0 add-to-cart-btn ${p.quantity - p.quantity_hold == 0 ? 'disabled' : ''}" data-product-id="${p.productID}">
+                                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="LoginCusController" class="btn btn-sm text-dark p-0">
+                                                <i class="fas fa-sign-in-alt text-primary mr-1"></i>Đăng nhập để thêm
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </div>
                         </div>   
@@ -292,7 +311,7 @@
 
             </div>
             <div class="bbb">
-                <button id="moreBtn" onclick="location.href = 'ProductsListPublic?feature=yes'" class="btn btn-primary">More</button>
+                <button id="moreBtn" onclick="location.href = 'ProductsListPublic?feature=yes'" class="btn btn-primary">Thêm</button>
             </div>
             <!-- Products End -->
 
@@ -303,26 +322,28 @@
             <!-- Products Start -->
             <div class="container-fluid pt-5">
                 <div class="text-center mb-4">
-                    <h2 class="section-title px-5"><span class="px-2">Hot Post</span></h2>
+                    <h2 class="section-title px-5"><span class="px-2">Bài Viết Phổ Biến</span></h2>
                 </div>
+
+
                 <div class="row px-xl-5 pb-3">
-                    <c:forEach items="${requestScope.HotPost}" var="hp"> 
-                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                    <c:forEach items="${requestScope.HotPost}" var="hp">
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
-                                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="aa" src="${hp.thumbnail}" alt="">
+                                <div class="card-header product-img1 position-relative overflow-hidden bg-transparent border p-0">
+                                    <img src="${hp.thumbnail}" alt="post">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <a href="BlogDetail?postID=${hp.postID}" class="text-truncate mb-3">${hp.title}</a>
                                     <div class="d-flex justify-content-center">
-                                        <p>${hp.brief_information}</p><h6 class="text-muted ml-2"><del></del></h6>
+                                        <p>${hp.brief_information}</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </c:forEach>
                 </div>
+
             </div>
             <!-- Products End -->
 
@@ -423,6 +444,45 @@
 
             <!-- Template Javascript -->
             <script src="js/main.js"></script>
+
+            <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+                        addToCartButtons.forEach(button => {
+                            button.addEventListener('click', function (event) {
+                                event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+
+                                // Lấy ID sản phẩm từ thuộc tính data
+                                const productId = this.getAttribute('data-product-id');
+
+                                // Tạo hiệu ứng thêm vào giỏ hàng
+                                const cartIcon = document.querySelector('.fa-shopping-cart');
+
+                                // Tạo bản sao của hình ảnh sản phẩm
+                                ;
+
+                                // Lấy vị trí của hình ảnh sản phẩm và giỏ hàng
+                                const cartIconRect = cartIcon.getBoundingClientRect();
+
+                                $.ajax({
+                                    url: 'AddToCart',
+                                    method: 'GET',
+                                    data: {pid: productId},
+                                    success: function (response) {
+                                        // Xử lý phản hồi thành công, ví dụ cập nhật giỏ hàng
+                                        alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                                    },
+                                    error: function (error) {
+                                        // Xử lý lỗi
+                                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                                    }
+                                });
+                            }, 1100);
+                        });
+                    });
+
+            </script>
     </body>
 
 </html>

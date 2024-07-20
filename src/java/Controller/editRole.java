@@ -6,13 +6,19 @@
 package Controller;
 
 import DAL.DAORole;
+import DAL.DAOSetting;
 import Entity.Role;
+import Entity.Setting;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -33,6 +39,7 @@ public class editRole extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         DAORole dao = new DAORole();
+        DAOSetting db = new DAOSetting();
         String service = request.getParameter("service");
         if (service == null) {
             service = "listAllCustomer";
@@ -46,11 +53,17 @@ public class editRole extends HttpServlet {
             } else {
                 String customerID = request.getParameter("RoleID");
                 String fname = request.getParameter("Role_Name");
+                String fname0 = request.getParameter("status_nameo");
                int customerid = Integer.parseInt(customerID);
                 String sql = "select * from Role where RoleID=" + customerID;
                 Vector<Role> vector = dao.getRole(sql);
                 if (vector.size() > 0) {
+                     SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+                     LocalDate localDate = LocalDate.now();
+                     Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
                     Role status = new Role(customerid, fname);
+                    Setting sl = new Setting(-1, "Edit Role",fname0 + "=>"+ fname, date_create_by, 1);
+                    db.addSetting(sl);
                     dao.updateRole(status);
                     response.sendRedirect("editRoleURL");
 

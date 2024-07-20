@@ -34,6 +34,26 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+           <link rel="stylesheet" href="./mktcss/styles.css">
+        <link rel="stylesheet" href="/qcss/style.css">
     </head>
     <style>
         td img {
@@ -297,6 +317,13 @@
     </script>
 </head>
 <body>
+    <div class="grid-container">
+
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebarAdmin.jsp"></jsp:include>
     <div class="container-xl">
         <div class="table-responsive">
             <div class="table-wrapper">
@@ -307,15 +334,14 @@
                         </div>
                         <div class="col-sm-3">
                             <form action="AdminSettingURL" method="get">
-                                    <p>
-                                        Search value: <input type="text" name="value"> 
-                                        <input type="submit" name="submit" value="search">
-                                        <input type="reset" value="Clear"></p>
-                                    <input type="hidden" name="service" value="listAllSetting">
-                                </form>	
+                                <p>
+                                    Search value: <input type="text" name="value"> 
+                                    <input type="submit" name="submit" value="search">
+                                    <input type="reset" value="Clear"></p>
+                                <input type="hidden" name="service" value="listAllSetting">
+                            </form>	
                         </div>
                         <div class="col-sm-6">
-                            <a href="AdminSettingURL?service=addSetting" class="btn btn-danger"><span>Add</span></a>
                             <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
                             <a href="#sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
                         </div>
@@ -326,47 +352,34 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="selectAll">
-                                    <label for="selectAll"></label>
-                                </span>
-                            </th>
-                            <th>SettingID</th>
-                            <th>Type</th>
+
+                            <th>SettingID</th>                           
                             <th>Value</th>
-                            <th>Order</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Dữ liệu từ JSP -->
+
                         <c:forEach items="${requestScope.listAllSetting}" var="c">
                             <tr>
-                                <td>
-                                    <span class="custom-checkbox">
-                                        <input type="checkbox" id="checkbox${c.settingID}" name="options[]" value="${c.settingID}">
-                                        <label for="checkbox${c.settingID}"></label>
-                                    </span>
-                                </td>
+
                                 <td>${c.settingID}</td>
-                                <td>${c.type}</td>
                                 <td>${c.value}</td>
-                                <td>${c.order}</td>
+
                                 <td>
                                     <c:if test="${c.status == '1'}">Show</c:if>
                                     <c:if test="${c.status != '1'}">Hide</c:if>
                                     </td>
                                     <td>
                                     <c:if test="${c.status == '1'}">
-                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=0" class="fa fa-eye"></a>
+                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=0" style="color: red" class="fa fa-eye"></a>
                                     </c:if>
                                     <c:if test="${c.status != '1'}">
-                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=1" class="fa fa-eye-slash"></a>
+                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=1" style="color: red" class="fa fa-eye-slash"></a>
                                     </c:if>
-                                    <a href="AdminSettingURL?service=updateSetting&settingid=${c.settingID}" title="Update" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                    <a href="AdminSettingURL?service=AdminSettingDetails&settingid=${c.settingID}" title="View Details" data-toggle="tooltip"><i class="material-icons">&#xE8B6;</i></a>
+
+                                    <a href="AdminSettingURL?service=AdminSettingDetails&settingid=${c.settingID}" title="View Details" data-toggle="tooltip"><i style="color: rgb(0, 0, 255)" class="material-icons">&#xE8B6;</i></a>
                                 </td>
                             </tr>
                         </c:forEach>

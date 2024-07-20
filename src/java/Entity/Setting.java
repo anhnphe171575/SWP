@@ -4,27 +4,27 @@
  */
 package Entity;
 
+import java.util.Date;
+
 /**
  *
  * @author Nguyễn Đăng
  */
 public class Setting {
     private int settingID;
-    private int type;
     private String value;
-    private int order;
     private String description;
+    private Date edit_log;
     private int status;
 
     public Setting() {
     }
 
-    public Setting(int settingID, int type, String value, int order, String description, int status) {
+    public Setting(int settingID, String value, String description, Date edit_log, int status) {
         this.settingID = settingID;
-        this.type = type;
         this.value = value;
-        this.order = order;
         this.description = description;
+        this.edit_log = edit_log;
         this.status = status;
     }
 
@@ -36,14 +36,6 @@ public class Setting {
         this.settingID = settingID;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public String getValue() {
         return value;
     }
@@ -52,20 +44,20 @@ public class Setting {
         this.value = value;
     }
 
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getEdit_log() {
+        return edit_log;
+    }
+
+    public void setEdit_log(Date edit_log) {
+        this.edit_log = edit_log;
     }
 
     public int getStatus() {
@@ -78,8 +70,11 @@ public class Setting {
 
     @Override
     public String toString() {
-        return "Setting{" + "settingID=" + settingID + ", type=" + type + ", value=" + value + ", order=" + order + ", description=" + description + ", status=" + status + '}';
+        return "Setting{" + "settingID=" + settingID + ", value=" + value + ", description=" + description + ", edit_log=" + edit_log + ", status=" + status + '}';
     }
+
+    
+    
 
    
 }

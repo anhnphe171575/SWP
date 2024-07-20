@@ -207,7 +207,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductByTitle(String title) {
         List<Product> p = new ArrayList();
         try {
-            String query = "SELECT * FROM Product WHERE product_name = ?";
+            String query = "SELECT * FROM Product WHERE product_name = ? ORDER BY productID DESC;";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, title);
             ResultSet rs = stm.executeQuery();
@@ -369,7 +369,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductByBrief(String Brief) {
         List<Product> p = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Product WHERE brief_information = ?";
+            String query = "SELECT * FROM Product WHERE brief_information = ? ORDER BY productID DESC;";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, Brief);
             ResultSet rs = stm.executeQuery();
@@ -401,11 +401,18 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductbyCategoryandStatus(String name, int status) {
         List<Product> productList = new ArrayList<>();
         try {
-            String query = "SELECT p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
-                    + "                    p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price,p.brand,p.status,p.update_date, \n"
-                    + "                    cp.category_productID,cp.category_name, cp.category_description, cp.image \n"
-                    + "                    FROM Product p INNER JOIN CategoryProduct cp ON p.category_productID = cp.category_productID\n"
-                    + "                    WHERE cp.category_name = ? AND p.status = ?";
+            String query = "SELECT * \n"
+                    + "FROM \n"
+                    + "    Product p \n"
+                    + "INNER JOIN \n"
+                    + "    CategoryProduct cp \n"
+                    + "ON \n"
+                    + "    p.category_productID = cp.category_productID\n"
+                    + "WHERE \n"
+                    + "    cp.category_name = ? \n"
+                    + "AND \n"
+                    + "    p.status = ?;"
+                    + "ORDER BY p.productID";
 
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, name);
@@ -441,7 +448,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductbyStatus(String status) {
         List<Product> productList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Product WHERE status = ?";
+            String query = "SELECT * FROM Product WHERE status = ? ORDER BY productID";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, status);
             ResultSet rs = stm.executeQuery();
@@ -474,8 +481,8 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductbyCategoryName(String category) {
         List<Product> productList = new ArrayList<>();
         try {
-            String query = "  select * from Product p inner join CategoryProduct cp on p.category_productID = cp.category_productID "
-                    + "where cp.category_name = ? ";
+            String query = "select * from Product p inner join CategoryProduct cp on p.category_productID = cp.category_productID "
+                    + "where cp.category_name = ? ORDER BY p.productID";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, category);
             ResultSet rs = stm.executeQuery();
@@ -1132,11 +1139,13 @@ public class DAOProduct extends DBContext {
             stm.setInt(1, id);
             stm.executeUpdate();
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        p.DeleteProduct(39);
+        p.DeleteProduct(24);
+//        System.out.println(p.getProductbyStatus("1"));
     }
 }

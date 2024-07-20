@@ -77,7 +77,7 @@
 
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                        <a href="" class="text-decoration-none d-block d-lg-none">
+                        <a href="HomePage" class="text-decoration-none d-block d-lg-none">
                             <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                         </a>
                         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -85,22 +85,40 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="index.html" class="nav-item nav-link">Home</a>
-                                <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                                <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
+                                <a href="HomePage" class="nav-item nav-link ">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle active" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                        <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                        <a href="BlogController" class="nav-item nav-link active">Bài Viết</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
-                            </div>
-                            <div class="navbar-nav ml-auto py-0">
-                                <a href="" class="nav-item nav-link">Login</a>
-                                <a href="" class="nav-item nav-link">Register</a>
-                            </div>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                            </div>        
+                            <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.cus}">
+
+                                    <div class="navbar-nav ml-auto py-0">
+                                        <div class="nav-item dropdown">
+                                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <div class="dropdown-menu ml-auto py-0">
+                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                            </div>
+                                            <!--<a href="LogOut">Log out</a>-->
+
+                                        </div>
+                                        <a href="LogOut" class="nav-link ">Đăng Xuất</a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="navbar-nav ml-auto py-0">
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </nav>
                 </div>
@@ -112,11 +130,11 @@
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Blog</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Xem Bài Viết</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="">Home</a></p>
+                    <p class="m-0"><a href="">Trang Chủ</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0">Blog</p>
+                    <p class="m-0">Bài Viết</p>
                 </div>
             </div>
         </div>
@@ -132,7 +150,7 @@
                     <div class="border-bottom mb-4 pb-4">
 
                         <a class="btn shadow-none d-flex align-items-center justify-content-center bg-primary text-white w-100" href="BlogController" style="height: 65px; margin-top: -1px; padding: 0 30px; text-align:center;border: 1px solid black">
-                            <h6 class="m-0">Categories</h6>
+                            <h6 class="m-0">Thể Loại</h6>
                         </a>
 
                         <div style="height: auto; text-align: center; padding: 5px;">
@@ -143,7 +161,7 @@
                             </c:forEach> 
                         </div>
                     </div> 
-                    <div style="    margin-bottom: 30px;"><h3>Last Blog</h3></div>   
+                    <div style="    margin-bottom: 30px;"><h3>Bài Viết Phổ Biến</h3></div>   
 
                     <div class="border-bottom mb-4 pb-4">
                         <div id="header-carousel" class="carousel slide" data-ride="carousel">
@@ -182,7 +200,7 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <form action="BlogController" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="search" placeholder="Search by name">
+                                        <input type="text" class="form-control" name="search" placeholder="Tìm theo tiêu đề">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-transparent text-primary">
                                                 <i class="fa fa-search"></i>
@@ -192,7 +210,7 @@
                                     <input type="hidden" name="cid" value="${requestScope.cid}">
                                     <input type="hidden" name="service" value="search">
                                 </form>
-                               
+
                             </div>
                         </div>
                         <div class="container">
@@ -211,7 +229,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer d-flex justify-content-between bg-light border">
-                                                <a href="BlogDetail?postID=${b.postID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                                <a href="BlogDetail?postID=${b.postID}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Chi Tiết</a>
                                             </div>
                                         </div>
                                     </div>

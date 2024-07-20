@@ -55,7 +55,7 @@
         <h1>Thanh Toán Thất Bại</h1>
         <p>Giao dịch của bạn không thể hoàn thành do một lỗi nào đó.</p>
         <p>Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ khách hàng.</p>
-        <a href="CartContact">Thử Lại</a>
+        <a href="HomePage">Thử Lại</a>
     </div>
 </body>
 </html>

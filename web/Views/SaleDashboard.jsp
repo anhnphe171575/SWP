@@ -87,7 +87,7 @@
                 <!-- End Header -->
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
+            <jsp:include page="sidebar1.jsp"></jsp:include>
                 <!-- End Sidebar -->
 
                 <main class="main-container">
@@ -98,7 +98,7 @@
                     
                 <div class="select">
                     <h2>For month:</h2>
-                    <form action="AdminDashboard" method="post">
+                    <form action="SaleDashboardURL" method="post">
                         <label for="month">Month:</label>
                         <input type="number" id="month" name="month" min="1" max="12" value="6" required>
                         <label for="year">Year:</label>
@@ -150,11 +150,7 @@
                 </script>
 
                 <div class="charts">  
-                    <!--                    <div class="charts-card" >
-                                            <h1 class="chart-title">Newly Cus Statistics</h1>
-                    
-                                            <div class="charts" id="orderChart"></div>
-                                        </div>-->
+                  
                     <div class="col-lg-3 charts-card">
                         <h2 class="chart-title">Status Order</h2>
                         <h2>Total: ${total}</h2>
@@ -179,14 +175,7 @@
                         <h2 class="chart-title">Newly Statistics</h2>
                         <div id="statsChartC"></div>
                     </div>
-                    <div class="col-lg-3 list-container" style="color: black">
-                        <h2>Customer List</h2>
-                        <ul id="customer-list" class="list-group">Customer list items will be inserted here:
-                            <li>phuanh<c:forEach begin="1" end="5" var="i">
-                                    <c:if test="${i <= 3}">⭐️</c:if>
-                                </c:forEach> </li>
-                        </ul>
-                    </div>
+                 
                 </div>
         </div>
     </main>

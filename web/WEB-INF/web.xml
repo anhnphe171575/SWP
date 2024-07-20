@@ -28,6 +28,14 @@
         <servlet-name>editRole</servlet-name>
         <servlet-class>Controller.editRole</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminSetting</servlet-name>
+        <servlet-class>Controller.AdminSetting</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Transaction</servlet-name>
+        <servlet-class>Controller.Transaction</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userDetail</servlet-name>
         <url-pattern>/userDetail</url-pattern>
@@ -563,5 +571,13 @@
     <servlet-mapping>
         <servlet-name>editRole</servlet-name>
         <url-pattern>/editRoleURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSetting</servlet-name>
+        <url-pattern>/AdminSettingURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Transaction</servlet-name>
+        <url-pattern>/TransactionURL</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -474,7 +474,7 @@
                             <h4 class="modal-title">Choose Product FeedBack</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="modal-body">/-strong/-heart:>:o:-((:-h<div class="form-group">
+                        <div class="modal-body"><div class="form-group">
                                 <label>Products</label>
                                 <select id="productSelect" name="pid" class="form-control">
                                     <!-- Options will be populated here -->

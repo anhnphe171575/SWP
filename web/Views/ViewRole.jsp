@@ -300,7 +300,7 @@
                 <!-- End Header -->
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
+            <jsp:include page="sidebarAdmin.jsp"></jsp:include>
 
                 <div class="container-xl">
                     <div class="table-responsive">

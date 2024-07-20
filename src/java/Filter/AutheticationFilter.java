@@ -4,6 +4,7 @@
  */
 package Filter;
 
+import Entity.Customer;
 import Entity.Role;
 import Entity.User;
 import java.io.IOException;
@@ -101,51 +102,162 @@ public class AutheticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        String url = req.getServletPath();
-        System.out.println("Requested Resource::" + url);
-
-        HttpSession session = req.getSession();
-        Role role = (Role) session.getAttribute("role");
-        User user = (User) session.getAttribute("user");
-
-        if (role != null) {
-                    System.out.println(role.getRoleID());
-            if (role.getRoleID() == 1 && !(url.endsWith("MKTDashboard")
-                    || url.endsWith("DBcus")
-                    || url.endsWith("DBpost")
-                    || url.endsWith("DBpro")
-                    || url.endsWith("DBfeedback")
-                    || url.endsWith("editp")
-                    || url.endsWith("EditPost")
-                    || url.endsWith("editProductDetails")
-                    || url.endsWith("productslist")
-                    || url.endsWith("SliderServletURL")
-                    || url.endsWith("PostController")
-                    || url.endsWith("CustomerServletURL")
-                    || url.endsWith("addp")
-                    || url.endsWith("StatusFeedBack")
-                    || url.endsWith("FeedBackList")
-                    || url.endsWith("update")
-                    || url.endsWith("view")
-                    || url.endsWith("FeedbackDetail"))) {
-                request.getRequestDispatcher("LoginController").forward(request, response);
-            } else if (role.getRoleID() == 2) {
-
-            } else if (role.getRoleID() == 3) {
-
-            } else if (role.getRoleID() == 4) {
-
-            } else if (role.getRoleID() == 5) {
-
-            } else {
-                          chain.doFilter(request, response);
-
-            }
-        } else {
-            chain.doFilter(request, response);
-        }
+//        HttpServletRequest req = (HttpServletRequest) request;
+//        HttpServletResponse res = (HttpServletResponse) response;
+//        String url = req.getServletPath();
+//        System.out.println("Requested Resource::" + url);
+//
+//        HttpSession session = req.getSession();
+//        Role role = (Role) session.getAttribute("role");
+//        User user = (User) session.getAttribute("user");
+//        Customer cus = (Customer) session.getAttribute("cus");
+//
+//        if (cus == null && (url.endsWith("AddToCart")
+//                || url.endsWith("CartDetails")
+//                || url.endsWith("CartContact")
+//                || url.endsWith("MyOrderURL")
+//                || (url.endsWith("CancelOrder")
+//                || (url.endsWith("MyOrderDetailURL"))
+//                || (url.endsWith("PayAgain"))
+//                || (url.endsWith("editProfileCustomerURL"))))) {
+//            request.getRequestDispatcher("LoginCusController").forward(request, response);
+//            return;
+//        }
+//        if ((url.endsWith("ProductsListPublic")
+//                || (url.endsWith("BlogController"))
+//                || (url.endsWith("HomePage"))
+//                || (url.endsWith("payments.png"))
+//                || (url.endsWith("HomePage"))
+//                || (url.endsWith("ProductDetailsPublic"))
+//                || (url.endsWith("LoginController"))
+//                || (url.endsWith("LoginCusController"))
+//                || (url.endsWith("ResetPassword"))
+//                || (url.endsWith("NewPassword"))
+//                || (url.endsWith("SearchHome"))
+//                || (url.endsWith("signup"))
+//                || (url.endsWith("verify"))
+//                || (url.endsWith("LogOut")))) {
+//            session.removeAttribute("user");
+//            session.removeAttribute("role");
+//
+//            System.out.println("aa");
+//            chain.doFilter(request, response);
+//            return;
+//
+//        }
+//        if (cus != null && ((url.endsWith("CartDetails"))
+//                || (url.endsWith("CartContact"))
+//                || (url.endsWith("editProfileCustomerURL"))
+//                || (url.endsWith("ProductsListPublic"))
+//                || (url.endsWith("LogOut"))
+//                || (url.endsWith("BlogController"))
+//                || (url.endsWith("MyOrderURL"))
+//                || (url.endsWith("CancelOrder"))
+//                || (url.endsWith("MyOrderDetailURL"))
+//                || (url.endsWith("HomePage"))
+//                || (url.endsWith("AddToCart"))
+//                || (url.endsWith("CartCompletion"))
+//                || (url.endsWith("payments.png"))
+//                || (url.endsWith("HomePage"))
+//                || (url.endsWith("ProductDetailsPublic"))
+//                || (url.endsWith("vnpayajax"))
+//                || (url.endsWith("BlogDetail"))
+//                || (url.endsWith("PayAgain")))) {
+//            System.out.println("bb");
+//            System.out.println(cus);
+//            chain.doFilter(request, response);
+//
+//        } else if (role != null && user != null) {
+//            System.out.println(role.getRoleID());
+//            if (role.getRoleID() == 1 && !(url.endsWith("MKTDashboard")
+//                    || url.endsWith("DBcus")
+//                    || url.endsWith("DBpost")
+//                    || url.endsWith("DBpro")
+//                    || url.endsWith("DBfeedback")
+//                    || url.endsWith("editp")
+//                    || url.endsWith("EditPost")
+//                    || url.endsWith("editProductDetails")
+//                    || url.endsWith("productslist")
+//                    || url.endsWith("SliderServletURL")
+//                    || url.endsWith("PostController")
+//                    || url.endsWith("CustomerServletURL")
+//                    || url.endsWith("addp")
+//                    || url.endsWith("StatusFeedBack")
+//                    || url.endsWith("FeedBackList")
+//                    || url.endsWith("update")
+//                    || url.endsWith("view")
+//                    || url.endsWith("FeedbackDetail")
+//                    || url.endsWith("deleteProduct")
+//                    || url.endsWith("vncss/vn3.css")
+//                    || url.endsWith("editProfileUserURL"))) {
+//                System.out.println("cc");
+//                request.getRequestDispatcher("MKTDashboard").forward(request, response);
+//            } else if (role.getRoleID() == 2 && !(url.endsWith("updatestatusorder")
+//                    || url.endsWith("orderlist")
+//                    || url.endsWith("orderstatus")
+//                    || url.endsWith("orderdetails")
+//                    || url.contains("mktcss")
+//                    || url.endsWith("LoginController")
+//                    || url.endsWith("editProfileUserURL"))) {
+//                System.out.println("dd");
+//
+//                request.getRequestDispatcher("orderlist").forward(request, response);
+//
+//            }
+//            else if (role.getRoleID() == 4 && !(url.endsWith("orderlist")
+//                    || url.contains("mktcss")
+//                    || url.endsWith("orderdetails")
+//                    || url.endsWith("updatestatusorder")
+//                    || url.endsWith("orderstatus")
+//                    || url.endsWith("LoginController")
+//                    || url.endsWith("editProfileUserURL") 
+//                    || url.endsWith("productslist") 
+//                     || url.endsWith("updateQuantity") 
+//                    || url.endsWith("updatePrice")
+//                     || url.endsWith("updateSalePrice")
+//                    )) {
+//                System.out.println("ee");
+//
+//                request.getRequestDispatcher("orderlist").forward(request, response);
+//
+//            } 
+//            else if (role.getRoleID() == 3 && !(url.endsWith("SaleDashboardURL")
+//                    || url.endsWith("orderlist")
+//                    || url.contains("mktcss")
+//                    || url.endsWith("orderdetails")
+//                    || url.endsWith("updatesale")
+//                    || url.endsWith("sales")
+//                    || url.endsWith("LoginController")
+//                    || url.endsWith("editProfileUserURL"))) {
+//                System.out.println("gg");
+//
+//                request.getRequestDispatcher("orderlist").forward(request, response);
+//            } 
+//            else if (role.getRoleID() == 5
+//                    && !(url.endsWith("AdminDashboard")
+//                    || url.endsWith("userList")
+//                    || url.endsWith("userDetail")
+//                    || url.endsWith("AddUser")
+//                    || url.endsWith("updateUser")
+//                    || url.endsWith("SecurityQuestion")
+//                    || url.endsWith("EditSQ")
+//                    || url.endsWith("updateUser")
+//                    || url.endsWith("editRoleURL")
+//                    || url.endsWith("editStatusOrderURL")
+//                    || url.endsWith("styles.css")
+//                    || url.endsWith("LoginController"))) {
+//                System.out.println("ff");
+//                request.getRequestDispatcher("LoginController").forward(request, response);
+//            } 
+//            else //request.getRequestDispatcher("LoginController").forward(request, response);
+//            {
+//                chain.doFilter(request, response);
+//            }
+//            return;
+//        } else {
+          //  request.getRequestDispatcher("LoginController").forward(request, response);
+        //}
+        chain.doFilter(request, response);
     }
 
     /**

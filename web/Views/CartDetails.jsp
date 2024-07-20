@@ -11,7 +11,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>EShopper - Bootstrap Shop Template</title>
+        <title>EShopper</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
@@ -42,6 +42,12 @@
                 cursor: pointer;
             }
         </style>
+        <style>
+    .unavailable {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+</style>
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
     </head>
@@ -57,7 +63,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="ProductsListPublic" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products" name = "search">
+                        <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm" name="search">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -82,7 +88,7 @@
             <div class="row border-top px-xl-5">
                 <div class="col-lg-3 d-none d-lg-block">
                     <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                        <h6 class="m-0">Categories</h6>
+                        <h6 class="m-0">Thể Loại</h6>
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
@@ -114,32 +120,38 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link">Home</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link">Shop</a>
-
+                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
-                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                        <a href="BlogController" class="dropdown-item">Lasted Post</a>
+                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
-                                <a href="contact.html" class="nav-item nav-link">Contact</a>
-                            </div>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                            </div>       
                             <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                             <c:choose>
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href=""style="margin-right: 10px">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <a href="LogOut">Log out</a>
-
+                                          <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                        <div class="dropdown-menu ml-auto py-0">
+                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                        </div>
+                                        <!--<a href="LogOut">Log out</a>-->
+                                        
+                                          </div>
+                                        <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
 
                                 </c:when>
                                 <c:otherwise>
                                     <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                        <a href="signup" class="nav-item nav-link">Register</a>
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -154,118 +166,127 @@
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Giỏ Hàng</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="HomePage">Home</a></p>
+                    <p class="m-0"><a href="HomePage">Trang Chủ</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0">Shopping Cart</p>
+                    <p class="m-0">Giỏ Hàng</p>
                 </div>
             </div>
         </div>
         <!-- Page Header End -->
 
-        <button class="button" style="margin-left: 7%"onclick="location.href = 'ProductsListPublic'">More Product</button>
+        <button class="button" style="margin-left: 7%"onclick="location.href = 'ProductsListPublic'">Thêm Sản Phẩm</button>
         <div id="ListPro"></div>
         <!-- Cart Start -->
         <div class="container-fluid pt-5">
 
             <div class="row px-xl-5">
 
-                <div class="col-lg-8 table-responsive mb-5">
-                    <table class="table table-bordered text-center mb-0">
-                        <thead class="bg-secondary text-dark">
-                            <tr>
-                                <th></th>
-                                <th>Products</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Available</th>
-                                <th>Total</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
+              <div class="col-lg-8 table-responsive mb-5">
+    <table class="table table-bordered text-center mb-0">
+        <thead class="bg-secondary text-dark">
+            <tr>
+                <th></th>
+                <th>Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Số Lượng</th>
+                <th>Kho</th>
+                <th>Tổng</th>
+                <th>Xóa</th>
+            </tr>
+        </thead>
 
-                        <tbody class="align-middle">
+        <tbody class="align-middle">
 
-                            <c:forEach items="${requestScope.list}" var="l" varStatus="status">
-                                <tr>
-                                    <td class="align-middle">
+            <c:forEach items="${requestScope.list}" var="l" varStatus="status">
+                <c:forEach items="${requestScope.quantity}" var="q">
+                    <c:if test="${q.key == l.product.productID}">
+                        <tr class="${q.value == 0 ? 'unavailable' : ''}">
+                            <td class="align-middle">
+                                <c:choose>
+                                    <c:when test="${q.value > 0}">
                                         <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" checked="">
-                                        <input type="hidden" name="cartid" value="${l.cart.getCartID()}" class="cartid">
-                                    </td>
-                                    <td class="align-middle"><img src="${l.product.thumbnail}" alt="" style="width: 50px;">${l.product.product_name}</td>
-                                        <c:choose>
-                                            <c:when test="${l.product.sale_price != 0}">
-                                            <td class="align-middle" id="price-${status.index}">${l.product.sale_price}</td>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <td class="align-middle" id="price-${status.index}">${l.product.original_price}</td>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" disabled>
+                                    </c:otherwise>
+                                </c:choose>
+                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}" class="cartid">
+                            </td>
+                            <td class="align-middle">
+                                <img src="${l.product.thumbnail}" alt="" style="width: 50px;" class="${q.value == 0 ? 'unavailable' : ''}">
+                                <span class="${q.value == 0 ? 'unavailable' : ''}">${l.product.product_name}</span>
+                            </td>
+                            <c:choose>
+                                <c:when test="${l.product.sale_price != 0}">
+                                    <td class="align-middle" id="price-${status.index}">${l.product.sale_price}</td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td class="align-middle" id="price-${status.index}">${l.product.original_price}</td>
+                                </c:otherwise>
+                            </c:choose>
 
-                                    <c:forEach items="${requestScope.quantity}" var="q">
-                                        <c:if test="${q.key == l.product.productID}">
-                                            <td class="align-middle">
-                                                <form class="quantityForm" action="CartDetails" method="post">
-                                                    <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                                    <input type="hidden" name="pid" value="${l.product.productID}">
-                                                    <div class="input-group quantity mx-auto" style="width: 100px;">
-                                                        <div class="input-group-btn">
-                                                            <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name ="quantity" max="${q.value}" min = "1">
-                                                        <div class="input-group-btn">
-                                                            <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
+                            <td class="align-middle">
+                                <form class="quantityForm" action="CartDetails" method="post">
+                                    <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                    <input type="hidden" name="pid" value="${l.product.productID}">
+                                    <div class="input-group quantity mx-auto" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name="quantity" max="${q.value}" min="1" ${q.value == 0 ? 'disabled' : ''}>
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </td>                                
 
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </td>                                
+                            <td class="align-middle">
+                                ${q.value}
+                            </td>
 
-                                            <td class="align-middle">
-                                                ${q.value}
-                                            </td>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
-                                    <c:set var="subtotal" value="${itemPrice * l.quantity}" />
-                                    <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
-                                    <td class="align-middle" id="total-${status.index}">
-                                        ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
-                                    </td>                              
+                            <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
+                            <c:set var="subtotal" value="${itemPrice * l.quantity}" />
+                            <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
+                            <td class="align-middle" id="total-${status.index}">
+                                ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
+                            </td>
                             <form action="CartDetails" method="post">
-
-                                <td class="align-middle">
-                                    <button class="btn btn-sm btn-primary" type="submit" name="delete" value="delete">
+                                <td class="align-middle" style="opacity: 1.5">
+                                    <button class="btn btn-sm btn-primary" type="submit" name="delete" value="delete" >
                                         <i class="fa fa-times"></i>
                                     </button>
-                                </td>       
+                                </td>
                                 <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
                                 <input type="hidden" name="cartitemid" value="${l.getCarItemID()}">
                             </form>
-                            </tr>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </c:forEach>
 
-                        </c:forEach>
+        </tbody>
+    </table>
+</div>
 
-                        </tbody>
-                    </table>
-                </div>
                 <div class="col-lg-4">
 
                     <div class="card border-secondary mb-5">
                         <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                            <h4 class="font-weight-semi-bold m-0">Giỏ Hàng</h4>
                         </div>                    
                         <div class="card-footer border-secondary bg-transparent">
                             <div class="d-flex justify-content-between mt-2">
-                                <h5 class="font-weight-bold">Total</h5>
+                                <h5 class="font-weight-bold">Tổng Giá</h5>
                                 <h5 class="font-weight-bold">$${totalOrderPrice}</h5>
                             </div>
-                            <button class="btn btn-block btn-primary my-3 py-3" id="proceedToCheckout">Proceed To Checkout</button>
+                            <button class="btn btn-block btn-primary my-3 py-3" id="proceedToCheckout">Tiến hành thanh toán</button>
                         </div>
                     </div>
                 </div>

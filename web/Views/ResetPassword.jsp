@@ -77,7 +77,12 @@ button[type="submit"]:active {
             <button type="submit" style="background-color: #D19C97">Gửi</button>
            
         </form>
+            <c:if test="${requestScope.role == 1}">
          <button onclick="location.href='LoginCusController'"  style="background-color: #D19C97">Quay lại đăng nhập</button>
+         </c:if>
+         <c:if test="${requestScope.role != 1}">
+         <button onclick="location.href='LoginController'"  style="background-color: #D19C97">Quay lại đăng nhập</button>
+         </c:if>
          <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-message">
                 <%= request.getAttribute("errorMessage") %>

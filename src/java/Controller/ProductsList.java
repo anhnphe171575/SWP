@@ -124,11 +124,11 @@ public class ProductsList extends HttpServlet {
             if (!"3".equals(category) && status != 3) {
                 request.setAttribute("list", d.getProductbyCategoryandStatus(category, status));
             } else if (!"3".equals(category) && status == 3) {
-                request.setAttribute("list", d.getProductbyStatus(status_raw));
-            } else if ("3".equals(category) && status != 3) {
                 request.setAttribute("list", d.getProductbyCategoryName(category));
-            } else {
-                request.setAttribute("list", d.getProductStatusbyID(status));
+            } else if ("3".equals(category) && status != 3) {
+                request.setAttribute("list", d.getProductbyStatus(status_raw));
+            } else if ("3".equals(category) && status == 3) {
+                request.setAttribute("list", d.getProduct1());
             }
             request.setAttribute("category", cp.getCategoryProductName());
             request.setAttribute("status", cp.getCategoryStatus());

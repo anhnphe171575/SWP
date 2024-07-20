@@ -90,17 +90,24 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("role", user.getRole());
                 if (user.getRole().getRoleID() == 1) {
                     session.setAttribute("user", user);
-                    session.setMaxInactiveInterval(1800);
+                    session.setMaxInactiveInterval(15*60);
                     response.sendRedirect("MKTDashboard");
                 } else if (user.getRole().getRoleID() == 3) {
                     session.setAttribute("user", user);
-                    session.setMaxInactiveInterval(1800);    
-                    response.sendRedirect("AdminDashboard");
-                } else if (user.getRole().getRoleID() == 2 || user.getRole().getRoleID() == 4) {
+                    session.setMaxInactiveInterval(15*60);    
+                    response.sendRedirect("SaleDashboardURL");
+                } 
+                else if (user.getRole().getRoleID() == 2 || user.getRole().getRoleID() == 4) {
                     session.setAttribute("user", user);
-                    session.setMaxInactiveInterval(1800);
+                    session.setMaxInactiveInterval(15*60);
                     response.sendRedirect("orderlist");
-                } else {
+                } 
+                else if (user.getRole().getRoleID() == 5) {
+                    session.setAttribute("user", user);
+                    session.setMaxInactiveInterval(15*60);
+                    response.sendRedirect("AdminSettingURL");
+                } 
+              else {
                     session.setAttribute("user", user);
                     response.sendRedirect("");
                 }

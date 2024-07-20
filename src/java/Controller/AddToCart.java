@@ -62,6 +62,13 @@ public class AddToCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("cus");
+        if(cus == null){
+            System.out.println("nnn");
+                request.getRequestDispatcher("LoginCusController").forward(request, response);
+        }
+        else{
         String pid = request.getParameter("pid");
         String quantity = request.getParameter("quantity");
         int pid_raw = 0;
@@ -70,8 +77,7 @@ public class AddToCart extends HttpServlet {
         } catch (Exception e) {
             request.getRequestDispatcher("HomePage").forward(request, response);
         }
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("cus");
+       
         List<CartItems> cart = (List<CartItems>) session.getAttribute("cart");
         DAOCart db = new DAOCart();
         System.out.println(pid);
@@ -104,6 +110,8 @@ public class AddToCart extends HttpServlet {
             }
         }
         response.sendRedirect("CartDetails");
+        }
+        
     }
 
     /**

@@ -361,8 +361,9 @@
                                         <td><%=obj.getStatus() == 1 ? "Active" : "Inactive" %></td>
                                         <td><%=obj.getRole().getRole_Name()%></td>
                                         <td>
-                                            <a href="userDetail?UserID=<%=obj.getUserID()%>" class="fa fa-eye"></a>
-                                            <a href="updateUser?&UserID=<%=obj.getUserID()%>"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                                            <a href="userDetail?UserID=<%=obj.getUserID()%>" style="color: red" class="fa fa-eye"></a>
+                                            <a href="updateUser?&UserID=<%=obj.getUserID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                            </a>
                                         </td>
                                     </tr>
                                     <%}%>

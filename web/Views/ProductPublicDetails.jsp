@@ -134,80 +134,81 @@
         <!-- Navbar Start -->
         <div id="stickyBar"class="bar">
             <div class="container-fluid">
-                <div class="row border-top px-xl-5">
-                    <div class="col-lg-3 d-none d-lg-block">
-                        <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                            <h6 class="m-0">Categories</h6>
-                            <i class="fa fa-angle-down text-dark"></i>
+            <div class="row border-top px-xl-5">
+                <div class="col-lg-3 d-none d-lg-block">
+                    <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                        <h6 class="m-0">Thể Loại</h6>
+                        <i class="fa fa-angle-down text-dark"></i>
+                    </a>
+                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                        <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                            <c:forEach items="${requestScope.Cate1}" var="a"> 
+                                <div class="nav-item dropdown"> 
+                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
+                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
+                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
+
+                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
+
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </c:forEach>                   
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-lg-9">
+                    <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                        <a href="" class="text-decoration-none d-block d-lg-none">
+                            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                         </a>
-                        <nav class="collapse navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
-                            <div class="navbar-nav w-100 overflow-hidden" style="height: 410px; background-color: #f8f9fa;">
-                                <c:forEach items="${requestScope.Cate1}" var="a"> 
-                                    <div class="nav-item dropdown"> 
-                                        <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
-                                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                            <c:forEach items="${requestScope.CategoryB}" var="c"> 
-                                                <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-                                                    <a href="" class="dropdown-item">${c.brand}</a>
-                                                </c:if>
-                                            </c:forEach>
-                                        </div>
+                        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                            <div class="navbar-nav mr-auto py-0">
+                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
+                                <div class="nav-item dropdown">
+                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
+                                    <div class="dropdown-menu rounded-0 m-0">
+                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
-                                </c:forEach>                   
-                            </div>
-                        </nav>
-                    </div>
+                                </div>
+                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                            </div>       
+                            <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.cus}">
 
-                    <div class="col-lg-9">
-                        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                            <a href="HomePage" class="text-decoration-none d-block d-lg-none">
-                                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
-                            </a>
-                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                                <span class="navbar-toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                                <div class="navbar-nav mr-auto py-0">
-                                    <a href="HomePage" class="nav-item nav-link ">Home</a>
-                                    <a href="ProductsListPublic" class="nav-item nav-link active">Product</a>
-                                    <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
-                                        <div class="dropdown-menu rounded-0 m-0">
-                                            <a href="BlogController" class="dropdown-item">Lasted Post</a>
+                                    <div class="navbar-nav ml-auto py-0">
+                                          <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                        <div class="dropdown-menu ml-auto py-0">
+                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
                                         </div>
+                                        <!--<a href="LogOut">Log out</a>-->
+                                        
+                                          </div>
+                                        <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
-                                    <a href="contact.html" class="nav-item nav-link">Contact</a>
-                                </div>        
-                                <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
-                                <c:choose>
-                                    <c:when test="${not empty sessionScope.cus}">
 
-                                        <div class="navbar-nav ml-auto py-0">
-                                            <div class="nav-item dropdown">
-                                                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                                <div class="dropdown-menu ml-auto py-0">
-                                                    <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Profile</a>
-                                                    <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">My Order</a>
-                                                </div>
-                                                <!--<a href="LogOut">Log out</a>-->
-
-                                            </div>
-                                            <a href="LogOut" class="nav-link ">Log out</a>
-                                        </div>
-
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="navbar-nav ml-auto py-0">
-                                            <a href="LoginCusController" class="nav-item nav-link">Login</a>
-                                            <a href="signup" class="nav-item nav-link">Register</a>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </nav>
-                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="navbar-nav ml-auto py-0">
+                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </nav>
                 </div>
             </div>
+        </div>
         </div>
         <!-- Navbar End -->
 
@@ -215,13 +216,11 @@
         <!-- Page Header Start -->
         <div class="container-fluid bg-secondary mb-5">
             <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi Tiết Sản Phẩm</h1>
                 <div class="d-inline-flex">
-                    <p class="m-0"><a href="HomePage">Home</a></p>
+                    <p class="m-0"><a href="HomePage">Trang Chủ</a></p>
                     <p class="m-0 px-2">-</p>
-                    <p class="m-0" ><a href="ProductsListPublic">Products</a></p>
-                    <p class="m-0 px-2">-</p>
-                    <p class="m-0">Product Details</p>
+                    <p class="m-0">Sản Phẩm</p>
                 </div>
             </div>
         </div>
@@ -244,7 +243,7 @@
                         <div class="star-rating1">
 
                         </div>
-                        <small class="pt-1">(${requestScope.qreview} Reviews)</small>
+                        <small class="pt-1">(${requestScope.qreview} Đánh Giá)</small>
                     </div>
                     <div style="display: flex; padding-bottom: 5px">
                         <c:if test="${not empty p.sale_price}">
@@ -282,7 +281,7 @@
                 <div class="col">
                     <div class="nav nav-tabs justify-content-center border-secondary mb-4">
 
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (${qreview})</a>
+                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Đánh Giá (${qreview})</a>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade" id="tab-pane-3">
@@ -309,10 +308,10 @@
                                 <div class="col-md-6">
                                     <c:choose>
                                         <c:when test="${not empty requestScope.activate}">
-                                            <h4 class="mb-4">Review</h4>
+                                            <h4 class="mb-4">Đánh Giá</h4>
                                             <form action="ProductDetailsPublic" method="post"  enctype="multipart/form-data">
                                                 <div class="d-flex my-3">
-                                                    <p class="mb-0 mr-2 ">Your Rating * :</p>                         
+                                                    <p class="mb-0 mr-2 ">Đánh Giá Sao * :</p>                         
                                                     <div class="star-rating">
                                                         <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars" required >☆</label>
                                                         <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars" required>☆</label>
@@ -323,9 +322,9 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="message">Your Review *</label><br>
-                                                    Image: <input type="file" name="file" id="file" style="margin-bottom: 10px" required=""><br>
-                                                    Content:<textarea id="message" cols="30" rows="5" class="form-control" name="comment" required=""></textarea>
+                                                    <label for="message">Đánh Giá của bạn *</label><br>
+                                                    Ảnh: <input type="file" name="file" id="file" style="margin-bottom: 10px" required=""><br>
+                                                    Nội dung:<textarea id="message" cols="30" rows="5" class="form-control" name="comment" required=""></textarea>
                                                 </div>                                 
                                                 <div class="form-group mb-0">
                                                     <input type="submit" value="submit" class="btn btn-primary px-3">
@@ -350,7 +349,7 @@
         <!-- Products Start -->
         <div class="container-fluid py-5">
             <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+                <h2 class="section-title px-5"><span class="px-2">Sản Phẩm Khác</span></h2>
             </div>
             <div class="row px-xl-5">
                 <div class="col">

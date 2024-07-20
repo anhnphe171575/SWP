@@ -40,7 +40,9 @@
                         <input type="text" class="form-control" id="id" name="id" value="${sq.securityID}" readonly="">
                     </div>
                     <div class="form-group">
+                        
                         <label for="security_question">Question:</label>
+                        <input type="hidden" name="status_nameo" value="${sq.security_question}" >
                         <input type="text" class="form-control" id="security_question" name="security_question" value="${sq.security_question}" required>
                     </div>
                     <button type="submit" class="btn btn-info">Submit</button>

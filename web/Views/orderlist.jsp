@@ -413,13 +413,26 @@
                 event.preventDefault();
                 var newStatus = $('#statusDropdown-' + statusOrderid).val();
                 console.log("Updating Order ID:", orderID, "with Status:", newStatus);
+                var note = "";
 
+                if (newStatus === "7") {
+                    note = prompt("Vui lòng nhập ghi chú cho việc cập nhật trạng thái này:", "");
+                    if (note === null) {
+                        alert('Bạn đã hủy cập nhật trạng thái.');
+                        return; // Thoát khỏi hàm nếu người dùng hủy
+                    }
+                    if (note.length === 0) {
+                        alert('Ghi chú không thể để trống khi trạng thái là 5.');
+                        return;
+                    }
+                }
                 $.ajax({
                     url: 'updatestatusorder',
                     method: 'POST',
                     data: {
                         orderID: orderID,
-                        newStatus: newStatus
+                        newStatus: newStatus,
+                        note: note
                     },
                     success: function (response) {
                         alert('Cập nhật trạng thái đơn hàng thành công!');
@@ -430,6 +443,7 @@
                     }
                 });
             }
+
             function validateForm() {
                 var orderID = document.forms["searchForm"]["id"].value;
                 var customerName = document.forms["searchForm"]["customer"].value;
@@ -444,6 +458,7 @@
                 }
                 return true;
             }
+
         </script>
     </head>
     <body>
@@ -613,7 +628,7 @@
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
                                             <td>${item.order.status.status_name}</td>
                                             <td style="width: 200px">
-                                                <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
+                                                <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3 || item.order.status.getStatus_orderid() == 5) && sessionScope.user.role.getRoleID() == 4 ) || 
                                                               (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          
                                                       <span id="statusContainer-${item.order.status.getStatus_orderid()}">
                                                           <i class="fas fa-edit edit-status-icon" 
