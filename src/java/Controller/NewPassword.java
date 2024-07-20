@@ -6,8 +6,8 @@ package Controller;
 
 import DAL.DAOCustomer;
 import Entity.Customer;
-import Entity.User;
-import DAL.DAOUser;
+import Entity.Staff;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -42,7 +42,7 @@ public class NewPassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet NewPassword</title>");            
+            out.println("<title>Servlet NewPassword</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet NewPassword at " + request.getContextPath() + "</h1>");
@@ -60,16 +60,15 @@ public class NewPassword extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String email = request.getParameter("email");
-        String otp = request.getParameter("otp"); 
+        String otp = request.getParameter("otp");
         String role = request.getParameter("role");
         request.setAttribute("otp", otp);
         request.setAttribute("email", email);
-         request.setAttribute("role", role);
+        request.setAttribute("role", role);
         request.getRequestDispatcher("Views/NewPassword.jsp").forward(request, response);
     }
 
@@ -92,13 +91,13 @@ public class NewPassword extends HttpServlet {
 
         String checkOtp = (String) request.getSession().getAttribute(email + "_reset_otp");
         String expireTime = (String) request.getSession().getAttribute(email + "_reset_time");
-             
+
         Customer cus = new DAOCustomer().getCusByEmail(email);
-        User user = new DAOUser().getUserByLogin(email, "select * from [User] where username =?");
+        Staff user = new DAOStaff().getStaffByLogin(email, "select * from [Staff] where username =?");
         String msg = "";
-         DAOCustomer db = new DAOCustomer();
-         DAOUser db1 = new DAOUser();
-        if ((cus == null && role.equals("1"))  || (user == null && !role.equals("1"))) {
+        DAOCustomer db = new DAOCustomer();
+        DAOStaff db1 = new DAOStaff();
+        if ((cus == null && role.equals("1")) || (user == null && !role.equals("1"))) {
             msg = "Email not found";
         } else if (otp.equals(checkOtp) && role.equals("1")) {
 
@@ -108,7 +107,7 @@ public class NewPassword extends HttpServlet {
 
                 if (password.equals(retypePassword)) {
 
-                   db.UpdateNewPass(email, password);
+                    db.UpdateNewPass(email, password);
                     msg = "Reset password success";
                     request.getSession().removeAttribute(email + "_reset_otp");
 
@@ -118,8 +117,7 @@ public class NewPassword extends HttpServlet {
 
             }
 
-        }   
-        else if (otp.equals(checkOtp) && !role.equals("1")) {
+        } else if (otp.equals(checkOtp) && !role.equals("1")) {
 
             if (!isExpired(expireTime)) {
                 msg = "Link expired";
@@ -127,7 +125,7 @@ public class NewPassword extends HttpServlet {
 
                 if (password.equals(retypePassword)) {
 
-                   db1.UpdateNewPass(email, password);
+                    db1.UpdateNewPass(email, password);
                     msg = "Reset password success";
                     request.getSession().removeAttribute(email + "_reset_otp");
 
@@ -137,8 +135,7 @@ public class NewPassword extends HttpServlet {
 
             }
 
-        } 
-        else {
+        } else {
             msg = "Error! Cant reset password";
         }
         request.setAttribute("role", role);
@@ -148,6 +145,7 @@ public class NewPassword extends HttpServlet {
 
         request.getRequestDispatcher("Views/NewPassword.jsp").forward(request, response);
     }
+
     public boolean isExpired(String dateString) {
         // Define the date format
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -156,12 +154,11 @@ public class NewPassword extends HttpServlet {
             // Parse the input date string
             Date expiryDate = dateFormat.parse(dateString);
 
-
             Calendar calendar = Calendar.getInstance();
             Date currentTime = calendar.getTime();
 
             // Compare the dates
-            if (currentTime.after(expiryDate)){
+            if (currentTime.after(expiryDate)) {
                 return false;
             }
         } catch (ParseException e) {
@@ -171,6 +168,7 @@ public class NewPassword extends HttpServlet {
         }
         return true;
     }
+
     /**
      * Returns a short description of the servlet.
      *

@@ -76,15 +76,15 @@
                     <td><input type="file" name="file" id="file" accept="image/*"></td>
                 </tr>-->
                 <tr>
-                    <td>First Name</td>
+                    <td>Tên</td>
                     <td><input type="text" name="fname" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Last Name</td>
+                    <td>Họ </td>
                     <td><input type="text" name="lname" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Phone</td>
+                    <td>Số điện thoại</td>
                     <td><input type="text" name="phone" id="" value=""></td>
                 </tr>
                 <tr>
@@ -92,41 +92,41 @@
                     <td><input type="email" name="email" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Address</td>
+                    <td>Địa chỉ</td>
                     <td><input type="text" name="address" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Username</td>
+                    <td>Tên đăng nhập</td>
                     <td><input type="text" name="username" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td>Mật khẩu</td>
                     <td><input type="password" name="password" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Date of Birth</td>
+                    <td>Ngày Sinh</td>
                     <td><input type="date" name="dob" id="" value=""></td>
                 </tr>
                 <tr>
-                    <td>Gender</td>
+                    <td>Giới tính</td>
                     <td style="display: flex; justify-content: space-between;">
                         <input type="radio" name="gender" value="true" id="male">
-                        <label for="male">Male</label>
+                        <label for="male">Nam</label>
                         <input type="radio" name="gender" value="false" id="female">
-                        <label for="female">Female</label>
+                        <label for="female">Nữ</label>
                     </td>
                 </tr>
-<!--                <tr>
+                <tr>
                     <td>Status</td>
                     <td>
                         <select name="status">
-                            <option value="1">Active</option>
-                            <option value="0">Not Active</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
                         </select>
                     </td>
-                </tr>-->
+                </tr>
                  <tr>
-                    <td>Role</td>
+                    <td>Vai trò</td>
                     <td> <select name="role">
                     <c:forEach items="${role}" var="r">
                     <option value="${r.roleID}">${r.role_Name}</option>
@@ -136,7 +136,7 @@
                 </tr>
                 
                 <tr>
-                    <td>Security Question</td>
+                    <td>Câu hỏi bảo mật</td>
                     <td>
                         <select name="securityQuestion">
                             <c:forEach items="${question}" var="q">
@@ -146,7 +146,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Security Answer</td>
+                    <td>Câu trả lời</td>
                     <td><input type="text" name="securityAnswer" id="" value=""></td>
                 </tr>
                 <tr>

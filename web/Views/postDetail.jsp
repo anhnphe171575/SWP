@@ -85,7 +85,7 @@
                                 <h1 class="blog-title">${post.title}</h1></div>
                             <div class="blog-meta">
                                 <h4>${post.brief_information}</h4>
-                                <span class="author">Người đăng: ${post.user.first_name} ${post.user.last_name}</span> | 
+                                <span class="author">Người đăng: ${post.staff.first_name} ${post.staff.last_name}</span> | 
                                 <span class="updated-date">Ngày cập nhật: ${post.date_create_by}</span> | 
                                 <span class="blog-category">Thể Loại ${post.cp.category_product.category_name}</span>
                             </div>

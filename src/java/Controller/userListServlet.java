@@ -5,7 +5,7 @@
 package Controller;
 
 import DAL.DAOSecurityQuestion;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Entity.Role;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
@@ -64,8 +64,8 @@ public class userListServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, MessagingException {
         response.setContentType("text/html;charset=UTF-8");
-        DAOUser daoU = new DAOUser();
-        List<User> list = new ArrayList<>();
+        DAOStaff daoU = new DAOStaff();
+        List<Staff> list = new ArrayList<>();
         PrintWriter out = response.getWriter();
         String service = request.getParameter("service");
 
@@ -76,7 +76,7 @@ public class userListServlet extends HttpServlet {
             //get id
             int id = Integer.parseInt(request.getParameter("userID"));
             //delete
-            daoU.removeUser(id);
+//            daoU.removeUser(id);
             response.sendRedirect("userList");
 
         } else if (service.equals("updateUser")) {
@@ -88,7 +88,7 @@ public class userListServlet extends HttpServlet {
                 request.setAttribute("error", request.getParameter("error"));
                 request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
                 request.setAttribute("role", daoU.getRole("select * from Role"));
-                request.setAttribute("user", daoU.getUsersByID(Integer.parseInt(request.getParameter("UserID"))));
+                request.setAttribute("user", daoU.getStaffsByID(Integer.parseInt(request.getParameter("UserID"))));
                 request.getRequestDispatcher("/Views/updateUsers.jsp").forward(request, response);
 
             } else {
@@ -100,7 +100,7 @@ public class userListServlet extends HttpServlet {
                 // Write the file to the specified directory
                 filePart.write(file.getAbsolutePath());
                 String fileUrl = "imgUserProfile/" + fileName;
-                
+
                 String UserID = request.getParameter("UserID");
                 String fname = request.getParameter("fname");
                 String lname = request.getParameter("lname");
@@ -132,11 +132,11 @@ public class userListServlet extends HttpServlet {
 
                 Boolean a = true;
                 String error = "";
-                if (daoU.notUserbyEmail(daoU.getUsersByID(UserId).getEmail(), email) != null) {
+                if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null) {
                     error += "Error Mail";
                     a = false;
                 }
-                if (daoU.notUserbyUsername(daoU.getUsersByID(UserId).getUsername(), username) != null) {
+                if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null) {
                     error += "Error UserName";
                     a = false;
 
@@ -146,12 +146,12 @@ public class userListServlet extends HttpServlet {
                     //  request.getRequestDispatcher("userList?service=updateUser&UserID=" + UserID).forward(request, response);
                     response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + error);
                 } else {
-                    User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-                    daoU.UpdateUser(user);
+                    Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+                    daoU.UpdateStaff(user);
                     response.sendRedirect("userList");
                 }
-            
-            }   
+
+            }
         } else if (service.equals("sort")) {
             String sort = request.getParameter("sort");
             request.setAttribute("data", daoU.sort(sort));
@@ -179,7 +179,7 @@ public class userListServlet extends HttpServlet {
             }
 
             if (list2.isEmpty()) {
-                list = daoU.getUser("", new LinkedHashMap<>());
+                list = daoU.getStaff("", new LinkedHashMap<>());
             } else {
                 StringBuilder queryBuilder = new StringBuilder("SELECT * FROM [User] u ");
                 for (int i = 0; i < list2.size(); i++) {
@@ -191,15 +191,15 @@ public class userListServlet extends HttpServlet {
                         queryBuilder.append(" AND ");
                     }
                 }
-                list = daoU.getUser(queryBuilder.toString(), list1);
+                list = daoU.getStaff(queryBuilder.toString(), list1);
             }
         } else if (service.equals("listAllUsers")) {
             //check sumit
             String submit = request.getParameter("submit");
             //get data
-            Vector<User> vector = null;
+            Vector<Staff> vector = null;
             if (submit == null) {
-                vector = daoU.getUsers();
+                vector = daoU.getStaffs();
             } else {
                 String action = request.getParameter("action");
                 String fname = request.getParameter("first_name");
@@ -207,11 +207,11 @@ public class userListServlet extends HttpServlet {
                 String email = request.getParameter("email");
                 String phone = request.getParameter("phone");
                 if (action.equals("search1")) {
-                    vector = daoU.getUsers();
+                    vector = daoU.getStaffs();
                 } else if (action.equals("search2")) {
-                    vector = daoU.getUsers();
+                    vector = daoU.getStaffs();
                 } else if (action.equals("search3")) {
-                    vector = daoU.getUsers();
+                    vector = daoU.getStaffs();
                 }
 
             }
@@ -235,69 +235,70 @@ public class userListServlet extends HttpServlet {
 
         }
     }
-    
-private void handleEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException  {
-            DAOUser daoU = new DAOUser();
 
-                Part filePart = request.getPart("thumbnail");
-                // Get the file name
-                String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                // Create a file path
-                File file = new File(UPLOAD_DIR, fileName);
-                // Write the file to the specified directory
-                filePart.write(file.getAbsolutePath());
-                String fileUrl = "imgUserProfile/" + fileName;
-                String UserID = request.getParameter("UserID");
-                String fname = request.getParameter("fname");
-                String lname = request.getParameter("lname");
-                String phone = request.getParameter("phone");
-                String email = request.getParameter("email");
-                String address = request.getParameter("address");
-                String username = request.getParameter("username");
-                String password = request.getParameter("password");
-                String dob = request.getParameter("dob");
-                String gender = request.getParameter("gender");
-                String status = request.getParameter("status");
-                String roleID = request.getParameter("role");
-                int roleid = Integer.parseInt(roleID);
-                Role role = new Role(roleid, "");
-                String securityQuestion = request.getParameter("securirtyQuestion");
-                int securityid = Integer.parseInt(securityQuestion);
-                Security sq = new Security(securityid, "");
-                String securityAnswer = request.getParameter("securityAnswer");
-                int status1 = Integer.parseInt(status);
-                int UserId = Integer.parseInt(UserID);
-                boolean gender1 = Boolean.parseBoolean(gender);
-                SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-                Date date1 = null;
-                try {
-                    date1 = formatter1.parse(dob);
-                } catch (ParseException ex) {
-                    Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+    private void handleEdit(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        DAOStaff daoU = new DAOStaff();
 
-                Boolean a = true;
-                String error = "";
-                if (daoU.notUserbyEmail(daoU.getUsersByID(UserId).getEmail(), email) != null) {
-                    error += "Error Mail";
-                    a = false;
-                }
-                if (daoU.notUserbyUsername(daoU.getUsersByID(UserId).getUsername(), username) != null) {
-                    error += "Error UserName";
-                    a = false;
+        Part filePart = request.getPart("thumbnail");
+        // Get the file name
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        // Create a file path
+        File file = new File(UPLOAD_DIR, fileName);
+        // Write the file to the specified directory
+        filePart.write(file.getAbsolutePath());
+        String fileUrl = "imgUserProfile/" + fileName;
+        String UserID = request.getParameter("UserID");
+        String fname = request.getParameter("fname");
+        String lname = request.getParameter("lname");
+        String phone = request.getParameter("phone");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String dob = request.getParameter("dob");
+        String gender = request.getParameter("gender");
+        String status = request.getParameter("status");
+        String roleID = request.getParameter("role");
+        int roleid = Integer.parseInt(roleID);
+        Role role = new Role(roleid, "");
+        String securityQuestion = request.getParameter("securirtyQuestion");
+        int securityid = Integer.parseInt(securityQuestion);
+        Security sq = new Security(securityid, "");
+        String securityAnswer = request.getParameter("securityAnswer");
+        int status1 = Integer.parseInt(status);
+        int UserId = Integer.parseInt(UserID);
+        boolean gender1 = Boolean.parseBoolean(gender);
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = null;
+        try {
+            date1 = formatter1.parse(dob);
+        } catch (ParseException ex) {
+            Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-                }
-                if (a == false) {
-                    //request.setAttribute("error", error);
-                    //  request.getRequestDispatcher("userList?service=updateUser&UserID=" + UserID).forward(request, response);
-                    response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + error);
-                } else {
-                    User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-                    daoU.UpdateUser(user);
-                    response.sendRedirect("userList");
-                }
-            
-}
+        Boolean a = true;
+        String error = "";
+        if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null) {
+            error += "Error Mail";
+            a = false;
+        }
+        if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null) {
+            error += "Error UserName";
+            a = false;
+
+        }
+        if (a == false) {
+            //request.setAttribute("error", error);
+            //  request.getRequestDispatcher("userList?service=updateUser&UserID=" + UserID).forward(request, response);
+            response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + error);
+        } else {
+            Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+            daoU.UpdateStaff(user);
+            response.sendRedirect("userList");
+        }
+
+    }
+
     public void sendEmail(String subject, String body, String to) throws MessagingException, UnsupportedEncodingException {
         final String fromEmail = "anhnphe171575@fpt.edu.vn";
         // Mat khai email cua ban

@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Vector,Entity.User"%>
+<%@page import="java.util.Vector,Entity.Staff"%>
 <%@page import="Entity.Security"%>
 <%@page import="Entity.Role"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -140,64 +140,65 @@
     </head>
     <style>
         .header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 20px; /* Adjust padding as needed */
-    background-color: #f8f9fa; /* Example background color */
-}.header-right {
-    display: flex;
-    align-items: center;
-}
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px; /* Adjust padding as needed */
+            background-color: #f8f9fa; /* Example background color */
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
 
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
 
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-}
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
 
-.user-info {
-    display: flex;
-    align-items: center;
-}
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
 
-.avatar img {
-    width: 40px; /* Adjust size as necessary */
-    height: auto;
-    border-radius: 50%;
-}
+        .avatar img {
+            width: 40px; /* Adjust size as necessary */
+            height: auto;
+            border-radius: 50%;
+        }
 
-.user-info h5 {
-    margin-left: 10px;
-    margin-bottom: 0;
-}
+        .user-info h5 {
+            margin-left: 10px;
+            margin-bottom: 0;
+        }
     </style>
     <body>
         <header class="header">
@@ -214,18 +215,14 @@
                     </button>
                     <div class="dropdown-content">
                         <c:set  value="${sessionScope.user}" var="cus1"></c:set>
-                            
-                                <c:if test="${not empty sessionScope.user}">
-                                <a href="editProfileUserURL?userid=${cus1.getUserID()}" class="dropdown-item">Trang cá nhân</a>
-                                <a href="LoginController?service=logout">Đăng xuất</a>
-                            </c:if>
-                        
+
+                        <c:if test="${not empty sessionScope.user}">
+                            <a href="editProfileUserURL?userid=${cus1.getStaffID()}" class="dropdown-item">Trang cá nhân</a>
+                            <a href="LoginController?service=logout">Đăng xuất</a>
+                        </c:if>
                     </div>
                 </div>
             </div>
         </header>
-
-
-
     </body>
 </html>

@@ -6,7 +6,7 @@ package Controller;
 
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.Vector;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
-import Entity.User;
+import Entity.Staff;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
@@ -83,14 +83,14 @@ public class PostController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOPost daoP = new DAOPost();
-        DAOUser dao1 = new DAOUser();
+        DAOStaff dao1 = new DAOStaff();
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
         Vector<Post> vec1 = daoP.getAll();
         //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n" +
+        Vector<Staff> vec3 = dao1.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
+"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n" +
 "                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
 "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
@@ -134,7 +134,7 @@ public class PostController extends HttpServlet {
         HttpSession session = request.getSession();
         String service = request.getParameter("service");
         DAOPost daoP = new DAOPost();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
         Vector<Post> listPost = new Vector<>();
         if (service == null) {
@@ -191,8 +191,8 @@ public class PostController extends HttpServlet {
         }
 
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n" +
+        Vector<Staff> vec3 = daoU.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
+"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n" +
 "                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
 "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
@@ -224,7 +224,7 @@ public class PostController extends HttpServlet {
 
     private void handleAdd(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         DAOPost daoP = new DAOPost();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
         Part filePart = request.getPart("thumbnail");
         // Get the file name
@@ -243,7 +243,7 @@ public class PostController extends HttpServlet {
             int category_post_id = Integer.parseInt(category_post_raw);
             int status = 1;
             String username = (String) session.getAttribute("username");
-            User u = daoU.getUserByLogin(username);
+            Staff u = daoU.getStaffByLogin(username);
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             int featured = Integer.parseInt(featured_raw);

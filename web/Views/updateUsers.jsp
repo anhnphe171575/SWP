@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.ResultSet,java.util.Vector,Entity.User"%>
+<%@page import="java.sql.ResultSet,java.util.Vector,Entity.Staff"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html >
 <html lang="vi">
@@ -96,19 +96,19 @@ img#userImage {
 
                 </tr>
                 <tr>
-                    <td>UserID</td>
-                    <td><input type="text" name="UserID" readonly id="" value="${user.userID}"></td>
+                    <td>ID</td>
+                    <td><input type="text" name="UserID" readonly id="" value="${user.StaffID}"></td>
                 </tr>
                 <tr>
-                    <td>fname</td>
+                    <td>Tên</td>
                     <td><input type="text" name="fname" id="" value="${user.first_name}"></td>
                 </tr>
                 <tr>
-                    <td>lname</td>
+                    <td>Họ</td>
                     <td><input type="text" name="lname" id="" value="${user.last_name}"></td>
                 </tr>
                 <tr>
-                    <td>phone</td>
+                    <td>Số điện thoại</td>
                     <td><input type="text" name="phone" id="" value="${user.phone}"></td>
                 </tr>
                 <tr>
@@ -116,44 +116,44 @@ img#userImage {
                     <td><input type="email" name="email" id="" value="${user.email}"></td>
                 </tr>
                 <tr>
-                    <td>address</td>
+                    <td>Địa chỉ</td>
                     <td><input type="text" name="address" id="" value="${user.address}"></td>
                 </tr>
                 <tr>
-                    <td>username</td>
+                    <td>Tên đăng nhập</td>
                     <td><input type="text" name="username" id="" value="${user.username}"></td>
                 </tr>
                 <tr>
-                    <td>password</td>
+                    <td>Mật Khẩu</td>
                     <td><input type="text" name="password" id="" value="${user.password}"></td>
                 </tr>
                 <tr>
-                    <td>dob</td>
+                    <td>Ngày Sinh</td>
                     <td><input type="date" name="dob" id="" value="${user.dob}"></td>
                 </tr>
                 <tr>
                 <tr>
-                    <td>Gender</td>
+                    <td>Giới tính</td>
                     <td style="display: flex; justify-content: space-between;">
                         <input type="radio" name="gender" value="true" id="male" ${user.gender ? 'checked' : ''}>
-                        <label for="male">Male</label>
+                        <label for="male">Nam</label>
                         <input type="radio" name="gender" value="false" id="female" ${user.gender == false ? 'checked' : ''}>
-                        <label for="female">Female</label>
+                        <label for="female">Nữ</label>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Status</td>
+                    <td>Trạng thái</td>
                     <td>
                         <select name="status">
-                            <option value="1" ${user.status == 1 ? 'selected' : ''}>Active</option>
-                            <option value="0" ${user.status != 1 ? 'selected' : ''}>Not Active</option>
+                            <option value="1" ${user.status == 1 ? 'selected' : ''}>Hoạt động</option>
+                            <option value="0" ${user.status != 1 ? 'selected' : ''}>không hoạt động</option>
                         </select>
                     </td>
                 </tr>
 
                 <tr>
-                    <td>Role</td>
+                    <td>Vai trò</td>
                     <td> <select name="role">
                             <c:forEach items="${role}" var="r">
                                 <option   value="${r.roleID}">${r.role_Name}</option>
@@ -163,7 +163,7 @@ img#userImage {
 
 
                 <tr>
-                    <td>Security Question</td>
+                    <td>Câu hỏi bảo mật</td>
 
                     <td>  <select name="securirtyQuestion">
                             <c:forEach items="${question}" var="q">
@@ -173,7 +173,7 @@ img#userImage {
                     </td>
                 </tr>
                 <tr>
-                    <td>Security Answer</td>
+                    <td>Câu trả lời</td>
                     <td><input type="text" name="securityAnswer" id="" value="${user.securityAnswer}"></td>
                 </tr>
 

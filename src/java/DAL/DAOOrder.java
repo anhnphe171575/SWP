@@ -13,7 +13,7 @@ import Entity.OrderItems;
 import Entity.Product;
 import Entity.Role;
 import Entity.StatusOrder;
-import Entity.User;
+import Entity.Staff;
 import java.sql.Statement;
 import java.util.*;
 import java.lang.*;
@@ -30,7 +30,7 @@ public class DAOOrder extends DBContext {
 
     public void updateSaleName(int SaleID, int OrderID) {
         try {
-            String query = "UPDATE [Order] SET [UserID] = ? WHERE orderID = ?";
+            String query = "UPDATE [Order] SET [StaffID] = ? WHERE orderID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, SaleID);
             stm.setInt(2, OrderID);
@@ -41,22 +41,22 @@ public class DAOOrder extends DBContext {
     }
 
     public int getSalebIDbyName(String name) {
-        int userID = -1;
+        int staffID = -1;
         try {
-            // SQL query to retrieve UserID based on concatenated first_name and last_name
-            String query = "SELECT [UserID] FROM [User] WHERE CONCAT(first_name,' ',last_name) = ?";
+            // SQL query to retrieve StaffID based on concatenated first_name and last_name
+            String query = "SELECT [StaffID] FROM [Staff] WHERE CONCAT(first_name,' ',last_name) = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, name);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                userID = rs.getInt("UserID");
+                staffID = rs.getInt("StaffID");
             }
         } catch (Exception e) {
         }
-        return userID;
+        return staffID;
     }
 
-    public ArrayList<OrderItems> getOrderbyUserID(int UserID) {
+    public ArrayList<OrderItems> getOrderbyStaffID(int StaffID) {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
             String query = " SELECT  \n"
@@ -79,11 +79,11 @@ public class DAOOrder extends DBContext {
                     + "INNER JOIN \n"
                     + "    Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
                     + "INNER JOIN \n"
-                    + "    [User] u ON u.UserID = o.UserID\n"
+                    + "    [Staff] u ON u.StaffID = o.StaffID\n"
                     + "INNER JOIN \n"
                     + "    Product p ON ot.productID = p.productID \n"
                     + "WHERE \n"
-                    + "    o.UserID = ?\n"
+                    + "    o.StaffID = ?\n"
                     + "GROUP BY \n"
                     + "    o.orderID, \n"
                     + "    o.order_date, \n"
@@ -96,14 +96,14 @@ public class DAOOrder extends DBContext {
                     + "ORDER BY \n"
                     + "    o.order_date DESC;";
             PreparedStatement stm = conn.prepareStatement(query);
-            stm.setInt(1, UserID);
+            stm.setInt(1, StaffID);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 StatusOrder st = new StatusOrder(
                         rs.getInt("Status_OrderID"),
                         rs.getString("Status_Name")
                 );
-                User u = new User(0,
+                Staff u = new Staff(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         "",
@@ -175,7 +175,7 @@ public class DAOOrder extends DBContext {
                     + "    INNER JOIN Order_items ot ON o.orderID = ot.orderID\n"
                     + "    INNER JOIN Customer c ON o.customerID = c.customerID\n"
                     + "    INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID\n"
-                    + "    INNER JOIN [User] u ON u.UserID = o.UserID\n"
+                    + "    INNER JOIN [Staff] u ON u.StaffID = o.StaffID\n"
                     + "    INNER JOIN Product p ON ot.productID = p.productID\n"
                     + "GROUP BY\n"
                     + "    o.orderID,\n"
@@ -206,7 +206,7 @@ public class DAOOrder extends DBContext {
                         rs.getString("customer_last_name"),
                         null, null, null, null, null, null, false, null, null, null, null
                 );
-                User user = new User(0,
+                Staff staff = new Staff(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         "",
@@ -233,7 +233,7 @@ public class DAOOrder extends DBContext {
                         customer,
                         null, // Assuming order type or related information is not needed
                         rs.getDate("order_date"),
-                        user, null, null, null
+                        staff, null, null, null
                 );
 
                 OrderItems orderItem = new OrderItems(
@@ -269,7 +269,7 @@ public class DAOOrder extends DBContext {
                     + "FROM [Order] o "
                     + "INNER JOIN Customer c ON o.customerID = c.customerID "
                     + "INNER JOIN Order_items ot ON o.orderID = ot.orderID "
-                    + "INNER JOIN [User] u ON o.UserID = u.UserID "
+                    + "INNER JOIN [Staff] u ON o.StaffID = u.StaffID "
                     + "INNER JOIN [Role] r ON r.RoleID = u.RoleID "
                     + "INNER JOIN Status_Order st ON st.Status_OrderID = o.Status_OrderID "
                     + "WHERE o.orderID = ? "
@@ -305,10 +305,10 @@ public class DAOOrder extends DBContext {
                         null,
                         null);
 
-                User user = new User(0,
+                Staff staff = new Staff(0,
                         rs.getString("sales_name"),
                         null,
-                        null, // Add other necessary fields for User
+                        null, // Add other necessary fields for Staff
                         null,
                         null,
                         null,
@@ -326,7 +326,7 @@ public class DAOOrder extends DBContext {
                         customer,
                         null,
                         rs.getDate("order_date"),
-                        user,
+                        staff,
                         null,
                         null,
                         null);
@@ -418,7 +418,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -510,7 +510,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -603,7 +603,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -741,7 +741,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -829,7 +829,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -914,7 +914,7 @@ public class DAOOrder extends DBContext {
                 + "LEFT JOIN \n"
                 + "    Order_items oi ON o.orderID = oi.orderID\n"
                 + "WHERE\n"
-                + "    o.UserID = @saleID\n"
+                + "    o.StaffID = @saleID\n"
                 + "GROUP BY \n"
                 + "    dr.order_date\n"
                 + "ORDER BY \n"
@@ -957,7 +957,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT\n"
                 + "                    COUNT(*) AS Total_Orders\n"
                 + "                FROM \n"
-                + "                    [Order] o where o.UserID = '" + saleid + "' AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
+                + "                    [Order] o where o.StaffID = '" + saleid + "' AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
@@ -997,7 +997,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS Total_RevenueSuccess\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '5'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
 
         try {
@@ -1039,7 +1039,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalSubmit\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '1'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1080,7 +1080,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalReject\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '2'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1121,7 +1121,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalPacking\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '3'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1162,7 +1162,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalDelivering\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '4'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1203,7 +1203,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalFail\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '6'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1244,7 +1244,7 @@ public class DAOOrder extends DBContext {
         String sql = "SELECT COUNT(*) AS TotalDone\n"
                 + "FROM [Order] o\n"
                 + "WHERE o.Status_OrderID = '7'\n"
-                + "AND o.UserID = '" + saleid + "'\n"
+                + "AND o.StaffID = '" + saleid + "'\n"
                 + "AND o.order_date BETWEEN '" + startdate + "' AND '" + enddate + "'";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -1306,10 +1306,10 @@ public class DAOOrder extends DBContext {
         try {
             String query = "SELECT o.orderID, o.order_date, o.Status_OrderID, o.shipped_date, \n"
                     + "                        c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, \n"
-                    + "                        c.username, c.password, c.dob, c.gender, c.activity_history, \n"
-                    + "                        u.UserID, u.first_name, u.last_name, \n"
+                    + "                        c.staffname, c.password, c.dob, c.gender, c.activity_history, \n"
+                    + "                        u.StaffID, u.first_name, u.last_name, \n"
                     + "                        u.phone, u.email, u.address, \n"
-                    + "                        u.username AS user_username, u.password, u.dob, \n"
+                    + "                        u.staffname AS staff_staffname, u.password, u.dob, \n"
                     + "                        u.gender, u.status,ri.ReceiverID, ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
@@ -1319,7 +1319,7 @@ public class DAOOrder extends DBContext {
                     + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
                     + "                        INNER JOIN Customer c ON o.customerID = c.customerID \n"
                     + "                        INNER JOIN Status_Order so ON o.Status_OrderID = so.Status_OrderID \n"
-                    + "                        INNER JOIN [User] u ON o.UserID = u.UserID \n"
+                    + "                        INNER JOIN [Staff] u ON o.StaffID = u.StaffID \n"
                     + "                        INNER JOIN Receiver_Information ri ON ri.ReceiverID = o.ReceiverID \n"
                     + "                        INNER JOIN Product p ON ot.productID = p.productID"
                     + "                        INNER JOIN Status_Order st on st.Status_OrderID = o.Status_OrderID;";
@@ -1331,14 +1331,14 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
                         rs.getString("status_name")
                 );
-                User u = new User(
-                        rs.getInt("UserID"),
+                Staff u = new Staff(
+                        rs.getInt("StaffID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("username"),
+                        rs.getString("staffname"),
                         rs.getString("password"),
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
@@ -1371,7 +1371,7 @@ public class DAOOrder extends DBContext {
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("username"),
+                        rs.getString("staffname"),
                         rs.getString("password"),
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
@@ -1414,9 +1414,9 @@ public class DAOOrder extends DBContext {
             String query = "SELECT o.orderID, o.order_date, o.Status_OrderID, o.shipped_date, \n"
                     + "                        c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, \n"
                     + "                        c.username, c.password, c.dob, c.gender, c.activity_history, \n"
-                    + "                        u.UserID, u.first_name, u.last_name, \n"
+                    + "                        u.StaffID, u.first_name, u.last_name, \n"
                     + "                        u.phone, u.email, u.address, \n"
-                    + "                        u.username AS user_username, u.password, u.dob, \n"
+                    + "                        u.staffname AS staff_staname, u.password, u.dob, \n"
                     + "                        u.gender, u.status, ri.ReceiverID,ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
@@ -1426,7 +1426,7 @@ public class DAOOrder extends DBContext {
                     + "                        INNER JOIN Order_items ot ON o.orderID = ot.orderID \n"
                     + "                        INNER JOIN Customer c ON o.customerID = c.customerID \n"
                     + "                        INNER JOIN Status_Order so ON o.Status_OrderID = so.Status_OrderID \n"
-                    + "                        INNER JOIN [User] u ON o.UserID = u.UserID \n"
+                    + "                        INNER JOIN [Staff] u ON o.StaffID = u.StaffID \n"
                     + "                        INNER JOIN Receiver_Information ri ON ri.ReceiverID = o.ReceiverID \n"
                     + "                        INNER JOIN Product p ON ot.productID = p.productID"
                     + "                        INNER JOIN Status_Order st on st.Status_OrderID = o.Status_OrderID where o.orderID =?";
@@ -1439,14 +1439,14 @@ public class DAOOrder extends DBContext {
                 StatusOrder st = new StatusOrder(rs.getInt("status_orderid"),
                         rs.getString("status_name")
                 );
-                User u = new User(
-                        rs.getInt("UserID"),
+                Staff u = new Staff(
+                        rs.getInt("StaffID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("username"),
+                        rs.getString("staff_staname"),
                         rs.getString("password"),
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
@@ -1543,8 +1543,8 @@ public class DAOOrder extends DBContext {
                     + "    SUM(ot.list_price * ot.quantity) AS total_cost,\n"
                     + "    st.Status_OrderID,\n"
                     + "    st.Status_Name,\n"
-                    + "    u.first_name AS user_first_name,\n"
-                    + "    u.last_name AS user_last_name\n"
+                    + "    u.first_name AS staff_first_name,\n"
+                    + "    u.last_name AS staff_last_name\n"
                     + "FROM \n"
                     + "    [Order] o\n"
                     + "INNER JOIN \n"
@@ -1556,7 +1556,7 @@ public class DAOOrder extends DBContext {
                     + "INNER JOIN \n"
                     + "    Product p ON ot.productID = p.productID\n"
                     + "INNER JOIN \n"
-                    + "    [User] u ON u.UserID = o.UserID\n"
+                    + "    [Staff] u ON u.StaffID = o.StaffID\n"
                     + "GROUP BY \n"
                     + "    o.orderID, \n"
                     + "    o.order_date, \n"
@@ -1578,10 +1578,10 @@ public class DAOOrder extends DBContext {
                         rs.getString("Status_Name")
                 );
 
-                // Create User object
-                User u = new User(0,
-                        rs.getString("user_first_name"),
-                        rs.getString("user_last_name"),
+                // Create Staff object
+                Staff u = new Staff(0,
+                        rs.getString("staff_first_name"),
+                        rs.getString("staff_last_name"),
                         "",
                         "",
                         "",
@@ -1603,7 +1603,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -1720,7 +1720,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -1812,7 +1812,7 @@ public class DAOOrder extends DBContext {
                         null,
                         null,
                         null,
-                        null, // Assuming customer username is not used here
+                        null, // Assuming customer staffname is not used here
                         null, // Assuming customer password is not used here
                         null, // Assuming customer dob is not used here
                         false, // Assuming customer gender is not used here
@@ -1881,7 +1881,7 @@ public class DAOOrder extends DBContext {
                     + "INNER JOIN Customer c ON o.customerID = c.customerID \n"
                     + "INNER JOIN Status_Order st ON o.Status_OrderID = st.Status_OrderID \n"
                     + "INNER JOIN Product p ON ot.productID = p.productID \n"
-                    + "INNER JOIN [User] u ON u.UserID = o.UserID \n"
+                    + "INNER JOIN [Staff] u ON u.StaffID = o.StaffID \n"
                     + all
                     + "  GROUP BY o.orderID, o.order_date, c.first_name, c.last_name, st.Status_OrderID, st.Status_Name";
 
@@ -1995,7 +1995,7 @@ public class DAOOrder extends DBContext {
 
     public List<String> getSaleName() {
         List<String> names = new ArrayList<>();
-        String query = "SELECT u.first_name, u.last_name FROM [User] u WHERE u.RoleID = 2;";
+        String query = "SELECT u.first_name, u.last_name FROM [Staff] u WHERE u.RoleID = 2;";
         try (PreparedStatement stm = conn.prepareStatement(query); ResultSet rs = stm.executeQuery()) {
 
             while (rs.next()) {
@@ -2025,7 +2025,7 @@ public class DAOOrder extends DBContext {
                     + "FROM [Order] o "
                     + "INNER JOIN Customer c ON o.customerID = c.customerID "
                     + "INNER JOIN Order_items ot ON o.orderID = ot.orderID "
-                    + "INNER JOIN [User] u ON o.UserID = u.UserID "
+                    + "INNER JOIN [Staff] u ON o.StaffID = u.StaffID "
                     + "INNER JOIN Status_Order st ON st.Status_OrderID = o.Status_OrderID "
                     + "WHERE o.orderID = ? "
                     + "GROUP BY o.orderID, c.first_name, c.last_name, c.email, c.phone, o.order_date, u.first_name, u.last_name, st.status_name, o.PaymentMethod,st.Status_OrderID";
@@ -2051,10 +2051,10 @@ public class DAOOrder extends DBContext {
                         null,
                         null);
 
-                User user = new User(0,
+                Staff staff = new Staff(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
-                        null, // Add other necessary fields for User
+                        null, // Add other necessary fields for Staff
                         null,
                         null,
                         null,
@@ -2072,7 +2072,7 @@ public class DAOOrder extends DBContext {
                         customer,
                         null,
                         rs.getDate("order_date"),
-                        user,
+                        staff,
                         null,
                         null,
                         rs.getString("PaymentMethod"));
@@ -2092,10 +2092,10 @@ public class DAOOrder extends DBContext {
     public HashMap<Integer, ArrayList<String>> CountorderSale() {
         HashMap<Integer, ArrayList<String>> count = new HashMap<>();
         try {
-            String query = "select Count(o.orderID) as count , u.first_name, u.last_name, u.UserID\n"
-                    + "from [Order] o right join [User] u on o.UserID = u.UserID \n"
+            String query = "select Count(o.orderID) as count , u.first_name, u.last_name, u.StaffID\n"
+                    + "from [Order] o right join [Staff] u on o.StaffID = u.StaffID \n"
                     + "where u.RoleID =2\n"
-                    + "group by u.UserID, u.first_name, u.last_name ";
+                    + "group by u.StaffID, u.first_name, u.last_name ";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -2105,7 +2105,7 @@ public class DAOOrder extends DBContext {
                 ArrayList<String> a = new ArrayList();
                 a.add(rs.getString("count"));
                 a.add(fullName);
-                count.put(rs.getInt("UserID"), a);
+                count.put(rs.getInt("StaffID"), a);
             }
         } catch (SQLException e) {
             java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
@@ -2116,15 +2116,15 @@ public class DAOOrder extends DBContext {
     public HashMap<Integer, Integer> Countorder() {
         HashMap<Integer, Integer> count = new HashMap<>();
         try {
-            String query = "select Count(o.orderID) as count , u.UserID \n"
-                    + "from [Order] o right join [User] u on o.UserID = u.UserID \n"
+            String query = "select Count(o.orderID) as count , u.StaffID \n"
+                    + "from [Order] o right join [Staff] u on o.StaffID = u.StaffID \n"
                     + "where u.RoleID =2\n"
-                    + "group by u.UserID,u.first_name, u.last_name ";
+                    + "group by u.StaffID,u.first_name, u.last_name ";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
 
-                count.put(rs.getInt("UserID"), rs.getInt("count"));
+                count.put(rs.getInt("StaffID"), rs.getInt("count"));
             }
         } catch (SQLException e) {
             java.util.logging.Logger.getLogger(DAOProduct.class.getName()).log(Level.SEVERE, null, e);
@@ -2133,21 +2133,21 @@ public class DAOOrder extends DBContext {
     }
 
     public int getSalebIDyName(String name) {
-        int userID = -1; // Initialize with a default value or handle null case
+        int staffID = -1; // Initialize with a default value or handle null case
         try {
-            // SQL query to retrieve UserID based on concatenated first_name and last_name
-            String query = "SELECT [UserID] FROM [User] WHERE CONCAT(first_name, ' ', last_name) = ?";
+            // SQL query to retrieve StaffID based on concatenated first_name and last_name
+            String query = "SELECT [StaffID] FROM [Staff] WHERE CONCAT(first_name, ' ', last_name) = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, name);
 
             // Execute query and retrieve results
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                userID = rs.getInt("UserID");
+                staffID = rs.getInt("StaffID");
             }
         } catch (Exception e) {
         }
-        return userID;
+        return staffID;
     }
 
     public void updateStatusOrder(int Status_OrderID, int OrderID) {
@@ -2241,14 +2241,14 @@ public class DAOOrder extends DBContext {
         return orderItemsList;
     }
 
-    public void addOrder(int orderId, int Status_OrderID, int customerID, Date shipped_date, Date order_date, int UserID, int ReceiverId, String notes, String PaymentMethod) {
+    public void addOrder(int orderId, int Status_OrderID, int customerID, Date shipped_date, Date order_date, int StaffID, int ReceiverId, String notes, String PaymentMethod) {
         try {
             String query = "INSERT INTO [dbo].[Order]\n"
                     + "           ([Status_OrderID]\n"
                     + "           ,[customerID]\n"
                     + "           ,[shipped_date]\n"
                     + "           ,[order_date]\n"
-                    + "           ,[UserID]\n"
+                    + "           ,[StaffID]\n"
                     + "           ,[ReceiverID]\n"
                     + "           ,[Notes]\n"
                     + "           ,[PaymentMethod]"
@@ -2272,7 +2272,7 @@ public class DAOOrder extends DBContext {
             String order_dater1 = spd.format(order_date);
             stm.setDate(3, java.sql.Date.valueOf(shipped_date1));
             stm.setDate(4, java.sql.Date.valueOf(order_dater1));
-            stm.setInt(5, UserID);
+            stm.setInt(5, StaffID);
             stm.setInt(6, ReceiverId);
             stm.setString(7, notes);
             stm.setString(8, PaymentMethod);
@@ -2284,13 +2284,13 @@ public class DAOOrder extends DBContext {
         }
     }
 
-    public void addOrder1(int orderId, int Status_OrderID, int customerID, Date order_date, int UserID, int ReceiverId, String notes, String PaymentMethod) {
+    public void addOrder1(int orderId, int Status_OrderID, int customerID, Date order_date, int StaffID, int ReceiverId, String notes, String PaymentMethod) {
         try {
             String query = "INSERT INTO [dbo].[Order]\n"
                     + "           ([Status_OrderID]\n"
                     + "           ,[customerID]\n"
                     + "           ,[order_date]\n"
-                    + "           ,[UserID]\n"
+                    + "           ,[StaffID]\n"
                     + "           ,[ReceiverID]\n"
                     + "           ,[Notes]\n"
                     + "           ,[PaymentMethod]"
@@ -2313,7 +2313,7 @@ public class DAOOrder extends DBContext {
             // Converting java.util.Date to java.sql.Date
             java.sql.Timestamp sqlDate = new java.sql.Timestamp(order_date.getTime());
             stm.setTimestamp(3, sqlDate);
-            stm.setInt(4, UserID);
+            stm.setInt(4, StaffID);
             stm.setInt(5, ReceiverId);
             stm.setString(6, notes);
             stm.setString(7, PaymentMethod);
@@ -2358,7 +2358,7 @@ public class DAOOrder extends DBContext {
     public static void main(String[] args) {
 
         DAOOrder db = new DAOOrder();
-        System.out.println(db.getOrderbyUserID(3));
+        System.out.println(db.getOrderbyStaffID(3));
 //        HashMap<Integer, Integer> countMap = db.Countorder();
 //        int minCount = Integer.MAX_VALUE;
 //
@@ -2369,24 +2369,24 @@ public class DAOOrder extends DBContext {
 //            }
 //        }
 //
-//// Tìm userID có count bằng giá trị nhỏ nhất
-//        List<Integer> userIdsWithMinCount = new ArrayList<>();
+//// Tìm staffID có count bằng giá trị nhỏ nhất
+//        List<Integer> staffIdsWithMinCount = new ArrayList<>();
 //        for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
 //            if (entry.getValue() == minCount) {
-//                userIdsWithMinCount.add(entry.getKey());
+//                staffIdsWithMinCount.add(entry.getKey());
 //            }
 //        }
 //
-//// In ra userID có count ít nhất
-//        System.out.println("UserID(s) có số lượng đơn hàng ít nhất:");
-//        for (int userId : userIdsWithMinCount) {
-//            System.out.println("UserID: " + userId);
+//// In ra staffID có count ít nhất
+//        System.out.println("StaffID(s) có số lượng đơn hàng ít nhất:");
+//        for (int staffId : staffIdsWithMinCount) {
+//            System.out.println("StaffID: " + staffId);
 //        }
-//        int randomIndex = new Random().nextInt(userIdsWithMinCount.size());
-//        int randomUserID = userIdsWithMinCount.get(randomIndex);
+//        int randomIndex = new Random().nextInt(staffIdsWithMinCount.size());
+//        int randomStaffID = staffIdsWithMinCount.get(randomIndex);
 //
-//// In ra userID được chọn
-//        System.out.println("UserID được chọn ngẫu nhiên: " + randomUserID);
+//// In ra staffID được chọn
+//        System.out.println("StaffID được chọn ngẫu nhiên: " + randomStaffID);
         //  db.addOrder(0, 4, 1,java.sql.Date.valueOf("2024-06-01"), java.sql.Date.valueOf("2024-05-20"), 3, 1, "Deliver before noon", null);
 //        Map<String, String> parameters = new LinkedHashMap<>();
 //        parameters.put("sale", "Bob Vrown");

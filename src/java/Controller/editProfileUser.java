@@ -6,11 +6,11 @@ package Controller;
 
 import DAL.DAOSecurityQuestion;
 import DAL.DAOStatusOrder;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import Entity.Role;
 import Entity.Security;
 import Entity.StatusOrder;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -34,9 +36,28 @@ import java.util.logging.Logger;
  */
 @MultipartConfig
 public class editProfileUser extends HttpServlet {
+     public class InputValidator {
 
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "D:\\SWPShopping\\web\\img";
+    // Regex for validating phone numbers
+    private static final String PHONE_REGEX = "^[0-9]{10}$"; // Adjust the regex according to your phone number format
+    private static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);
+
+    // Regex for validating emails
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        Matcher matcher = PHONE_PATTERN.matcher(phoneNumber);
+        return matcher.matches();
+    }
+
+    public static boolean isValidEmail(String email) {
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
+    }
+}
+
+   
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,11 +97,11 @@ public class editProfileUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser dao = new DAOUser();
-        Vector<User> vector
-                = (Vector<User>) dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password, u.dob,u.gender,u.status, u.RoleID,r.Role_Name,u.securityID,u.securityAnswer,s.security_question,u.image from [User] u\n"
+        DAOStaff dao = new DAOStaff();
+        Vector<Staff> vector
+                = (Vector<Staff>) dao.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password, u.dob,u.gender,u.status, u.RoleID,r.Role_Name,u.securityID,u.securityAnswer,s.security_question,u.image from [Staff] u\n"
                         + "                inner join SecurityQuestion s on u.securityID=s.securityID \n"
-                        + "                inner join [Role] r on r.RoleID=u.RoleID where u.UserID="
+                        + "                inner join [Role] r on r.RoleID=u.RoleID where u.StaffID="
                         + Integer.parseInt(request.getParameter("userid")));
         request.setAttribute("vector", vector);
         DAOSecurityQuestion db = new DAOSecurityQuestion();
@@ -100,27 +121,43 @@ public class editProfileUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       DAOUser dao = new DAOUser();
+        DAOStaff dao = new DAOStaff();
 
-        Part filePart = request.getPart("file");
-        String fileUrl = "";
-        
-        try {
-            // Get the file name
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String applicationPath = request.getServletContext().getRealPath("");
+    // Construct the path for the upload directory
+    String uploadFilePath = applicationPath + File.separator + "img";
 
-            // Create a file path
-            File file = new File(UPLOAD_DIR, fileName);
+    // Create the upload directory if it doesn't exist
+    File fileSaveDir = new File(uploadFilePath);
+    if (!fileSaveDir.exists()) {
+        fileSaveDir.mkdirs();
+    }
 
-            // Write the file to the specified directory
-            filePart.write(file.getAbsolutePath());
-            fileUrl = "imgProfile/" + fileName;
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Handle file upload error
-            // You can add appropriate error handling logic here, like logging or showing an error message to the user
-        }
+    // Get the file part from the request
+    Part filePart = request.getPart("file");
+    String originalFileName = "";
+    String fileUrl = "";
 
+    if (filePart != null && filePart.getSize() > 0) {
+        // Get the original file name
+        originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        // Create a new file name
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String newFileName = "user_" + System.currentTimeMillis() + fileExtension;
+
+        // Create a file path
+        File file = new File(uploadFilePath, newFileName);
+
+        // Write the file to the specified directory
+        filePart.write(file.getAbsolutePath());
+
+        // Construct the file URL relative to the web application
+        fileUrl = "img" + File.separator + newFileName;
+    } else {
+        // If no new file is uploaded, use the existing image URL
+        fileUrl = request.getParameter("existingImage");
+    }
         String UserID = request.getParameter("UserID");
         String fname = request.getParameter("first_name");
         String lname = request.getParameter("last_name");
@@ -138,13 +175,40 @@ public class editProfileUser extends HttpServlet {
         Role role = new Role(roleid, rolename);
         String securityid = request.getParameter("security");
         int securityId = Integer.parseInt(securityid);
-        
+
         Security sq = new Security(securityId, "");
         String securityAnswer = request.getParameter("securityAnswer");
         String image = request.getParameter("image");
-        // check data: empty, length...
-        //check primary key 
+        boolean isValid = true;
+    if (!InputValidator.isValidPhoneNumber(phone)) {
+        request.setAttribute("phoneError", "Invalid phone number format. Please enter a 10-digit phone number.");
+        isValid = false;
+    }
 
+    if (!InputValidator.isValidEmail(email)) {
+        request.setAttribute("emailError", "Invalid email format.");
+        isValid = false;
+    }
+
+    if (!isValid) {
+        // Set the previously entered values to repopulate the form
+        request.setAttribute("UserID", UserID);
+        request.setAttribute("first_name", fname);
+        request.setAttribute("last_name", lname);
+        request.setAttribute("phone", phone);
+        request.setAttribute("email", email);
+        request.setAttribute("address", address);
+        request.setAttribute("username", username);
+        request.setAttribute("password", password);
+        request.setAttribute("dob", dob);
+        request.setAttribute("gender", gender);
+        request.setAttribute("status", status);
+        request.setAttribute("RoleID", roleID);
+        request.setAttribute("role", rolename);
+        request.setAttribute("security", securityid);
+        request.setAttribute("securityAnswer", securityAnswer);
+        request.setAttribute("existingImage", fileUrl);
+    }
         boolean gender1 = Boolean.parseBoolean(gender);
         SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
@@ -158,8 +222,8 @@ public class editProfileUser extends HttpServlet {
         int status1 = Integer.parseInt(status);
         int UserId = Integer.parseInt(UserID);
 
-        User user = new User(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-        dao.UpdateUser(user);
+        Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+        dao.UpdateStaff(user);
         response.sendRedirect("editProfileUserURL?userid=" + UserID);
     }
 

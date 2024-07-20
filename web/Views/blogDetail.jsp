@@ -181,7 +181,7 @@
                     </div>
                     <p class="mb-4">${blog.description}</p>
                     <div class="d-flex pt-2">
-                        <p class="text-dark font-weight-medium mb-0 mr-2">Chia sẻ bởi: ${blog.user.username}</p>
+                        <p class="text-dark font-weight-medium mb-0 mr-2">Chia sẻ bởi: ${blog.staff.username}</p>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.util.Vector,Entity.User,Entity.Role"%>
+<%@page import="java.util.Vector,Entity.Staff,Entity.Role"%>
 
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -303,14 +303,14 @@
                                 <div class="table-title">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h2>Manage <b>Users</b></h2>
+                                            <h2><b>Quản lí Nhân viên</b></h2>
                                         </div>
                                         <div style="text-align: right" class="col-sm-9">
                                             <div>
                                                 <div class="col-sm-3">
                                                     <form action="userList" method="post" style="display: flex; justify-content: space-between;">
                                                         <div>
-                                                            <p>Search first_name: <input type="text" name="first_name"></p> 
+                                                            <p>Tìm kiếm <input type="text" name="first_name"></p> 
                                                             <input type="submit" name="submit" value="Search">
                                                             <input type="reset" value="Clear">
                                                             <input type="hidden" name="action" value="search1">
@@ -323,9 +323,9 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
-                                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                                            <a href="AddUser" class="btn btn-success"  ><i class="material-icons">&#xE147;</i> <span>New User</span></a>
-                                            <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
+                                            <a href="AddUser" class="btn btn-success"  ><i class="material-icons">&#xE147;</i> <span>Thêm nhân viên</span></a>
+                                            <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
 
                                         </div>
                                     </div>
@@ -334,35 +334,35 @@
                                     <thead>
                                         <tr>
 
-                                            <th>UserID</th>
-                                            <th>first_name</th>
-                                            <th>last_name</th>
-                                            <th>phone</th>
+                                            <th>ID nhân viên</th>
+                                            <th>Tên</th>
+                                            <th>Họ</th>
+                                            <th>Số điện thoại</th>
                                             <th>email</th>
-                                            <th>dob</th>
-                                            <th>gender</th>
-                                            <th>status</th>
-                                            <th>role</th>
+                                            <th>ngày sinh </th>
+                                            <th>giới tính</th>
+                                            <th>trạng thái</th>
+                                            <th>Vai trò</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <%
-                            Vector<User> vector=(Vector<User>)request.getAttribute("data");
-                             for (User obj : vector) {
+                            Vector<Staff> vector=(Vector<Staff>)request.getAttribute("data");
+                             for (Staff obj : vector) {
                                     %>
                                     <tr>
-                                        <td><%=obj.getUserID()%></td>
+                                        <td><%=obj.getStaffID()%></td>
                                         <td><%=obj.getFirst_name()%></td>
                                         <td><%=obj.getLast_name()%></td>
                                         <td><%=obj.getPhone()%></td>
                                         <td><%=obj.getEmail()%></td>
                                         <td><%=obj.getDob()%></td>
-                                        <td><%=obj.isGender() ? "Male" : "Female" %></td>
-                                        <td><%=obj.getStatus() == 1 ? "Active" : "Inactive" %></td>
+                                        <td><%=obj.isGender() ? "Nam" : "Nữ" %></td>
+                                        <td><%=obj.getStatus() == 1 ? "Hoạt động" : "Không hoạt động" %></td>
                                         <td><%=obj.getRole().getRole_Name()%></td>
                                         <td>
-                                            <a href="userDetail?UserID=<%=obj.getUserID()%>" style="color: red" class="fa fa-eye"></a>
-                                            <a href="updateUser?&UserID=<%=obj.getUserID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                            <a href="userDetail?UserID=<%=obj.getStaffID()%>" style="color: red" class="fa fa-eye"></a>
+                                            <a href="updateUser?&UserID=<%=obj.getStaffID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
                                             </a>
                                         </td>
                                     </tr>
@@ -414,15 +414,15 @@
                                 </div>
                                 <div class="modal-body">					
                                     <div class="form-group">
-                                        <label>Option:</label>
+                                        <label>Lựa chọn:</label>
                                         <select id="category-select" class="form-control" name="sort">                                   
-                                            <option value="UserID">userID</option>
-                                            <option value="first_name">first_name</option>
-                                            <option value="phone">phone</option>
+                                            <option value="UserID">ID nhân viên</option>
+                                            <option value="first_name">Tên đầu</option>
+                                            <option value="phone">Số điện thoại</option>
                                             <option value="email">email</option>
-                                            <option value="status">Status</option>
-                                            <option value="role">role</option>
-                                            <option value="gender">gender</option>
+                                            <option value="status">Trạng thái</option>
+                                            <option value="role">Vai trò</option>
+                                            <option value="gender">giới tính</option>
                                         </select>
                                     </div>
                                 </div>

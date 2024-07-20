@@ -10,7 +10,7 @@ import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Vector;
