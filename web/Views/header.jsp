@@ -220,7 +220,6 @@
                             <a href="editProfileUserURL?userid=${cus1.getStaffID()}" class="dropdown-item">Trang cá nhân</a>
                             <a href="LoginController?service=logout">Đăng xuất</a>
                         </c:if>
-
                     </div>
                 </div>
             </div>
