@@ -330,20 +330,20 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-3">
-                            <h2>Setting <b>List</b></h2>
+                            <h2><b>Danh sách cài đặt</b></h2>
                         </div>
                         <div class="col-sm-3">
                             <form action="AdminSettingURL" method="get">
                                 <p>
-                                    Search value: <input type="text" name="value"> 
+                                    tìm kiếm: <input type="text" name="value"> 
                                     <input type="submit" name="submit" value="search">
                                     <input type="reset" value="Clear"></p>
                                 <input type="hidden" name="service" value="listAllSetting">
                             </form>	
                         </div>
                         <div class="col-sm-6">
-                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                            <a href="#sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
+                            <a href="#sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                         </div>
                     </div>
                 </div>
@@ -354,9 +354,9 @@
                         <tr>
 
                             <th>SettingID</th>                           
-                            <th>Value</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Giá trị</th>
+                            <th>Trạng thái</th>
+                            <th>Hoạt động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -368,8 +368,8 @@
                                 <td>${c.value}</td>
 
                                 <td>
-                                    <c:if test="${c.status == '1'}">Show</c:if>
-                                    <c:if test="${c.status != '1'}">Hide</c:if>
+                                    <c:if test="${c.status == '1'}">Hiện</c:if>
+                                    <c:if test="${c.status != '1'}">Ẩn</c:if>
                                     </td>
                                     <td>
                                     <c:if test="${c.status == '1'}">
@@ -413,19 +413,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Filter</h5>
+                    <h5 class="modal-title">Lọc</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <form action="AdminSettingURL" method="post">
                     <div class="modal-body">
                         <!-- Category Filter -->
                         <div class="form-group">
-                            <label for="category-select">Status:</label>
+                            <label for="category-select">Trạng thái</label>
                             <select id="category-select" class="form-control" name="status">
-                                <option value="3">ALL</option>
+                                <option value="3">Tất cả</option>
 
-                                <option value="1">Show</option>
-                                <option value="0">Hide</option>
+                                <option value="1">Hiện</option>
+                                <option value="0">Ẩn</option>
                             </select>
                         </div>
                         <!-- Author Filter -->
@@ -493,26 +493,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sort By</h5>
+                    <h5 class="modal-title">Sắp xếp theo</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <form action="AdminSettingURL" method="post">
                     <div class="modal-body">
                         <!-- Sort Options -->
                         <div class="form-group">
-                            <label for="sort-select">Sort By:</label>
+                            <label for="sort-select">Sắp xếp</label>
                             <select id="sort-select" class="form-control" name="sort">
                                 <option value="settingID">settingID</option>
-                                <option value="type">type</option>
-                                <option value="value">value</option>
-                                <option value="order">order</option>
-                                <option value="description">description</option>
-                                <option value="status">Status</option>
+                                <option value="type">Loại</option>
+                                <option value="value">Giá trị</option>
+                                <option value="order">đơn hàng</option>
+                                <option value="description">Miêu tả</option>
+                                <option value="status">Trạng thái</option>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Sort</button>
+                        <button type="submit" class="btn btn-primary">Sắp xếp</button>
                         <input type="hidden" name="service" value="sort">
                     </div>
                 </form>

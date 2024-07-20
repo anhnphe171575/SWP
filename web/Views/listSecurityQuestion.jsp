@@ -301,17 +301,17 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Security <b>Question</b></h2>
+                                        <h2><b>Câu hỏi bảo mật</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="SecurityQuestion" method="post">
                                             <input type="text" name="title"><!-- comment -->
-                                            <input type="submit" name="submit" value="Search"><!-- comment -->
+                                            <input type="submit" name="submit" value="Tìm kiếm"><!-- comment -->
                                             <input type="hidden" name="service" value="search">
                                         </form>					
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add</span></a>
+                                        <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>thêm</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -319,8 +319,8 @@
                                 <thead>
                                     <tr>
 
-                                        <th style="width: 20%">Security Question ID</th>
-                                        <th style="width: 30%">Security Question</th>
+                                        <th style="width: 20%"> ID</th>
+                                        <th style="width: 30%">Câu hỏi bảo mật</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -342,12 +342,12 @@
                                 <div class="modal-content">
                                     <form action="SecurityQuestion" method="post">
                                         <div class="modal-header">						
-                                            <h4 class="modal-title">New Question</h4>
+                                            <h4 class="modal-title">Câu hỏi mới</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                         <div class="modal-body">					
                                             <div class="form-group">
-                                                <label>Question:</label>
+                                                <label>Câu hỏi:</label>
                                                 <input type="text" class="form-control" name="security_question" required>
                                             </div>
                                             <div class="modal-footer">
@@ -366,12 +366,12 @@
                                 <div class="modal-content">
                                     <form action="SecurityQuestion" method="post">
                                         <div class="modal-header">						
-                                            <h4 class="modal-title">New Question</h4>
+                                            <h4 class="modal-title">Câu hỏi mới</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                         </div>
                                         <div class="modal-body">					
                                             <div class="form-group">
-                                                <label>Question:</label>
+                                                <label>Câu hỏi:</label>
                                                 <input type="text" class="form-control" name="security_question" required>
                                             </div>
                                             <div class="modal-footer">
@@ -387,12 +387,12 @@
                     </div>
                     <div class="clearfix">
                         <ul class="pagination">
-                            <li class="page-item disabled"><a href="#">Previous</a></li>
+                            <li class="page-item disabled"><a href="#">Quay lại</a></li>
                                 
                                         <li class="page-item active"><a href="#" class="page-link">1</a></li>
                                       
                                    
-                            <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                            <li class="page-item"><a href="#" class="page-link">Tiếp theo</a></li>
                         </ul>
                     </div>
                 </div>

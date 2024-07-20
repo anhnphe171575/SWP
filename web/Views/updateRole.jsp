@@ -67,20 +67,20 @@
 </head>
 <body>
     <div class="container">
-        <h2>Edit Role</h2>
+        <h2>chỉnh sửa vai trò</h2>
         <form action="editRoleURL" method="post">
             <div class="form-group">
-                <label>Role ID:</label>
+                <label> ID:</label>
                 <input type="text" name="RoleID" value="${customer.getRoleID()}" required readonly>
             </div>
 
             <div class="form-group">
-                <label>Role Name:</label>
+                <label>Vai trò:</label>
                 <input type="hidden" name="status_nameo" value="${customer.getRole_Name()}" class="form-control" required>
                 <input type="text" name="Role_Name" value="${customer.getRole_Name()}" class="form-control" required>
             </div>
 
-            <input type="submit" name="submit" value="Save">
+            <input type="submit" name="submit" value="Lưu">
             <input type="hidden" name="service" value="updateRole">
         </form>
     </div>

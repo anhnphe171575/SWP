@@ -211,7 +211,7 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-5">
-                                <h2>Admin <b>Detail</b></h2>
+                                <h2><b>Chi tiết cài đặt</b></h2>
                             </div>
                             <div class="col-sm-7">
                                 <!-- Add any additional buttons here -->
@@ -222,10 +222,10 @@
                         <thead>
                             <tr>
                                 <th>SettingID</th>
-                                <th>Value</th>
-                                <th>Description</th>
-                                <th>Activity History</th>
-                                <th>Status</th>
+                                <th>Giá trị</th>
+                                <th>Chi tiết thông tin</th>
+                                <th>Lịch sử hoạt động</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -236,13 +236,13 @@
                                 <td>${c.description}</td>
                                 <td>${c.edit_log}</td>
                                 <td>
-                                    <c:if test="${c.status == '1'}">Show</c:if>
-                                    <c:if test="${c.status != '1'}">Hide</c:if>
+                                    <c:if test="${c.status == '1'}">Ẩn</c:if>
+                                    <c:if test="${c.status != '1'}">Hiện</c:if>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-center">
-                                    <a href="AdminSettingURL" class="button-field">Back To Admin Setting</a>
+                                    <a href="AdminSettingURL" class="button-field">Quay về Cài Đặt</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -92,14 +92,14 @@
 
                 <main class="main-container">
                     <div class="main-title">
-                        <h2 style="color: black">DASHBOARD</h2>
+                        <h2 style="color: black">Biểu đồ</h2>
                     </div>
 
                     <div class="main-cards">
 
                         <div class="card">
 <div class="card-inner">
-                                <h3>PRODUCTS</h3>
+                                <h3>Sản phẩm</h3>
                                 <span class="material-icons-outlined">inventory_2</span>
                             </div>
                             <h1>${total_product}</h1>
@@ -107,7 +107,7 @@
 
                     <div class="card">
                         <div class="card-inner">
-                            <h3>POST</h3>
+                            <h3>Bài đăng</h3>
                             <span class="material-icons-outlined">article</span>
                         </div>
                         <h1>${total_post}</h1>
@@ -115,7 +115,7 @@
 
                     <div class="card">
                         <div class="card-inner">
-                            <h3>CUSTOMERS</h3>
+                            <h3>Khách hàng</h3>
                             <span class="material-icons-outlined">groups</span>
                         </div>
                         <h1>${total_customer}</h1>
@@ -130,18 +130,18 @@
 
                 </div>
                 <div class="select">
-                    <h2>For month:</h2>
+                    <h2>theo tháng</h2>
                     <form action="AdminDashboard" method="post">
-                        <label for="month">Month:</label>
+                        <label for="month">Tháng:</label>
                         <input type="number" id="month" name="month" min="1" max="12" value="6" required>
-                        <label for="year">Year:</label>
+                        <label for="year">Năm:</label>
                         <input type="number" id="year" name="year" min="2000" max="2100" value="2024" required>
                         <input type="hidden" name="service" value="select">
                         <input type="submit"></input>
                     </form>
                 </div>
                 <div class="charts-card">
-                    <h2 class="chart-title">Purchase and Sales Orders</h2>
+                    <h2 class="chart-title">Đơn đặt hàng mua và bán</h2>
                     <div id="area-chart"></div>
                 </div>
                 <script>
@@ -189,12 +189,12 @@
                                             <div class="charts" id="orderChart"></div>
                                         </div>-->
                     <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Status Order</h2>
+                        <h2 class="chart-title">Trạng thái đơn hàng</h2>
                         <h2>Total: 1234</h2>
                         <div id="pie-chart1"></div>
                     </div>
                     <div class="charts-card" >
-                        <h2 class="chart-title">Feedback Star</h2>
+                        <h2 class="chart-title">đánh giá sao</h2>
                         <h2>Average:4.5</h2>
 
                         <div class="charts" id="statsChart1"></div>
@@ -204,12 +204,12 @@
 
                 <div class="charts">
                     <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Order Statistics</h2>
+                        <h2 class="chart-title">Thống kê đơn hàng</h2>
                         <h2>Total: 1234</h2>
                         <div id="pie-chart"></div>
                     </div>
                     <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Newly Statistics</h2>
+                        <h2 class="chart-title">thống kê mới</h2>
                         <div id="statsChartC"></div>
                     </div>
                     <div class="col-lg-3 list-container" style="color: black">
