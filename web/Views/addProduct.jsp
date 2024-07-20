@@ -100,6 +100,7 @@
                 <div class="form-group">
                     <label>Thumbnail</label><br>
                     <input type="file" name="file" id="file" style="margin-bottom: 10px" required="">
+                    <input type="hidden" name="existingImage" >
                 </div>
 
                 <div class="form-group">
