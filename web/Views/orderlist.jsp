@@ -487,7 +487,7 @@
                             </div>
                             <div class="container">
                             <c:choose>
-                                <c:when test="${sessionScope.user.role.getRoleID() == 2}">
+                                <c:when test="${sessionScope.staff.role.getRoleID() == 2}">
                                     <!-- Form for Role 2 -->
                                     <form action="orderlist" method="post" class="filter-form">
                                         <input type="hidden" value="${saleid}" name="saleid"  >
@@ -521,7 +521,7 @@
                                         </div>
                                     </form>
                                 </c:when>
-                                <c:when test="${sessionScope.user.getRole().getRoleID() == 3}">
+                                <c:when test="${sessionScope.staff.getRole().getRoleID() == 3}">
                                     <!-- Form for Role 3 -->
                                     <form action="orderlist" method="post" class="filter-form">
                                         <div class="row mb-3">
@@ -567,7 +567,7 @@
                                         </div>
                                     </form>
                                 </c:when>
-                                <c:when test="${sessionScope.user.role.getRoleID() == 4}">
+                                <c:when test="${sessionScope.staff.role.getRoleID() == 4}">
                                     <!-- Form for Role 4 -->
                                     <form action="orderlist" method="post" class="filter-form">
                                         <div class="row mb-3">
@@ -622,14 +622,14 @@
                                         <tr>
                                             <td><a href="orderdetails?id=${item.order.orderID}">${item.order.orderID}</a></td>
                                             <td><fmt:formatDate value="${item.order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                            <td>${item.order.user.first_name} ${item.order.user.last_name}</td>
+                                            <td>${item.order.staff.first_name} ${item.order.staff.last_name}</td>
                                             <td>${fn:split(item.product.product_name, ',')[0]}</td>
                                             <td>${quantity[item.order.orderID]}</td>
                                             <td><fmt:formatNumber value="${item.list_price}"/></td>
                                             <td>${item.order.status.status_name}</td>
                                             <td style="width: 200px">
-                                                <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3 || item.order.status.getStatus_orderid() == 5) && sessionScope.user.role.getRoleID() == 4 ) || 
-                                                              (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">                                                          
+                                                <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3 || item.order.status.getStatus_orderid() == 5) && sessionScope.staff.role.getRoleID() == 4 ) || 
+                                                              (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.staff.role.getRoleID() == 2)}">                                                          
                                                       <span id="statusContainer-${item.order.status.getStatus_orderid()}">
                                                           <i class="fas fa-edit edit-status-icon" 
                                                              data-order-id="${item.order.getOrderID()}" 
@@ -637,7 +637,7 @@
                                                              style="cursor:pointer; color: #007bff;"></i>
                                                       </span>
                                                 </c:if>
-                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 3}">                                       
+                                                <c:if test="${sessionScope.staff.getRole().getRoleID() == 3}">                                       
                                                     <span id="saleContainer-${item.order.orderID}">
                                                         <i class="fas fa-edit edit-sale-icon" 
                                                            data-order-id="${item.order.orderID}" 

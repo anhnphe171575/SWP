@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.Vector,Entity.User"%>
+<%@page import="java.util.Vector,Entity.Staff"%>
 <%@page import="Entity.Security"%>
 <%@page import="Entity.Role"%>
 <!DOCTYPE html>
@@ -76,8 +76,8 @@
     </head>
     <body>
          <% 
-               Vector<User> vector = (Vector<User>) request.getAttribute("vector");
-               User obj = vector.get(0);
+               Vector<Staff> vector = (Vector<Staff>) request.getAttribute("vector");
+               Staff obj = vector.get(0);
                 %>
                 <form action="editProfileUserURL" method="post" enctype="multipart/form-data">
         <div class="container rounded bg-white mt-5 mb-5"> 
@@ -103,7 +103,7 @@
                                 <h4 class="text-right">Profile Settings</h4>
                             </div>
                             <div class="row mt-2">
-                                <div class="col-md-12"><label class="labels">UserID</label><input type="text" class="form-control" name="UserID" value="<%=obj.getUserID()%>"readonly></div>
+                                <div class="col-md-12"><label class="labels">UserID</label><input type="text" class="form-control" name="UserID" value="<%=obj.getStaffID()%>"readonly></div>
 
                             </div>
                             <div class="row mt-2">

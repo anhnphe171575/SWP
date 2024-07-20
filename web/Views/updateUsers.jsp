@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.ResultSet,java.util.Vector,Entity.User"%>
+<%@page import="java.sql.ResultSet,java.util.Vector,Entity.Staff"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html >
 <html lang="vi">
@@ -97,7 +97,7 @@ img#userImage {
                 </tr>
                 <tr>
                     <td>ID</td>
-                    <td><input type="text" name="UserID" readonly id="" value="${user.userID}"></td>
+                    <td><input type="text" name="UserID" readonly id="" value="${user.StaffID}"></td>
                 </tr>
                 <tr>
                     <td>Tên</td>

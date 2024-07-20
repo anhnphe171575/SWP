@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!---Coding By CoderGirl | www.codinglabweb.com--->
 <html lang="en">
     <head>
         <meta charset="UTF-8">

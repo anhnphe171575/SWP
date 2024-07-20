@@ -414,25 +414,25 @@
                         <div class="col-md-6">
                             <p><strong>Order Date:</strong> ${item.order.order_date}</p>
                             <p><strong>Total Cost:</strong> ${item.list_price}</p>
-                            <c:if test="${sessionScope.user.getRole().getRoleID() == 3}">
+                            <c:if test="${sessionScope.staff.getRole().getRoleID() == 3}">
                                 <p><strong>Sale Name:</strong> 
                                     <span id="saleContainer-${item.order.orderID}">
-                                        ${item.order.user.first_name}
+                                        ${item.order.staff.first_name}
                                         <i class="fas fa-edit edit-sale-icon" 
                                            data-order-id="${item.order.orderID}" 
                                            style="cursor:pointer; color: #007bff;"></i>
                                     </span>
                                 </p>
                             </c:if>
-                            <c:if test="${sessionScope.user.getRole().getRoleID() != 3}">
-                                <p><strong>Sale Name:</strong>  ${item.order.user.first_name}</p>
+                            <c:if test="${sessionScope.staff.getRole().getRoleID() != 3}">
+                                <p><strong>Sale Name:</strong>  ${item.order.staff.first_name}</p>
                             </c:if>
                             <p>
                                 <strong>Status:</strong> 
                                 <span id="statusContainer-${item.order.status.getStatus_orderid()}">
                                     ${item.order.status.status_name}
-                                    <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.user.role.getRoleID() == 4 ) || 
-                                                  (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.user.role.getRoleID() == 2)}">
+                                    <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.staff.role.getRoleID() == 4 ) || 
+                                                  (item.order.status.getStatus_orderid() != 6 && item.order.status.getStatus_orderid() != 7 && item.order.status.getStatus_orderid() != 4 && item.order.status.getStatus_orderid() != 3 && item.order.status.getStatus_orderid() != 2 && sessionScope.staff.role.getRoleID() == 2)}">
                                           <i class="fas fa-edit edit-status-icon" 
                                              data-order-id="${item.order.getOrderID()}" 
                                              data-status-orderid="${item.order.status.getStatus_orderid()}" 
