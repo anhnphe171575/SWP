@@ -1005,7 +1005,7 @@ public class DAOProduct extends DBContext {
             stm.setString(8, thumbnail);
             stm.setString(9, brief_information);
             stm.setFloat(10, original_price);
-            stm.setFloat(111, sale_price);
+            stm.setFloat(11, sale_price);
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
             stm.setDate(12, currentDate);
             stm.setString(13, brand);
@@ -1145,8 +1145,19 @@ public class DAOProduct extends DBContext {
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        p.DeleteProduct(24);
-//        System.out.println(p.getProductbyStatus("1"));
+        p.addProduct("History",
+                0,
+                0,
+                0,
+                1,
+                "aaaaa",
+                0,
+                "",
+                "",
+                0,
+                0,
+                "",
+                Boolean.TRUE);
 
     }
 }
