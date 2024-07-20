@@ -71,11 +71,11 @@
 <body>
 
 <div class="container">
-    <h1>Add Question</h1>
+    <h1>Thêm câu hỏi mới:</h1>
     <form action="SecurityQuestion" method="post">
-        <label for="question">Question:</label>
+        <label for="question">Câu hỏi</label>
         
-        <input type="text" id="question" name="security_question" placeholder="Enter your question here..." required>
+        <input type="text" id="question" name="security_question" placeholder="nhập..." required>
       
         <input type="submit" name="add" value="Add Question">
         ${err}

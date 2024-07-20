@@ -308,7 +308,7 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Manage <b>Status</b></h2>
+                                        <h2><b>Quản lí trạng thái</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="editStatusOrderURL" method="get">
@@ -322,8 +322,8 @@
                                 <thead>
                                     <tr>
                                         
-                                        <th>status_orderid</th>
-                                        <th>status_name</th>
+                                        <th>ID</th>
+                                        <th>Tên</th>
                                     </tr>
                                 </thead>
                                 <tbody>

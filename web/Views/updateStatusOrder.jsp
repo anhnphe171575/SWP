@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Status</title>
+    <title>Chỉnh sửa trạng thái</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
@@ -48,21 +48,21 @@
 </head>
 <body>
     <div class="container">
-        <h2>Edit Status</h2>
+        <h2>Chỉnh sửa trạng thái</h2>
         <form action="editStatusOrderURL" method="post">
             <div class="form-group">
-                <label for="status_orderid">Status ID:</label>
+                <label for="status_orderid">ID:</label>
                 <input type="text" id="status_orderid" name="status_orderid" value="${customer.status_orderid}" class="form-control" required readonly>
             </div>
 
             <div class="form-group">
-                <label for="status_name">Status Name:</label>
+                <label for="status_name">Tên trạng thái</label>
                 <input type="hidden" name="status_nameo" value="${customer.status_name}">
                 <input type="text" id="status_name" name="status_name" value="${customer.status_name}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <input type="submit" name="submit" value="Save" class="btn btn-primary">
+                <input type="submit" name="submit" value="Lưu" class="btn btn-primary">
             </div>
             <input type="hidden" name="service" value="updateStatusOrder">
         </form>

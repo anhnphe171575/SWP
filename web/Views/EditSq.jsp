@@ -33,7 +33,7 @@
     <body>
         <div class="container">
             <div class="form-container">
-                <h2 class="text-center">Edit Security Question</h2>
+                <h2 class="text-center">Chỉnh sửa câu hỏi bảo mật</h2>
                 <form action="EditSQ" method="post">
                     <div class="form-group">
                         <label for="id">Id:</label>
@@ -41,11 +41,11 @@
                     </div>
                     <div class="form-group">
                         
-                        <label for="security_question">Question:</label>
+                        <label for="security_question">Câu hỏi:</label>
                         <input type="hidden" name="status_nameo" value="${sq.security_question}" >
                         <input type="text" class="form-control" id="security_question" name="security_question" value="${sq.security_question}" required>
                     </div>
-                    <button type="submit" class="btn btn-info">Submit</button>
+                    <button type="submit" class="btn btn-info">thay đổi</button>
                 </form>
                 <a href="SecurityQuestion" class="btn btn-secondary">Quay lại menu</a>
 
