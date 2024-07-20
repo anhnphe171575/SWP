@@ -5,46 +5,45 @@
 <aside id="sidebar">
     <div class="sidebar-title">
         <div class="sidebar-brand">
-            <span class="material-icons-outlined">shopping_cart</span> STORE
+            <span class="material-icons-outlined">shopping_cart</span>QUẢN LÝ
         </div>
-        <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
     </div>
 
     <ul class="sidebar-list">
         <li class="sidebar-list-item">
             <a href="MKTDashboard">
-                <span class="material-icons-outlined">dashboard</span> Dashboard
+                <span class="material-icons-outlined">dashboard</span> BIỂU ĐỒ
             </a>
             <ul class="submenu">
-                <li class="sidebar-list-item"><a href="DBpost" >Post</a></li>
-                <li class="sidebar-list-item"><a href="DBcus">Customer</a></li>
-                <li class="sidebar-list-item"><a href="DBpro">Product</a></li>
-                <li class="sidebar-list-item"><a href="DBfeedback">Feedback</a></li>
+                <li class="sidebar-list-item"><a href="DBpost" >Bài viết</a></li>
+                <li class="sidebar-list-item"><a href="DBcus">Khách hàng</a></li>
+                <li class="sidebar-list-item"><a href="DBpro">Sản Phẩm</a></li>
+                <li class="sidebar-list-item"><a href="DBfeedback">Phản hồi</a></li>
             </ul>
         </li>
         <li class="sidebar-list-item">
             <a href="productslist">
-                <span class="material-icons-outlined">inventory_2</span> Products
+                <span class="material-icons-outlined">inventory_2</span> SẢN PHẨM
             </a>
         </li>
         <li class="sidebar-list-item">
             <a href="FeedBackList">
-                <span class="material-icons-outlined">feedback</span> FeedBack
+                <span class="material-icons-outlined">feedback</span> PHẢN HỒI
             </a>
         </li>
         <li class="sidebar-list-item">
             <a href="CustomerServletURL">
-                <span class="material-icons-outlined">groups</span> Customers
+                <span class="material-icons-outlined">groups</span> KHÁCH HÀNG
             </a>
         </li>
         <li class="sidebar-list-item">
             <a href="PostController">
-                <span class="material-icons-outlined">fact_check</span> Post
+                <span class="material-icons-outlined">fact_check</span> BÀI VIẾT
             </a>
         </li>
         <li class="sidebar-list-item">
             <a href="SliderServletURL">
-                <span class="material-icons-outlined">poll</span> Slide
+                <span class="material-icons-outlined">poll</span> QUẢNG CÁO
             </a>
         </li>
     </ul>

@@ -113,7 +113,7 @@
             <jsp:include page="sidebar.jsp"></jsp:include>
                 <main class="main-container" style="color: #000">
                     <div class="select">
-                        <h2>For month:</h2>
+                        <h2>THỐNG KÊ</h2>
                     <%
 // Retrieve the month and year from the request, if available
 String monthParam = request.getParameter("month");
@@ -129,9 +129,9 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
                     %>
 
                     <form action="DBfeedback" method="post">
-                        <label for="month">Month:</label>
+                        <label for="month">Tháng:</label>
                         <input type="number" id="month" name="month" min="1" max="12" value="<%= displayMonth %>" required>
-                        <label for="year">Year:</label>
+                        <label for="year">Năm:</label>
                         <input type="number" id="year" name="year" min="2000" max="2100" value="<%= displayYear %>" required>
                         <input type="hidden" name="service" value="select">
                         <input type="submit">
@@ -170,7 +170,7 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
             document.addEventListener('DOMContentLoaded', function () {
                 const lineChartOptions = {
                     series: [{
-                            name: "Feedback",
+                            name: "Phản hồi",
                             data: cus
                         }],
                     chart: {
@@ -187,7 +187,7 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
                         curve: 'smooth'
                     },
                     title: {
-                        text: 'Feedback Trends by Day',
+                        text: 'Phản hồi mới theo từng ngày',
                         align: 'left'
                     },
                     grid: {
@@ -201,7 +201,7 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
                     },
                     yaxis: {
                         title: {
-                            text: 'Number of Feedback'
+                            text: 'SỐ LƯỢNG'
                         },
                         min: 0, // Minimum value of the y-axis
                         forceNiceScale: true, // Ensures the y-axis scales nicely to the data range
