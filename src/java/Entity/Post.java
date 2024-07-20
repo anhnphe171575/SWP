@@ -19,10 +19,13 @@ public class Post {
     private int status;
     private String brief_information;
     private String description;
-    private User user;
+    private Staff staff;
     private Date date_create_by;
-
-    public Post(int postID, String thumbnail, String title, CategoryPost cp, int featured, int status, String brief_information, String description, User user, Date date_create_by) {
+    
+     public Post(){
+         
+     }
+    public Post(int postID, String thumbnail, String title, CategoryPost cp, int featured, int status, String brief_information, String description, Staff staff, Date date_create_by) {
         this.postID = postID;
         this.thumbnail = thumbnail;
         this.title = title;
@@ -31,7 +34,7 @@ public class Post {
         this.status = status;
         this.brief_information = brief_information;
         this.description = description;
-        this.user = user;
+        this.staff = staff;
         this.date_create_by = date_create_by;
     }
 
@@ -99,12 +102,12 @@ public class Post {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public Date getDate_create_by() {
@@ -115,9 +118,5 @@ public class Post {
         this.date_create_by = date_create_by;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" + "postID=" + postID + ", thumbnail=" + thumbnail + ", title=" + title + ", cp=" + cp + ", featured=" + featured + ", status=" + status + ", brief_information=" + brief_information + ", description=" + description + ", user=" + user + ", date_create_by=" + date_create_by + '}';
-    }
-
+  
 }

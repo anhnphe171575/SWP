@@ -76,7 +76,11 @@ public class EditPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAL.DAOPost dao = new DAOPost();
+                DAOCategoryProduct dao2 = new DAOCategoryProduct();
+
         int id = Integer.parseInt(request.getParameter("postID"));
+                Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
+        request.setAttribute("category_product", vec5);
         request.setAttribute("post", dao.getPostById(id));
         request.setAttribute("detail", Integer.parseInt(request.getParameter("detail")));
         request.getRequestDispatcher("Views/editpost.jsp").forward(request, response);

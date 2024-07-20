@@ -22,7 +22,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="./mktcss/styles.css">
         <style>
-            
+
             .div{
                 color: black;
             }
@@ -77,28 +77,31 @@
                                     <div class="col-xl-4">
                                         <img src="${post.thumbnail}" alt="Blog post image"></div>
                                 <div class="col-xl-8">
-                                    <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New Post</span></a>
-                                    <a href="EditPost?postID=${post.postID}&detail=0" class="btn btn-danger"><i class="material-icons">&#xE3C9;</i> <span>Edit</span></a>
+                                    <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Tạo bài mới</span></a>
+                                    <a href="EditPost?postID=${post.postID}&detail=0" class="btn btn-danger"><i class="material-icons">&#xE3C9;</i> <span>Chỉnh sửa</span></a>
                                 </div>
                             </div>
-                                <div class="blog-meta">
-                            <h1 class="blog-title">${post.title}</h1></div>
+                            <div class="blog-meta">
+                                <h1 class="blog-title">${post.title}</h1></div>
                             <div class="blog-meta">
                                 <h4>${post.brief_information}</h4>
-                                <span class="author">Author: ${post.user.first_name} ${post.user.last_name}</span> | 
-                                <span class="updated-date">Updated: ${post.date_create_by}</span> | 
-                                <span class="blog-category">Category: ${post.cp.category_product.category_name}</span>
+                                <span class="author">Người đăng: ${post.user.first_name} ${post.user.last_name}</span> | 
+                                <span class="updated-date">Ngày cập nhật: ${post.date_create_by}</span> | 
+                                <span class="blog-category">Thể Loại ${post.cp.category_product.category_name}</span>
                             </div>
                             <div class="blog-meta">
-                                <h5>INFO:</h5>
+                                <h5>Chi Tiết</h5>
                                 <p> ${post.description}</p>
-                                Featured:
+                                <h5>Nổi Bật:
+                                
                                 <c:if test="${post.featured == '1'}">
                                     <a href="Status?service=featured&postID=${post.postID}&featured=0"  class="fa fa-check"></a>
                                 </c:if>
                                 <c:if test="${post.featured != '1'}">
                                     <a href="Status?service=featured&postID=${post.postID}&featured=1"  class="fa fa-times"></a>
                                 </c:if>
+                                </h5>
+                                
                             </div>
                         </div>
                     </div>
@@ -108,20 +111,20 @@
                         <div class="modal-content">
                             <form action="PostController" method="post" enctype="multipart/form-data">
                                 <div class="modal-header">						
-                                    <h4 class="modal-title">New Post</h4>
+                                    <h4 class="modal-title">Bài Viết Mới</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
                                 <div class="modal-body">					
                                     <div class="form-group">
-                                        <label>title</label>
+                                        <label>Tiêu đề</label>
                                         <input type="text" class="form-control" name="title" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>thumbnail</label>
+                                        <label>Ảnh</label>
                                         <input type="text" class="form-control" name="thumbnail" >
                                     </div>
                                     <div class="form-group">
-                                        <label>Category Post</label>
+                                        <label>Thể loại</label>
                                         <select id="category-select" class="form-control" name="category_post">                                   
                                             <c:forEach items="${requestScope.category_product}" var="c">
                                                 <option value="${c.category_productID}">${c.category_name}</option>
@@ -129,16 +132,16 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>featured</label>
+                                        <label>Nổi bật</label>
                                         <input type="text" class="form-control" name="featured" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>brief_information</label>
+                                        <label>Tóm tắt</label>
                                         <input type="text" class="form-control" name="brief_information" required>
                                     </div>
                                     <div class="form-group">
-                                        <label>description</label>
+                                        <label>Chi tiết</label>
                                         <input type="text" class="form-control" name="description" required>
                                     </div>
                                 </div>

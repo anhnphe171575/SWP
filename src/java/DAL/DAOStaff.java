@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
-public class DAOUser extends DBContext {
+public class DAOStaff extends DBContext {
 
     public Role getRoleName(int id) {
         Role r = null;
@@ -147,7 +147,7 @@ public class DAOUser extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
-                Role role = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
+                Role role = new Role(rs.getInt("RoleID"), "");
                 User obj = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -419,7 +419,7 @@ public class DAOUser extends DBContext {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Role role = new Role(rs.getInt("roleID"), rs.getString("[Role_Name]"));
                 Security securityID = new Security(rs.getInt("securityID"), "");
                 User u = new User(rs.getInt("UserID"),
                         rs.getString("first_name"),
@@ -699,9 +699,10 @@ public class DAOUser extends DBContext {
 
     public static void main(String[] args) {
         DAOUser dao = new DAOUser();
-        System.out.println(dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                + "u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n"
-                + "inner join SecurityQuestion s on u.securityID=s.securityID"));
+        System.out.println(dao.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
+"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n" +
+"                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
+"                inner join [Role] r on r.RoleID = u.RoleID"));
 //        System.out.println(dao.getUsersByID(2));
     }
 }
