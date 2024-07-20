@@ -10,9 +10,9 @@ import java.util.Date;
  *
  * @author phuan
  */
-public class User {
+public class Staff {
 
-    private int UserID;
+    private int StaffID;
     private String first_name;
     private String last_name;
     private String phone;
@@ -27,12 +27,12 @@ public class User {
     private Security security;
     private String securityAnswer;
     private String image;
-     public User(){
+     public Staff(){
          
      }
 
-    public User(int UserID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Role role, Security security, String securityAnswer, String image) {
-        this.UserID = UserID;
+    public Staff(int StaffID, String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, boolean gender, int status, Role role, Security security, String securityAnswer, String image) {
+        this.StaffID = StaffID;
         this.first_name = first_name;
         this.last_name = last_name;
         this.phone = phone;
@@ -49,12 +49,12 @@ public class User {
         this.image = image;
     }
 
-    public int getUserID() {
-        return UserID;
+    public int getStaffID() {
+        return StaffID;
     }
 
-    public void setUserID(int UserID) {
-        this.UserID = UserID;
+    public void setStaffID(int StaffID) {
+        this.StaffID = StaffID;
     }
 
     public String getFirst_name() {
@@ -169,11 +169,6 @@ public class User {
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "UserID=" + UserID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", role=" + role + ", security=" + security + ", securityAnswer=" + securityAnswer + ", image=" + image + '}';
-    }
-
-   
+  
    
 }
