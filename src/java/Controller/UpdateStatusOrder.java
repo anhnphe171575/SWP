@@ -11,7 +11,7 @@ import Entity.Customer;
 import Entity.InventoryTransaction;
 import Entity.OrderItems;
 import Entity.Product;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -99,7 +99,7 @@ public class UpdateStatusOrder extends HttpServlet {
         int orderID = Integer.parseInt(request.getParameter("orderID"));
         ArrayList<OrderItems> order = d.getOrderByOrderID(orderID);
         int newID = Integer.parseInt(request.getParameter("newStatus"));
-        User user = (User) session.getAttribute("user");
+        Staff user = (Staff) session.getAttribute("user");
         System.out.println(orderID);
         System.out.println(newID);
         DAOProduct db2 = new DAOProduct();
@@ -133,7 +133,7 @@ public class UpdateStatusOrder extends HttpServlet {
                 d.RestoreOrderQuantity(orderID);
                 int quantity1 = db2.getProductByID(p.getProductID()).getQuantity();
                 String note = request.getParameter("note");
-                db3.AddInventoryTransaction(p.getProductID(), orderID, quantity, "Return", user.getUserID(), date_create_by, note, quantity1);
+                db3.AddInventoryTransaction(p.getProductID(), orderID, quantity, "Return", user.getStaffID(), date_create_by, note, quantity1);
             }
         }
         if (newID == 6) {

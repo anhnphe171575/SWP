@@ -8,7 +8,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,20 +64,19 @@
                 color: black;
                 margin-bottom: 20px;
             }
-            
+
             .charts-card{
-                    text-shadow: 
-        -1px -1px 0 #000, /* Top-left */
-        1px -1px 0 #000, /* Top-right */
-        -1px 1px 0 #000, /* Bottom-left */
-        1px 1px 0 #000; /* Bottom-right */
-    font-weight: bold; /* Adjust font weight as needed */
-    font-family: Arial, sans-serif; /* Adjust font family as needed */
+                text-shadow:
+                    -1px -1px 0 #000, /* Top-left */
+                    1px -1px 0 #000, /* Top-right */
+                    -1px 1px 0 #000, /* Bottom-left */
+                    1px 1px 0 #000; /* Bottom-right */
+                font-weight: bold; /* Adjust font weight as needed */
+                font-family: Arial, sans-serif; /* Adjust font family as needed */
             }
         </style>
     </head>
     <body>
-
 
         <div class="grid-container">
 
@@ -98,7 +97,7 @@
                     <div class="main-cards">
 
                         <div class="card">
-<div class="card-inner">
+                            <div class="card-inner">
                                 <h3>PRODUCTS</h3>
                                 <span class="material-icons-outlined">inventory_2</span>
                             </div>
@@ -223,7 +222,7 @@
                 </div>
         </div>
     </main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script>
@@ -298,7 +297,7 @@
                                 type: 'vertical',
                             },
                             type: 'gradient',
-},
+                        },
                         grid: {
                             borderColor: '#55596e',
                             yaxis: {
@@ -375,7 +374,7 @@
                     var cat = [];
         <c:forEach items="${revenues}" var="entry">
                     cat.push('${entry.value}');
-total.push(<c:out value="${entry.key}"/>);
+                    total.push(<c:out value="${entry.key}"/>);
         </c:forEach>
                     const pieChartOptions = {
                         series: total,
@@ -448,7 +447,7 @@ total.push(<c:out value="${entry.key}"/>);
                                 endingShape: 'rounded'
                             },
                         },
-dataLabels: {
+                        dataLabels: {
                             enabled: false
                         },
                         stroke: {
@@ -517,7 +516,7 @@ dataLabels: {
                             }],
                         categories: ['New Customers', 'Customers with Orders Today']
                     };
-const statsChartOptions = {
+                    const statsChartOptions = {
                         chart: {
                             type: 'bar',
                             height: 350,
@@ -584,7 +583,7 @@ const statsChartOptions = {
                                 color: '#f5f7ff'
                             }
                         },
-legend: {
+                        legend: {
                             show: true,
                             position: 'top',
                             horizontalAlign: 'right',
@@ -656,7 +655,7 @@ legend: {
                                 }
                             },
                             labels: {
-style: {
+                                style: {
                                     colors: '#f5f7ff' // Y-axis label color
                                 },
                                 formatter: function (val) {
@@ -724,7 +723,7 @@ style: {
                                 colors: '#f5f7ff' // Ensure this is a valid value assignment
                             },
                             show: true,
-position: 'top',
+                            position: 'top',
                         },
                         tooltip: {
                             theme: 'light',

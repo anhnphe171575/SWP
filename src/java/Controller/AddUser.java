@@ -5,10 +5,10 @@
 package Controller;
 
 import DAL.DAOSecurityQuestion;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import Entity.Role;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -75,7 +75,7 @@ public class AddUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOSecurityQuestion db = new DAOSecurityQuestion();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
 
         request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
         request.setAttribute("role", daoU.getRole("select * from [Role]"));
@@ -94,7 +94,7 @@ public class AddUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
 
         String fname = request.getParameter("fname");
         String lname = request.getParameter("lname");
@@ -116,13 +116,13 @@ public class AddUser extends HttpServlet {
         String errorMessage = "";
 
         // Check for duplicate email
-        if (daoU.getUsersByemail(email) != null) {
+        if (daoU.getStaffsByemail(email) != null) {
             errorMessage = "Email already exists";
             hasError = true;
         }
 
         // Check for duplicate username
-        if (daoU.getUsersByUsername(username) != null) {
+        if (daoU.getStaffsByUsername(username) != null) {
             errorMessage = "Username already exists";
             hasError = true;
         }
@@ -146,7 +146,7 @@ public class AddUser extends HttpServlet {
             // Create User object
             Role role = new Role(roleid, "");
             Security sq = new Security(securityid, "");
-            User user = new User(0, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, image);
+            Staff user = new Staff(0, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, image);
 
             // Send email with reset link
             String resetLink = "Bạn đã được thêm vào công ty ESHOP với vai trò " + daoU.getRoleName(roleid).getRole_Name() + ". Sau đây là tài khoản của bạn:\n"
@@ -158,7 +158,7 @@ public class AddUser extends HttpServlet {
             }
 
             // Insert new user
-            System.out.println(daoU.insertUser(user));
+            System.out.println(daoU.insertStaff(user));
             response.sendRedirect("userList");
         }
     }

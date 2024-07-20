@@ -6,11 +6,11 @@ package Controller;
 
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -98,7 +98,7 @@ public class EditPost extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
         DAOPost daoP = new DAOPost();
         String service = request.getParameter("service");
@@ -118,9 +118,8 @@ public class EditPost extends HttpServlet {
             int status = Integer.parseInt(request.getParameter("status"));
             String brief_information = request.getParameter("brief_information");
             String description = request.getParameter("description");
-
             String username = (String) session.getAttribute("username");
-            User u = daoU.getUserByLogin(username);
+            Staff u = daoU.getStaffByLogin(username);
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             CategoryPost cp = new CategoryPost(category_postID, daoCPR.getCategoryProductbyID(category_postID));
@@ -130,8 +129,8 @@ public class EditPost extends HttpServlet {
             Vector<Post> vec1 = daoP.getAll();
             Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
             Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-            Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
-                    + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.image, u.securityAnswer,s.security_question from [User] u\n"
+            Vector<Staff> vec3 = daoU.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                    + "u.dob,u.gender,u.status, u.RoleID,u.securityID,u.image, u.securityAnswer,s.security_question from [Staff] u\n"
                     + "inner join SecurityQuestion s on u.securityID=s.securityID");
 
             request.setAttribute("post", vec1);
@@ -151,7 +150,7 @@ public class EditPost extends HttpServlet {
             String description = request.getParameter("description");
 
             String username = (String) session.getAttribute("username");
-            User u = daoU.getUserByLogin(username);
+            Staff u = daoU.getStaffByLogin(username);
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             CategoryPost cp = new CategoryPost(category_postID, daoCPR.getCategoryProductbyID(category_postID));

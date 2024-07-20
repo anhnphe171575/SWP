@@ -8,7 +8,7 @@ import DAL.DAOInventoryTransaction;
 import DAL.DAOPost;
 import DAL.DAOProduct;
 import Entity.Product;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -82,7 +82,7 @@ public class UpdateQuantity extends HttpServlet {
         DAOInventoryTransaction db3 = new DAOInventoryTransaction();
         HttpSession session = request.getSession();
 
-        User user = (User) session.getAttribute("user");
+        Staff user = (Staff) session.getAttribute("user");
 
         int productId = Integer.parseInt(request.getParameter("productId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -99,7 +99,7 @@ public class UpdateQuantity extends HttpServlet {
 
                 d.UpdateQuantity(p.getQuantity() + quantity, productId);
                 Product p1 = d.getProductByID(productId);
-                db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getUserID(), date_create_by, note, p1.getQuantity());
+                db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getStaffID(), date_create_by, note, p1.getQuantity());
             } else if (type.equals("out")) {
                 Product p = d.getProductByID(productId);
                 LocalDate localDate = LocalDate.now();
@@ -107,7 +107,7 @@ public class UpdateQuantity extends HttpServlet {
                 if (p.getQuantity() - quantity >= 0) {
                     d.UpdateQuantity(p.getQuantity() - quantity, productId);
                     Product p1 = d.getProductByID(productId);
-                    db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getUserID(), date_create_by, note, p1.getQuantity());
+                    db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getStaffID(), date_create_by, note, p1.getQuantity());
                 } else {
                     isSuccess = false;
                     message = "Not enough available quantity to perform this operation.";
@@ -119,7 +119,7 @@ public class UpdateQuantity extends HttpServlet {
                 if (quantity - p.getQuantity_hold() >= 0) {
                     d.UpdateQuantity(quantity, productId);
                     Product p1 = d.getProductByID(productId);
-                    db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getUserID(), date_create_by, note, p1.getQuantity());
+                    db3.AddInventoryTransaction1(p.getProductID(), quantity, type, user.getStaffID(), date_create_by, note, p1.getQuantity());
                 } else {
                     isSuccess = false;
                     message = "Not enough available quantity to perform this operation.";

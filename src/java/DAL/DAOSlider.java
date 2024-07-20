@@ -5,7 +5,7 @@
 package DAL;
 
 import Entity.Slider;
-import Entity.User;
+import Entity.Staff;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.Vector;
@@ -36,19 +36,19 @@ public class DAOSlider extends DBContext {
                 int userID = rs.getInt("userID");
                 int page_order = rs.getInt("page_order");
                 Date update = rs.getDate("slider_date_createby");
-                User us = new User();
+                Staff us = new Staff();
 
-                Slider sl = new Slider(sliderID, title, image, link, status, notes, us, page_order,update);
+                Slider sl = new Slider(sliderID, title, image, link, status, notes, us, page_order, update);
                 vector.add(sl);
             }
         } catch (SQLException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
 
         return vector;
 
     }
-    
+
     public void hideShow(int id, int status) {
         try {
             String sql = "UPDATE [dbo].[Slider]\n"
@@ -63,7 +63,8 @@ public class DAOSlider extends DBContext {
             ex.printStackTrace();
         }
     }
-     public int updateSlider(Slider obj) {
+
+    public int updateSlider(Slider obj) {
         int n = 0;
         String sql = "UPDATE [dbo].[Slider]\n"
                 + "   SET \n [title] = ?"
@@ -90,15 +91,16 @@ public class DAOSlider extends DBContext {
 
         return n;
     }
+
     public Vector<Slider> getByStatus(String status_1) {
-     
+
         Vector<Slider> slider = new Vector<>();
-        String sql = "select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.UserID from Slider s\n"
-                                + "inner join [user] us on us.UserID = s.UserID" + status_1; 
+        String sql = "select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                + "                                inner join [Staff] us on us.StaffID = s.StaffID" + status_1;
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
-            while(rs.next()) {
+            while (rs.next()) {
                 int sliderID = rs.getInt("sliderID");
                 String title = rs.getString("title");
                 String image = rs.getString("image");
@@ -107,26 +109,26 @@ public class DAOSlider extends DBContext {
                 String notes = rs.getString("notes");
                 int page_order = rs.getInt("page_order");
                 Date slider_date_createby = rs.getDate("slider_date_createby");
-                int userID = rs.getInt("userID");
-                User us = new User();
-                us.setUserID(userID);
+                int staffID = rs.getInt("StaffID");
+                Staff us = new Staff();
+                us.setStaffID(staffID);
                 Slider sl = new Slider(sliderID, title, image, link, status, notes, us, page_order, slider_date_createby);
-                
-              slider.add(sl);
+                slider.add(sl);
             }
         } catch (SQLException ex) {
-             ex.printStackTrace();
+            ex.printStackTrace();
         }
         return slider;
     }
-     public Slider getBySliderID(int id) {
-        Slider sl =null;
-        String sql = "select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.UserID from Slider s\n"
-                                + "inner join [user] us on us.UserID = s.UserID where sliderID="+id; 
+
+    public Slider getBySliderID(int id) {
+        Slider sl = null;
+        String sql = "select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                + "                inner join [Staff] us on us.StaffID = s.StaffID where sliderID=" + id;
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
-            while(rs.next()) {
+            while (rs.next()) {
                 int sliderID = rs.getInt("sliderID");
                 String title = rs.getString("title");
                 String image = rs.getString("image");
@@ -135,19 +137,19 @@ public class DAOSlider extends DBContext {
                 String notes = rs.getString("notes");
                 int page_order = rs.getInt("page_order");
                 Date slider_date_createby = rs.getDate("slider_date_createby");
-                int userID = rs.getInt("userID");
-                User us = new User();
-                us.setUserID(userID);
-                 sl = new Slider(sliderID, title, image, link, status, notes, us, page_order, slider_date_createby);
-                
-              
+                int userID = rs.getInt("StaffID");
+                Staff us = new Staff();
+                us.setStaffID(userID);
+                sl = new Slider(sliderID, title, image, link, status, notes, us, page_order, slider_date_createby);
+
             }
         } catch (SQLException ex) {
-             ex.printStackTrace();
+            ex.printStackTrace();
         }
         return sl;
     }
-      public Vector<Integer> getStatus(String sql) {
+
+    public Vector<Integer> getStatus(String sql) {
         Vector<Integer> vector = new Vector<>();
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -160,6 +162,7 @@ public class DAOSlider extends DBContext {
 
         return vector;
     }
+
     public static void main(String[] args) {
         DAOSlider db = new DAOSlider();
         System.out.println(db.getSlider(" SELECT top 1 * FROM Slider ORDER BY page_order"));

@@ -9,11 +9,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Admin Setting List</title>
+        <title>Danh sách cài đặt quản trị viên</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -52,7 +52,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!-- Material Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-           <link rel="stylesheet" href="./mktcss/styles.css">
+        <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
     </head>
     <style>
@@ -319,283 +319,282 @@
 <body>
     <div class="grid-container">
 
-            <jsp:include page="header.jsp"></jsp:include>
-                <!-- End Header -->
+        <jsp:include page="header.jsp"></jsp:include>
+            <!-- End Header -->
 
-                <!-- Sidebar -->
-            <jsp:include page="sidebarAdmin.jsp"></jsp:include>
-    <div class="container-xl">
-        <div class="table-responsive">
-            <div class="table-wrapper">
-                <div class="table-title">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <h2>Setting <b>List</b></h2>
+            <!-- Sidebar -->
+        <jsp:include page="sidebarAdmin.jsp"></jsp:include>
+            <div class="container-xl">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h2>Danh sách <b>Cài đặt</b></h2>
+                                </div>
+                                <div class="col-sm-3">
+                                    <form action="AdminSettingURL" method="get">
+                                        <p>
+                                            Tìm kiếm: <input type="text" name="value"> 
+                                            <input type="submit" name="submit" value="search">
+                                            <input type="reset" value="Clear"></p>
+                                        <input type="hidden" name="service" value="listAllSetting">
+                                    </form>	
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
+                                    <a href="#sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-3">
-                            <form action="AdminSettingURL" method="get">
-                                <p>
-                                    Search value: <input type="text" name="value"> 
-                                    <input type="submit" name="submit" value="search">
-                                    <input type="reset" value="Clear"></p>
-                                <input type="hidden" name="service" value="listAllSetting">
-                            </form>	
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                            <a href="#sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Table -->
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
+                        <!-- Table -->
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
 
-                            <th>SettingID</th>                           
-                            <th>Value</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                                    <th>ID</th>                           
+                                    <th>Giá trị</th>
+                                    <th>Trạng thái</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        <c:forEach items="${requestScope.listAllSetting}" var="c">
-                            <tr>
+                            <c:forEach items="${requestScope.listAllSetting}" var="c">
+                                <tr>
 
-                                <td>${c.settingID}</td>
-                                <td>${c.value}</td>
+                                    <td>${c.settingID}</td>
+                                    <td>${c.value}</td>
 
-                                <td>
-                                    <c:if test="${c.status == '1'}">Show</c:if>
-                                    <c:if test="${c.status != '1'}">Hide</c:if>
-                                    </td>
                                     <td>
-                                    <c:if test="${c.status == '1'}">
-                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=0" style="color: red" class="fa fa-eye"></a>
-                                    </c:if>
-                                    <c:if test="${c.status != '1'}">
-                                        <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=1" style="color: red" class="fa fa-eye-slash"></a>
-                                    </c:if>
+                                        <c:if test="${c.status == '1'}">Hiện</c:if>
+                                        <c:if test="${c.status != '1'}">Ẩn</c:if>
+                                        </td>
+                                        <td>
+                                        <c:if test="${c.status == '1'}">
+                                            <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=0" style="color: red" class="fa fa-eye"></a>
+                                        </c:if>
+                                        <c:if test="${c.status != '1'}">
+                                            <a href="AdminSettingURL?service=status&settingid=${c.settingID}&status=1" style="color: red" class="fa fa-eye-slash"></a>
+                                        </c:if>
 
-                                    <a href="AdminSettingURL?service=AdminSettingDetails&settingid=${c.settingID}" title="View Details" data-toggle="tooltip"><i style="color: rgb(0, 0, 255)" class="material-icons">&#xE8B6;</i></a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-
-                <!-- Pagination -->
-                <div class="pagination">
-                    <c:if test="${not empty requestScope.listAllSetting}">
-                        <c:set var="currentPage" value="${requestScope.currentPage}" />
-                        <c:set var="totalPages" value="${requestScope.totalPages}" />
-                        <c:if test="${totalPages > 1}">
-                            <c:forEach begin="1" end="${totalPages}" varStatus="status">
-                                <c:choose>
-                                    <c:when test="${currentPage == status.index + 1}">
-                                        <a class="active">${status.index + 1}</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="AdminSettingURL?service=listAllSetting&page=${status.index + 1}">${status.index + 1}</a>
-                                    </c:otherwise>
-                                </c:choose>
+                                        <a href="AdminSettingURL?service=AdminSettingDetails&settingid=${c.settingID}" title="View Details" data-toggle="tooltip"><i style="color: rgb(0, 0, 255)" class="material-icons">&#xE8B6;</i></a>
+                                    </td>
+                                </tr>
                             </c:forEach>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <c:if test="${not empty requestScope.listAllSetting}">
+                            <c:set var="currentPage" value="${requestScope.currentPage}" />
+                            <c:set var="totalPages" value="${requestScope.totalPages}" />
+                            <c:if test="${totalPages > 1}">
+                                <c:forEach begin="1" end="${totalPages}" varStatus="status">
+                                    <c:choose>
+                                        <c:when test="${currentPage == status.index + 1}">
+                                            <a class="active">${status.index + 1}</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="AdminSettingURL?service=listAllSetting&page=${status.index + 1}">${status.index + 1}</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                            </c:if>
                         </c:if>
-                    </c:if>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Filter Modal HTML -->
-    <div id="Filter" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Filter</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- Filter Modal HTML -->
+        <div id="Filter" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Lọc</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form action="AdminSettingURL" method="post">
+                        <div class="modal-body">
+                            <!-- Category Filter -->
+                            <div class="form-group">
+                                <label for="category-select">Trạng thái:</label>
+                                <select id="category-select" class="form-control" name="status">
+                                    <option value="3">Tất cả</option>
+                                    <option value="1">Hiện</option>
+                                    <option value="0">Ẩn</option>
+                                </select>
+                            </div>
+                            <!-- Author Filter -->
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">OK</button>
+                            <input type="hidden" name="service" value="filter">
+                        </div>
+                    </form>
                 </div>
-                <form action="AdminSettingURL" method="post">
-                    <div class="modal-body">
-                        <!-- Category Filter -->
-                        <div class="form-group">
-                            <label for="category-select">Status:</label>
-                            <select id="category-select" class="form-control" name="status">
-                                <option value="3">ALL</option>
-
-                                <option value="1">Show</option>
-                                <option value="0">Hide</option>
-                            </select>
-                        </div>
-                        <!-- Author Filter -->
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">OK</button>
-                        <input type="hidden" name="service" value="filter">
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-    <!-- Add Modal HTML -->
-    <div id="Add" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="PostController" method="post" enctype="multipart/form-data">
-                    <div class="modal-header">						
-                        <h4 class="modal-title">New Post</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">					
-                        <div class="form-group">
-                            <label>title</label>
-                            <input type="text" class="form-control" name="title" required>
+        <!-- Add Modal HTML -->
+        <div id="Add" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Bài đăng mới</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="form-group">
-                            <label>thumbnail</label>
-                            <input type="text" class="form-control" name="thumbnail" >
-                        </div>
-                        <div class="form-group">
-                            <label>Category Post</label>
-                            <select id="category-select" class="form-control" name="category_post">                                   
-                                <c:forEach items="${requestScope.category_product}" var="c">
-                                    <option value="${c.category_productID}">${c.category_name}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>featured</label>
-                            <input type="text" class="form-control" name="featured" required>
-                        </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Tiêu đề</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hình nhỏ</label>
+                                <input type="text" class="form-control" name="thumbnail" >
+                            </div>
+                            <div class="form-group">
+                                <label>Bài đăng chuyên mục</label>
+                                <select id="category-select" class="form-control" name="category_post">                                   
+                                    <c:forEach items="${requestScope.category_product}" var="c">
+                                        <option value="${c.category_productID}">${c.category_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nổi bật</label>
+                                <input type="text" class="form-control" name="featured" required>
+                            </div>
 
-                        <div class="form-group">
-                            <label>brief_information</label>
-                            <input type="text" class="form-control" name="brief_information" required>
+                            <div class="form-group">
+                                <label>Thông tin tóm tắt</label>
+                                <input type="text" class="form-control" name="brief_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Miêu tả</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>description</label>
-                            <input type="text" class="form-control" name="description" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
+                        <div class="modal-footer">
 
-                        <input type="submit" class="btn btn-info" value="OK">
-                        <input type="hidden" name="service" value="add">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Sort -->
-    <div id="sort" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Sort By</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
                 </div>
-                <form action="AdminSettingURL" method="post">
-                    <div class="modal-body">
-                        <!-- Sort Options -->
-                        <div class="form-group">
-                            <label for="sort-select">Sort By:</label>
-                            <select id="sort-select" class="form-control" name="sort">
-                                <option value="settingID">settingID</option>
-                                <option value="type">type</option>
-                                <option value="value">value</option>
-                                <option value="order">order</option>
-                                <option value="description">description</option>
-                                <option value="status">Status</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Sort</button>
-                        <input type="hidden" name="service" value="sort">
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-    <!<!-- comment -->
-    <div id="Edit" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="PostController" method="post" enctype="multipart/form-data">
-                    <div class="modal-header">						
-                        <h4 class="modal-title">Edit Post</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <!-- Sort -->
+        <div id="sort" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Sắp xếp</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">					
-                        <div class="form-group">
-                            <label>title</label>
-                            <input type="text" class="form-control" name="title" required>
+                    <form action="AdminSettingURL" method="post">
+                        <div class="modal-body">
+                            <!-- Sort Options -->
+                            <div class="form-group">
+                                <label for="sort-select">Sắp xếp:</label>
+                                <select id="sort-select" class="form-control" name="sort">
+                                    <option value="settingID">ID</option>
+                                    <option value="type">Loại</option>
+                                    <option value="value">Giá trị</option>
+                                    <option value="order">Đơn hàng</option>
+                                    <option value="description">Mô tả</option>
+                                    <option value="status">Trạng thái</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>thumbnail</label>
-                            <input type="text" class="form-control" name="thumbnail" >
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Sắp xếp</button>
+                            <input type="hidden" name="service" value="sort">
                         </div>
-                        <div class="form-group">
-                            <label>Category Post</label>
-                            <select id="category-select" class="form-control" name="category_post">                                   
-                                <c:forEach items="${requestScope.category_product}" var="c">
-                                    <option value="${c.category_productID}">${c.category_name}</option>
-                                </c:forEach>
-                            </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!<!-- comment -->
+        <div id="Edit" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Chỉnh sửa bài</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                        <div class="form-group">
-                            <label>featured</label>
-                            <input type="text" class="form-control" name="featured" required>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Tiêu đề</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Hình ảnh</label>
+                                <input type="text" class="form-control" name="thumbnail" >
+                            </div>
+                            <div class="form-group">
+                                <label>Bài đăng chuyên mục</label>
+                                <select id="category-select" class="form-control" name="category_post">                                   
+                                    <c:forEach items="${requestScope.category_product}" var="c">
+                                        <option value="${c.category_productID}">${c.category_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nổi bật</label>
+                                <input type="text" class="form-control" name="featured" required>
+                            </div>
+                            <!--                            <div class="form-group">
+                                                            <label>status</label>
+                                                            <select id="status-select" class="form-control" name="status">
+                            <c:forEach items="${requestScope.status}" var="s">
+                                <option value="${s}">${s}</option>
+                            </c:forEach>
+                        </select>
+                    </div>-->
+                            <div class="form-group">
+                                <label>Thông tin tóm tắt</label>
+                                <input type="text" class="form-control" name="brief_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
                         </div>
-                        <!--                            <div class="form-group">
-                                                        <label>status</label>
-                                                        <select id="status-select" class="form-control" name="status">
-                        <c:forEach items="${requestScope.status}" var="s">
-                            <option value="${s}">${s}</option>
-                        </c:forEach>
-                    </select>
-                </div>-->
-                        <div class="form-group">
-                            <label>brief_information</label>
-                            <input type="text" class="form-control" name="brief_information" required>
-                        </div>
-                        <div class="form-group">
-                            <label>description</label>
-                            <input type="text" class="form-control" name="description" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
+                        <div class="modal-footer">
 
-                        <input type="submit" class="btn btn-info" value="OK">
-                        <input type="hidden" name="service" value="add">
-                    </div>
-                </form>
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Delete Modal HTML -->
-    <div id="deleteEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">						
-                        <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">					
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>This action cannot be undone.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-danger" value="Delete">
-                    </div>
-                </form>
+        <!-- Delete Modal HTML -->
+        <div id="deleteEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Xóa nhân viên</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <p>Bạn có chắc chắn muốn xóa nhân viên này?</p>
+                            <p class="text-warning"><small>Hành động này không thể được hoàn tác.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 </body>
 </html>

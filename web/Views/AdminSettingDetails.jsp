@@ -9,11 +9,11 @@
 <%@page import="java.util.Vector"%> 
 <%@page import="Entity.Slider"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Bootstrap User Management Data Table</title>
+        <title>Cài đặt cho Admin</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -211,7 +211,7 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-5">
-                                <h2>Admin <b>Detail</b></h2>
+                                <h2>Chi tiết <b>Cài Đặt</b></h2>
                             </div>
                             <div class="col-sm-7">
                                 <!-- Add any additional buttons here -->
@@ -221,11 +221,11 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>SettingID</th>
-                                <th>Value</th>
-                                <th>Description</th>
-                                <th>Activity History</th>
-                                <th>Status</th>
+                                <th>ID</th>
+                                <th>Giá trị</th>
+                                <th>Mô tả</th>
+                                <th>Lịch sử hoạt động</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -236,13 +236,13 @@
                                 <td>${c.description}</td>
                                 <td>${c.edit_log}</td>
                                 <td>
-                                    <c:if test="${c.status == '1'}">Show</c:if>
-                                    <c:if test="${c.status != '1'}">Hide</c:if>
+                                    <c:if test="${c.status == '1'}">Hiện</c:if>
+                                    <c:if test="${c.status != '1'}">Ẩn</c:if>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-center">
-                                    <a href="AdminSettingURL" class="button-field">Back To Admin Setting</a>
+                                    <a href="AdminSettingURL" class="button-field">Trở lại danh sách Cài đặt</a>
                                 </td>
                             </tr>
                         </tbody>
