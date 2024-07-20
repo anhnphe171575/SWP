@@ -70,27 +70,34 @@
     </head>
     <body>
         <div class="container">
-            <h2>Edit Post</h2>
+            <h2>Chỉnh Sửa Bài Viết</h2>
             <form action="EditPost" method="post">
                 <div class="form-group">
                     <input type="hidden" name="postID" value="${post.postID}" >
-                    <div>Title:</div>
+                    <div>Tiêu đề:</div>
                     <input type="text" name="title" value="${post.title}" >
                 </div>
 
                 <div class="form-group">
-                    <div>Thumbnail::</div>
+                    <div>Ảnh:</div>
                     <img class="rounded-circle mt-5" width="150px" src="${post.thumbnail}">
                     <input type="file" name="file" id="file" accept="image/*" >
 
                 </div>
 
                 <div class="form-group">
-                    <div>Category</div>
-                    <input type="number"  name="category_postID" value="${post.cp.category_postID}">
-                </div>
+    <div>Thể loại:</div>
+    <select id="category-select" class="form-control" name="category_postID">
+        <c:forEach items="${requestScope.category_product}" var="c">
+            <option value="${c.category_productID}" ${c.category_productID == post.cp.category_postID ? 'selected' : ''}>
+                ${c.category_name}
+            </option>
+        </c:forEach>
+    </select>
+</div>
+
                 <div class="form-group">
-                    <div>Featured:</div>
+                    <div>Nổi bật</div>
                     <select name="featured" required> 
                         <option value="1" ${post.featured == 1 ? 'selected' : ''}>Common</option>
                         <option value="0" ${post.featured != 1 ? 'selected' : ''}>No common</option>
@@ -98,7 +105,7 @@
                 </div>
 
                 <div class="form-group">
-                    <div>Status:</div>
+                    <div>Trạng thái</div>
                     <select name="status" required> 
                         <option value="1" ${post.status == 1 ? 'selected' : ''}>Show</option>
                         <option value="0" ${post.status != 1 ? 'selected' : ''}>Hide</option>
@@ -108,12 +115,12 @@
 
 
                 <div class="form-group">
-                    <div>Brief-Information</div>
+                    <div>Tóm tắt</div>
                     <input type="text" name="brief_information" value="${post.brief_information}">
                 </div>
 
                 <div class="form-group">
-                    <div>Description:</div>
+                    <div>Chi tiết:</div>
                     <textarea name="description">${post.description}</textarea>
                 </div>
                 <c:if test="${detail == '0'}">
