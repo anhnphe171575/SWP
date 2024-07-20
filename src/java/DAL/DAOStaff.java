@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author admin
  */
-public class DAOUser extends DBContext {
+public class DAOStaff extends DBContext {
 
     public Role getRoleName(int id) {
         Role r = null;
