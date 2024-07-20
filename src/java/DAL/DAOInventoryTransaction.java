@@ -7,7 +7,8 @@ package DAL;
 import Entity.InventoryTransaction;
 import Entity.Order;
 import Entity.Product;
-import Entity.User;
+import Entity.Staff;
+//import Entity.Staff;
 import jakarta.servlet.jsp.jstl.sql.Result;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class DAOInventoryTransaction extends DBContext {
     private static final Logger logger = Logger.getLogger(DAOInventoryTransaction.class.getName());
 
     public void AddInventoryTransaction(int productID, int orderID, int quantityChange,
-            String transactionType, int userID,
+            String transactionType, int StaffID,
             Date transactionDate, String note, int quantityCurrent) {
         try {
             String query = "INSERT INTO InventoryTransaction(\n"
@@ -37,7 +38,7 @@ public class DAOInventoryTransaction extends DBContext {
                     + "    orderID,\n"
                     + "    quantity_change,\n"
                     + "    transaction_type,\n"
-                    + "    UserID,\n"
+                    + "    StaffID,\n"
                     + "    transaction_date,\n"
                     + "    note,\n"
                     + "    quantity_current\n"
@@ -47,7 +48,7 @@ public class DAOInventoryTransaction extends DBContext {
             stm.setInt(2, orderID);
             stm.setInt(3, quantityChange);
             stm.setString(4, transactionType);
-            stm.setInt(5, userID);
+            stm.setInt(5, StaffID);
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(transactionDate);
             stm.setDate(6, java.sql.Date.valueOf(date1));
@@ -62,14 +63,14 @@ public class DAOInventoryTransaction extends DBContext {
     }
 
     public void AddInventoryTransaction1(int productID, int quantityChange,
-            String transactionType, int userID,
+            String transactionType, int StaffID,
             Date transactionDate, String note, int quantityCurrent) {
         try {
             String query = "INSERT INTO InventoryTransaction(\n"
                     + "    productID,\n"
                     + "    quantity_change,\n"
                     + "    transaction_type,\n"
-                    + "    UserID,\n"
+                    + "    StaffID,\n"
                     + "    transaction_date,\n"
                     + "    note,\n"
                     + "    quantity_current\n"
@@ -78,7 +79,7 @@ public class DAOInventoryTransaction extends DBContext {
             stm.setInt(1, productID);
             stm.setInt(2, quantityChange);
             stm.setString(3, transactionType);
-            stm.setInt(4, userID);
+            stm.setInt(4, StaffID);
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(transactionDate);
             stm.setDate(5, java.sql.Date.valueOf(date1));
@@ -96,7 +97,7 @@ public class DAOInventoryTransaction extends DBContext {
         try {
             String query = "select it.transactionID,o.orderID,u.last_name,u.first_name,p.product_name, it.quantity_change,it.quantity_current,it.transaction_date,it.transaction_type,it.note from [InventoryTransaction] \n"
                     + "								 it inner join Product p on it.productID = p.productID\n"
-                    + "									inner join [User] u on it.UserID = u.UserID\n"
+                    + "									inner join Staff u on it.StaffID = u.StaffID\n"
                     + "									left join [Order] o on it.orderID = o.orderID";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
@@ -125,7 +126,7 @@ public class DAOInventoryTransaction extends DBContext {
                         null,
                         Boolean.TRUE,
                         0);
-                User u = new User(0,
+                Staff u = new Staff(0,
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         null,
