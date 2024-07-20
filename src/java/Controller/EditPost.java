@@ -34,9 +34,6 @@ import java.util.Vector;
 @MultipartConfig
 public class EditPost extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\admin\\Downloads\\20t6\\SWP\\web\\imgPost";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -76,10 +73,10 @@ public class EditPost extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAL.DAOPost dao = new DAOPost();
-                DAOCategoryProduct dao2 = new DAOCategoryProduct();
+        DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
         int id = Integer.parseInt(request.getParameter("postID"));
-                Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
+        Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         request.setAttribute("category_product", vec5);
         request.setAttribute("post", dao.getPostById(id));
         request.setAttribute("detail", Integer.parseInt(request.getParameter("detail")));
@@ -105,14 +102,41 @@ public class EditPost extends HttpServlet {
         if (service.equals("editDetail")) {
             int id = Integer.parseInt(request.getParameter("postID"));
             String title = request.getParameter("title");
-            Part filePart = request.getPart("thumbnail");
-            // Get the file name
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            // Create a file path
-            File file = new File(UPLOAD_DIR, fileName);
-            // Write the file to the specified directory
-            filePart.write(file.getAbsolutePath());
-            String fileUrl = "imgPost/" + fileName;
+            String applicationPath = request.getServletContext().getRealPath("");
+            // Construct the path for the upload directory
+            String uploadFilePath = applicationPath + File.separator + "imgPost";
+
+            // Create the upload directory if it doesn't exist
+            File fileSaveDir = new File(uploadFilePath);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdirs();
+            }
+
+            // Get the file part from the request
+            Part filePart = request.getPart("file");
+            String originalFileName = "";
+            String fileUrl = "";
+
+            if (filePart != null && filePart.getSize() > 0) {
+                // Get the original file name
+                originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+                // Create a new file name
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+                // Create a file path
+                File file = new File(uploadFilePath, newFileName);
+
+                // Write the file to the specified directory
+                filePart.write(file.getAbsolutePath());
+
+                // Construct the file URL relative to the web application
+                fileUrl = "imgPost" + File.separator + newFileName;
+            } else {
+                // If no new file is uploaded, use the existing image URL
+                fileUrl = request.getParameter("existingImage");
+            }
             int category_postID = Integer.parseInt(request.getParameter("category_postID"));
             int featured = Integer.parseInt(request.getParameter("featured"));
             int status = Integer.parseInt(request.getParameter("status"));
@@ -140,6 +164,41 @@ public class EditPost extends HttpServlet {
             request.setAttribute("category_product", daoCPR.getCategoryProductProduct());
             request.getRequestDispatcher("PostDetail?service=viewDetail&postID=" + id).forward(request, response);
         } else if (service.equals("editList")) {
+             String applicationPath = request.getServletContext().getRealPath("");
+            // Construct the path for the upload directory
+            String uploadFilePath = applicationPath + File.separator + "imgCustomer";
+
+            // Create the upload directory if it doesn't exist
+            File fileSaveDir = new File(uploadFilePath);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdirs();
+            }
+
+            // Get the file part from the request
+            Part filePart = request.getPart("file");
+            String originalFileName = "";
+            String fileUrl = "";
+
+            if (filePart != null && filePart.getSize() > 0) {
+                // Get the original file name
+                originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+                // Create a new file name
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+                // Create a file path
+                File file = new File(uploadFilePath, newFileName);
+
+                // Write the file to the specified directory
+                filePart.write(file.getAbsolutePath());
+
+                // Construct the file URL relative to the web application
+                fileUrl = "imgCustomer" + File.separator + newFileName;
+            } else {
+                // If no new file is uploaded, use the existing image URL
+                fileUrl = request.getParameter("existingImage");
+            }
             int id = Integer.parseInt(request.getParameter("postID"));
             String title = request.getParameter("title");
             String thumbnail = request.getParameter("thumbnail");
@@ -154,7 +213,7 @@ public class EditPost extends HttpServlet {
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             CategoryPost cp = new CategoryPost(category_postID, daoCPR.getCategoryProductbyID(category_postID));
-            Post post = new Post(id, thumbnail, title, cp, featured, status, brief_information, description, u, date_create_by);
+            Post post = new Post(id, fileUrl, title, cp, featured, status, brief_information, description, u, date_create_by);
             daoP.editPost(post);
 
             response.sendRedirect("PostController");

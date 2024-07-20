@@ -516,7 +516,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh</label>
-                                        <input type="text" class="form-control" name="thumbnail" >
+                                         <input type="file" id="file" name="file" class="form-control-file" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Thể loại</label>

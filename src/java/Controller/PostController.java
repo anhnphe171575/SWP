@@ -89,10 +89,10 @@ public class PostController extends HttpServlet {
         Vector<Post> vec1 = daoP.getAll();
         //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<Staff> vec3 = dao1.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n" +
-"                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
-"                inner join [Role] r on r.RoleID = u.RoleID");
+        Vector<Staff> vec3 = dao1.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
         int page = 0;
@@ -191,10 +191,10 @@ public class PostController extends HttpServlet {
         }
 
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<Staff> vec3 = daoU.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n" +
-"                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
-"                inner join [Role] r on r.RoleID = u.RoleID");
+        Vector<Staff> vec3 = daoU.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
         int page = 0;
         int numberOfPage = 6;
@@ -226,14 +226,41 @@ public class PostController extends HttpServlet {
         DAOPost daoP = new DAOPost();
         DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
-        Part filePart = request.getPart("thumbnail");
-        // Get the file name
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        // Create a file path
-        File file = new File(UPLOAD_DIR, fileName);
-        // Write the file to the specified directory
-        filePart.write(file.getAbsolutePath());
-        String fileUrl = "imgPost/" + fileName;
+        String applicationPath = request.getServletContext().getRealPath("");
+        // Construct the path for the upload directory
+        String uploadFilePath = applicationPath + File.separator + "imgPost";
+
+        // Create the upload directory if it doesn't exist
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdirs();
+        }
+
+        // Get the file part from the request
+        Part filePart = request.getPart("file");
+        String originalFileName = "";
+        String fileUrl = "";
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Get the original file name
+            originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            // Create a new file name
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+            // Create a file path
+            File file = new File(uploadFilePath, newFileName);
+
+            // Write the file to the specified directory
+            filePart.write(file.getAbsolutePath());
+
+            // Construct the file URL relative to the web application
+            fileUrl = "imgPost" + File.separator + newFileName;
+        } else {
+            // If no new file is uploaded, use the existing image URL
+            fileUrl = request.getParameter("existingImage");
+        }
         String title = request.getParameter("title");
         String category_post_raw = request.getParameter("category_post");
         String featured_raw = request.getParameter("featured");
