@@ -40,7 +40,7 @@
     <body>
         <div class="container">
             <h2>Edit Slider</h2>
-            <form action="SliderServletURL" method="post" id="editSliderForm">
+            <form action="SliderServletURL" method="post" id="editSliderForm" enctype="multipart/form-data">
                 <input type="hidden" name="sliderID" value="${Slider.sliderID}">
 
                 <div class="form-group">
@@ -50,7 +50,10 @@
 
                 <div class="form-group">
                     <label for="image">Image:</label>
-                    <input type="text" id="image" name="image" value="${Slider.image}" class="form-control" required>
+                    <img class="" width="300px" src="${Slider.image}"> <br/>
+                        <input type="file" name="file" id="file" accept="image/*" > 
+                        
+                    <input type="hidden" name="existingImage" value="${Slider.image}">
                 </div>
 
                 <div class="form-group">
