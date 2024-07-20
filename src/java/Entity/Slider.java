@@ -18,7 +18,7 @@ public class Slider {
     private String link;
     private int status;
     private String notes;
-    private User user;
+    private Staff staff;
     private int page_order;
     private Date slider_date_createby;
 
@@ -26,14 +26,15 @@ public class Slider {
      public Slider(){
          
      }
-    public Slider(int sliderID, String title, String image, String link, int status, String notes, User user, int page_order, Date slider_date_createby) {
+
+    public Slider(int sliderID, String title, String image, String link, int status, String notes, Staff staff, int page_order, Date slider_date_createby) {
         this.sliderID = sliderID;
         this.title = title;
         this.image = image;
         this.link = link;
         this.status = status;
         this.notes = notes;
-        this.user = user;
+        this.staff = staff;
         this.page_order = page_order;
         this.slider_date_createby = slider_date_createby;
     }
@@ -86,12 +87,12 @@ public class Slider {
         this.notes = notes;
     }
 
-    public User getUser() {
-        return user;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public int getPage_order() {
@@ -109,5 +110,6 @@ public class Slider {
     public void setSlider_date_createby(Date slider_date_createby) {
         this.slider_date_createby = slider_date_createby;
     }
+  
 
 }

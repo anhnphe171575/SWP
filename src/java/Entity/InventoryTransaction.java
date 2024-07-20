@@ -16,18 +16,18 @@ public class InventoryTransaction {
     private Order order;
     private int quantitychange;
     private String transaction_type;
-    private User user;
+    private Staff staff;
     private Date transaction_date;
     private String note;
     private int quantity_current;
 
-    public InventoryTransaction(int transactionID, Product product, Order order, int quantitychange, String transaction_type, User user, Date transaction_date, String note, int quantity_current) {
+    public InventoryTransaction(int transactionID, Product product, Order order, int quantitychange, String transaction_type, Staff staff, Date transaction_date, String note, int quantity_current) {
         this.transactionID = transactionID;
         this.product = product;
         this.order = order;
         this.quantitychange = quantitychange;
         this.transaction_type = transaction_type;
-        this.user = user;
+        this.staff = staff;
         this.transaction_date = transaction_date;
         this.note = note;
         this.quantity_current = quantity_current;
@@ -73,12 +73,12 @@ public class InventoryTransaction {
         this.transaction_type = transaction_type;
     }
 
-    public User getUser() {
-        return user;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public Date getTransaction_date() {
@@ -107,8 +107,10 @@ public class InventoryTransaction {
 
     @Override
     public String toString() {
-        return "InventoryTransaction{" + "transactionID=" + transactionID + ", product=" + product + ", order=" + order + ", quantitychange=" + quantitychange + ", transaction_type=" + transaction_type + ", user=" + user + ", transaction_date=" + transaction_date + ", note=" + note + ", quantity_current=" + quantity_current + '}';
+        return "InventoryTransaction{" + "transactionID=" + transactionID + ", product=" + product + ", order=" + order + ", quantitychange=" + quantitychange + ", transaction_type=" + transaction_type + ", staff=" + staff + ", transaction_date=" + transaction_date + ", note=" + note + ", quantity_current=" + quantity_current + '}';
     }
+
+  
     
 
     
