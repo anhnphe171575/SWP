@@ -630,7 +630,6 @@
                         </div>
                         <div class="modal-body">
                             <input type="hidden" id="productId">
-
                             <div class="form-group">
                                 <label for="type">Type:</label>
                                 <br/>
@@ -640,6 +639,7 @@
                                     <option value="update">Update</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="quantity">Quantity:</label>
                                 <input type="number" id="quantity" class="form-control" min="0">

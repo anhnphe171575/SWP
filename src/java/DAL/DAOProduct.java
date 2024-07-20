@@ -1147,5 +1147,6 @@ public class DAOProduct extends DBContext {
         DAOProduct p = new DAOProduct();
         p.DeleteProduct(24);
 //        System.out.println(p.getProductbyStatus("1"));
+
     }
 }

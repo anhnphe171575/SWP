@@ -30,6 +30,7 @@
                 <li class="sidebar-list-item">
             <a href="TransactionURL">
                 <span class="material-icons-outlined">assignment</span> Transaction
+
             </a>
         </li>
     </ul>
