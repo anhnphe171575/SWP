@@ -65,6 +65,8 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     </head>
     <style>
         td img {
@@ -341,14 +343,12 @@
     <script>
         $(document).ready(function () {
             $('.table').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "pageLength": 10
-            });
+                    "paging": true,
+                    "searching": false,
+                    "ordering": true,
+                    "info": false,
+                    "pageLength": 10
+                });
         });
 
         $(document).ready(function () {
@@ -395,7 +395,7 @@
                                 <div class="col-sm-3">
                                     <form action="AdminSettingURL" method="get">
                                         <p>
-                                            Tìm kiếm: <input type="text" name="value">
+                                            Tìm kiếm: <input type="text" name="value" placeholder="Giá trị">
                                             <input type="submit" name="submit" value="search">
                                             <input type="reset" value="Clear">
                                         </p>
@@ -405,9 +405,7 @@
                                 <div class="col-sm-6">
                                     <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i
                                             class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
-                                    <a href="#sort" class="btn btn-danger" data-toggle="modal"><i
-                                            class="material-icons">&#xe164;</i> <span>Sắp
-                                            xếp</span></a>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -455,27 +453,8 @@
                         </tbody>
                     </table>
 
-                    <!-- Pagination -->
-                    <div class="pagination">
-                        <c:if test="${not empty requestScope.listAllSetting}">
-                            <c:set var="currentPage" value="${requestScope.currentPage}" />
-                            <c:set var="totalPages" value="${requestScope.totalPages}" />
-                            <c:if test="${totalPages > 1}">
-                                <c:forEach begin="1" end="${totalPages}" varStatus="status">
-                                    <c:choose>
-                                        <c:when test="${currentPage == status.index + 1}">
-                                            <a class="active">${status.index + 1}</a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <a
-                                                href="AdminSettingURL?service=listAllSetting&page=${status.index + 1}">${status.index
-                                                                                                + 1}</a>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </c:forEach>
-                                </c:if>
-                            </c:if>
-                    </div>
+                    
+                    
                 </div>
             </div>
         </div>

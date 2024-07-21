@@ -349,7 +349,7 @@
                 $('.table').DataTable({
                     "paging": true,
                     "searching": false,
-                    "ordering": false,
+                    "ordering": true,
                     "info": false,
                     "pageLength": 10
                 });
@@ -455,7 +455,7 @@
                                         </form>                    
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
+                                       
                                     <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
 
@@ -519,6 +519,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
+                                    
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                     <th>Nổi bật</th>
@@ -560,6 +561,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
+                                    <th>Số lượng hiện đang đặt</th>
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                 </tr>
