@@ -192,75 +192,92 @@
             });
         </script>
     </head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="./mktcss/styles.css">
     <body>
-        <div class="container-xl">
-            <div class="table-responsive">
-                <div class="table-wrapper">
-                    <div class="table-title">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <h2>Slider <b> Detail</b></h2>
+        <div class="grid-container">
+
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+                <main class="main-container">
+                    <div class="table-responsive">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <h2>Chi tiết thanh trượt </h2>
+                                    </div>
+                                    <div class="col-sm-7">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-7">
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Slider Attribute</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:set value="${requestScope.sliderDetail}" var="c"></c:set>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Thuộc tính</th>
+                                        <th>Chi tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <c:set value="${requestScope.sliderDetail}" var="c"></c:set>
+                                    <tr>
+                                        <td>Ảnh</td>
+                                        <td><img src="${c.image}" alt="Slider Image" class="image-responsive"></td>
+                                </tr>    
                                 <tr>
-                                    <td>image</td>
-                                    <td><img src="${c.image}" alt="Slider Image" class="image-responsive"></td>
-                            </tr>    
-                            <tr>
-                                <td>sliderID</td>
-                                <td>${c.sliderID}</td>
-                            </tr> 
-                            <tr>
-                                <td>title</td>
-                                <td>${c.title}</td> 
-                            </tr>
-                            <tr>
-                                <td>link</td>
-                                <td>${c.link}</td> 
-                            </tr>
-                            <tr>
-                                <td>status</td>
-                                <td><c:if test="${c.status == '1'}">Show</c:if>
-                                    <c:if test="${c.status != '1'}">Hide</c:if>
+                                    <td>ID</td>
+                                    <td>${c.sliderID}</td>
+                                </tr> 
+                                <tr>
+                                    <td>Tiêu đề</td>
+                                    <td>${c.title}</td> 
                                 </tr>
                                 <tr>
-                                    <td>notes</td>
-                                    <td>${c.notes}</td>
-                            </tr>
-                            <tr>
-                                    <td>page_order</td>
+                                    <td>Liên kết</td>
+                                    <td>${c.link}</td> 
+                                </tr>
+                                <tr>
+                                    <td>Trạng thái</td>
+                                    <td><c:if test="${c.status == '1'}">Hiện</c:if>
+                                        <c:if test="${c.status != '1'}">Ẩn</c:if>
+                                    </tr>
+                                    <tr>
+                                        <td>Ghi chú</td>
+                                        <td>${c.notes}</td>
+                                </tr>
+                                <tr>
+                                    <td>Trang đăng</td>
                                     <td>${c.page_order}</td>
-                            </tr>
-                            <tr>
-                                    <td>slider_date_createby</td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày đăng</td>
                                     <td>${c.slider_date_createby}</td>
-                            </tr>
-                            <tr>
-                                    <td>UserID</td>
-                                    <td>${c.staff.getStaffID()}</td>
+                                </tr>
+                                <tr>
+                                    <td>ID người đăng</td>
+                                    <td>${c.user.userID}</td>
+                                </tr>
 
-                            </tr>
                             <td colspan="2">
-                                     <a href="SliderServletURL" class="button-field">Back To Slider List</a>
-                                </td>
+                                <a href="SliderServletURL" class="button-field">Trở về</a>
+                            </td>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
+                    </div>
                 </div>
-            </div>
-        </div>    
+            </main>    
+        </div>
     </body> 
 </html>

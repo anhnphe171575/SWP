@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controller;
 
 import DAL.DAOCart;
@@ -10,7 +6,6 @@ import Entity.CartItems;
 import Entity.Customer;
 import Entity.Product;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,125 +13,62 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
-/**
- *
- * @author phuan
- */
 public class AddToCart extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddToCart</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddToCart at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("cus");
-        if(cus == null){
-            System.out.println("nnn");
-                request.getRequestDispatcher("LoginCusController").forward(request, response);
+        if (cus == null) {
+            response.sendRedirect("LoginCusController");
+            return;
         }
-        else{
+
         String pid = request.getParameter("pid");
         String quantity = request.getParameter("quantity");
-        int pid_raw = 0;
+        int pid_raw;
         try {
             pid_raw = Integer.parseInt(pid);
-        } catch (Exception e) {
-            request.getRequestDispatcher("HomePage").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("HomePage");
+            return;
         }
-       
-        List<CartItems> cart = (List<CartItems>) session.getAttribute("cart");
-        DAOCart db = new DAOCart();
-        System.out.println(pid);
-        int quantity1 = 1;
-        if (quantity != null) {
-            quantity1 = Integer.parseInt(quantity);
-        }
-        DAOProduct db1 = new DAOProduct();
-        if (db.checkCart(cus.getCustomerID()) == null) {
-            db.Add2Cart(cus.getCustomerID());
-            db.Add2CartItem(1, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
-            request.setAttribute("error", "error2");
+
+        DAOCart daoCart = new DAOCart();
+        DAOProduct daoProduct = new DAOProduct();
+        int quantity1 = quantity != null ? Integer.parseInt(quantity) : 1;
+
+        if (daoCart.checkCart(cus.getCustomerID()) == null) {
+            daoCart.Add2Cart(cus.getCustomerID());
+            daoCart.Add2CartItem(1, daoCart.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
+            request.setAttribute("message", "New cart created and item added.");
         } else {
-            if (db.chekcProductInCart(pid_raw) == null) {
-                int cartItemsID = db.getCartItemsByCartID(cart.get(0).getCart().getCartID()).size() + 1;
-                db.Add2CartItem(cartItemsID, db.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
-                request.setAttribute("error", "error");
+            CartItems existingItem = daoCart.chekcProductInCart(pid_raw);
+            if (existingItem == null) {
+                int cartItemsID = daoCart.getCartItemsByCartID(daoCart.checkCart(cus.getCustomerID()).getCartID()).size() + 1;
+                daoCart.Add2CartItem(cartItemsID, daoCart.checkCart(cus.getCustomerID()).getCartID(), pid_raw, quantity1);
+                request.setAttribute("message", "New item added to cart.");
             } else {
-                Product p = new Product();
-                int quantity2= 1;
-                p =  db1.getProductByID(pid_raw);
-                if((db.chekcProductInCart(pid_raw).getQuantity() + quantity1) > (p.getQuantity() - p.getQuantity_hold())){
-                    quantity2 = p.getQuantity() - p.getQuantity_hold();
-                }
-                else{
-                    quantity2  = db.chekcProductInCart(pid_raw).getQuantity() + quantity1;
-                }
-                db.UpdateCartQuantity(db.checkCart(cus.getCustomerID()).getCartID(), quantity2, pid_raw);
-                request.setAttribute("error", "error1");
+                Product product = daoProduct.getProductByID(pid_raw);
+                int availableQuantity = product.getQuantity() - product.getQuantity_hold();
+                int newQuantity = Math.min(existingItem.getQuantity() + quantity1, availableQuantity);
+                daoCart.UpdateCartQuantity(daoCart.checkCart(cus.getCustomerID()).getCartID(), newQuantity, pid_raw);
+                request.setAttribute("message", "Item quantity updated in cart.");
             }
         }
+
         response.sendRedirect("CartDetails");
-        }
-        
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "AddToCart Servlet";
+    }
 }

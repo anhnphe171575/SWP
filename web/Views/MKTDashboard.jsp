@@ -61,6 +61,7 @@
         </style>
 
     </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <body>
         <div class="grid-container">
@@ -84,7 +85,7 @@
 
                         <div class="card">
                             <div class="card-inner">
-                                <h3>PRODUCTS</h3>
+                                <h3>SẢN PHẨM</h3>
                                 <span class="material-icons-outlined">inventory_2</span>
                             </div>
                             <h1>${total_product}</h1>
@@ -92,7 +93,7 @@
 
                     <div class="card">
                         <div class="card-inner">
-                            <h3>POST</h3>
+                            <h3>BÀI VIẾT</h3>
                             <span class="material-icons-outlined">article</span>
                         </div>
                         <h1>${total_post}</h1>
@@ -100,14 +101,14 @@
 
                     <div class="card">
                         <div class="card-inner">
-                            <h3>CUSTOMERS</h3>
+                            <h3>KHÁCH HÀNG</h3>
                             <span class="material-icons-outlined">groups</span>
                         </div>
                         <h1>${total_customer}</h1>
                     </div>
                     <div class="card">
                         <div class="card-inner">
-                            <h3>FEEDBACK</h3>
+                            <h3>PHẢN HỒI</h3>
                             <span class="material-icons-outlined">comment</span>
                         </div>
                         <h1>${total_feedback}</h1>
@@ -178,33 +179,34 @@
                                             <div class="charts" id="orderChart"></div>
                                         </div>-->
                     <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Newly Statistics</h2>
-                        <h2></h2>
+                        <h2 class="chart-title">Thông kê khách hàng mới</h2>
+                        <h2 style="text-align: center;color: #263043"> a</h2>
+                        <h2 style="text-align: center;color: #263043"> a</h2>
 
                         <div id="statsChartC"></div>
                     </div>
                     <div class="charts-card" >
-                        <h2 class="chart-title">Feedback Star</h2>
-                        <h2>Average:4.5</h2>
+                        <h2 class="chart-title">Thống kê số sao phản hồi</h2>
+                        <h2 style="text-align: center">Trung Bình: 4.5 <i class="fas fa-star"></i></h2>
                         <div class="charts" id="statsChart1"></div>
                     </div>
 
                 </div>
                 <div class="charts">
                     <div class="charts-card">
-                        <h2 class="chart-title">Products In 7-Day Before</h2>
+                        <h2 class="chart-title">Sản phẩm mới trong 7 ngày qua</h2>
                         <div id="bar-chart1"></div>
                     </div>
                     <div class="charts-card">
-                        <h2 class="chart-title">Post In 7-Day Before</h2>
+                        <h2 class="chart-title">Bài viết mới trong 7 ngày qua</h2>
                         <div id="bar-chart2"></div>
                     </div>
                     <div class="charts-card">
-                        <h2 class="chart-title">Customer In 7-Day Before</h2>
+                        <h2 class="chart-title">Khách hàng mới trong 7 ngày qua</h2>
                         <div id="bar-chart3"></div>
                     </div>
                     <div class="charts-card">
-                        <h2 class="chart-title">Feedback In 7-Day Before</h2>
+                        <h2 class="chart-title">Phản hồi mới trong 7 ngày qua</h2>
                         <div id="bar-chart4"></div>
                     </div>
                     <!--          <div class="charts-card">
@@ -352,7 +354,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Count',
+                                text: 'SL',
                                 style: {
                                     color: '#f5f7ff',
                                 },
@@ -468,7 +470,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Count',
+                                text: 'SL',
                                 style: {
                                     color: '#f5f7ff',
                                 },
@@ -506,7 +508,7 @@
                         series: [
                             {
                                 data: datacus,
-                                name: 'Actived',
+                                name: 'SL',
                             },
                         ],
                         chart: {
@@ -585,7 +587,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Count',
+                                text: 'SL',
                                 style: {
                                     color: '#f5f7ff',
                                 },
@@ -701,7 +703,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Count',
+                                text: 'SL',
                                 style: {
                                     color: '#f5f7ff',
                                 },
@@ -786,7 +788,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Feedback Star', // Y-axis title
+                                text: 'Sao phản hồi', // Y-axis title
                                 style: {
                                     color: '#f5f7ff' // Y-axis title color
                                 }
@@ -847,7 +849,7 @@
                                 data: [new_res[new_res.length - 1], new_order[new_order.length - 1]], // Example data: [new customers, customers with orders today]
                                 colors: ['#f5f7ff', '#d50000', '#00ff00', '#0000ff'] // Specify colors for each column
                             }],
-                        categories: ['New Customers', 'Customers with Orders Today']
+                        categories: ['Khách hàng mới', 'Khách hàng có đơn hôm nay']
                     };
                     const statsChartOptions = {
                         chart: {
@@ -883,7 +885,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Number of Customers',
+                                text: 'Số Lượng',
                                 style: {
                                     color: '#f5f7ff'
                                 }

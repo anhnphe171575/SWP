@@ -104,10 +104,7 @@ public class CartContact extends HttpServlet {
                     cartIDs.add(Integer.parseInt(item));
                 }
             }
-        }
-
-        // Xử lý dữ liệu
-        List<CartItems> list1 = new ArrayList<>();
+             List<CartItems> list1 = new ArrayList<>();
         if (!carItemIDs.isEmpty() && !cartIDs.isEmpty()) {
             DAOCart db = new DAOCart();
             for (int i = 0; i < Math.min(carItemIDs.size(), cartIDs.size()); i++) {
@@ -135,6 +132,13 @@ public class CartContact extends HttpServlet {
                 request.setAttribute("numberA", db1.getReceiver(cus.getCustomerID()).size());
         request.setAttribute("list", list1);
         request.getRequestDispatcher("Views/CartContact.jsp").forward(request, response);
+        }
+        else{
+                    request.getRequestDispatcher("CartDetails").forward(request, response);
+
+        }
+        // Xử lý dữ liệu
+       
        
     }
 

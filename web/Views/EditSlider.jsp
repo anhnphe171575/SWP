@@ -39,17 +39,19 @@
     </head>
     <body>
         <div class="container">
-            <h2>Edit Slider</h2>
-            <form action="SliderServletURL" method="post" id="editSliderForm" enctype="multipart/form-data">
+        <h2>Chỉnh sửa Thanh trượt </h2>
+            <form action="SliderServletURL" method="post" id="editSliderForm">
+
                 <input type="hidden" name="sliderID" value="${Slider.sliderID}">
 
                 <div class="form-group">
-                    <label for="title">Title:</label>
+                    <label for="title">Tiêu đề:</label>
                     <input type="text" id="title" name="title" value="${Slider.title}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="image">Image:</label>
+
+                    <label for="image">Ảnh:</label>
                     <img class="" width="300px" src="${Slider.image}"> <br/>
                         <input type="file" name="file" id="file" accept="image/*" > 
                         
@@ -57,29 +59,29 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="link">Link:</label>
+                    <label for="link">Liên kết:</label>
                     <input type="text" id="link" name="link" value="${Slider.link}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="notes">Notes:</label>
+                    <label for="notes">Ghi chú:</label>
                     <input type="text" id="notes" name="notes" value="${Slider.notes}" class="form-control" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="status">Status:</label>
+                    <label for="status">Trạng thái:</label>
                     <select id="status" name="status" class="form-control" required>
-                        <option value="1" ${Slider.status == 1 ? 'selected' : ''}>Show</option>
-                        <option value="0" ${Slider.status != 1 ? 'selected' : ''}>Hide</option>
+                        <option value="1" ${Slider.status == 1 ? 'selected' : ''}>Hiện</option>
+                        <option value="0" ${Slider.status != 1 ? 'selected' : ''}>Ẩn</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="page_order">Page Order:</label>
+                    <label for="page_order">Hiện ở Trang:</label>
                     <input type="number" id="page_order" name="page_order" value="${Slider.page_order}" class="form-control" required>
                 </div>
 
-                <input type="submit" value="Submit" name="submit" class="btn btn-primary">
+                <input type="submit" value="Cập nhập" name="submit" class="btn btn-primary">
                 <input type="hidden" value="updateSlider" name="service">
                 ${error}
             </form>

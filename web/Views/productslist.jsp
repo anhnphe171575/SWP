@@ -426,31 +426,39 @@
     </head>
     <body>
         <div class="grid-container">
+            
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- End Header -->
+                                <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
 
                 <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+                                </c:if>
+                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
             <jsp:include page="sidebar1.jsp"></jsp:include>
+                                </c:if>
+
                 <div class="container-xl" style="width: 1200px">
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <a href="productslist" style="color: white"><h2>Manage <b>Product</b></h2></a>
+                                        <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
                                     </div>
                                     <div style="text-align: right" class="col-sm-3">
                                         <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
-                                            <div><input type="text" id="searchTitle" name="title" placeholder="Title"></div>
-                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="brief" placeholder="Brief Information"></div>                     
-                                            <input type="submit" name="submit" value="Search">
+                                            <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
+                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
+                                            <input type="submit" name="submit" value="Tìm">
                                             <input type="hidden" name="service" value="search">                                                                      
                                         </form>                    
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sort</span></a>
+                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                                     <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
-                                        <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add new Product</span></a>
+                                        <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
+
                                     </c:if>
                                 </div>
                             </div>
@@ -473,10 +481,10 @@
                                     <div class="col-md-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">Category:</span>
+                                                <span class="input-group-text">Thể Loại</span>
                                             </div>
                                             <select id="product-filter" name="category" class="form-control">
-                                                <option value="3">All</option>
+                                                <option value="3">Tất cả</option>
                                                 <c:forEach items="${requestScope.category}" var="c">
                                                     <option value="${c}">${c}</option>
                                                 </c:forEach>
@@ -486,12 +494,12 @@
                                     <div class="col-md-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"> Status:</span>
+                                                <span class="input-group-text"> Trạng thái:</span>
                                             </div>
                                             <select class="custom-select" id="status" name="status">
-                                                <option value="3">All</option>
-                                                <option value="0">Hide</option>
-                                                <option value="1">Show</option>
+                                                <option value="3">Tất cả</option>
+                                                <option value="0">Ẩn</option>
+                                                <option value="1">Hiện</option>
                                             </select>
                                         </div>
                                     </div>
@@ -503,19 +511,19 @@
                             </form>
                         </div>
                     </div>
-                    <c:if test="${sessionScope.staff.getRole().getRoleID() != 4}">
+                    <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Thumbnail</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Sale Price</th>
-                                    <th>Featured</th>
-                                    <th>Status</th>
-                                    <th class="actions">Actions</th>
+                                    <th>Tên</th>
+                                    <th>Ảnh</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Giá đã giảm</th>
+                                    <th>Nổi bật</th>
+                                    <th>Trạng thái</th>
+                                    <th class="actions">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -527,8 +535,8 @@
                                         <td>${product.quantity}</td>
                                         <td>${product.original_price}</td>
                                         <td>${product.sale_price}</td>
-                                        <td>${product.featured == 1 ? 'Yes' : 'No'}</td>
-                                        <td>${product.status ? 'Show' : 'Hide'}</td>
+                                        <td>${product.featured == 1 ? 'Có' : 'Không'}</td>
+                                        <td>${product.status ? 'Hiện' : 'Ẩn'}</td>
                                         <td class="actions">
                                             <c:if test="${product.status == true}">
                                                 <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash" style="color: red;"></i></a>
@@ -544,17 +552,16 @@
                             </tbody>
                         </table>
                     </c:if>
-                    <c:if test="${sessionScope.staff.getRole().getRoleID() == 4}">
+                    <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Thumbnail</th>
-                                    <th>Quantity</th>
-                                    <th>Quantity Hold</th>
-                                    <th>Price</th>
-                                    <th>Sale Price</th>
+                                    <th>Tên</th>
+                                    <th>Ảnh</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Giá đã giảm</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -95,53 +95,64 @@
                 </div>
 
                 <div class="col-md-5 border-right">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Profile Settings</h4>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-12"><label class="labels">CustomerID</label><input type="text" class="form-control" name="customerID" value="<%=obj.getCustomerID()%>" readonly></div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">First Name</label><input type="text" class="form-control" name="first_name" value="<%=obj.getFirst_name()%>"></div>
-                            <div class="col-md-6"><label class="labels">Last Name</label><input type="text" class="form-control" name="last_name" value="<%=obj.getLast_name()%>"></div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels">Phone</label><input type="text" class="form-control" name="phone" value="<%=obj.getPhone()%>" pattern="[0-9]{10}" title="Please enter a valid phone number (10 digits)"></div>
-                            <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" name="email" value="<%=obj.getEmail()%>" readonly> </div>
-                            <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control" name="address" value="<%=obj.getAddress()%>"></div>
-                            <div class="col-md-12"><label class="labels">Username</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>" readonly=""></div>
-                            <div class="col-md-12"><label class="labels">Date of birth</label><input type="date" class="form-control" name="dob" value="<%=obj.getDob()%>"></div>
-                            <div class="col-md-12"><label class="labels">Gender</label>
-                                <div class="gender-options">
-                                    <label class="radio-container">Male
+                    
+                        <div class="p-3 py-5">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="text-right">Trang cá nhân</h4>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12"><label class="labels">ID</label><input type="text" class="form-control" name="customerID" value="<%=obj.getCustomerID()%>"readonly></div>
+
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-6"><label class="labels">Họ</label><input type="text" class="form-control" name="first_name" value="<%=obj.getFirst_name()%>"></div>
+                                <div class="col-md-6"><label class="labels">Tên</label><input type="text" class="form-control" name="last_name" value="<%=obj.getLast_name()%>"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12"><label class="labels">Số điện thoại</label><input type="text" class="form-control" name="phone"  value="<%=obj.getPhone()%>"></div>
+                                <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" name="email" value="<%=obj.getEmail()%>" readonly> </div>
+                                <div class="col-md-12"><label class="labels">Địa chỉ</label><input type="text" class="form-control" name="address" value="<%=obj.getAddress()%>"></div>
+                                <div class="col-md-12"><label class="labels">Tài khoản</label><input type="text" class="form-control" name="username" value="<%=obj.getUsername()%>" readonly=""></div>
+                                <div class="col-md-12"><label class="labels">Mật khẩu</label><input type="text" class="form-control" name="password" value="<%=obj.getPassword()%>"></div>
+                                <div class="col-md-12"><label class="labels">Ngày sinh</label><input type="date" class="form-control" name="dob" value="<%=obj.getDob()%>"></div>
+                                <div class="col-md-12"><label class="labels">Giới tính</label>
+                                    <div class="gender-options">
+                                    <label class="radio-container">Nam
+
                                         <input type="radio" name="gender" value="1" <%= obj.isGender() ? "checked" : "" %>>
                                         <span class="checkmark"></span>
                                     </label>
-                                    <label class="radio-container">Female
+                                    <label class="radio-container">Nữ
                                         <input type="radio" name="gender" value="0" <%= !obj.isGender() ? "checked" : "" %>>
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                            </div>
-                            <div class="col-md-12"><label class="labels">Status</label><input type="text" class="form-control" name="status" value="<%=obj.getActivity_history()%>" readonly=""></div>
-                            <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
-                            <div class="col-md-12"><label class="labels">Question</label>
-                                <select name="security">
-                                    <% Vector<Security> vector1 = (Vector<Security>) request.getAttribute("security");
-                                    for (Security obj1 : vector1) { %>
-                                    <option value="<%=obj1.getSecurityID()%>"> <%=obj1.getSecurity_question()%></option>
-                                    <% } %>
-                                </select>
-                            </div>
-                            <div class="col-md-12"><label class="labels">Answer</label><input type="text" class="form-control" name="securityAnswer" value="<%=obj.getSecutityAnswer()%>"></div>
-                        </div>
+                                </div>
+                                <div class="col-md-12"><label class="labels">Trạng thái</label><input type="text" class="form-control" name="status" value="<%=obj.getActivity_history()%>" readonly=""></div>
+                                <div class="col-md-12"><label class="labels"></label><input type="hidden" class="form-control" name="status" value="<%=obj.getActivity_history()%>"></div>
+                                <div class="col-md-12"><label class="labels">Câu hỏi bảo mật:</label>
+                                    <select name="security">
+                                        <%Vector<Security> vector1=(Vector<Security>)request.getAttribute("security");
+                                    for(Security obj1: vector1){
+                                        %>
+                                        <option value="<%=obj1.getSecurityID()%>"> <%=obj1.getSecurity_question()%></option>
+                                        <% }%>
+                                    </select></div>
+                                <div class="col-md-12"><label class="labels">Câu trả lời</label><input type="text" class="form-control" name="secutityAnswer" value="<%=obj.getSecutityAnswer()%>"></div>
 
-                        <div class="mt-5 text-center">
-                            <a href="HomePage" class="nav-item nav-link active">Home</a>
-                            <input type="submit" name="submit" value="Save">
-                            <input type="hidden" name="service" value="editProfileCustomer">
-                        </div>
+                            </div>
+
+                            <div class="mt-5 text-center">
+                                 <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
+                                <input type="submit" name="submit" value="Lưu">
+
+                                <input type="hidden" name="service" value="editProfileCustomer">
+
+
+
+                            </div>
+
+                  
                     </div>
                 </div>
             </div>

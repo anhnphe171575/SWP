@@ -21,77 +21,78 @@
                     <div class="table-title">
                         <div class="row">
                             <div class="col-sm-3">
-                                <h2>Details <b>Customer</b></h2>
+                                <h2>Thông tin <b>Khách </b></h2>
                             </div>
                         </div>
                     </div>
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Customer Attribute</th>
-                                <th>Value</th>
+                                <th>Khác hàng</th>
+                                <th>Thông tin</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>customerID</td>
-                                <td>${listAllCustomer.customerID}</td>
-                            </tr>
-                            <tr>
-                                <td>first_name</td>
-                                <td>${listAllCustomer.first_name}</td>
-                            </tr>
-                            <tr>
-                                <td>last_name</td>
-                                <td>${listAllCustomer.last_name}</td>
-                            </tr>
-                            <tr>
-                                <td>phone</td>
-                                <td>${listAllCustomer.phone}</td>
-                            </tr>
-                            <tr>
-                                <td>email</td>
-                                <td>${listAllCustomer.email}</td>
-                            </tr>
-                            <tr>
-                                <td>address</td>
-                                <td>${listAllCustomer.address}</td>
-                            </tr>
-                            <tr>
-                                <td>username</td>
-                                <td>${listAllCustomer.username}</td>
-                            </tr>
-                            <tr>
-                                <td>password</td>
-                                <td>${listAllCustomer.password}</td>
-                            </tr>
-                            <tr>
-                                <td>dob</td>
-                                <td>${listAllCustomer.dob}</td>
-                            </tr>
-                            <tr>
-                                <td>gender</td>
-                                <td>${listAllCustomer.gender ? 'Male' : 'Female'}</td>
-                            </tr>
-                            <tr>
-                                <td>activity_history</td>
-                                <td>${listAllCustomer.activity_history}</td>
-                            </tr>
-                            <tr>
-                                <td>security_question</td>
-                                <td>${listAllCustomer.security.security_question}</td>
-                            </tr>
-                            <tr>
-                                <td>securityAnswer</td>
-                                <td>${listAllCustomer.secutityAnswer}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <a href="CustomerServletURL?service=updateCustomer&customerid=${listAllCustomer.customerID}" class="btn btn-primary" title="update" data-toggle="tooltip">Update</a>
-                                     <a href="CustomerServletURL" class="button-field">Back To Customer List</a>
-                                </td>
-                            </tr>
-                        </tbody>
+    <tr>
+        <td>ID</td>
+        <td>${listAllCustomer.customerID}</td>
+    </tr>
+    <tr>
+        <td>Họ</td>
+        <td>${listAllCustomer.first_name}</td>
+    </tr>
+    <tr>
+        <td>Tên</td>
+        <td>${listAllCustomer.last_name}</td>
+    </tr>
+    <tr>
+        <td>Số điện thoại</td>
+        <td>${listAllCustomer.phone}</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>${listAllCustomer.email}</td>
+    </tr>
+    <tr>
+        <td>Địa chỉ</td>
+        <td>${listAllCustomer.address}</td>
+    </tr>
+    <tr>
+        <td>Tài khoản</td>
+        <td>${listAllCustomer.username}</td>
+    </tr>
+    <tr>
+        <td>Mật khẩu</td>
+        <td>${listAllCustomer.password}</td>
+    </tr>
+    <tr>
+        <td>Ngày sinh</td>
+        <td>${listAllCustomer.dob}</td>
+    </tr>
+    <tr>
+        <td>Giới tính</td>
+        <td>${listAllCustomer.gender ? 'Nam' : 'Nữ'}</td>
+    </tr>
+    <tr>
+        <td>Lịch sử hoạt động</td>
+        <td>${listAllCustomer.activity_history}</td>
+    </tr>
+    <tr>
+        <td>Câu hỏi bảo mật</td>
+        <td>${listAllCustomer.security.security_question}</td>
+    </tr>
+    <tr>
+        <td>Trả lời</td>
+        <td>${listAllCustomer.secutityAnswer}</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <a href="CustomerServletURL?service=updateCustomer&customerid=${listAllCustomer.customerID}" class="btn btn-primary" title="update" data-toggle="tooltip">Chỉnh sửa</a>
+            <a href="CustomerServletURL" class="button-field">Quay lại    </a>
+        </td>
+    </tr>
+</tbody>
+
                     </table>
                 </div>
             </div>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controller;
 
 import DAL.DAOCategoryProduct;
@@ -26,30 +22,15 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-/**
- *
- * @author phuan
- */
 @MultipartConfig
 public class ProductDetailsPublic extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\phuan\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgfeedback";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -62,15 +43,6 @@ public class ProductDetailsPublic extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,51 +69,66 @@ public class ProductDetailsPublic extends HttpServlet {
         request.getRequestDispatcher("Views/ProductPublicDetails.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get the application's real path
+        String applicationPath = request.getServletContext().getRealPath("");
+        // Construct the path for the upload directory
+        String uploadFilePath = applicationPath + File.separator + "imgfeedback";
+
+        // Create the upload directory if it doesn't exist
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdirs();
+        }
+
+        // Get the file part from the request
         Part filePart = request.getPart("file");
 
-        // Get the file name
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        // Get the original file name
+        String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        // Create a file path
-        File file = new File(UPLOAD_DIR, fileName);
-
-        // Write the file to the specified directory
-        filePart.write(file.getAbsolutePath());
-        String fileUrl = "imgfeedback/" + fileName;
         int star = Integer.parseInt(request.getParameter("rating"));
-        int orderid =  Integer.parseInt(request.getParameter("orderid"));
+        int orderid = Integer.parseInt(request.getParameter("orderid"));
         String comment = request.getParameter("comment");
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("cus");
         int Cusid = cus.getCustomerID();
         int pid = Integer.parseInt(request.getParameter("pid"));
-        String image = request.getParameter("image");
         LocalDate localDate = LocalDate.now();
         Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         DAOFeedback db = new DAOFeedback();
-        db.InsertFeedBack(pid, Cusid, orderid, comment, star, fileUrl, 1,date_create_by);
+
+        // Get the next FeedbackID
+        int max = 0;
+        for (Feedback fb : db.getFeedBack()) {
+            max = Math.max(max, fb.getFeedbackID());
+        }
+        int newFeedbackId = max + 1;
+
+        // Modify the file name
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String newFileName = originalFileName.substring(0, originalFileName.lastIndexOf("."))
+                + "_" + newFeedbackId + fileExtension;
+
+        // Create a file path
+        File file = new File(uploadFilePath, newFileName);
+
+        // Write the file to the specified directory
+        filePart.write(file.getAbsolutePath());
+
+        // Construct the file URL relative to the web application
+        String fileUrl = "imgfeedback" + File.separator + newFileName;
+
+        // Insert the feedback with the new file URL
+        db.InsertFeedBack(pid, Cusid, orderid, comment, star, fileUrl, 1, date_create_by);
+
         doGet(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

@@ -47,9 +47,10 @@ select {
     margin-top: 5px;
     font-size: 16px;
     color: #333;
-    background-color: #f8f9fa;
+    background-color: white !important;
     transition: border-color 0.3s;
 }
+
 
 input[type="text"]:focus,
 input[type="number"]:focus,

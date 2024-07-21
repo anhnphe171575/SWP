@@ -43,7 +43,7 @@
         </li>
         <li class="sidebar-list-item">
             <a href="SliderServletURL">
-                <span class="material-icons-outlined">poll</span> QUẢNG CÁO
+                <span class="material-icons-outlined">poll</span> THANH TRƯỢT
             </a>
         </li>
     </ul>

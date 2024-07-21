@@ -92,23 +92,23 @@
 
                 <main class="main-container">
                     <div class="main-title">
-                        <h2 style="color: black">DASHBOARD</h2>
+                        <h2 style="color: black">Biểu đồ</h2>
                     </div>
 
                     
                 <div class="select">
-                    <h2>For month:</h2>
+                    <h2>Theo tháng:</h2>
                     <form action="SaleDashboardURL" method="post">
-                        <label for="month">Month:</label>
+                        <label for="month">Tháng:</label>
                         <input type="number" id="month" name="month" min="1" max="12" value="6" required>
-                        <label for="year">Year:</label>
+                        <label for="year">Năm:</label>
                         <input type="number" id="year" name="year" min="2000" max="2100" value="2024" required>
                         <input type="hidden" name="service" value="select">
                         <input type="submit"></input>
                     </form>
                 </div>
                 <div class="charts-card">
-                    <h2 class="chart-title">Purchase and Sales Orders</h2>
+                    <h2 class="chart-title">Đơn hàng thành công</h2>
                     <div id="area-chart"></div>
                 </div>
                 <script>
@@ -152,29 +152,29 @@
                 <div class="charts">  
                   
                     <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Status Order</h2>
-                        <h2>Total: ${total}</h2>
+                        <h2 class="chart-title">Trạng thái đơn hàng</h2>
                         <div id="pie-chart1"></div>
                     </div>
-                    <div class="charts-card" >
+<!--                    <div class="charts-card" >
                         <h2 class="chart-title">Feedback Star</h2>
                         <h2>Average:4.25</h2>
 
                         <div class="charts" id="statsChart1"></div>
+                    </div>-->
+  <div class="col-lg-3 charts-card">
+                        <h2 class="chart-title">Đơn hàng theo thể loại</h2>
+                        <h2>Tổng: ${total}</h2>
+                        <div id="pie-chart"></div>
                     </div>
 
                 </div>
 
                 <div class="charts">
-                    <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Order Statistics</h2>
-                        <h2>Total: ${total}</h2>
-                        <div id="pie-chart"></div>
-                    </div>
-                    <div class="col-lg-3 charts-card">
+                  
+<!--                    <div class="col-lg-3 charts-card">
                         <h2 class="chart-title">Newly Statistics</h2>
                         <div id="statsChartC"></div>
-                    </div>
+                    </div>-->
                  
                 </div>
         </div>
@@ -223,11 +223,11 @@
                     const areaChartOptions = {
                         series: [
                             {
-                                name: 'Success',
+                                name: 'Thành Công',
                                 data: totals,
                             },
                             {
-                                name: 'All',
+                                name: 'Tất Cả',
                                 data: totala,
                             },
                         ],
@@ -302,7 +302,7 @@
                         },
                         yaxis: {
                             title: {
-                                text: 'Orders',
+                                text: 'Đơn hàng',
                                 style: {
                                     color: '#f5f7ff',
                                 },

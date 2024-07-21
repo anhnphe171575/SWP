@@ -307,25 +307,25 @@
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
-                                    <div class="col-sm-3">
-                                        <h2>Manage <b>Customer</b></h2>
+                                    <div class="col-sm-4">
+                                        <h2>Quản Lý Khách Hàng</h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
                                         <form action="CustomerServletURL" method="get">
                                             <p>
-                                                Search name: <input type="text" name="first_name"> <br/>
+                                                Tìm tên: <input type="text" name="first_name"> <br/>
                                              
                                                
-                                                <input type="submit" name="submit" value="search">
-                                                <input type="reset" value="Clear"></p>
+                                                <input type="submit" name="submit" value="Tìm">
+                                                <input type="reset" value="Xóa"></p>
                                             <input type="hidden" name="service" value="listAllCustomer">
                                         </form>				
                                     </div>
 
-                                    <div class="col-sm-6">
-                                        <a href="CustomerServletURL?service=addCustomer" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add Customer</span></a>
+                                    <div class="col-sm-5">
+                                        <a href="CustomerServletURL?service=addCustomer" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Thêm Khách Hàng</span></a>
                                        
-                                        <a href="#sort" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Sort</span></a>
+                                        <a href="#sort" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Sắp Xếp</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -382,17 +382,17 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>customerID</th>
-                                        <th>first_name</th>
-                                        <th>last_name</th>
-                                        <th>phone</th>
+                                        <th>ID</th>
+                                        <th>Họ</th>
+                                        <th>Tên</th>
+                                        <th>Số điện thoại</th>
 <!--                                        <th>email</th>-->
                                         <!--                                        <th>address</th>-->
-                                        <th>username</th>
-                                        <th>password</th>
-                                        <th>dob</th>
-                                        <th>gender</th>
-                                        <th>activity_history</th>
+                                        <th>Tài khoản</th>
+                                        <th>Mật khẩu</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th colspan="2">Lịch sử hoạt động</th>
 
                                         <!--                                        <th>security_question</th>
                                                                                 <th>securityAnswer</th>                            -->
@@ -413,10 +413,10 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${c.gender}">
-                                                    Male
+                                                    Nam
                                                 </c:when>
                                                 <c:otherwise>
-                                                    Female
+                                                    Nữ
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -519,19 +519,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sort By</h5>
+                    <h5 class="modal-title">Sắp xếp</h5>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <form action="CustomerServletURL" method="post">
                     <div class="modal-body">
                         <!-- Sort Options -->
                         <div class="form-group">
-                            <label for="sort-select">Sort By:</label>
+                            <label for="sort-select">Sắp xếp</label>
                             <select id="sort-select" class="form-control" name="sort">
-                                <option value="name">Fullname</option>
+                                <option value="name">Tên</option>
                                 <option value="email">email</option>
-                                <option value="phone">phone</option>
-                                <option value="activity_history">Activity history</option>    
+                                <option value="phone">Số điện thoại</option>
+                                <option value="activity_history">Lịch sử hoạt động</option>    
                             </select>
                         </div>
                     </div>
