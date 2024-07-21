@@ -414,11 +414,18 @@
     </head>
     <body>
         <div class="grid-container">
+            
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- End Header -->
+                                <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
 
                 <!-- Sidebar -->
             <jsp:include page="sidebar.jsp"></jsp:include>
+                                </c:if>
+                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
+            <jsp:include page="sidebar1.jsp"></jsp:include>
+                                </c:if>
+
                 <div class="container-xl" style="width: 1200px">
                     <div class="table-responsive">
                         <div class="table-wrapper">
@@ -439,6 +446,7 @@
                                         <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                                     <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
+
                                     </c:if>
                                 </div>
                             </div>
@@ -491,7 +499,7 @@
                             </form>
                         </div>
                     </div>
-                    <c:if test="${sessionScope.staff.getRole().getRoleID() != 4}">
+                    <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -536,7 +544,7 @@
                             </tbody>
                         </table>
                     </c:if>
-                    <c:if test="${sessionScope.staff.getRole().getRoleID() == 4}">
+                    <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>

@@ -454,9 +454,30 @@
                                     </c:if>
                                     <c:if test="${requestScope.status1 == 6}">
                                         <td>                
-                                            <a href="#Add" class="btn btn-success" data-toggle="modal" data-orderid="${item.order.orderID}" data-products="${item.product.product_name}" data-descriptions="${item.product.product_description}">
-                                                <i class="material-icons">&#xE147;</i> <span>FeedBack</span>
-                                            </a>
+                                            <c:set var="hasFeedbackProducts" value="false" />
+                                            <c:forEach items="${item.product.product_name.split(',')}" var="product" varStatus="pStatus">
+                                                <c:set var="productId" value="${item.product.product_description.split(',')[pStatus.index]}" />
+                                                <c:set var="hasFeedback" value="false" />
+                                                <c:forEach items="${requestScope.feedback}" var="fb">
+                                                    <c:if test="${fb.product.productID == productId && fb.order.orderID == item.order.orderID}">
+                                                        <c:set var="hasFeedback" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+                                                <c:if test="${!hasFeedback}">
+                                                    <c:set var="hasFeedbackProducts" value="true" />
+                                                </c:if>
+                                            </c:forEach>
+
+                                            <c:choose>
+                                                <c:when test="${hasFeedbackProducts}">
+                                                    <a href="#Add" class="btn btn-success" data-toggle="modal" data-orderid="${item.order.orderID}" data-products="${item.product.product_name}" data-descriptions="${item.product.product_description}">
+                                                        <i class="material-icons">&#xE147;</i> <span>FeedBack</span>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="text-muted">All products reviewed</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </c:if>
                                 </tr>
@@ -492,37 +513,40 @@
         </div>
         <script>
             $('#Add').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var orderId = button.data('orderid'); // Extract order ID from data-* attributes
-                var products = button.data('products'); // Extract products from data-* attributes
-                var descriptions = button.data('descriptions'); // Extract descriptions from data-* attributes
+                var button = $(event.relatedTarget);
+                var orderId = button.data('orderid');
+                var products = button.data('products');
+                var descriptions = button.data('descriptions');
                 var modal = $(this);
-                console.log("Order ID:", orderId);
-                console.log("Products:", products);
-                console.log("Descriptions:", descriptions);
-                // Populate the order ID input
+
                 modal.find('#orderIdInput').val(orderId);
 
-                // Populate the product select options
                 var productSelect = modal.find('#productSelect');
-                productSelect.empty(); // Clear any existing options
+                productSelect.empty();
 
-                var productArray = products.split(','); // Assuming products are comma-separated
-                var descriptionArray = descriptions.split(','); // Assuming descriptions are comma-separated
-                console.log("Descriptions:", descriptionArray);
+                var productArray = products.split(',');
+                var descriptionArray = descriptions.split(',');
+                var hasProductsToReview = false;
+
                 for (var i = 0; i < productArray.length; i++) {
                     var shouldAddOption = true;
             <c:forEach items="${requestScope.feedback}" var="fb">
-
                     if (descriptionArray[i] === '${fb.product.getProductID()}' && orderId === ${fb.order.getOrderID()}) {
-                        console.log("ppp:", "aaa");
                         shouldAddOption = false;
                     }
             </c:forEach>
                     if (shouldAddOption) {
                         var option = $('<option></option>').attr('value', descriptionArray[i]).text(productArray[i]);
                         productSelect.append(option);
+                        hasProductsToReview = true;
                     }
+                }
+
+                if (!hasProductsToReview) {
+                    modal.find('.modal-body').html('<p>You have already provided feedback for all products in this order.</p>');
+                    modal.find('.modal-footer input[type="submit"]').hide();
+                } else {
+                    modal.find('.modal-footer input[type="submit"]').show();
                 }
             });
 
