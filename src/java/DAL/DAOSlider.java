@@ -20,6 +20,38 @@ import java.util.Date;
  * @author phuan
  */
 public class DAOSlider extends DBContext {
+    public int addSlider(Slider obj) {
+        int n = 0;
+        String sql = "INSERT INTO [dbo].[Slider]\n" +
+"           ([title]\n" +
+"           ,[image]\n" +
+"           ,[link]\n" +
+"           ,[status]\n" +
+"           ,[notes]\n" +
+"           ,[StaffID]\n" +
+"           ,[page_order]\n" +
+"           ,[slider_date_createby])\n" +
+"     VALUES\n" +
+"           (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getTitle());
+            pre.setString(2, obj.getImage());
+            pre.setString(3, obj.getLink());
+            pre.setInt(4, obj.getStatus());
+            pre.setString(5, obj.getNotes());
+            pre.setInt(6, obj.getStaff().getStaffID());
+            pre.setInt(7, obj.getPage_order());
+           pre.setDate(8, new java.sql.Date(obj.getSlider_date_createby().getTime())); 
+          
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(DAOSlider.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        return n;
+    }
 
     public Vector<Slider> getSlider(String sql) {
         Vector<Slider> vector = new Vector<Slider>();
@@ -165,6 +197,6 @@ public class DAOSlider extends DBContext {
 
     public static void main(String[] args) {
         DAOSlider db = new DAOSlider();
-        System.out.println(db.getSlider(" SELECT top 1 * FROM Slider ORDER BY page_order"));
+        System.out.println(db.getSlider(" SELECT  * FROM Slider "));
     }
 }
