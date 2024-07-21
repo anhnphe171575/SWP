@@ -326,18 +326,18 @@
                                         <a href="#Sort1" class="btn btn-danger" data-toggle="modal">
                                             <i class="material-icons">&#xe164;</i> <span>Sắp xếp</span>         
                                         </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <form action="PostController" method="post">
-                            <div class="filter-container d-flex flex-wrap align-items-center">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Thể Loại:</span>
-                                        </div>
-                                        <select id="product-filter" name="category" class="form-control">
-                                            <option value="all">Tất cả</option>
+                            <form action="PostController" method="post">
+                                <div class="filter-container d-flex flex-wrap align-items-center">
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Thể Loại:</span>
+                                            </div>
+                                            <select id="product-filter" name="category" class="form-control">
+                                                <option value="all">Tất cả</option>
                                             <c:forEach items="${requestScope.category}" var="p">
                                                 <option value="${p}">${p}</option>
                                             </c:forEach>
@@ -365,7 +365,7 @@
                                         <select class="custom-select" id="status" name="status">
                                             <option value="3">Tất cả</option>
                                             <option value="0">Ẩn</option>
-                                        <option value="1">Hiện</option>
+                                            <option value="1">Hiện</option>
                                         </select>
                                     </div>
                                 </div>
@@ -502,53 +502,53 @@
         </div>
         <!-- Add Modal HTML -->
         <div id="Add" class="modal fade">
-                    <div class="modal-dialog" style="color: black">
-                        <div class="modal-content">
-                            <form action="PostController" method="post" enctype="multipart/form-data">
-                                <div class="modal-header">						
-                                    <h4 class="modal-title">Bài Viết Mới</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">					
-                                    <div class="form-group">
-                                        <label>Tiêu đề</label>
-                                        <input type="text" class="form-control" name="title" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Ảnh</label>
-                                        <input type="text" class="form-control" name="thumbnail" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Thể loại</label>
-                                        <select id="category-select" class="form-control" name="category_post">                                   
-                                            <c:forEach items="${requestScope.category_product}" var="c">
-                                                <option value="${c.category_productID}">${c.category_name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Nổi bật</label>
-                                        <input type="text" class="form-control" name="featured" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Tóm tắt</label>
-                                        <input type="text" class="form-control" name="brief_information" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Chi tiết</label>
-                                        <input type="text" class="form-control" name="description" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-
-                                    <input type="submit" class="btn btn-info" value="OK">
-                                    <input type="hidden" name="service" value="add">
-                                </div>
-                            </form>
+            <div class="modal-dialog" style="color: black">
+                <div class="modal-content">
+                    <form action="PostController" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Bài Viết Mới</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
-                    </div>
+                        <div class="modal-body">					
+                            <div class="form-group">
+                                <label>Tiêu đề</label>
+                                <input type="text" class="form-control" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Ảnh</label>
+                                <input type="text" class="form-control" name="thumbnail" >
+                            </div>
+                            <div class="form-group">
+                                <label>Thể loại</label>
+                                <select id="category-select" class="form-control" name="category_post">                                   
+                                    <c:forEach items="${requestScope.category_product}" var="c">
+                                        <option value="${c.category_productID}">${c.category_name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nổi bật</label>
+                                <input type="text" class="form-control" name="featured" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tóm tắt</label>
+                                <input type="text" class="form-control" name="brief_information" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Chi tiết</label>
+                                <input type="text" class="form-control" name="description" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="submit" class="btn btn-info" value="OK">
+                            <input type="hidden" name="service" value="add">
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
         <!-- comment -->
         <div id="Sort1" class="modal fade">
             <div class="modal-dialog">
@@ -579,31 +579,29 @@
                 </div>
             </div>
         </div>
-    <!-- Delete Modal HTML -->
-    <div id="deleteEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">						
-                        <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">					
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>This action cannot be undone.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-danger" value="Delete">
-                    </div>
-                </form>
+        <!-- Delete Modal HTML -->
+        <div id="deleteEmployeeModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form>
+                        <div class="modal-header">						
+                            <h4 class="modal-title">Delete Employee</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                            <p>Are you sure you want to delete these Records?</p>
+                            <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script src="./mktjs/scripts.js"></script>
+    <script src="./mktjs/scripts.js"></script>
 </body>
-
-
 </html>
 
