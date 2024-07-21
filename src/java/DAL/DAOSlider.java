@@ -33,7 +33,7 @@ public class DAOSlider extends DBContext {
                 String link = rs.getString("link");
                 int status = rs.getInt("status");
                 String notes = rs.getString("notes");
-                int userID = rs.getInt("userID");
+                int userID = rs.getInt("StaffID");
                 int page_order = rs.getInt("page_order");
                 Date update = rs.getDate("slider_date_createby");
                 Staff us = new Staff();
