@@ -307,25 +307,25 @@
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
-                            <div class="col-sm-3">
-                                <h2>Manage <b>Slider</b></h2>
+                            <div class="col-sm-4">
+                                <h2>Quản Lý Thanh Trượt</h2>
                             </div>
                             <div style="text-align: right"class="col-sm-3">
                                 <form action="SliderServletURL" method="get" enctype="multipart/form-data">
                                     <p>
-                                        Search title: <input type="text" name="title"> 
-                                        <input type="submit" name="submit" value="search">
+                                        Tìm theo tiêu đề: <input type="text" name="title"> 
+                                        <input type="submit" name="submit" value="Tìm">
                                         <input type="reset" value="Clear"></p>
                                     <input type="hidden" name="service" value="listAllSlider">
                                 </form>				
                             </div>
 
-                            <div class="col-sm-6">
+<!--                            <div class="col-sm-5">
                                 <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
                               
                                          
                                 
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <form action="SliderServletURL" method="post">
@@ -334,19 +334,19 @@
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Status:</span>
+                                            <span class="input-group-text">Trạng thái</span>
                                         </div>
                                         <select class="custom-select" id="status" name="status">
-                                            <option value="3">All</option>
-                                            <option value="0">Hide</option>
-                                        <option value="1">Show</option>
+                                            <option value="3">Tất cả</option>
+                                            <option value="0">Ẩn</option>
+                                        <option value="1">Hiện</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <input type="hidden" value="filter" name="service">
                                 <div class="col-md-3" >
-                                    <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+                                    <input type="submit" value="Lọc" class="btn btn-primary" style="margin-top: 0px">
                                 </div>
                                 
                             </div>
@@ -355,11 +355,11 @@
                         <thead>
                             <tr>
                                
-                               <th>SliderID</th>
-                                <th>title</th>
-                                <th>image</th>
-                                <th>link</th>
-                                <th>status</th>
+                               <th>ID</th>
+                                <th>Tiêu đề</th>
+                                <th>Ảnh</th>
+                                <th>Liên kết</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -371,8 +371,8 @@
                                     <td><img src="${c.image}" alt="Image"/></td>
                                     <td>${c.link}</td>
                                     <td>
-                                        <c:if test="${c.status == '1'}">Show</c:if>
-                                        <c:if test="${c.status != '1'}">Hide</c:if>
+                                        <c:if test="${c.status == '1'}">Hiện</c:if>
+                                        <c:if test="${c.status != '1'}">Ẩn</c:if>
                                         </td>
                                       
                                    

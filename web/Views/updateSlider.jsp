@@ -12,32 +12,32 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h2>Edit </h2>
+        <h2>Chỉnh sửa Thanh trượt </h2>
         <c:if test="${requestScope.list != null}">
             <form action="SliderServletURL"method="post">
-                <label> SliderID
+                <label> ID
                     <input type="text" name="name" value="${list.getSliderID()}" required>
                 </label><br>
-                <label> Title
+                <label> Tiêu đề
                     <input type="text" name="name" value="${list.getTitle()}" required>
                 </label><br>
-                <label> Image
+                <label> Ảnh
                     <input type="text" name="name" value="${list.getImage()}" required>
                 </label><br>
-                <label> Link
+                <label> Liên kết
                     <input type="text" name="name" value="${list.getLink()}" required>
                 </label><br>
-                <label> Status
+                <label> Trạng thái
                     <input type="text" name="name" value="${list.getStatus()}" required>
                 </label><br>
-                <label> Notes
+                <label> Ghi chú
                     <input type="text" name="name" value="${list.getNotes()}" required>
                 </label><br>
-                <label> UserID
+                <label> ID người đăng
                     <input type="text" name="name" value="${list.getNotes()}" required>
                 </label><br>
                 <tr>
-                    <td><input type="submit" name="submit" value="Submit"></td>
+                    <td><input type="submit" name="submit" value="Cập nhập"></td>
                     <td><input type="reset" value="reset">
                     <td><input type="hidden" name="service" value="updateSlider">
                     </td>

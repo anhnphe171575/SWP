@@ -54,25 +54,25 @@
 </head>
 <body>
     <div class="container">
-        <h2>Edit Customer</h2>
+        <h2>Chỉnh sửa khách hàng</h2>
         <form action="CustomerServletURL" method="post">
             <div class="form-group">
-                <label for="customerID">Customer ID:</label>
+                <label for="customerID">ID:</label>
                 <input type="text" id="customerID" name="customerID" value="${customer.customerID}" class="form-control" required readonly>
             </div>
 
             <div class="form-group">
-                <label for="first_name">First Name:</label>
+                <label for="first_name">Họ:</label>
                 <input type="text" id="first_name" name="first_name" value="${customer.first_name}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="last_name">Last Name:</label>
+                <label for="last_name">Tên:</label>
                 <input type="text" id="last_name" name="last_name" value="${customer.last_name}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="phone">Phone:</label>
+                <label for="phone">Số điện thoại:</label>
                 <input type="text" id="phone" name="phone" value="${customer.phone}" class="form-control" required>
             </div>
 
@@ -82,33 +82,33 @@
             </div>
 
             <div class="form-group">
-                <label for="address">Address:</label>
+                <label for="address">Địa chỉ:</label>
                 <input type="text" id="address" name="address" value="${customer.address}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Tài khoản:</label>
                 <input type="text" id="username" name="username" value="${customer.username}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Mật khẩu:</label>
                 <input type="text" id="password" name="password" value="${customer.password}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="dob">Date of Birth:</label>
+                <label for="dob">Ngày sinh:</label>
                 <input type="date" id="dob" name="dob" value="${customer.dob}" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label>Gender</label>
+                <label>Giới tính </label>
                 <div class="gender-options">
-                    <label class="radio-container">Male
+                    <label class="radio-container">Nam
                         <input type="radio" name="gender" value="1" ${customer.gender ? "checked" : ""}>
                         <span class="checkmark"></span>
                     </label>
-                    <label class="radio-container">Female
+                    <label class="radio-container">Nữ
                         <input type="radio" name="gender" value="0" ${!customer.gender ? "checked" : ""}>
                         <span class="checkmark"></span>
                     </label>
@@ -116,12 +116,12 @@
             </div>
 
             <div class="form-group">
-                <label for="activity_history">Activity History:</label>
+                <label for="activity_history">Lịch sử hoạt động:</label>
                 <input type="date" id="activity_history" name="activity_history" value="${customer.activity_history}" class="form-control" readonly>
             </div>
 
             <div class="form-group">
-                <label for="security">Security Question:</label>
+                <label for="security">Câu hỏi bảo mật:</label>
                 <select id="security" name="security" class="form-control">
                     <% 
                         Vector<Security> securityQuestions = (Vector<Security>) request.getAttribute("security");
@@ -133,7 +133,7 @@
             </div>
 
             <div class="form-group">
-                <label for="securityAnswer">Security Answer:</label>
+                <label for="securityAnswer">Trả lời:</label>
                 
                 <input type="text" name="securityAnswer" value="${customer.secutityAnswer}" class="form-control" required>
             </div>
