@@ -30,7 +30,7 @@ public class MyOrder extends HttpServlet {
         String status = request.getParameter("status");
         ArrayList<OrderItems> orderItems;
         List<StatusOrder> st = d.getStatusOrder1();
-
+        
         if (status == null) {
             orderItems = d.getOrderInforByCustomer(customerid);
         } else {
