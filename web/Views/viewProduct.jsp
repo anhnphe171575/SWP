@@ -270,65 +270,84 @@
                     });
                 });
             </script>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="./mktcss/styles.css">
         </head>
-        <body>
-            <div class="container">
+        <body style="background-color: white">
+            <div class="grid-container"style="background-color: white">
+            <jsp:include page="header.jsp"></jsp:include>
+                <!-- End Header -->
+
+                <!-- Sidebar -->
+            <jsp:include page="sidebar.jsp"></jsp:include>
+                <div class="container-xl" style="width: 1200px;background-color: white">
                 <div class="table-responsive">
                     <div class="table-wrapper">
                         <div class="table-title">
                             <div class="row">
-                                <div class="col-sm-8"><h2>Product <b>Details</b></h2></div>
+                                <div class="col-sm-8"><h2>Chi tiết sán phẩm</h2></div>
                             </div>
                         </div>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Attributes</th>
-                                    <th>Values</th>
+                                    <th>Sản Phẩm</th>
+                                    <th>Chi tiết</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <c:if test="${not empty product}">
                                     <tr>
-                                        <td>Thumbnail:</td>
+                                        <td>Ảnh</td>
                                         <td><img src="${product.thumbnail}" alt="Thumbnail" class="thumbnail"></td>
                                     </tr>
                                     <tr>
-                                        <td>Category Product:</td>
+                                        <td>Thể loại:</td>
                                         <td>${product.categoryProduct.category_name}</td>                                    
                                     </tr>
                                     <tr>
-                                        <td>Title:</td>
+                                        <td>Tên:</td>
                                         <td>${product.product_name}</td>
                                     </tr>
                                     <tr>
-                                        <td>Brief Information:</td>
+                                        <td>Tóm tắt:</td>
                                         <td>${product.brief_information}</td>
                                     </tr>
                                     <tr>
-                                        <td>Attached images:</td>
+                                        <td>Ảnh:</td>
                                         <td><img src="${product.categoryProduct.image}" alt="Attached Image"></td>
                                     </tr>
                                     <tr>
-                                        <td>Product Description:</td>
+                                        <td>Mô tả:</td>
                                         <td>${product.product_description}</td>
                                     </tr>
                                     <tr>
-                                        <td>Quantity:</td>
+                                        <td>Số lượng</td>
                                         <td>${product.quantity}</td>
                                     </tr>
                                     <tr>
-                                        <td>Original Price:</td>
+                                        <td>Giá gốc:</td>
                                         <td>${product.original_price}</td>
                                     </tr>
                                     <tr>
-                                        <td>Sale Price:</td>
+                                        <td>Giá giảm:</td>
                                         <td>${product.sale_price}</td>
                                     </tr>
                                     <tr>
-                                        <td>Featured:</td>
+                                        <td>Nổi bật:</td>
                                         <td>
-                                            ${product.featured == 1 ? "Yes" : "No"}
+                                            ${product.featured == 1 ? "Có" : "Không"}
                                             <c:if test="${product.featured == 1}">
                                                 <a title="Off" onclick="location.href = 'turnfeatured?action=off&id=${product.productID}'"><i class="fas fa-flag-checkered"></i></a>
                                                 </c:if>
@@ -338,8 +357,8 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Status:</td>
-                                        <td>${product.status ? "Show" : "Hide"}
+                                        <td>Trạng thái:</td>
+                                        <td>${product.status ? "Hiện" : "Ẩn"}
                                             <c:if test="${product.status == true}">
                                                 <a title="Hide" onclick="location.href = 'update?action=hide&id=${product.productID}'"><i class="fas fa-eye-slash"></i></a>
                                                 </c:if>
@@ -349,9 +368,9 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-right">
-                                            <button><a href="productslist">Back To Products List</a></button>
+                                            <button><a href="productslist">Trở về</a></button>
                                             <button type="button" class="btn btn-primary edit" data-toggle="modal" data-target="#editProductModal">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i> CHỈNH SỬA
                                             </button>
                                         </td>
                                     </tr>
@@ -441,5 +460,6 @@
                         </div>
                     </div>
                 </div>
+             </div>
             </body>
         </html>

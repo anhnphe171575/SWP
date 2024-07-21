@@ -393,27 +393,27 @@
         <div class="container order-details">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-2">
-                        <h2>Order <b>Details</b></h2>
+                    <div class="col-sm-3" style="margin-top: 10px">
+                        <h2>Chi tiết đơn hàng</h2>
                     </div>
                 </div>
             </div>
 
             <!-- Basic Order Information -->
             <div class="card">
-                <div class="card-header">Basic Order Information</div>
+                <div class="card-header">Thông tin:</div>
                 <div class="card-body">
                     <div class="row">
                         <c:set value="${requestScope.list1}" var="item"></c:set>
                             <div class="col-md-6">
-                                <p><strong>Order ID:</strong> ${item.order.orderID}</p>
-                            <p><strong>Customer Name:</strong> ${item.order.customer.first_name}</p>
+                                <p><strong>ID:</strong> ${item.order.orderID}</p>
+                            <p><strong>Tên khách hàng:</strong> ${item.order.customer.first_name}</p>
                             <p><strong>Email:</strong> ${item.order.customer.email}</p>
-                            <p><strong>Phone:</strong> ${item.order.customer.phone}</p>
+                            <p><strong>Số điện thoại:</strong> ${item.order.customer.phone}</p>
                         </div>
                         <div class="col-md-6">
-                            <p><strong>Order Date:</strong> ${item.order.order_date}</p>
-                            <p><strong>Total Cost:</strong> ${item.list_price}</p>
+                            <p><strong>Ngày đặt:</strong> ${item.order.order_date}</p>
+                            <p><strong>Tổng tiền:</strong> ${item.list_price}</p>
                             <c:if test="${sessionScope.staff.getRole().getRoleID() == 3}">
                                 <p><strong>Sale Name:</strong> 
                                     <span id="saleContainer-${item.order.orderID}">
@@ -425,10 +425,10 @@
                                 </p>
                             </c:if>
                             <c:if test="${sessionScope.staff.getRole().getRoleID() != 3}">
-                                <p><strong>Sale Name:</strong>  ${item.order.staff.first_name}</p>
+                                <p><strong>Người bán:</strong>  ${item.order.staff.first_name}</p>
                             </c:if>
                             <p>
-                                <strong>Status:</strong> 
+                                <strong>Trạng thái:</strong> 
                                 <span id="statusContainer-${item.order.status.getStatus_orderid()}">
                                     ${item.order.status.status_name}
                                     <c:if test="${((item.order.status.getStatus_orderid() == 4 || item.order.status.getStatus_orderid() == 3) && sessionScope.staff.role.getRoleID() == 4 ) || 
@@ -447,30 +447,30 @@
 
             <!-- Receiver Information -->
             <div class="card">
-                <div class="card-header">Receiver Information</div>
+                <div class="card-header">Địa chỉ nhận hàng</div>
                 <div class="card-body">
                     <c:forEach items="${requestScope.list2}" var="item">
-                        <p><strong>Full Name:</strong> ${item.receivers.getReceiverFullName()}</p>
-                        <p><strong>Mobile:</strong> ${item.receivers.getReceiverMobile()}</p>
-                        <p><strong>Address:</strong> ${item.receivers.getReceiverAddress()}</p>
+                        <p><strong>Tên người nhận:</strong> ${item.receivers.getReceiverFullName()}</p>
+                        <p><strong>Số điện thoại:</strong> ${item.receivers.getReceiverMobile()}</p>
+                        <p><strong>Địa chỉ:</strong> ${item.receivers.getReceiverAddress()}</p>
                     </c:forEach>
                 </div>
             </div>
 
             <!-- List of Ordered Products -->
             <div class="card">
-                <div class="card-header">Ordered Products</div>
+                <div class="card-header">Đơn hàng</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Thumbnail</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total Cost</th>
+                                    <th>Ảnh</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Thể loại</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -491,7 +491,7 @@
                     </div>
                 </div>
             </div>
-            <a href="orderlist" class="button-field">Back To Order List</a>
+            <a href="orderlist" class="button-field">Trở về</a>
         </div>
     </body>
 </html>

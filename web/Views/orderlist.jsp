@@ -467,19 +467,19 @@
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- Sidebar -->
             <jsp:include page="sidebar1.jsp"></jsp:include>
-                <div class="container-xl" style="width: 1200">
+                <div class="container-xl" style="width: 1200px">
                     <div class="table-responsive">
                         <div class="table-wrapper">
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Order <b>List</b></h2>
+                                        <h2>Danh sách đơn hàng</h2>
                                     </div>
                                     <div class="col-sm-6 text-right">
                                         <form name="searchForm" action="orderlist" method="post" onsubmit="return validateForm();">
-                                            <input type="text" name="id" placeholder="OrderID">
-                                            <input type="text" name="customer" placeholder="Customer Name">
-                                            <input type="submit" name="submit" value="Search">
+                                            <input type="text" name="id" placeholder="ID">
+                                            <input type="text" name="customer" placeholder="Tên">
+                                            <input type="submit" name="submit" value="Tìm">
                                             <input type="hidden" name="service" value="search">
                                         </form>
                                     </div>
@@ -607,14 +607,14 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>OrderID</th>
-                                        <th>Order Date</th>
-                                        <th>Sale Name</th>
-                                        <th>First Product Name</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>ID</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Người bán</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Tổng giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>

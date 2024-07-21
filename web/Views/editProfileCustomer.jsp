@@ -151,14 +151,8 @@
 
 
                             </div>
-                            <div class="col-md-12"><label class="labels">Answer</label><input type="text" class="form-control" name="securityAnswer" value="<%=obj.getSecutityAnswer()%>"></div>
-                        </div>
 
-                        <div class="mt-5 text-center">
-                            <a href="HomePage" class="nav-item nav-link active">Home</a>
-                            <input type="submit" name="submit" value="Save">
-                            <input type="hidden" name="service" value="editProfileCustomer">
-                        </div>
+                  
                     </div>
                 </div>
             </div>

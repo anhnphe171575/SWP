@@ -168,22 +168,22 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Transaction <b>List</b></h2>
+                                        <h2>Danh sách giao dịch</h2>
                                     </div>
                                 </div>
                             </div>
                             <table id="transactionTable" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Transaction ID</th>
-                                        <th>Order ID</th>
-                                        <th>User Name</th>
-                                        <th>Product Name</th>
-                                        <th>Quantity Change</th>
-                                        <th>Quantity Current</th>
-                                        <th>Transaction Date</th>
-                                        <th>Transaction Type</th>
-                                        <th>Note</th>
+                                        <th>ID giao dịch</th>
+                                        <th>ID đơn hàng</th>
+                                        <th>Người bán</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số lượng thay đổi</th>
+                                        <th>Số lượng hiện tại</th>
+                                        <th>Ngày giao dịch</th>
+                                        <th>Loại giao dịch</th>
+                                        <th>Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody>
