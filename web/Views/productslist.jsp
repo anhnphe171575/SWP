@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -131,23 +130,6 @@
                 vertical-align: middle;
                 margin-right: 10px;
             }
-            .pagination {
-                display: inline-block;
-            }
-            .pagination  a {
-                color: black;
-                font-size: 22px;
-                float: left;
-                padding: 8px 16px;
-                text-decoration: none;
-            }
-            .pagination a.active {
-                background-color: #4CAF50;
-                color: white;
-            }
-            .pagination a:hover:not(.active) {
-                background: #27A4F2;
-            }
             .hint-text {
                 float: left;
                 margin-top: 10px;
@@ -236,6 +218,36 @@
             }
             .modal form label {
                 font-weight: normal;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                display: inline-block;
+                padding: 6px 12px;
+                margin: 2px;
+                text-decoration: none;
+                color: #007bff;
+
+                border: 1px solid #dee2e6;
+                border-radius: 4px;
+                transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+                background-color: #00aaff;
+                color: #fff !important;
+                border-color: #00aaff;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+                background-color: #007bff;
+                color: #fff !important;
+                border-color: #007bff;
+            }
+
+            .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+                background-color: #0056b3;
+                color: #fff !important;
+                border-color: #0056b3;
             }
         </style>
         <script>
@@ -455,7 +467,7 @@
                                 </c:if>
                             </div>
                         </div>
-                        <div class="container">
+                        <div class="container" >
                             <form action="productslist" method="post">
                                 <div class="filter-container d-flex flex-wrap align-items-center">
                                     <div class="col-md-3">
@@ -526,10 +538,6 @@
                                                 </c:if>
                                             <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
                                             <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
-                                                <c:if test="${product.quantity == 0 && product.quantity_hold == 0}">
-                                                <a title="Delete" onclick="if (confirm('Are you sure you want to delete this product?'))
-                                                            location.href = 'deleteProduct?did=${product.productID}'"><i class="fas fa-trash-alt"></i></a>
-                                                </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>

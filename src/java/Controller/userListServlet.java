@@ -193,27 +193,27 @@ public class userListServlet extends HttpServlet {
                 }
                 list = daoU.getStaff(queryBuilder.toString(), list1);
             }
-        } else if (service.equals("listAllUsers")) {
-            //check sumit
+        }
+        Vector<Staff> vector = new Vector<>();
+
+        if ("listAllUsers".equals(service)) {
             String submit = request.getParameter("submit");
-            //get data
-            Vector<Staff> vector = null;
+
             if (submit == null) {
                 vector = daoU.getStaffs();
             } else {
-                String action = request.getParameter("action");
-                String fname = request.getParameter("first_name");
-                String lname = request.getParameter("last_name");
+                // Xử lý tìm kiếm
+                String name = request.getParameter("name");
                 String email = request.getParameter("email");
                 String phone = request.getParameter("phone");
-                if (action.equals("search1")) {
-                    vector = daoU.getStaffs();
-                } else if (action.equals("search2")) {
-                    vector = daoU.getStaffs();
-                } else if (action.equals("search3")) {
-                    vector = daoU.getStaffs();
-                }
 
+                if (name != null && email == null && phone == null) {
+                    vector = daoU.searchStaffByFullName(name);
+                } else if (name == null && email != null && phone == null) {
+                    vector = daoU.searchStaffByEmail(email);
+                } else if (name == null && email == null && phone != null) {
+                    vector = daoU.searchStaffByPhone(phone);
+                }
             }
             DAOSecurityQuestion db = new DAOSecurityQuestion();
 
@@ -361,19 +361,16 @@ public class userListServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Xử lý yêu cầu POST ở đây
+            processRequest(request, response);
+        } catch (MessagingException ex) {
+            Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     @Override
     public String getServletInfo() {
         return "Short description";
