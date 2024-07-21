@@ -6,7 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.sql.ResultSet,java.util.Vector,Entity.User,Entity.Role"%>
+<%@page import="java.sql.ResultSet,java.util.Vector,Entity.Staff,Entity.Role"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -99,10 +99,10 @@
                 <div class="table-wrapper">
                     <div class="table-title">
                         <div class="row">
-                            <div class="col-sm-8"><h2>Users <b>Details</b></h2></div>
+                            <div class="col-sm-8"><h2>Thông tin chi tiết</h2></div>
                             <div class="col-sm-4">
-                                <a href="#Add" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New User</span></a>
-                                <a href="userList?service=updateUser&UserID=${user.userID}" class="btn btn-danger" ><i class="material-icons">&#XE15C;</i> <span>Edit</span></a>
+                              
+                                <a href="userList?service=updateUser&UserID=${user.StaffID}" class="btn btn-danger" ><i class="material-icons">&#XE15C;</i> <span>Edit</span></a>
 
                             </div>                       
 
@@ -111,46 +111,46 @@
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Attributes</th>
-                                <th>Values</th>
+                                <th>Thuộc tính</th>
+                                <th>Giá trị</th>
                             </tr>
                         </thead>
                         <tbody>     
                             <tr>
-                                <td>Avatar</td>
+                                <td>Ảnh</td>
                                 <td><img style="width: 150px" src="${user.image}" alt="Thumbnail" class="thumbnail"></td>
                             </tr>
                             <tr>
-                                <td>Full name</td>
+                                <td>Họ và tên</td>
                                 <td>${user.first_name} ${user.last_name}</td>                                    
                             </tr>
                             <tr>
-                                <td>Gender</td>
-                                <td>${user.gender ? 'Male' : 'Female'}</td>
+                                <td>Giới tính</td>
+                                <td>${user.gender ? 'Nam' : 'Nữ'}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td>${user.email}</td>
                             </tr>
                             <tr>
-                                <td>Mobile</td>
+                                <td>Số điện thoại</td>
                                 <td>${user.phone}</td>
                             </tr>
                             <tr>
-                                <td>Role</td>
+                                <td>Vai trò</td>
                                 <td>${user.role.role_Name}</td>
                             </tr>                                  
                             <tr>
-                                <td>Address</td>
+                                <td>Địa chỉ</td>
                                 <td>${user.address}</td>
                             </tr>
                             <tr>
-                                <td>Status:</td>
-                                <td>${user.status ==1 ? 'Active' : 'Not Active'}</td>
+                                <td>Trạng thái</td>
+                                <td>${user.status ==1 ? 'Hoạt động' : 'Không hoạt động'}</td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="text-right">
-                                    <button><a href="userList">Back To User List</a></button>
+                                    <button><a href="userList">Quay về trang chính</a></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -161,90 +161,7 @@
         </div>
         <!-- Edit Modal HTML -->
 
-        <div id="Add" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="userList" enctype="multipart/form-data">
-                                <div class="modal-header">						
-                                    <h4 class="modal-title">New User</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">					
-                                    <div class="form-group">
-                                        <label>fname</label>
-                                        <input type="text" class="form-control" name="fname" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>lname</label>
-                                        <input type="text" class="form-control" name="lname" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>phone</label>
-                                        <input type="text" class="form-control" name="phone" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>email</label>
-                                        <input type="text" class="form-control" name="email" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>address</label>
-                                        <input type="text" class="form-control" name="address" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>username</label>
-                                        <input type="text" class="form-control" name="username" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label>password</label>
-                                        <input type="text" class="form-control" name="password" >
-                                    </div> 
-                                    <div class="form-group">
-                                        <label>dob</label>
-                                        <input type="date" class="form-control" name="dob" >
-
-                                        <div class="form-group" style="display: flex; justify-content: space-between; ">
-                                            <label>gender</label>
-                                            <input type="radio" class="form-control" name="gender" value="true" id="male">
-                                            <label for="male">Male</label>
-                                            <input type="radio" class="form-control" name="gender" value="false" id="female">
-                                            <label for="female">Female</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>role</label>
-                                        <select name="role">
-                                            <c:forEach items="${role}" var="r">
-                                                <option   value="${r.roleID}">${r.role_Name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>securityQuestion</label>
-                                        <select name="securirtyQuestion">
-                                            <c:forEach items="${question}" var="q">
-                                                <option value="${q.securityID}">${q.security_question}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>securityAnswer</label>
-                                        <input type="text" class="form-control" name="securityAnswer" >
-                                    </div>
-
-
-
-                                    <div class="modal-footer">
-
-                                        <input type="submit" name="submit" value="add Users">
-                                        <input type="reset" value="reset">
-                                        <input type="hidden" name="service" value="insertUser">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-        </div>
+     
+        
     </body>
 </html>

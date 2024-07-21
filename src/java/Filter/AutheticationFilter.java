@@ -6,7 +6,7 @@ package Filter;
 
 import Entity.Customer;
 import Entity.Role;
-import Entity.User;
+import Entity.Staff;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;

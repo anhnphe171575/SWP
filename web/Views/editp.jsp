@@ -115,7 +115,10 @@
 
                 <div class="form-group">
                     <label>Thumbnail</label><br>
-                    <input type="file" name="file" id="file" style="margin-bottom: 10px" required="">
+                    <img class="" width="300px" src="${product.thumbnail}"> <br/>
+                        <input type="file" name="file" id="file" accept="image/*" > 
+                        
+                    <input type="hidden" name="existingImage" value="${product.thumbnail}">
                 </div>
 
                 <div class="form-group">

@@ -6,7 +6,7 @@ package Controller;
 
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Vector;
 import Entity.CategoryProduct;
 import Entity.Post;
-import Entity.User;
+import Entity.Staff;
 
 /**
  *
@@ -77,7 +77,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOUser dao = new DAOUser();
+        DAOStaff dao = new DAOStaff();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String service = request.getParameter("service");
@@ -86,7 +86,7 @@ public class LoginController extends HttpServlet {
             boolean check = dao.login(username, password);
             if (check) {
                 session.setAttribute("username", username);
-                User user = dao.getUserByLogin(username);
+                Staff user = dao.getStaffByLogin(username);
                 session.setAttribute("role", user.getRole());
                 if (user.getRole().getRoleID() == 1) {
                     session.setAttribute("user", user);

@@ -398,7 +398,7 @@
                                         <td><img src="${p.thumbnail}" alt="Image"/></td>
                                         <td>${p.title}</td>
                                         <td>${p.cp.category_product.category_name}</td>
-                                        <td>${p.user.first_name} ${p.user.last_name}</td>
+                                        <td>${p.staff.first_name} ${p.staff.last_name}</td>
                                         <td>
                                             <c:if test="${p.featured == '1'}">Có</c:if>
                                             <c:if test="${p.featured != '1'}">Không</c:if>
@@ -516,7 +516,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh</label>
-                                        <input type="text" class="form-control" name="thumbnail" >
+                                         <input type="file" id="file" name="file" class="form-control-file" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Thể loại</label>

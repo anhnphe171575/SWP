@@ -19,9 +19,7 @@ import java.util.Date;
 @MultipartConfig
 public class EditProduct extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\MANH VINH\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgProducts";
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -53,18 +51,41 @@ public class EditProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Part filePart = request.getPart("file");
+           String applicationPath = request.getServletContext().getRealPath("");
+    // Construct the path for the upload directory
+    String uploadFilePath = applicationPath + File.separator + "imgProducts";
 
-        if (filePart != null && filePart.getSize() > 0) {
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            File file = new File(UPLOAD_DIR, fileName);
-            try {
-                filePart.write(file.getAbsolutePath());
-            } catch (IOException e) {
-                throw new ServletException("Cannot write uploaded file to disk! " + e.getMessage());
-            }
+    // Create the upload directory if it doesn't exist
+    File fileSaveDir = new File(uploadFilePath);
+    if (!fileSaveDir.exists()) {
+        fileSaveDir.mkdirs();
+    }
 
-            String fileUrl = "imgProducts/" + fileName;
+    // Get the file part from the request
+    Part filePart = request.getPart("file");
+    String originalFileName = "";
+    String fileUrl = "";
+
+    if (filePart != null && filePart.getSize() > 0) {
+        // Get the original file name
+        originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        // Create a new file name
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+        // Create a file path
+        File file = new File(uploadFilePath, newFileName);
+
+        // Write the file to the specified directory
+        filePart.write(file.getAbsolutePath());
+
+        // Construct the file URL relative to the web application
+        fileUrl = "imgProducts" + File.separator + newFileName;
+    } else {
+        // If no new file is uploaded, use the existing image URL
+        fileUrl = request.getParameter("existingImage");
+    }
             DAOProduct d = new DAOProduct();
             int id = Integer.parseInt(request.getParameter("productID"));
             String productName = request.getParameter("productName");
@@ -88,9 +109,7 @@ public class EditProduct extends HttpServlet {
             }
 
             response.sendRedirect("productslist");
-        } else {
-            response.getWriter().write("No file uploaded or file size is zero.");
-        }
+         
     }
 
     private Date formatDate(String dob) {

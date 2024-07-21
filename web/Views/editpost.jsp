@@ -71,7 +71,7 @@
     <body>
         <div class="container">
             <h2>Chỉnh Sửa Bài Viết</h2>
-            <form action="EditPost" method="post">
+            <form action="EditPost" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="hidden" name="postID" value="${post.postID}" >
                     <div>Tiêu đề:</div>
@@ -80,8 +80,10 @@
 
                 <div class="form-group">
                     <div>Ảnh:</div>
-                    <img class="rounded-circle mt-5" width="150px" src="${post.thumbnail}">
-                    <input type="file" name="file" id="file" accept="image/*" >
+                    <img class="" width="300px" src="${post.thumbnail}"> <br/>
+                        <input type="file" name="file" id="file" accept="image/*" > 
+                        
+                    <input type="hidden" name="existingImage" value="${post.thumbnail}">
 
                 </div>
 

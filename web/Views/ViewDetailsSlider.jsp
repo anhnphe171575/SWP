@@ -267,6 +267,7 @@
                                     <td>ID người đăng</td>
                                     <td>${c.user.userID}</td>
                                 </tr>
+
                             <td colspan="2">
                                 <a href="SliderServletURL" class="button-field">Trở về</a>
                             </td>

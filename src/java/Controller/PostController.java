@@ -6,7 +6,7 @@ package Controller;
 
 import DAL.DAOCategoryProduct;
 import DAL.DAOPost;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.Vector;
 import Entity.CategoryPost;
 import Entity.CategoryProduct;
 import Entity.Post;
-import Entity.User;
+import Entity.Staff;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
@@ -83,16 +83,16 @@ public class PostController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOPost daoP = new DAOPost();
-        DAOUser dao1 = new DAOUser();
+        DAOStaff dao1 = new DAOStaff();
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
 
         Vector<Post> vec1 = daoP.getAll();
         //   Vector<Integer> vec4 = dao.getStatus("select status from Post group by status");
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<User> vec3 = dao1.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n" +
-"                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
-"                inner join [Role] r on r.RoleID = u.RoleID");
+        Vector<Staff> vec3 = dao1.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
         int page = 0;
@@ -134,7 +134,7 @@ public class PostController extends HttpServlet {
         HttpSession session = request.getSession();
         String service = request.getParameter("service");
         DAOPost daoP = new DAOPost();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
         Vector<Post> listPost = new Vector<>();
         if (service == null) {
@@ -191,10 +191,10 @@ public class PostController extends HttpServlet {
         }
 
         Vector<String> vec2 = daoP.getAllNameCategory("select category_name from CategoryProduct group by category_name");
-        Vector<User> vec3 = daoU.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n" +
-"                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [User] u\n" +
-"                 inner join SecurityQuestion s on u.securityID=s.securityID\n" +
-"                inner join [Role] r on r.RoleID = u.RoleID");
+        Vector<Staff> vec3 = daoU.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = daoCPR.getAll("select * from CategoryProduct");
         int page = 0;
         int numberOfPage = 6;
@@ -224,16 +224,43 @@ public class PostController extends HttpServlet {
 
     private void handleAdd(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
         DAOPost daoP = new DAOPost();
-        DAOUser daoU = new DAOUser();
+        DAOStaff daoU = new DAOStaff();
         DAOCategoryProduct daoCPR = new DAOCategoryProduct();
-        Part filePart = request.getPart("thumbnail");
-        // Get the file name
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        // Create a file path
-        File file = new File(UPLOAD_DIR, fileName);
-        // Write the file to the specified directory
-        filePart.write(file.getAbsolutePath());
-        String fileUrl = "imgPost/" + fileName;
+        String applicationPath = request.getServletContext().getRealPath("");
+        // Construct the path for the upload directory
+        String uploadFilePath = applicationPath + File.separator + "imgPost";
+
+        // Create the upload directory if it doesn't exist
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdirs();
+        }
+
+        // Get the file part from the request
+        Part filePart = request.getPart("file");
+        String originalFileName = "";
+        String fileUrl = "";
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Get the original file name
+            originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            // Create a new file name
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+            // Create a file path
+            File file = new File(uploadFilePath, newFileName);
+
+            // Write the file to the specified directory
+            filePart.write(file.getAbsolutePath());
+
+            // Construct the file URL relative to the web application
+            fileUrl = "imgPost" + File.separator + newFileName;
+        } else {
+            // If no new file is uploaded, use the existing image URL
+            fileUrl = request.getParameter("existingImage");
+        }
         String title = request.getParameter("title");
         String category_post_raw = request.getParameter("category_post");
         String featured_raw = request.getParameter("featured");
@@ -243,7 +270,7 @@ public class PostController extends HttpServlet {
             int category_post_id = Integer.parseInt(category_post_raw);
             int status = 1;
             String username = (String) session.getAttribute("username");
-            User u = daoU.getUserByLogin(username);
+            Staff u = daoU.getStaffByLogin(username);
             LocalDate localDate = LocalDate.now();
             Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             int featured = Integer.parseInt(featured_raw);

@@ -326,6 +326,10 @@
                                          
                                 
                             </div>-->
+                            <div class="col-sm-6">
+                                <a href="SliderServletURL?service=addSlider" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add Slider</span></a>
+                                      
+                            </div>
                         </div>
                     </div>
                     <form action="SliderServletURL" method="post">
@@ -360,6 +364,7 @@
                                 <th>Ảnh</th>
                                 <th>Liên kết</th>
                                 <th>Trạng thái</th>
+
                             </tr>
                         </thead>
                         <tbody>

@@ -198,7 +198,7 @@
                                                 <td></td>
                                             </c:otherwise>
                                         </c:choose>
-                                        <td>${it.user.first_name} ${it.user.last_name}</td>
+                                        <td>${it.staff.first_name} ${it.staff.last_name}</td>
                                         <td>${it.product.product_name}</td>
                                         <td>${it.quantitychange}</td>
                                         <td>${it.quantity_current}</td>

@@ -312,7 +312,7 @@
                             <div class="col-md-6">
                                 <p><strong>Order Date:</strong> ${item.order.order_date}</p>
                                 <p><strong>Total Cost:</strong> ${item.list_price}</p>
-                                <p><strong>Sale Name:</strong> ${item.order.user.first_name} ${item.order.user.last_name}</p>
+                                <p><strong>Sale Name:</strong> ${item.order.staff.first_name} ${item.order.staff.last_name}</p>
                                 <p><strong>Status:</strong> ${item.order.status.status_name}</p>
                                 <p><strong>Payment Method:</strong> ${item.order.getPaymentMethod()}
 

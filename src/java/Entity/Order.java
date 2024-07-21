@@ -15,20 +15,20 @@ public class Order {
     private Customer customer;
     private Date shipped_date;
     private Date order_date;
-    private User user;
+    private Staff staff;
     private Receiver receivers;
     private String notes;
     private String PaymentMethod;
     public Order() {
     }
 
-    public Order(int orderID, StatusOrder status, Customer customer, Date shipped_date, Date order_date, User user, Receiver receivers, String notes, String PaymentMethod) {
+    public Order(int orderID, StatusOrder status, Customer customer, Date shipped_date, Date order_date, Staff staff, Receiver receivers, String notes, String PaymentMethod) {
         this.orderID = orderID;
         this.status = status;
         this.customer = customer;
         this.shipped_date = shipped_date;
         this.order_date = order_date;
-        this.user = user;
+        this.staff = staff;
         this.receivers = receivers;
         this.notes = notes;
         this.PaymentMethod = PaymentMethod;
@@ -74,12 +74,12 @@ public class Order {
         this.order_date = order_date;
     }
 
-    public User getUser() {
-        return user;
+    public Staff getStaff() {
+        return staff;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
     public Receiver getReceivers() {
@@ -105,6 +105,8 @@ public class Order {
     public void setPaymentMethod(String PaymentMethod) {
         this.PaymentMethod = PaymentMethod;
     }
+
+    
    public int Salesdivision(){
        DAOOrder db = new DAOOrder();
         HashMap<Integer, Integer> countMap = db.Countorder();
@@ -125,10 +127,7 @@ public class Order {
         return randomUserID;
    } 
 
-    @Override
-    public String toString() {
-        return "Order{" + "orderID=" + orderID + ", status=" + status + ", customer=" + customer + ", shipped_date=" + shipped_date + ", order_date=" + order_date + ", user=" + user + ", receivers=" + receivers + ", notes=" + notes + ", PaymentMethod=" + PaymentMethod + '}';
-    }
+   
    
 }
 

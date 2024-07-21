@@ -6,7 +6,7 @@ package Controller;
 
 import DAL.DAOCustomer;
 import DAL.DAOSecurityQuestion;
-import DAL.DAOUser;
+import DAL.DAOStaff;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ import java.util.List;
 import Entity.Customer;
 import Entity.Security;
 import Entity.Security;
-import Entity.User;
+import Entity.Staff;
 import jakarta.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
@@ -113,7 +113,7 @@ public class SignUpCustomer extends HttpServlet {
 
         DAOCustomer db = new DAOCustomer();
         DAOSecurityQuestion db1 = new DAOSecurityQuestion();
-        DAOUser dbu = new DAOUser();
+        DAOStaff dbu = new DAOStaff();
         boolean checkPhone = true;
         boolean checkEmail = true;
         boolean checkUsername = true;
@@ -130,8 +130,8 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
-            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
-                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+            for (Staff u : dbu.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"Staff\" u inner join SecurityQuestion sq "
                     + "on u.securityID=sq.securityID;")) {
                 if (phone.equals(u.getPhone())) {
                     checkPhoneUser = false;
@@ -153,8 +153,8 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
-            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
-                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+            for (Staff u : dbu.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"Staff\" u inner join SecurityQuestion sq "
                     + "on u.securityID=sq.securityID;")) {
                 if (email.equals(u.getEmail())) {
                     checkEmailUser = false;
@@ -176,8 +176,8 @@ public class SignUpCustomer extends HttpServlet {
                     break;
                 }
             }
-            for (User u : dbu.getUser("select u.UserID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
-                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"User\" u inner join SecurityQuestion sq "
+            for (Staff u : dbu.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,u.dob,u.gender,u.status,"
+                    + "u.role,u.securityID,sq.security_question,u.securityAnswer from \"Staff\" u inner join SecurityQuestion sq "
                     + "on u.securityID=sq.securityID;")) {
                 if (user.equals(u.getUsername())) {
                     checkUsernameUser = false;
