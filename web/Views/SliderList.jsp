@@ -321,10 +321,8 @@
                             </div>
 
                             <div class="col-sm-6">
-                                <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Filter</span></a>
-                              
-                                         
-                                
+                                <a href="SliderServletURL?service=addSlider" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add Slider</span></a>
+                                      
                             </div>
                         </div>
                     </div>
@@ -360,6 +358,7 @@
                                 <th>image</th>
                                 <th>link</th>
                                 <th>status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

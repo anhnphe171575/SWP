@@ -249,7 +249,8 @@
                             </tr>
                             <tr>
                                     <td>UserID</td>
-                                    <td>${c.staff.staffID}</td>
+                                    <td>${c.staff.getStaffID()}</td>
+
                             </tr>
                             <td colspan="2">
                                      <a href="SliderServletURL" class="button-field">Back To Slider List</a>
