@@ -12,26 +12,26 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+        <!-- Google Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <!-- Material Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <!-- Material Icons -->
+
+
         <link rel="stylesheet" href="./mktcss/styles.css">
-        <link rel="stylesheet" href="/qcss/style.css">
+   
         <style>
             td img {
                 width: 100px; /* Sets the width of the image */
@@ -267,6 +267,7 @@
             }
         </style>
         <script>
+
             $(document).ready(function () {
                 // Activate tooltip
                 $('[data-toggle="tooltip"]').tooltip();
@@ -288,6 +289,13 @@
                     if (!this.checked) {
                         $("#selectAll").prop("checked", false);
                     }
+                });
+                $('.table').DataTable({
+                    "paging": true,
+                    "searching": false,
+                    "ordering": false,
+                    "info": false,
+                    "pageLength": 10
                 });
             });
 
@@ -314,8 +322,8 @@
                                         <form action="CustomerServletURL" method="get">
                                             <p>
                                                 Tìm tên: <input type="text" name="first_name"> <br/>
-                                             
-                                               
+
+
                                                 <input type="submit" name="submit" value="Tìm">
                                                 <input type="reset" value="Xóa"></p>
                                             <input type="hidden" name="service" value="listAllCustomer">
@@ -324,24 +332,24 @@
 
                                     <div class="col-sm-5">
                                         <a href="CustomerServletURL?service=addCustomer" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Thêm Khách Hàng</span></a>
-                                       
+
                                         <a href="#sort" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Sắp Xếp</span></a>
                                     </div>
                                 </div>
                             </div>
                             <form action="FeedBackList" method="post">
-                            <div class="filter-container d-flex flex-wrap align-items-center">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Product:</span>
-                                        </div>
-                                        <select id="product-filter" name="proid" class="form-control">
-                                        <option value="all">All</option>
-                                        <c:forEach items="${requestScope.product}" var="p">
-                                            <option value="${p.productID}">${p.product_name}</option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="filter-container d-flex flex-wrap align-items-center">
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Product:</span>
+                                            </div>
+                                            <select id="product-filter" name="proid" class="form-control">
+                                                <option value="all">All</option>
+                                            <c:forEach items="${requestScope.product}" var="p">
+                                                <option value="${p.productID}">${p.product_name}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -367,7 +375,7 @@
                                         <select class="custom-select" id="status" name="status">
                                             <option value="all">All</option>
                                             <option value="0">Hide</option>
-                                        <option value="1">Show</option>
+                                            <option value="1">Show</option>
                                         </select>
                                     </div>
                                 </div>
@@ -376,29 +384,29 @@
                                 <div class="col-md-3" >
                                     <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
                                 </div>
-                                
+
                             </div>
                         </form>
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ</th>
-                                        <th>Tên</th>
-                                        <th>Số điện thoại</th>
-<!--                                        <th>email</th>-->
-                                        <!--                                        <th>address</th>-->
-                                        <th>Tài khoản</th>
-                                        <th>Mật khẩu</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Giới tính</th>
-                                        <th colspan="2">Lịch sử hoạt động</th>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Họ</th>
+                                    <th>Tên</th>
+                                    <th>Số điện thoại</th>
+                                    <!--                                        <th>email</th>-->
+                                    <!--                                        <th>address</th>-->
+                                    <th>Tài khoản</th>
+                                    <th>Mật khẩu</th>
+                                    <th>Ngày sinh</th>
+                                    <th>Giới tính</th>
+                                    <th colspan="2">Lịch sử hoạt động</th>
 
-                                        <!--                                        <th>security_question</th>
-                                                                                <th>securityAnswer</th>                            -->
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                    <!--                                        <th>security_question</th>
+                                                                            <th>securityAnswer</th>                            -->
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <c:forEach items="${requestScope.listAllCustomer}" var="c">
                                     <tr>
                                         <td>${c.customerID}</td>
@@ -516,33 +524,33 @@
                 </div>
                 <!-- Sort -->
                 <div id="sort" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Sắp xếp</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="CustomerServletURL" method="post">
-                    <div class="modal-body">
-                        <!-- Sort Options -->
-                        <div class="form-group">
-                            <label for="sort-select">Sắp xếp</label>
-                            <select id="sort-select" class="form-control" name="sort">
-                                <option value="name">Tên</option>
-                                <option value="email">email</option>
-                                <option value="phone">Số điện thoại</option>
-                                <option value="activity_history">Lịch sử hoạt động</option>    
-                            </select>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Sắp xếp</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form action="CustomerServletURL" method="post">
+                                <div class="modal-body">
+                                    <!-- Sort Options -->
+                                    <div class="form-group">
+                                        <label for="sort-select">Sắp xếp</label>
+                                        <select id="sort-select" class="form-control" name="sort">
+                                            <option value="name">Tên</option>
+                                            <option value="email">email</option>
+                                            <option value="phone">Số điện thoại</option>
+                                            <option value="activity_history">Lịch sử hoạt động</option>    
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Sort</button>
+                                    <input type="hidden" name="service" value="sort">
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Sort</button>
-                        <input type="hidden" name="service" value="sort">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                </div>
                 <!<!-- comment -->
                 <div id="Edit" class="modal fade">
                     <div class="modal-dialog">

@@ -219,36 +219,6 @@
             .modal form label {
                 font-weight: normal;
             }
-            .dataTables_wrapper .dataTables_paginate .paginate_button {
-                display: inline-block;
-                padding: 6px 12px;
-                margin: 2px;
-                text-decoration: none;
-                color: #007bff;
-
-                border: 1px solid #dee2e6;
-                border-radius: 4px;
-                transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-            }
-
-            .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-            .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-                background-color: #00aaff;
-                color: #fff !important;
-                border-color: #00aaff;
-            }
-
-            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-                background-color: #007bff;
-                color: #fff !important;
-                border-color: #007bff;
-            }
-
-            .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-                background-color: #0056b3;
-                color: #fff !important;
-                border-color: #0056b3;
-            }
         </style>
         <script>
             $(document).ready(function () {
@@ -426,39 +396,38 @@
     </head>
     <body>
         <div class="grid-container">
-            
+
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- End Header -->
-                                <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
+            <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
-                                </c:if>
-                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
-            <jsp:include page="sidebar1.jsp"></jsp:include>
-                                </c:if>
+                <jsp:include page="sidebar.jsp"></jsp:include>
+            </c:if>
+            <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
+                <jsp:include page="sidebar1.jsp"></jsp:include>
+            </c:if>
 
-                <div class="container-xl" style="width: 1200px">
-                    <div class="table-responsive">
-                        <div class="table-wrapper">
-                            <div class="table-title">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
-                                    </div>
-                                    <div style="text-align: right" class="col-sm-3">
-                                        <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
-                                            <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
-                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
-                                            <input type="submit" name="submit" value="Tìm">
-                                            <input type="hidden" name="service" value="search">                                                                      
-                                        </form>                    
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
-                                    <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
+            <div class="container-xl" style="width: 1200px">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
+                                </div>
+                                <div style="text-align: right" class="col-sm-3">
+                                    <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
+                                        <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
+                                        <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
+                                        <input type="submit" name="submit" value="Tìm">
+                                        <input type="hidden" name="service" value="search">                                                                      
+                                    </form>                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
+                                    <c:if test="${sessionScope.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
-
                                     </c:if>
                                 </div>
                             </div>
