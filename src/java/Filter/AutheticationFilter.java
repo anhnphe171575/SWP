@@ -67,7 +67,7 @@ public class AutheticationFilter implements Filter {
         String[] customerAuthUrls = {"CartDetails", "CartContact", "editProfileCustomerURL", "ProductsListPublic", "LogOut", "BlogController", "MyOrderURL", "CancelOrder", "MyOrderDetailURL", "HomePage", "AddToCart", "CartCompletion", "payments.png", "ProductDetailsPublic", "vnpayajax", "BlogDetail", "PayAgain"};
 
         Map<Integer, String[]> roleUrls = new HashMap<>();
-        roleUrls.put(1, new String[]{"MKTDashboard", "DBcus", "DBpost", "DBpro", "DBfeedback", "editp", "EditPost", "editProductDetails", "productslist", "SliderServletURL", "PostController", "CustomerServletURL", "addp", "StatusFeedBack", "FeedBackList", "update", "view", "FeedbackDetail", "deleteProduct", "editProfileUserURL"});
+        roleUrls.put(1, new String[]{"MKTDashboard", "DBcus", "DBpost", "DBpro", "DBfeedback", "editp", "EditPost", "editProductDetails", "productslist", "SliderServletURL", "PostController", "CustomerServletURL", "addp", "StatusFeedBack", "FeedBackList", "update", "view", "FeedbackDetail", "deleteProduct", "editProfileUserURL","PostDetail"});
         roleUrls.put(2, new String[]{"updatestatusorder", "orderlist", "orderstatus", "orderdetails", "mktcss", "LoginController", "editProfileUserURL"});
         roleUrls.put(3, new String[]{"SaleDashboardURL", "orderlist", "mktcss", "orderdetails", "updatesale", "sales", "LoginController", "editProfileUserURL"});
         roleUrls.put(4, new String[]{"orderlist", "mktcss", "orderdetails", "updatestatusorder", "orderstatus", "LoginController", "editProfileUserURL", "productslist", "updateQuantity", "updatePrice", "updateSalePrice"});
