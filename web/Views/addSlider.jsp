@@ -11,11 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body style="background-color:white">
     <div class="container mt-5">
         <h1>Add Slider</h1>
-        <form id="sliderForm" action="SliderServletURL" method="post" enctype="multipart/form-data">
+        <form id="sliderForm" action="SliderServletURL" method="post" enctype="multipart/form-data" novalidate>
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" name="title" id="title" class="form-control" required>
@@ -45,59 +46,58 @@
             </div>
             <div class="form-group">
                 <input type="hidden" name="service" value="addSlider">
-                <input type="submit" name="submit" class="btn btn-primary" value="Add Slider">
+                <input type="submit" name="submit" id="submitBtn" class="btn btn-primary" value="Add Slider">
                 <a href="SliderServletURL" class="btn btn-secondary">Back To Slider List</a>
             </div>
         </form>
     </div>
 
     <script>
-        document.getElementById('sliderForm').addEventListener('submit', function(event) {
-            var title = document.getElementById('title').value.trim();
-            var file = document.getElementById('file').value;
-            var link = document.getElementById('link').value.trim();
-            var notes = document.getElementById('notes').value.trim();
-            var pageOrder = document.getElementById('page_order').value;
+        $(document).ready(function() {
+            $('#sliderForm').submit(function(e) {
+                e.preventDefault();
+                 
+                // Validate form
+                if (!this.checkValidity()) {
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                    return;
+                }
+                
+                var formData = new FormData(this);
+                formData.append("submit", $("#submitBtn").val()); // Append submit button's value
 
-            if (title === '') {
-                alert('Please enter a title');
-                event.preventDefault();
-                return;
-            }
-
-            if (file === '') {
-                alert('Please select an image file');
-                event.preventDefault();
-                return;
-            }
-
-            if (link === '' || !isValidURL(link)) {
-                alert('Please enter a valid URL for the link');
-                event.preventDefault();
-                return;
-            }
-
-            if (notes === '') {
-                alert('Please enter notes');
-                event.preventDefault();
-                return;
-            }
-
-            if (pageOrder === '' || parseInt(pageOrder) < 1) {
-                alert('Please enter a valid page order (minimum 1)');
-                event.preventDefault();
-                return;
-            }
+                $.ajax({
+                    url: 'SliderServletURL',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: 'Slider đã được thêm thành công!',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to slider list page
+                                window.location.href = 'SliderServletURL';
+                            }
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Đã xảy ra lỗi khi thêm slider!',
+                            confirmButtonText: 'OK'
+                        });
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
         });
-
-        function isValidURL(string) {
-            try {
-                new URL(string);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
     </script>
 </body>
 </html>
