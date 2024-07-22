@@ -24,6 +24,13 @@ import java.time.ZoneId;
  * @author phuan
  */
 public class DAOCustomer extends DBContext {
+    public Vector<Customer> getListByPage(Vector<Customer> list, int start, int end) {
+        Vector<Customer> arr = new Vector<>();
+        for (int i = start; i < end; i++) {
+            arr.add(list.get(i));
+        }
+        return arr;
+    }
     public List<Customer> sortByActivityHistory() {
         List<Customer> custo = new ArrayList<>();
         try {

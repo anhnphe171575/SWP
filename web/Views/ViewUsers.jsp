@@ -15,7 +15,7 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+            <title>Quản lý Nhân viên</title>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -31,6 +31,11 @@
             <!-- Material Icons -->
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
             <link rel="stylesheet" href="./mktcss/styles.css">
+            <!-- Thêm liên kết DataTables CSS -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
+            <!-- Thêm liên kết DataTables JS -->
+            <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 
             <style>
                 .table-responsive{
@@ -285,6 +290,15 @@
                         }
                     });
                 });
+                $(document).ready(function () {
+                    $('#staffTable').DataTable({
+                        "paging": true, // Bật phân trang
+                        "searching": false, // Bật chức năng tìm kiếm
+                        "info": true, // Hiển thị thông tin tổng số bản ghi
+                        "ordering": false,
+                        "lengthChange": 5    // Tắt chức năng thay đổi số lượng bản ghi mỗi trang
+                    });
+                });
             </script>
         </head>
         <body>
@@ -310,19 +324,22 @@
                                                 <div class="col-sm-3">
                                                     <form action="userList" method="post" style="display: flex; justify-content: space-between;">
                                                         <div>
-                                                            <p>Tìm kiếm <input type="text" name="first_name"></p> 
+                                                            <input type="text" name="name" placeholder="Fullname">
+                                                            <input type="text" name="email" placeholder="Email">
+                                                            <input type="text" name="phone" placeholder="Phone">
+                                                            <br>
+                                                            <br>
                                                             <input type="submit" name="submit" value="Search">
                                                             <input type="reset" value="Clear">
-                                                            <input type="hidden" name="action" value="search1">
-                                                            <input type="hidden" name="service" value="listAllUsers">
+                                                            <input type="hidden" name="service" value="search"> <!-- Duy nhất một service value -->
                                                         </div>
-
                                                     </form>
+
                                                 </div>
 
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-6"style="margin-top:10px">
                                             <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
                                             <a href="AddUser" class="btn btn-success"  ><i class="material-icons">&#xE147;</i> <span>Thêm nhân viên</span></a>
                                             <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
@@ -330,53 +347,46 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class="table table-striped table-hover">
+                                <table id="staffTable" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-
                                             <th>ID nhân viên</th>
                                             <th>Tên</th>
                                             <th>Họ</th>
                                             <th>Số điện thoại</th>
-                                            <th>email</th>
-                                            <th>ngày sinh </th>
-                                            <th>giới tính</th>
-                                            <th>trạng thái</th>
+                                            <th>Email</th>
+                                            <th>Ngày sinh</th>
+                                            <th>Giới tính</th>
+                                            <th>Trạng thái</th>
                                             <th>Vai trò</th>
+                                            <th>Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <%
-                            Vector<Staff> vector=(Vector<Staff>)request.getAttribute("data");
-                             for (Staff obj : vector) {
+                                    <% 
+                                    Vector<Staff> vector = (Vector<Staff>)request.getAttribute("data");
+                                    for (Staff obj : vector) {
                                     %>
                                     <tr>
-                                        <td><%=obj.getStaffID()%></td>
-                                        <td><%=obj.getFirst_name()%></td>
-                                        <td><%=obj.getLast_name()%></td>
-                                        <td><%=obj.getPhone()%></td>
-                                        <td><%=obj.getEmail()%></td>
-                                        <td><%=obj.getDob()%></td>
-                                        <td><%=obj.isGender() ? "Nam" : "Nữ" %></td>
-                                        <td><%=obj.getStatus() == 1 ? "Hoạt động" : "Không hoạt động" %></td>
-                                        <td><%=obj.getRole().getRole_Name()%></td>
+                                        <td><%= obj.getStaffID() %></td>
+                                        <td><%= obj.getFirst_name() %></td>
+                                        <td><%= obj.getLast_name() %></td>
+                                        <td><%= obj.getPhone() %></td>
+                                        <td><%= obj.getEmail() %></td>
+                                        <td><%= obj.getDob() %></td>
+                                        <td><%= obj.isGender() ? "Nam" : "Nữ" %></td>
+                                        <td><%= obj.getStatus() == 1 ? "Hoạt động" : "Không hoạt động" %></td>
+                                        <td><%= obj.getRole().getRole_Name() %></td>
                                         <td>
-                                            <a href="userDetail?UserID=<%=obj.getStaffID()%>" style="color: red" class="fa fa-eye"></a>
-                                            <a href="updateUser?&UserID=<%=obj.getStaffID()%>"><i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                            <a href="userDetail?UserID=<%= obj.getStaffID() %>" style="color: red" class="fa fa-eye"></a>
+                                            <a href="updateUser?UserID=<%= obj.getStaffID() %>">
+                                                <i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
                                             </a>
                                         </td>
                                     </tr>
-                                    <%}%>
-
+                                    <% } %>
                                 </tbody>
                             </table>
-                            <div class="clearfix">
-                                <ul class="pagination">
-                                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>        
                 </div>
@@ -399,8 +409,8 @@
                     </div>
                 </div>
                 <!-- Add Modal HTML -->
-              
-          
+
+
 
 
                 <!-- Sort -->

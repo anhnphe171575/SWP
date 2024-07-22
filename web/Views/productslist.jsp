@@ -10,7 +10,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -130,23 +129,6 @@
                 border-radius: 50%;
                 vertical-align: middle;
                 margin-right: 10px;
-            }
-            .pagination {
-                display: inline-block;
-            }
-            .pagination  a {
-                color: black;
-                font-size: 22px;
-                float: left;
-                padding: 8px 16px;
-                text-decoration: none;
-            }
-            .pagination a.active {
-                background-color: #4CAF50;
-                color: white;
-            }
-            .pagination a:hover:not(.active) {
-                background: #27A4F2;
             }
             .hint-text {
                 float: left;
@@ -337,7 +319,7 @@
                 $('.table').DataTable({
                     "paging": true,
                     "searching": false,
-                    "ordering": false,
+                    "ordering": true,
                     "info": false,
                     "pageLength": 10
                 });
@@ -414,22 +396,37 @@
     </head>
     <body>
         <div class="grid-container">
-            
+
             <jsp:include page="header.jsp"></jsp:include>
                 <!-- End Header -->
-                                <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
+            <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
 
                 <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
-                                </c:if>
-                                                <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
-            <jsp:include page="sidebar1.jsp"></jsp:include>
-                                </c:if>
-
-                <div class="container-xl" style="width: 1200px">
-                    <div class="table-responsive">
-                        <div class="table-wrapper">
-                            <div class="table-title">
+                <jsp:include page="sidebar.jsp"></jsp:include>
+            </c:if>
+            <c:if test="${sessionScope.user.getRole().getRoleID() == 4}">
+                <jsp:include page="sidebar1.jsp"></jsp:include>
+            </c:if>
+            <div class="container-xl" style="width: 1200px">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
+                                </div>
+                                <div style="text-align: right" class="col-sm-3">
+                                    <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
+                                        <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
+                                        <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
+                                        <input type="submit" name="submit" value="Tìm">
+                                        <input type="hidden" name="service" value="search">                                                                      
+                                    </form>                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
+                                    <c:if test="${sessionScope.role.getRoleID() == 1}">
+                <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
@@ -443,10 +440,8 @@
                                         </form>                    
                                     </div>
                                     <div class="col-sm-6">
-                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                                     <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
-
                                     </c:if>
                                 </div>
                             </div>
@@ -463,7 +458,7 @@
                                 </c:if>
                             </div>
                         </div>
-                        <div class="container">
+                        <div class="container" >
                             <form action="productslist" method="post">
                                 <div class="filter-container d-flex flex-wrap align-items-center">
                                     <div class="col-md-3">
@@ -507,6 +502,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
+                                    
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                     <th>Nổi bật</th>
@@ -534,10 +530,6 @@
                                                 </c:if>
                                             <a title="View" onclick="location.href = 'view?vid=${product.productID}'"><i class="fas fa-search"></i></a>
                                             <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
-                                                <c:if test="${product.quantity == 0 && product.quantity_hold == 0}">
-                                                <a title="Delete" onclick="if (confirm('Are you sure you want to delete this product?'))
-                                                            location.href = 'deleteProduct?did=${product.productID}'"><i class="fas fa-trash-alt"></i></a>
-                                                </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -552,6 +544,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
+                                    <th>Số lượng hiện đang đặt</th>
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                 </tr>

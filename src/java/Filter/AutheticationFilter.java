@@ -71,7 +71,7 @@ public class AutheticationFilter implements Filter {
         roleUrls.put(2, new String[]{"updatestatusorder", "orderlist", "orderstatus", "orderdetails", "mktcss", "LoginController", "editProfileUserURL"});
         roleUrls.put(3, new String[]{"SaleDashboardURL", "orderlist", "mktcss", "orderdetails", "updatesale", "sales", "LoginController", "editProfileUserURL"});
         roleUrls.put(4, new String[]{"orderlist", "mktcss", "orderdetails", "updatestatusorder", "orderstatus", "LoginController", "editProfileUserURL", "productslist", "updateQuantity", "updatePrice", "updateSalePrice"});
-        roleUrls.put(5, new String[]{"AdminDashboard", "userList", "userDetail", "AddUser", "updateUser", "SecurityQuestion", "EditSQ", "editRoleURL", "editStatusOrderURL", "LoginController"});
+        roleUrls.put(5, new String[]{"AdminDashboard", "userList", "userDetail", "AddUser", "updateUser", "SecurityQuestion", "EditSQ", "editRoleURL", "editStatusOrderURL", "LoginController", "AdminSettingURL"});
 
         if (cus == null && matchesAny(url, customerUrls)) {
             request.getRequestDispatcher("LoginCusController").forward(request, response);
@@ -149,7 +149,10 @@ public class AutheticationFilter implements Filter {
                 log("AutheticationFilter:Initializing filter");
             }
         }
+
+        
     }
+    
 
     @Override
     public String toString() {
