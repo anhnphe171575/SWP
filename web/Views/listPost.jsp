@@ -271,54 +271,108 @@
         <!-- Add Modal HTML -->
         <!-- Add Modal HTML -->
         <div id="Add" class="modal fade">
-            <div class="modal-dialog" style="color: black">
-                <div class="modal-content">
-                    <form action="PostController" method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Bài Viết Mới</h4>
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Tiêu đề</label>
-                                <input type="text" class="form-control" name="title" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Ảnh</label>
-                                <input type="file" id="file" name="file" class="form-control-file" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Thể loại</label>
-                                <select id="category-select" class="form-control" name="category_post">
-                                    <c:forEach items="${requestScope.category_product}" var="c">
-                                        <option value="${c.category_productID}">${c.category_name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Nổi bật</label>
-                                <input type="text" class="form-control" name="featured" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Tóm tắt</label>
-                                <input type="text" class="form-control" name="brief_information" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Chi tiết</label>
-                                <input type="text" class="form-control" name="description" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-
-                            <input type="submit" class="btn btn-info" value="OK">
-                            <input type="hidden" name="service" value="add">
-                        </div>
-                    </form>
+    <div class="modal-dialog" style="color: black">
+        <div class="modal-content">
+            <form id="addPostForm" action="PostController" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h4 class="modal-title">Bài Viết Mới</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-            </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tiêu đề</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ảnh</label>
+                        <input type="file" id="file" name="file" class="form-control-file" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Thể loại</label>
+                        <select id="category-select" class="form-control" name="category_post" required>
+                            <c:forEach items="${requestScope.category_product}" var="c">
+                                <option value="${c.category_productID}">${c.category_name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nổi bật</label><br>
+                        <div style="display: inline-block;">
+                            <label style="margin-right: 10px;">
+                                <input type="radio" id="featured_yes" name="featured" value="1" required> Có
+                            </label>
+                            <label>
+                                <input type="radio" id="featured_no" name="featured" value="0"> Không
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tóm tắt</label>
+                        <input type="text" class="form-control" name="brief_information" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Chi tiết</label>
+                        <textarea class="form-control" name="description" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-info">OK</button>
+                    <input type="hidden" name="service" value="add">
+                </div>
+            </form>
         </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#addPostForm').submit(function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!this.checkValidity()) {
+            e.stopPropagation();
+            $(this).addClass('was-validated');
+            return;
+        }
+        
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: 'PostController',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Bài viết đã được thêm thành công!',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#Add').modal('hide');
+                        // Có thể thêm code để refresh danh sách bài viết ở đây
+                        // location.reload();
+                    }
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi khi thêm bài viết!',
+                    confirmButtonText: 'OK'
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+});
+</script>
         <!-- comment -->
         <div id="Sort1" class="modal fade">
             <div class="modal-dialog">
