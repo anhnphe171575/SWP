@@ -352,7 +352,7 @@
                                 </div>
                             </div>
 
-                            <table  class="table table-striped table-hover">
+                            <table id="tablecus" class="table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -429,7 +429,7 @@
         <script>
 
             $(document).ready(function () {
-                $('.table').DataTable({
+                $('#tablecus').DataTable({
                     "pageLength": 10,
                     "lengthChange": false,
                     "searching": true,

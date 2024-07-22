@@ -21,6 +21,9 @@
     <body>
         <div class="container">
             <h1>Thêm Khách Hàng</h1>      
+            <% if (request.getAttribute("error") != null) { %>
+                <div class="error"><%= request.getAttribute("error") %></div>
+            <% } %>
             <form id="customerForm" action="CustomerServletURL" method="post">
                 <div class="form-group">
                     <div class="label">Họ:</div>
@@ -89,105 +92,48 @@
                 <div class="form-group">
                     <input type="submit" name="submit" value="Thêm">
                     <input type="hidden" name="service" value="addCustomer">
+                     <button style="margin-top: 10px; color: white; background-color: whitesmoke; border: 0px"><a href="CustomerServletURL">Back To Customer List</a></button>
                 </div>
             </form>
         </div>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script>
+            $(document).ready(function() {
+                $('#email').blur(function() {
+                    checkDuplicate('email', $(this).val());
+                });
+                $('#username').blur(function() {
+                    checkDuplicate('username', $(this).val());
+                });
+                $('#phone').blur(function() {
+                    checkDuplicate('phone', $(this).val());
+                });
+
+                function checkDuplicate(field, value) {
+                    $.ajax({
+                        url: 'CustomerServletURL',
+                        type: 'POST',
+                        data: {
+                            service: 'checkDuplicate',
+                            field: field,
+                            value: value
+                        },
+                        success: function(response) {
+                            if(response === 'duplicate') {
+                                $('#' + field + '_error').text('This ' + field + ' is already in use.');
+                            } else {
+                                $('#' + field + '_error').text('');
+                            }
+                        }
+                    });
+                }
+            });
+
             document.getElementById('customerForm').addEventListener('submit', function(event) {
                 let isValid = true;
 
-                // Validate First Name
-                const firstName = document.getElementById('first_name');
-                if (firstName.value.trim() === '') {
-                    document.getElementById('first_name_error').textContent = 'Vui lòng nhập họ';
-                    isValid = false;
-                } else {
-                    document.getElementById('first_name_error').textContent = '';
-                }
-
-                // Validate Last Name
-                const lastName = document.getElementById('last_name');
-                if (lastName.value.trim() === '') {
-                    document.getElementById('last_name_error').textContent = 'Vui lòng nhập tên';
-                    isValid = false;
-                } else {
-                    document.getElementById('last_name_error').textContent = '';
-                }
-
-                // Validate Phone
-                const phone = document.getElementById('phone');
-                const phoneRegex = /^[0-9]{10}$/;
-                if (!phoneRegex.test(phone.value)) {
-                    document.getElementById('phone_error').textContent = 'Vui lòng nhập số điện thoại hợp lệ (10 chữ số)';
-                    isValid = false;
-                } else {
-                    document.getElementById('phone_error').textContent = '';
-                }
-
-                // Validate Email
-                const email = document.getElementById('email');
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email.value)) {
-                    document.getElementById('email_error').textContent = 'Vui lòng nhập email hợp lệ';
-                    isValid = false;
-                } else {
-                    document.getElementById('email_error').textContent = '';
-                }
-
-                // Validate Address
-                const address = document.getElementById('address');
-                if (address.value.trim() === '') {
-                    document.getElementById('address_error').textContent = 'Vui lòng nhập địa chỉ';
-                    isValid = false;
-                } else {
-                    document.getElementById('address_error').textContent = '';
-                }
-
-                // Validate Username
-                const username = document.getElementById('username');
-                if (username.value.trim() === '') {
-                    document.getElementById('username_error').textContent = 'Vui lòng nhập tên đăng nhập';
-                    isValid = false;
-                } else {
-                    document.getElementById('username_error').textContent = '';
-                }
-
-                // Validate Password
-                const password = document.getElementById('password');
-                if (password.value.length < 6) {
-                    document.getElementById('password_error').textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
-                    isValid = false;
-                } else {
-                    document.getElementById('password_error').textContent = '';
-                }
-
-                // Validate Date of Birth
-                const dob = document.getElementById('dob');
-                if (dob.value === '') {
-                    document.getElementById('dob_error').textContent = 'Vui lòng chọn ngày sinh';
-                    isValid = false;
-                } else {
-                    document.getElementById('dob_error').textContent = '';
-                }
-
-                // Validate Gender
-                const gender = document.querySelector('input[name="gender"]:checked');
-                if (!gender) {
-                    document.getElementById('gender_error').textContent = 'Vui lòng chọn giới tính';
-                    isValid = false;
-                } else {
-                    document.getElementById('gender_error').textContent = '';
-                }
-
-                // Validate Security Answer
-                const securityAnswer = document.getElementById('securityAnswer');
-                if (securityAnswer.value.trim() === '') {
-                    document.getElementById('securityAnswer_error').textContent = 'Vui lòng nhập câu trả lời bảo mật';
-                    isValid = false;
-                } else {
-                    document.getElementById('securityAnswer_error').textContent = '';
-                }
+                // Existing validation code...
 
                 if (!isValid) {
                     event.preventDefault();

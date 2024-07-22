@@ -73,12 +73,12 @@
 
             <div class="form-group">
                 <label for="phone">Số điện thoại:</label>
-                <input type="text" id="phone" name="phone" value="${customer.phone}" class="form-control" required>
+                <input type="text" id="phone" name="phone" value="${customer.phone}" class="form-control" required readonly="">
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" value="${customer.email}" class="form-control" required>
+                <input type="text" id="email" name="email" value="${customer.email}" class="form-control" required readonly="">
             </div>
 
             <div class="form-group">
@@ -87,13 +87,13 @@
             </div>
 
             <div class="form-group">
-                <label for="username">Tài khoản:</label>
-                <input type="text" id="username" name="username" value="${customer.username}" class="form-control" required>
+                <label for="username" >Tài khoản: </label>
+                <input type="text" id="username" name="username" value="${customer.username}" class="form-control" required readonly="">
             </div>
 
             <div class="form-group">
                 <label for="password">Mật khẩu:</label>
-                <input type="text" id="password" name="password" value="${customer.password}" class="form-control" required>
+                <input type="text" id="password" name="password" value="${customer.password}" class="form-control" required readonly="">
             </div>
 
             <div class="form-group">
@@ -140,6 +140,7 @@
             
             <input type="submit" name="submit" value="Save" class="btn btn-primary">
             <input type="hidden" name="service" value="updateCustomer">
+             <button style="margin-top: 10px; color: white; background-color: whitesmoke; border: 0px"><a href="CustomerServletURL">Back To Customer List</a></button>
         </form>
     </div>
     <!-- Bootstrap JS, Popper.js, and jQuery -->
