@@ -440,7 +440,9 @@
                                     </div>
                                     <div class="col-sm-6">
                                     <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
+
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
+
                                     </c:if>
                                 </div>
                             </div>
@@ -457,6 +459,7 @@
                                 </c:if>
                             </div>
                         </div>
+
                         <div class="container" >
                             <form action="productslist" method="post">
                                 <div class="filter-container d-flex flex-wrap align-items-center">
@@ -493,6 +496,7 @@
                             </form>
                         </div>
                     </div>
+
                     <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -501,7 +505,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
-                                    
+
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                     <th>Nổi bật</th>
