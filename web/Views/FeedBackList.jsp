@@ -27,6 +27,9 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
         <style>
             .container-xl{
                 width: 1400px;
@@ -297,7 +300,7 @@
             .filter-container .btn {
                 margin-top: 24px;
             }
-            
+
         </style>
         <script>
             $(document).ready(function () {
@@ -323,7 +326,14 @@
                     }
                 });
             });
-
+            $(document).ready(function () {
+                $('.table').DataTable({
+                    "paging": true,
+                    "searching": false,
+                    "ordering": true,
+                    "info": false
+                });
+            });
         </script>
     </head>
     <body>
@@ -369,11 +379,11 @@
                                             <span class="input-group-text">Sản phẩm: </span>
                                         </div>
                                         <select id="product-filter" name="proid" class="form-control">
-                                        <option value="all">tất cả</option>
-                                        <c:forEach items="${requestScope.product}" var="p">
-                                            <option value="${p.productID}">${p.product_name}</option>
-                                        </c:forEach>
-                                    </select>
+                                            <option value="all">tất cả</option>
+                                            <c:forEach items="${requestScope.product}" var="p">
+                                                <option value="${p.productID}">${p.product_name}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -399,7 +409,7 @@
                                         <select class="custom-select" id="status" name="status">
                                             <option value="all">Tất cả</option>
                                             <option value="0">Ẩn </option>
-                                        <option value="1">Hiện</option>
+                                            <option value="1">Hiện</option>
                                         </select>
                                     </div>
                                 </div>
@@ -408,14 +418,13 @@
                                 <div class="col-md-3" >
                                     <input type="submit" value="Lọc" class="btn btn-primary" style="margin-top: 0px">
                                 </div>
-                                
+
                             </div>
                         </form>
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Tên người dùng</th>
-                                    
+                                    <th style="width: 100px">Tên người dùng</th>
                                     <th>Tên sản phẩm</th>
                                     <th>Đánh giá sao</th>
                                     <th>Trạng thái</th>
@@ -485,7 +494,7 @@
                     </div>
                 </div>
             </div>
-           
+
 
             <!-- Delete Modal HTML -->
             <div id="deleteEmployeeModal" class="modal fade">

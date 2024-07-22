@@ -43,11 +43,11 @@
             }
         </style>
         <style>
-    .unavailable {
-        text-decoration: line-through;
-        opacity: 0.5;
-    }
-</style>
+            .unavailable {
+                text-decoration: line-through;
+                opacity: 0.5;
+            }
+        </style>
         <!-- Customized Bootstrap Stylesheet -->
         <link href="css/style.css" rel="stylesheet">
     </head>
@@ -57,7 +57,7 @@
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Cửa hàng</span>Sách</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
@@ -123,7 +123,7 @@
                                 <div class="nav-item dropdown">
                                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
+                                        <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
                                 <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
@@ -133,15 +133,15 @@
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                          <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <div class="dropdown-menu ml-auto py-0">
-                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
-                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                        <div class="nav-item dropdown">
+                                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <div class="dropdown-menu ml-auto py-0">
+                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                            </div>
+                                            <!--<a href="LogOut">Log out</a>-->
+
                                         </div>
-                                        <!--<a href="LogOut">Log out</a>-->
-                                        
-                                          </div>
                                         <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
 
@@ -181,114 +181,122 @@
 
             <div class="row px-xl-5">
 
-              <div class="col-lg-8 table-responsive mb-5">
-    <table class="table table-bordered text-center mb-0">
-        <thead class="bg-secondary text-dark">
-            <tr>
-                <th></th>
-                <th>Sản Phẩm</th>
-                <th>Giá</th>
-                <th>Số Lượng</th>
-                <th>Kho</th>
-                <th>Tổng</th>
-                <th>Xóa</th>
-            </tr>
-        </thead>
-
-        <tbody class="align-middle">
-
-            <c:forEach items="${requestScope.list}" var="l" varStatus="status">
-                <c:forEach items="${requestScope.quantity}" var="q">
-                    <c:if test="${q.key == l.product.productID}">
-                        <tr class="${q.value == 0 ? 'unavailable' : ''}">
-                            <td class="align-middle">
-                                <c:choose>
-                                    <c:when test="${q.value > 0}">
-                                        <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" checked="">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" disabled>
-                                    </c:otherwise>
-                                </c:choose>
-                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}" class="cartid">
-                            </td>
-                            <td class="align-middle">
-                                <img src="${l.product.thumbnail}" alt="" style="width: 50px;" class="${q.value == 0 ? 'unavailable' : ''}">
-                                <span class="${q.value == 0 ? 'unavailable' : ''}">${l.product.product_name}</span>
-                            </td>
-                            <c:choose>
-                                <c:when test="${l.product.sale_price != 0}">
-                                    <td class="align-middle" id="price-${status.index}">${l.product.sale_price}</td>
-                                </c:when>
-                                <c:otherwise>
-                                    <td class="align-middle" id="price-${status.index}">${l.product.original_price}</td>
-                                </c:otherwise>
-                            </c:choose>
-
-                            <td class="align-middle">
-                                <form class="quantityForm" action="CartDetails" method="post">
-                                    <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                    <input type="hidden" name="pid" value="${l.product.productID}">
-                                    <div class="input-group quantity mx-auto" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name="quantity" max="${q.value}" min="1" ${q.value == 0 ? 'disabled' : ''}>
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>                                
-
-                            <td class="align-middle">
-                                ${q.value}
-                            </td>
-
-                            <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
-                            <c:set var="subtotal" value="${itemPrice * l.quantity}" />
-                            <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
-                            <td class="align-middle" id="total-${status.index}">
-                                ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
-                            </td>
-                            <form action="CartDetails" method="post">
-                                <td class="align-middle" style="opacity: 1.5">
-                                    <button class="btn btn-sm btn-primary" type="submit" name="delete" value="delete" >
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                </td>
-                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
-                                <input type="hidden" name="cartitemid" value="${l.getCarItemID()}">
-                            </form>
-                        </tr>
-                    </c:if>
-                </c:forEach>
-            </c:forEach>
-
-        </tbody>
-    </table>
-</div>
-
-                <div class="col-lg-4">
-
-                    <div class="card border-secondary mb-5">
-                        <div class="card-header bg-secondary border-0">
-                            <h4 class="font-weight-semi-bold m-0">Giỏ Hàng</h4>
-                        </div>                    
-                        <div class="card-footer border-secondary bg-transparent">
-                            <div class="d-flex justify-content-between mt-2">
-                                <h5 class="font-weight-bold">Tổng Giá</h5>
-                                <h5 class="font-weight-bold">$${totalOrderPrice}</h5>
+                <div class="col-lg-8 table-responsive mb-5">
+                    <c:choose>
+                        <c:when test="${empty requestScope.list}">
+                            <div class="alert alert-info" role="alert">
+                                Giỏ hàng của bạn đang trống. Bạn cần thêm sản phẩm vào giỏ hàng.
                             </div>
-                            <button class="btn btn-block btn-primary my-3 py-3" id="proceedToCheckout">Tiến hành thanh toán</button>
-                        </div>
-                    </div>
+                        </c:when>
+                        <c:otherwise>
+                            <table class="table table-bordered text-center mb-0">
+                                <thead class="bg-secondary text-dark">
+                                    <tr>
+                                        <th></th>
+                                        <th>Sản Phẩm</th>
+                                        <th>Giá</th>
+                                        <th>Số Lượng</th>
+                                        <th>Kho</th>
+                                        <th>Tổng</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="align-middle">
+
+                                    <c:forEach items="${requestScope.list}" var="l" varStatus="status">
+                                        <c:forEach items="${requestScope.quantity}" var="q">
+                                            <c:if test="${q.key == l.product.productID}">
+                                                <tr class="${q.value == 0 ? 'unavailable' : ''}">
+                                                    <td class="align-middle">
+                                                        <c:choose>
+                                                            <c:when test="${q.value > 0}">
+                                                                <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" checked="">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <input type="checkbox" name="select-item" value="${l.getCarItemID()}" class="select-item" disabled>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <input type="hidden" name="cartid" value="${l.cart.getCartID()}" class="cartid">
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <img src="${l.product.thumbnail}" alt="" style="width: 50px;" class="${q.value == 0 ? 'unavailable' : ''}">
+                                                        <span class="${q.value == 0 ? 'unavailable' : ''}">${l.product.product_name}</span>
+                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${l.product.sale_price != 0}">
+                                                            <td class="align-middle" id="price-${status.index}">${l.product.sale_price}</td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td class="align-middle" id="price-${status.index}">${l.product.original_price}</td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                    <td class="align-middle">
+                                                        <form class="quantityForm" action="CartDetails" method="post">
+                                                            <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                                            <input type="hidden" name="pid" value="${l.product.productID}">
+                                                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                                                <div class="input-group-btn">
+                                                                    <button class="btn btn-sm btn-primary btn-minus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
+                                                                        <i class="fa fa-minus"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <input type="text" class="form-control form-control-sm bg-secondary text-center quantity-input" id="quantity-${status.index}" value="${l.quantity}" name="quantity" max="${q.value}" min="1" ${q.value == 0 ? 'disabled' : ''}>
+                                                                <div class="input-group-btn">
+                                                                    <button class="btn btn-sm btn-primary btn-plus" data-index="${status.index}" ${q.value == 0 ? 'disabled' : ''}>
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </td>                                
+
+                                                    <td class="align-middle">
+                                                        ${q.value}
+                                                    </td>
+
+                                                    <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
+                                                    <c:set var="subtotal" value="${itemPrice * l.quantity}" />
+                                                    <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
+                                                    <td class="align-middle" id="total-${status.index}">
+                                                        ${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}
+                                                    </td>
+                                            <form action="CartDetails" method="post">
+                                                <td class="align-middle" style="opacity: 1.5">
+                                                    <button class="btn btn-sm btn-primary" type="submit" name="delete" value="delete" >
+                                                        <i class="fa fa-times"></i>
+                                                    </button>
+                                                </td>
+                                                <input type="hidden" name="cartid" value="${l.cart.getCartID()}">
+                                                <input type="hidden" name="cartitemid" value="${l.getCarItemID()}">
+                                            </form>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
+                <div class="col-lg-4">
+                    <c:if test="${not empty requestScope.list}">
+                        <div class="card border-secondary mb-5">
+                            <div class="card-header bg-secondary border-0">
+                                <h4 class="font-weight-semi-bold m-0">Giỏ Hàng</h4>
+                            </div>                    
+                            <div class="card-footer border-secondary bg-transparent">
+                                <div class="d-flex justify-content-between mt-2">
+                                    <h5 class="font-weight-bold">Tổng Giá</h5>
+                                    <h5 class="font-weight-bold">${totalOrderPrice} VND</h5>
+                                </div>
+                                <button class="btn btn-block btn-primary my-3 py-3" id="proceedToCheckout">Tiến hành thanh toán</button>
+                            </div>
+                        </div>
+                    </c:if>
+                </div>
             </div>
         </div>
         <!-- Cart End -->
@@ -411,58 +419,58 @@
         
                 </script>-->
         <script>
-          $(document).ready(function () {
-              $(".quantityForm").submit(function (event) {
-                  // Prevent the form from being submitted in the usual way
-                  event.preventDefault();
+            $(document).ready(function () {
+                $(".quantityForm").submit(function (event) {
+                    // Prevent the form from being submitted in the usual way
+                    event.preventDefault();
 
-                  // Get the quantity input and its max value
-                  var quantityInput = $(this).find(".quantity-input");
-                  var quantity = parseInt(quantityInput.val());
-                  var max = parseInt(quantityInput.attr("max"));
-                  var min = parseInt(quantityInput.attr("min"));
+                    // Get the quantity input and its max value
+                    var quantityInput = $(this).find(".quantity-input");
+                    var quantity = parseInt(quantityInput.val());
+                    var max = parseInt(quantityInput.attr("max"));
+                    var min = parseInt(quantityInput.attr("min"));
 
-                  // Validate the quantity
-                  if (quantity > max) {
-                      quantityInput.val(max);
-                      quantity = max;
-                  } else if (quantity < min) {
-                      quantityInput.val(min);
-                      quantity = min;
-                  }
+                    // Validate the quantity
+                    if (quantity > max) {
+                        quantityInput.val(max);
+                        quantity = max;
+                    } else if (quantity < min) {
+                        quantityInput.val(min);
+                        quantity = min;
+                    }
 
-                  // Get the data from the form
-                  var formData = $(this).serialize();
+                    // Get the data from the form
+                    var formData = $(this).serialize();
 
-                  // Send the data using AJAX
-                  $.ajax({
-                      url: "CartDetails", // The path to the server that will handle the form
-                      type: "POST",
-                      data: formData,
-                      success: function (response) {
-                          // Handle the server's response (if necessary)
-                          console.log("Form submitted successfully!");
+                    // Send the data using AJAX
+                    $.ajax({
+                        url: "CartDetails", // The path to the server that will handle the form
+                        type: "POST",
+                        data: formData,
+                        success: function (response) {
+                            // Handle the server's response (if necessary)
+                            console.log("Form submitted successfully!");
 
-                          // Update the quantity and total on the page
-                          var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
-                          var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
-                          var price = parseFloat(priceElement.text());
-                          var total = price * quantity;
-                          totalElement.text(total.toFixed(2));
+                            // Update the quantity and total on the page
+                            var totalElement = $("#total-" + quantityInput.attr("id").split("-")[1]);
+                            var priceElement = $("#price-" + quantityInput.attr("id").split("-")[1]);
+                            var price = parseFloat(priceElement.text());
+                            var total = price * quantity;
+                            totalElement.text(total.toFixed(2));
 
-                          // Update the total price displayed on the page
-                          var totalPrice = 0;
-                          $("td[id^='total-']").each(function () {
-                              totalPrice += parseFloat($(this).text());
-                          });
-                          $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
-                      },
-                      error: function () {
-                          console.error("Error when submitting the form!");
-                      }
-                  });
-              });
-          });
+                            // Update the total price displayed on the page
+                            var totalPrice = 0;
+                            $("td[id^='total-']").each(function () {
+                                totalPrice += parseFloat($(this).text());
+                            });
+                            $(".card-footer .d-flex .font-weight-bold").last().text("$" + totalPrice.toFixed(2));
+                        },
+                        error: function () {
+                            console.error("Error when submitting the form!");
+                        }
+                    });
+                });
+            });
         </script>
 
         <script>
@@ -479,7 +487,8 @@
                         cartIDs.push(cartID);
                     }
                 });
-                var url = "CartContact?carItemIDs=" + encodeURIComponent(carItemIDs.join(',')) + "&cartIDs=" + encodeURIComponent(cartIDs.join(','));
+                var url = "CartContact?carItemIDs=" + carItemIDs.map(encodeURIComponent).join(',') +
+                        "&cartIDs=" + cartIDs.map(encodeURIComponent).join(',');
                 window.location.href = url;
             });
         </script>

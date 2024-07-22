@@ -345,6 +345,9 @@
                 </div>
 
             </div>
+            <div class="bbb">
+                <button id="moreBtn" onclick="location.href = 'BlogController'" class="btn btn-primary">Thêm</button>
+            </div>
             <!-- Products End -->
 
 

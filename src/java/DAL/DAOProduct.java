@@ -400,51 +400,50 @@ public class DAOProduct extends DBContext {
 
     public List<Product> getProductbyCategoryandStatus(String name, int status) {
         List<Product> productList = new ArrayList<>();
-        try {
-            String query = "SELECT * \n"
-                    + "FROM \n"
-                    + "    Product p \n"
-                    + "INNER JOIN \n"
-                    + "    CategoryProduct cp \n"
-                    + "ON \n"
-                    + "    p.category_productID = cp.category_productID\n"
-                    + "WHERE \n"
-                    + "    cp.category_name = ? \n"
-                    + "AND \n"
-                    + "    p.status = ?;"
-                    + "ORDER BY p.productID";
+        String query = "SELECT * FROM Product p "
+                + "INNER JOIN CategoryProduct cp "
+                + "ON p.category_productID = cp.category_productID "
+                + "WHERE cp.category_name = ? AND p.status = ? "
+                + "ORDER BY p.productID";
 
-            PreparedStatement stm = conn.prepareStatement(query);
+        try (PreparedStatement stm = conn.prepareStatement(query)) {
             stm.setString(1, name);
             stm.setInt(2, status);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                CategoryProduct cp = new CategoryProduct(rs.getInt("category_productID"),
-                        rs.getString("category_name"),
-                        rs.getString("category_description"),
-                        rs.getString("image"));
-                Product product = new Product(rs.getInt("productID"),
-                        rs.getString("product_name"),
-                        rs.getInt("quantity"),
-                        rs.getInt("year"),
-                        rs.getString("product_description"),
-                        rs.getInt("featured"),
-                        rs.getString("thumbnail"),
-                        rs.getString("brief_information"),
-                        rs.getFloat("original_price"),
-                        rs.getFloat("sale_price"),
-                        cp,
-                        rs.getString("brand"),
-                        rs.getDate("update_date"),
-                        rs.getBoolean("status"), 0);
-                productList.add(product);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    CategoryProduct cp = new CategoryProduct(
+                            rs.getInt("category_productID"),
+                            rs.getString("category_name"),
+                            rs.getString("category_description"),
+                            rs.getString("image")
+                    );
+                    Product product = new Product(
+                            rs.getInt("productID"),
+                            rs.getString("product_name"),
+                            rs.getInt("quantity"),
+                            rs.getInt("year"),
+                            rs.getString("product_description"),
+                            rs.getInt("featured"),
+                            rs.getString("thumbnail"),
+                            rs.getString("brief_information"),
+                            rs.getFloat("original_price"),
+                            rs.getFloat("sale_price"),
+                            cp,
+                            rs.getString("brand"),
+                            rs.getDate("update_date"),
+                            rs.getBoolean("status"),
+                            0
+                    );
+                    productList.add(product);
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // You can use a logger to log this exception
         }
+
         return productList;
     }
-
     public List<Product> getProductbyStatus(String status) {
         List<Product> productList = new ArrayList<>();
         try {
@@ -1145,19 +1144,7 @@ public class DAOProduct extends DBContext {
 
     public static void main(String[] args) {
         DAOProduct p = new DAOProduct();
-        p.addProduct("History",
-                0,
-                0,
-                0,
-                1,
-                "aaaaa",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                Boolean.TRUE);
+        System.out.println(p.getProductbyCategoryandStatus("Technology", 0));
 
     }
 }

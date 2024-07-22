@@ -15,28 +15,26 @@
 <body style="background-color:white">
     <div class="container mt-5">
         <h1>Add Slider</h1>
-        <form action="SliderServletURL" method="post" enctype="multipart/form-data">
+        <form id="sliderForm" action="SliderServletURL" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" name="title" id="title" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="file">Image:</label>
-                <input type="file" id="file" name="file" class="form-control-file" required>
+                <input type="file" id="file" name="file" class="form-control-file" required accept="image/*">
             </div>
             <div class="form-group">
                 <label for="link">Link:</label>
-                <input type="text" name="link" id="link" class="form-control" required>
+                <input type="url" name="link" id="link" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="notes">Notes:</label>
                 <input type="text" name="notes" id="notes" class="form-control" required>
             </div>
-            
-            
             <div class="form-group">
                 <label for="page_order">Page Order:</label>
-                <input type="number" name="page_order" id="page_order" class="form-control" required>
+                <input type="number" name="page_order" id="page_order" class="form-control" required min="1">
             </div>
             <div class="form-group">
                 <label for="status">Status:</label>
@@ -52,5 +50,54 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.getElementById('sliderForm').addEventListener('submit', function(event) {
+            var title = document.getElementById('title').value.trim();
+            var file = document.getElementById('file').value;
+            var link = document.getElementById('link').value.trim();
+            var notes = document.getElementById('notes').value.trim();
+            var pageOrder = document.getElementById('page_order').value;
+
+            if (title === '') {
+                alert('Please enter a title');
+                event.preventDefault();
+                return;
+            }
+
+            if (file === '') {
+                alert('Please select an image file');
+                event.preventDefault();
+                return;
+            }
+
+            if (link === '' || !isValidURL(link)) {
+                alert('Please enter a valid URL for the link');
+                event.preventDefault();
+                return;
+            }
+
+            if (notes === '') {
+                alert('Please enter notes');
+                event.preventDefault();
+                return;
+            }
+
+            if (pageOrder === '' || parseInt(pageOrder) < 1) {
+                alert('Please enter a valid page order (minimum 1)');
+                event.preventDefault();
+                return;
+            }
+        });
+
+        function isValidURL(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
 </body>
 </html>
