@@ -143,7 +143,7 @@
             $('#customerTable').DataTable({
                 "pageLength": 10,
                 "lengthChange": false,
-                "searching": true,
+                "searching": false,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
