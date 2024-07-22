@@ -150,55 +150,55 @@
             display: flex;
             align-items: center;
         }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
+       .dropbtn {
+    background-color: #fff; /* Button background color */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Pointer cursor on hover */
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Padding inside the button */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Box shadow for button */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
+.dropbtn:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}
 
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between elements */
+}
 
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
+.profile-image {
+    width: 50px !important; /* Adjust the width as needed */
+    height: 50px; /* Ensures the image is a perfect circle */
+    object-fit: cover; /* Ensures the image covers the entire area */
+    border-radius: 80%; /* Makes the image circular */
+    border: 6px solid #fff; /* Adds a thicker white border */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3); /* Adds a more pronounced shadow for better visibility */
+}
 
-        .dropdown:hover .dropbtn {
-            background-color: #3e8e41;
-        }
+.user-info h5 {
+    margin: 0;
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #333; /* Adjust the text color as needed */
+}
 
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
+.user-info i {
+    margin-left: 5px; /* Adjust the spacing as needed */
+    font-size: 14px; /* Adjust the icon size as needed */
+    color: #333; /* Adjust the icon color as needed */
+}
 
-        .avatar img {
-            width: 40px; /* Adjust size as necessary */
-            height: auto;
-            border-radius: 50%;
-        }
-
-        .user-info h5 {
-            margin-left: 10px;
-            margin-bottom: 0;
-        }
     </style>
     <body>
         <header class="header">
@@ -207,7 +207,7 @@
                     <button class="dropbtn">
                         <div class="user-info">
                             <div class="avatar">
-                                <img style="width: 100px" src="${sessionScope.user.image}" alt="Ảnh" class="w-px-40 h-auto rounded-circle">
+<img style="width: 100px" src="${sessionScope.user.image}" alt="Ảnh" class="profile-image">
                             </div>
                             <h5>${sessionScope.username}</h5>
                             <i class="fa fa-caret-down"></i>

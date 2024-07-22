@@ -134,7 +134,7 @@
                                 <h4 class="text-right">Trang cá nhân</h4>
                             </div>
                             <div class="row mt-2">
-                                <div class="col-md-12"><label class="labels">ID</label><input type="text" class="form-control" name="UserID" value="<%=obj.getUserID()%>"readonly></div>
+                                <div class="col-md-12"><label class="labels">ID</label><input type="text" class="form-control" name="UserID" value="<%=obj.getStaffID()%>"readonly></div>
 
                             </div>
                             <div class="row mt-2">
@@ -184,12 +184,7 @@
 
                                 <input type="hidden" name="service" value="editProfileUser">
                             </div>
-                            <div class="col-md-12"><label class="labels">Answer</label><input type="text" class="form-control" name="securityAnswer" value="<%=obj.getSecurityAnswer()%>"></div>
-                        </div>
-                        <div class="mt-5 text-center">
-                            <input type="submit" name="submit" value="Save">
-                            <input type="hidden" name="service" value="editProfileUser">
-                        </div>
+                         
                     </div>
                 </div>
             </div>
