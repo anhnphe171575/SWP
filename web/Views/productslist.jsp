@@ -426,22 +426,8 @@
                                 <div class="col-sm-6">
                                     <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                                     <c:if test="${sessionScope.role.getRoleID() == 1}">
-                <div class="table-title">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
-                                    </div>
-                                    <div style="text-align: right" class="col-sm-3">
-                                        <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
-                                            <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
-                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
-                                            <input type="submit" name="submit" value="Tìm">
-                                            <input type="hidden" name="service" value="search">                                                                      
-                                        </form>                    
-                                    </div>
-                                    <div class="col-sm-6">
-                                    <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
+
                                     </c:if>
                                 </div>
                             </div>
@@ -458,6 +444,7 @@
                                 </c:if>
                             </div>
                         </div>
+
                         <div class="container" >
                             <form action="productslist" method="post">
                                 <div class="filter-container d-flex flex-wrap align-items-center">
@@ -494,6 +481,7 @@
                             </form>
                         </div>
                     </div>
+
                     <c:if test="${sessionScope.user.getRole().getRoleID() != 4}">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -502,7 +490,7 @@
                                     <th>Tên</th>
                                     <th>Ảnh</th>
                                     <th>Số lượng</th>
-                                    
+
                                     <th>Giá</th>
                                     <th>Giá đã giảm</th>
                                     <th>Nổi bật</th>
