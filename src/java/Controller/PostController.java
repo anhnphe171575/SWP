@@ -41,9 +41,7 @@ import java.util.logging.Logger;
 @MultipartConfig
 public class PostController extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\admin\\Downloads\\20t6\\SWP\\web\\imgPost";
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -95,24 +93,24 @@ public class PostController extends HttpServlet {
                 + "                inner join [Role] r on r.RoleID = u.RoleID");
         Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
         Vector<Integer> vec4 = daoP.getStatus("select status from Post group by status");
-        int page = 0;
-        int numberOfPage = 6;
-        String xpage = request.getParameter("page");
-        int size = vec1.size();
-        int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
-        if (xpage == null) {
-            page = 1;
-        } else {
-            page = Integer.parseInt(xpage);
-        }
-        int start, end;
-        start = (page - 1) * numberOfPage;
-        end = Math.min(page * numberOfPage, vec1.size());
-        Vector<Post> list = daoP.getListByPage(vec1, start, end);
-        request.setAttribute("post", list);
-        request.setAttribute("numpage", num);
-        request.setAttribute("page", page);
-        request.setAttribute("numberOfPage", numberOfPage);
+//        int page = 0;
+//        int numberOfPage = 6;
+//        String xpage = request.getParameter("page");
+//        int size = vec1.size();
+//        int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
+//        if (xpage == null) {
+//            page = 1;
+//        } else {
+//            page = Integer.parseInt(xpage);
+//        }
+//        int start, end;
+//        start = (page - 1) * numberOfPage;
+//        end = Math.min(page * numberOfPage, vec1.size());
+//        Vector<Post> list = daoP.getListByPage(vec1, start, end);
+        request.setAttribute("post", vec1);
+//        request.setAttribute("numpage", num);
+//        request.setAttribute("page", page);
+//        request.setAttribute("numberOfPage", numberOfPage);
         request.setAttribute("status", vec4);
         request.setAttribute("category", vec2);
         request.setAttribute("user", vec3);

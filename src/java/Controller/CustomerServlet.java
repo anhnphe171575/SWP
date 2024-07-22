@@ -189,6 +189,25 @@ public class CustomerServlet extends HttpServlet {
                 String lname = request.getParameter("last_name");
                 vector = dao.getCustomer("select c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer, c.image from Customer c inner join SecurityQuestion sq on c.securityID = sq.securityID where c.first_name like '%" + fname + "%'");
             }
+//            int page = 0;
+//        int numberOfPage = 6;
+//        String xpage = request.getParameter("page");
+//        int size = vector.size();
+//        int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
+//        if (xpage == null) {
+//            page = 1;
+//        } else {
+//            page = Integer.parseInt(xpage);
+//        }
+//        int start, end;
+//        start = (page - 1) * numberOfPage;
+//        end = Math.min(page * numberOfPage, vector.size());
+//        Vector<Customer> list = dao.getListByPage(vector, start, end);
+//        request.setAttribute("post", list);
+//        request.setAttribute("numpage", num);
+//        request.setAttribute("page", page);
+//        request.setAttribute("numberOfPage", numberOfPage);
+        
         
         Vector<Integer> vec4 = dao.getStatus("select status from Customer group by status");
         Vector<String> vec2 = dao.getFname("select first_name from Customer group by first_name");
