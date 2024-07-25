@@ -292,29 +292,29 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-2">
-                            <h2>My Order <b>Details</b></h2>
+                            <h2>Chi tiết đơn hàng</h2>
                         </div>
                     </div>
                 </div>
 
                 <!-- Basic Order Information -->
                 <div class="card">
-                    <div class="card-header">Basic Order Information</div>
+                    <div class="card-header">Thông tin</div>
                     <div class="card-body">
                         <div class="row">
                         <c:forEach items="${requestScope.list1}" var="item">
                             <div class="col-md-6">
-                                <p><strong>Order ID:</strong> ${item.order.orderID}</p>
-                                <p><strong>Customer Name:</strong> ${item.order.customer.first_name} ${item.order.customer.last_name}</p>
+                                <p><strong>ID:</strong> ${item.order.orderID}</p>
+                                <p><strong>Tên khách hàng:</strong> ${item.order.customer.first_name} ${item.order.customer.last_name}</p>
                                 <p><strong>Email:</strong> ${item.order.customer.email}</p>
-                                <p><strong>Phone:</strong> ${item.order.customer.phone}</p>
+                                <p><strong>Số điện thoại:</strong> ${item.order.customer.phone}</p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Order Date:</strong> ${item.order.order_date}</p>
-                                <p><strong>Total Cost:</strong> ${item.list_price}</p>
-                                <p><strong>Sale Name:</strong> ${item.order.staff.first_name} ${item.order.staff.last_name}</p>
-                                <p><strong>Status:</strong> ${item.order.status.status_name}</p>
-                                <p><strong>Payment Method:</strong> ${item.order.getPaymentMethod()}
+                                <p><strong>Ngày đặt:</strong> ${item.order.order_date}</p>
+                                <p><strong>Tổng tiền:</strong> ${item.list_price}</p>
+                                <p><strong>Người bán:</strong> ${item.order.staff.first_name} ${item.order.staff.last_name}</p>
+                                <p><strong>Trạng thái:</strong> ${item.order.status.status_name}</p>
+                                <p><strong>Phương thức thanh toán:</strong> ${item.order.getPaymentMethod()}
 
                                     <c:set value="${item.order.getPaymentMethod()}" var="Payment"></c:set>
                                     <c:set value="${item.order.status.status_orderid}" var="statusid"></c:set>
@@ -328,12 +328,12 @@
 
             <!-- Receiver Information -->
             <div class="card">
-                <div class="card-header">Receiver Information</div>
+                <div class="card-header">Địa chỉ nhận hàng</div>
                 <div class="card-body">
                     <c:forEach items="${requestScope.list2}" var="item">
-                        <p><strong>Full Name:</strong> ${item.receivers.getReceiverFullName()}</p>
-                        <p><strong>Mobile:</strong> ${item.receivers.getReceiverMobile()}</p>
-                        <p><strong>Address:</strong> ${item.receivers.getReceiverAddress()}</p>
+                        <p><strong>Tên người nhận:</strong> ${item.receivers.getReceiverFullName()}</p>
+                        <p><strong>Số điện thoại:</strong> ${item.receivers.getReceiverMobile()}</p>
+                        <p><strong>Địa chỉ:</strong> ${item.receivers.getReceiverAddress()}</p>
                     </c:forEach>
                     <c:if test="${Payment == 'delivery' && statusid == 1}">
 
@@ -343,19 +343,19 @@
 
             <!-- List of Ordered Products -->
             <div class="card">
-                <div class="card-header">Ordered Products</div>
+                <div class="card-header">Đơn hàng</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Thumbnail</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Sale Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total Cost</th>
-                                    <th>Re-buy</th>
+                                    <th>Ảnh</th>
+                                    <th>Sản phẩm </th>
+                                    <th>Thể loại</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Mua lại</th>
                                 </tr>
                             </thead>
                             <tbody>

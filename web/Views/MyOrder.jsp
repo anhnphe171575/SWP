@@ -381,12 +381,12 @@
                         <div class="table-title">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <h2>My <b>Order</b></h2>
+                                    <h2>Đơn hàng</h2>
                                 </div>
                                 <div class="col-sm-6 text-right">
                                     <form name="searchForm" action="MyOrderURL" method="post" onsubmit="return validateForm();">
-                                        <input type="text" name="id" placeholder="OrderID">
-                                        <input type="text" name="product_name" placeholder="Product Name">
+                                        <input type="text" name="id" placeholder="ID">
+                                        <input type="text" name="product_name" placeholder="Sản phẩm">
                                         <input type="submit" name="service" value="search">
                                         <input type="hidden" name="status1" value="${requestScope.status1}">
                                     <input type="hidden" name="customerid" value="${requestScope.customerid}">
@@ -426,13 +426,13 @@
                      <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Ordered Date</th>
-                                <th>First Product Name</th>
-                                <th>Number of All Products</th>
-                                <th>Total Cost</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>ID</th>
+                                <th>Ngày tạo</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Tổng giá</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
