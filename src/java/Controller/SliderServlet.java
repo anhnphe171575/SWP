@@ -78,6 +78,8 @@ public class SliderServlet extends HttpServlet {
         }
         if (service.equals("addSlider")) {
             String submit = request.getParameter("submit");
+                        System.out.println(submit);
+
             if (submit == null) {
                 DAOStaff daoo = new DAOStaff();
                 request.setAttribute("Staff", daoo.getStaff("select * from Staff"));

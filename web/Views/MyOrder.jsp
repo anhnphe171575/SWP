@@ -381,12 +381,12 @@
                         <div class="table-title">
                             <div class="row">
                                 <div class="col-sm-2">
-                                    <h2>My <b>Order</b></h2>
+                                    <h2>Đơn hàng</h2>
                                 </div>
                                 <div class="col-sm-6 text-right">
                                     <form name="searchForm" action="MyOrderURL" method="post" onsubmit="return validateForm();">
-                                        <input type="text" name="id" placeholder="OrderID">
-                                        <input type="text" name="product_name" placeholder="Product Name">
+                                        <input type="text" name="id" placeholder="ID">
+                                        <input type="text" name="product_name" placeholder="Sản phẩm">
                                         <input type="submit" name="service" value="search">
                                         <input type="hidden" name="status1" value="${requestScope.status1}">
                                     <input type="hidden" name="customerid" value="${requestScope.customerid}">
@@ -423,21 +423,16 @@
                             </div>
                         </form>
                     </div>
-                    <table class="table table-striped table-hover">
+                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Ordered Date</th>
-                                <th>First Product Name</th>
-                                <th>Number of All Products</th>
-                                <th>Total Cost</th>
-                                <th>Status</th>
-                                    <c:if test="${requestScope.status1 == 8}">
-                                    <th>Pay</th>
-                                    </c:if>
-                                    <c:if test="${requestScope.status1 == 6}">
-                                    <th>FeedBack</th>
-                                    </c:if>
+                                <th>ID</th>
+                                <th>Ngày tạo</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Tổng giá</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -449,37 +444,45 @@
                                     <td>${quantityOrder[item.order.orderID]}</td>
                                     <td><fmt:formatNumber value="${item.list_price}"/></td>   
                                     <td>${item.order.status.status_name}</td>
-                                    <c:if test="${requestScope.status1 == 8}">
-                                        <td><button onclick="location.href = 'PayAgain?total=${item.list_price}&orderid=${item.order.orderID}'">Pay Again</button></td>
-                                    </c:if>
-                                    <c:if test="${requestScope.status1 == 6}">
-                                        <td>                
-                                            <c:set var="hasFeedbackProducts" value="false" />
-                                            <c:forEach items="${item.product.product_name.split(',')}" var="product" varStatus="pStatus">
-                                                <c:set var="productId" value="${item.product.product_description.split(',')[pStatus.index]}" />
-                                                <c:set var="hasFeedback" value="false" />
-                                                <c:forEach items="${requestScope.feedback}" var="fb">
-                                                    <c:if test="${fb.product.productID == productId && fb.order.orderID == item.order.orderID}">
-                                                        <c:set var="hasFeedback" value="true" />
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${item.order.status.status_orderid == 6}">
+                                                <!-- Feedback button for Success status -->
+                                                <c:set var="hasFeedbackProducts" value="false" />
+                                                <c:forEach items="${item.product.product_name.split(',')}" var="product" varStatus="pStatus">
+                                                    <c:set var="productId" value="${item.product.product_description.split(',')[pStatus.index]}" />
+                                                    <c:set var="hasFeedback" value="false" />
+                                                    <c:forEach items="${requestScope.feedback}" var="fb">
+                                                        <c:if test="${fb.product.productID == productId && fb.order.orderID == item.order.orderID}">
+                                                            <c:set var="hasFeedback" value="true" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <c:if test="${!hasFeedback}">
+                                                        <c:set var="hasFeedbackProducts" value="true" />
                                                     </c:if>
                                                 </c:forEach>
-                                                <c:if test="${!hasFeedback}">
-                                                    <c:set var="hasFeedbackProducts" value="true" />
-                                                </c:if>
-                                            </c:forEach>
 
-                                            <c:choose>
-                                                <c:when test="${hasFeedbackProducts}">
-                                                    <a href="#Add" class="btn btn-success" data-toggle="modal" data-orderid="${item.order.orderID}" data-products="${item.product.product_name}" data-descriptions="${item.product.product_description}">
-                                                        <i class="material-icons">&#xE147;</i> <span>FeedBack</span>
-                                                    </a>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="text-muted">All products reviewed</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </c:if>
+                                                <c:choose>
+                                                    <c:when test="${hasFeedbackProducts}">
+                                                        <a href="#Add" class="btn btn-success" data-toggle="modal" data-orderid="${item.order.orderID}" data-products="${item.product.product_name}" data-descriptions="${item.product.product_description}">
+                                                            <i class="material-icons">&#xE147;</i> <span>FeedBack</span>
+                                                        </a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="text-muted">All products reviewed</span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:when test="${item.order.status.status_orderid == 8}">
+                                                <!-- Pay Again button for Draft status -->
+                                                <button onclick="location.href = 'PayAgain?total=${item.list_price}&orderid=${item.order.orderID}'">Pay Again</button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- No action for other statuses -->
+                                                <span>-</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

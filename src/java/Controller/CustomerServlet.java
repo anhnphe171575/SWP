@@ -89,6 +89,15 @@ public class CustomerServlet extends HttpServlet {
             request.setAttribute("status", vec4);
             request.getRequestDispatcher("/Views/ViewCustomer.jsp").forward(request, response);
         }
+        if (service.equals("checkDuplicateUpdate")) {
+    String field = request.getParameter("field");
+    String value = request.getParameter("value");
+    int customerID = Integer.parseInt(request.getParameter("customerID"));
+    boolean isDuplicate = dao.checkDuplicateUpdate(field, value, customerID);
+    response.setContentType("text/plain");
+    response.getWriter().write(isDuplicate ? "duplicate" : "ok");
+    return;
+}
         if (service.equals("updateCustomer")) {
             String submit = request.getParameter("submit");
             if (submit == null) {
@@ -139,6 +148,17 @@ public class CustomerServlet extends HttpServlet {
             }
         }
 
+        if (service.equals("checkDuplicate")) {
+            String field = request.getParameter("field");
+            String value = request.getParameter("value");
+            boolean isDuplicate = dao.checkDuplicate(field, value);
+            response.setContentType("text/plain");
+            response.getWriter().write(isDuplicate ? "duplicate" : "ok");
+            return;
+        }
+
+        // Existing code...
+
         if (service.equals("addCustomer")) {
             String submit = request.getParameter("submit");
             if (submit == null) {
@@ -146,7 +166,6 @@ public class CustomerServlet extends HttpServlet {
                 request.setAttribute("security", db.getAll("select * from SecurityQuestion"));
                 request.getRequestDispatcher("/Views/addCustomer.jsp").forward(request, response);
             } else {
-
                 String fname = request.getParameter("first_name");
                 String lname = request.getParameter("last_name");
                 String phone = request.getParameter("phone");
@@ -175,8 +194,16 @@ public class CustomerServlet extends HttpServlet {
                 LocalDate localDate = LocalDate.now();
                 Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
                 Customer cus = new Customer(-1, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer, null);
-                dao.insertCustomer(cus);
-                response.sendRedirect("CustomerServletURL");
+                
+                try {
+                    dao.insertCustomer(cus);
+                    response.sendRedirect("CustomerServletURL");
+                } catch (IllegalArgumentException e) {
+                    request.setAttribute("error", e.getMessage());
+                    DAOSecurityQuestion db = new DAOSecurityQuestion();
+                    request.setAttribute("security", db.getAll("select * from SecurityQuestion"));
+                    request.getRequestDispatcher("/Views/addCustomer.jsp").forward(request, response);
+                }
             }
         }
         if (service.equals("listAllCustomer")) {

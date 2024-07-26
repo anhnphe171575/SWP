@@ -24,6 +24,21 @@ import java.time.ZoneId;
  * @author phuan
  */
 public class DAOCustomer extends DBContext {
+     public boolean checkDuplicate(String field, String value) {
+        String sql = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ?";
+        try ( 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, value);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Vector<Customer> getListByPage(Vector<Customer> list, int start, int end) {
         Vector<Customer> arr = new Vector<>();
         for (int i = start; i < end; i++) {
@@ -268,6 +283,22 @@ public class DAOCustomer extends DBContext {
         }
         return c;
     }
+    public boolean checkDuplicateUpdate(String field, String value, int customerID) {
+    String sql = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ? AND customerID != ?";
+    try (
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, value);
+        ps.setInt(2, customerID);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
     public int updateCustomer(Customer obj) {
         int n = 0;
@@ -435,6 +466,11 @@ public class DAOCustomer extends DBContext {
 
    public int insertCustomer(Customer obj) {
         int n = 0;
+        if (checkDuplicate("email", obj.getEmail()) ||
+            checkDuplicate("username", obj.getUsername()) ||
+            checkDuplicate("phone", obj.getPhone())) {
+            throw new IllegalArgumentException("Duplicate email, username, or phone number");
+        }
         String sql = "INSERT INTO [Customer]\n"
                 + "           ([first_name]\n"
                 + "           ,[last_name]\n"

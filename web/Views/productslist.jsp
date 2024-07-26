@@ -59,7 +59,7 @@
             .table-title .btn-group {
                 float: right;
             }
-            .table-title .btn {
+.table-title .btn {
                 color: #fff;
                 float: right;
                 font-size: 13px;
@@ -155,7 +155,7 @@
                 display: inline-block;
                 vertical-align: text-top;
                 background: white;
-                border: 1px solid #bbb;
+border: 1px solid #bbb;
                 border-radius: 2px;
                 box-sizing: border-box;
                 z-index: 2;
@@ -242,7 +242,7 @@
                         type: 'POST',
                         data: {
                             productId: productId,
-                            price: price
+price: price
                         },
                         success: function (response) {
                             $('#editPriceModal').modal('hide');
@@ -311,7 +311,7 @@
                     }
                 });
                 checkbox.click(function () {
-                    if (!this.checked) {
+if (!this.checked) {
                         $("#selectAll").prop("checked", false);
                     }
                 });
@@ -376,8 +376,7 @@
                     });
                 });
                 ;
-
-                function validateForm() {
+function validateForm() {
                     var title = document.forms["searchForm"]["title"].value;
                     var brief = document.forms["searchForm"]["brief"].value;
 
@@ -425,26 +424,11 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
-                <div class="table-title">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
-                                    </div>
-                                    <div style="text-align: right" class="col-sm-3">
-                                        <form name="searchForm" action="productslist" method="post" onsubmit="return validateForm();">
-                                            <div><input type="text" id="searchTitle" name="title" placeholder="Tên"></div>
-                                            <div style="margin: 5px 0px 5px 0px;"><input type="text" id="searchBrief" name="Thông tin tóm tắt" placeholder="Brief Information"></div>                     
-                                            <input type="submit" name="submit" value="Tìm">
-                                            <input type="hidden" name="service" value="search">                                                                      
-                                        </form>                    
-                                    </div>
-                                    <div class="col-sm-6">
-                                    <c:if test="${sessionScope.staff.role.getRoleID() == 1}">
-
+                                    <c:if test="${sessionScope.role.getRoleID() == 1}">
                                         <a href="addp" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm sản phẩm</span></a>
 
                                     </c:if>
-                                </div>
+</div>
                             </div>
                             <div>
                                 <c:if test="${not empty msg}">
@@ -490,7 +474,7 @@
                                     </div>
                                     <input type="hidden" value="filter" name="service">
                                     <div class="col-md-3" >
-                                        <input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
+<input type="submit" value="Filter" class="btn btn-primary" style="margin-top: 0px">
                                     </div>
                                 </div>
                             </form>
@@ -535,7 +519,7 @@
                                             <a title="Edit" onclick="location.href = 'editp?eid=${product.productID}'"><i class="fas fa-edit"></i></a>
                                         </td>
                                     </tr>
-                                </c:forEach>
+</c:forEach>
                             </tbody>
                         </table>
                     </c:if>
@@ -583,7 +567,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Edit Price</h5>
+<h5 class="modal-title">Edit Price</h5>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
@@ -636,7 +620,7 @@
                             <div class="form-group">
                                 <label for="type">Type:</label>
                                 <br/>
-                                <select id="editType" class="form-control">
+<select id="editType" class="form-control">
                                     <option value="in">In</option>
                                     <option value="out">Out</option>
                                     <option value="update">Update</option>
@@ -685,7 +669,7 @@
                                 </div>                                
                                 <!-- Status Filter -->
                                 <div class="form-group">
-                                    <label for="status-select">Status:</label>
+<label for="status-select">Status:</label>
                                     <select id="status-select" class="form-control" name="status">
                                         <option value="3">ALL</option>                                       
                                         <c:forEach items="${requestScope.status}" var="s">
@@ -736,4 +720,4 @@
         </div>
     </div>    
 </body>
-</html>
+</html> 

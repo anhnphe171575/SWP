@@ -47,7 +47,7 @@
                 <button type="submit" class="btn btn-info">Thay đổi</button>
             </form>
             <a href="SecurityQuestion" class="btn btn-secondary">Quay lại menu</a>
-        </div>
+
     </div>
 
     <!-- Include jQuery -->

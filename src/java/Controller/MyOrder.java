@@ -1,5 +1,6 @@
 package Controller;
 
+import DAL.DAOCategoryProduct;
 import DAL.DAOFeedback;
 import DAL.DAOOrder;
 import Entity.OrderItems;
@@ -26,6 +27,7 @@ public class MyOrder extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOOrder d = new DAOOrder();
+        DAOCategoryProduct db2 = new DAOCategoryProduct();
         String customerid = request.getParameter("customerid");
         String status = request.getParameter("status");
         ArrayList<OrderItems> orderItems;
@@ -46,6 +48,7 @@ public class MyOrder extends HttpServlet {
         request.setAttribute("list1", orderItems);
         request.setAttribute("quantityOrder", quantity);
         request.setAttribute("status", st);
+         request.setAttribute("Cate1", db2.getCategoryProductProduct());
 
         // Forward to the JSP
         request.getRequestDispatcher("Views/MyOrder.jsp").forward(request, response);
