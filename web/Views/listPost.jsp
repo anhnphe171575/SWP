@@ -19,7 +19,8 @@
         <link rel="stylesheet" href="./mktcss/styles.css">
         <link rel="stylesheet" href="/qcss/style.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
             body {
                 color: #566787;
@@ -354,7 +355,7 @@ $(document).ready(function() {
                     if (result.isConfirmed) {
                         $('#Add').modal('hide');
                         // Có thể thêm code để refresh danh sách bài viết ở đây
-                        // location.reload();
+                        window.location.href = 'PostController';
                     }
                 });
             },

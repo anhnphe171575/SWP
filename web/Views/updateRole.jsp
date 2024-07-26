@@ -67,22 +67,74 @@
 </head>
 <body>
     <div class="container">
-        <h2>chỉnh sửa vai trò</h2>
-        <form action="editRoleURL" method="post">
+        <h2>Chỉnh sửa vai trò</h2>
+        <form id="editRoleForm" action="editRoleURL" method="post">
             <div class="form-group">
-                <label> ID:</label>
-                <input type="text" name="RoleID" value="${customer.getRoleID()}" required readonly>
+                <label>ID:</label>
+                <input type="text" name="RoleID" value="${customer.getRoleID()}" required readonly class="form-control">
             </div>
 
             <div class="form-group">
                 <label>Vai trò:</label>
-                <input type="hidden" name="status_nameo" value="${customer.getRole_Name()}" class="form-control" required>
+                <input type="hidden" name="status_nameo" value="${customer.getRole_Name()}">
                 <input type="text" name="Role_Name" value="${customer.getRole_Name()}" class="form-control" required>
             </div>
 
-            <input type="submit" name="submit" value="Lưu">
+            <input type="submit" name="submit" value="Lưu" class="btn btn-primary">
             <input type="hidden" name="service" value="updateRole">
         </form>
     </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#editRoleForm').submit(function (e) {
+                e.preventDefault();
+
+                // Validate form
+                if (!this.checkValidity()) {
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                    return;
+                }
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: $(this).attr('action'), // Use the form's action attribute
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: 'Vai trò đã được chỉnh sửa thành công!',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to the specified URL
+                                window.location.href = 'editRoleURL'; // Ensure this is the correct URL
+                            }
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Đã xảy ra lỗi khi chỉnh sửa vai trò!',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -110,8 +110,27 @@ public class editRole extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
+    
+            DAORole dao = new DAORole();
+        DAOSetting db = new DAOSetting();
+        String customerID = request.getParameter("RoleID");
+                String fname = request.getParameter("Role_Name");
+                String fname0 = request.getParameter("status_nameo");
+               int customerid = Integer.parseInt(customerID);
+                String sql = "select * from Role where RoleID=" + customerID;
+                Vector<Role> vector = dao.getRole(sql);
+                if (vector.size() > 0) {
+                     SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+                     LocalDate localDate = LocalDate.now();
+                     Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    Role status = new Role(customerid, fname);
+                    Setting sl = new Setting(-1, "Edit Role",fname0 + "=>"+ fname, date_create_by, 1);
+                    db.addSetting(sl);
+                    dao.updateRole(status);
+                    response.sendRedirect("editRoleURL");
     }
+}
 
     /** 
      * Returns a short description of the servlet.

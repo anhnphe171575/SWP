@@ -655,7 +655,7 @@ public class DAOStaff extends DBContext {
                 + "                u.username,u.password,u.dob,u.gender,u.status,u.RoleID,u.securityID,u.securityID,u.securityAnswer,u.image,\n"
                 + "                r.Role_Name,s.security_question from [Staff] u \n"
                 + "                inner join [Role] r on u.RoleID=r.RoleID\n"
-                + "                inner join SecurityQuestion s on s.securityID=u.securityID where u.username=" + username1 + "'";
+                + "                inner join SecurityQuestion s on s.securityID=u.securityID where u.username='" + username1 + "'";
         try {
             Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -821,8 +821,7 @@ public class DAOStaff extends DBContext {
 
     public static void main(String[] args) {
         DAOStaff dao = new DAOStaff();
-        System.out.println(dao.searchStaffByEmail("phuanhpro11@gmail.com"));
-        System.out.println(dao.searchStaffByFullName("jonh doe"));
-        System.out.println(dao.searchStaffByPhone("123456"));
+        System.out.println(dao.getStaffsByUsername("admin"));
+
     }
 }

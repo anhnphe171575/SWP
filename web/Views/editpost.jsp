@@ -71,7 +71,7 @@
     <body>
         <div class="container">
             <h2>Chỉnh Sửa Bài Viết</h2>
-            <form action="EditPost" method="post" enctype="multipart/form-data">
+    <form id="editPostForm" action="EditPost" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="hidden" name="postID" value="${post.postID}" >
                     <div>Tiêu đề:</div>
@@ -81,22 +81,22 @@
                 <div class="form-group">
                     <div>Ảnh:</div>
                     <img class="" width="300px" src="${post.thumbnail}"> <br/>
-                        <input type="file" name="file" id="file" accept="image/*" > 
-                        
+                    <input type="file" name="file" id="file" accept="image/*" > 
+
                     <input type="hidden" name="existingImage" value="${post.thumbnail}">
 
                 </div>
 
                 <div class="form-group">
-    <div>Thể loại:</div>
-    <select id="category-select" class="form-control" name="category_postID">
-        <c:forEach items="${requestScope.category_product}" var="c">
-            <option value="${c.category_productID}" ${c.category_productID == post.cp.category_postID ? 'selected' : ''}>
-                ${c.category_name}
-            </option>
-        </c:forEach>
-    </select>
-</div>
+                    <div>Thể loại:</div>
+                    <select id="category-select" class="form-control" name="category_postID">
+                        <c:forEach items="${requestScope.category_product}" var="c">
+                            <option value="${c.category_productID}" ${c.category_productID == post.cp.category_postID ? 'selected' : ''}>
+                                ${c.category_name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
 
                 <div class="form-group">
                     <div>Nổi bật</div>
@@ -134,6 +134,51 @@
                 <input type="submit" value="Submit">
             </form>
         </div>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#editPostForm').submit(function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!this.checkValidity()) {
+            e.stopPropagation();
+            $(this).addClass('was-validated');
+            return;
+        }
+        
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: 'EditPost',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: 'Bài viết đã được cập nhật thành công!',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    window.location.href = 'PostController';
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Đã xảy ra lỗi khi cập nhật bài viết!',
+                    confirmButtonText: 'OK'
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
+});
+</script>
     </body>
 </html>
 

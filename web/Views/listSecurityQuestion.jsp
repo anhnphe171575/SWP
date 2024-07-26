@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Security Question</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet"
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -278,29 +280,80 @@
         </div>
 
         <!-- Add Modal HTML -->
-        <div id="Add" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="SecurityQuestion" method="post">
-                        <div class="modal-header">                      
-                            <h4 class="modal-title">Câu hỏi mới</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">                    
-                            <div class="form-group">
-                                <label>Câu hỏi:</label>
-                                <input type="text" class="form-control" name="security_question" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-info" value="OK">
-                            <input type="hidden" name="service" value="add">
-                        </div>
-                    </form>
+<div id="Add" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editQuestionForm" action="SecurityQuestion" method="post">
+                <div class="modal-header">                      
+                    <h4 class="modal-title">Câu hỏi mới</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-            </div>
+                <div class="modal-body">                    
+                    <div class="form-group">
+                        <label for="security_question">Câu hỏi:</label>
+                        <input type="text" class="form-control" id="security_question" name="security_question" required>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-info">OK</button>
+                    <input type="hidden" name="service" value="add">
+                </div>
+            </form>
         </div>
+    </div>
+</div>
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include Bootstrap and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#editQuestionForm').submit(function(e) {
+            e.preventDefault();
+
+            // Validate form
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                $(this).addClass('was-validated');
+                return;
+            }
+
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url: $(this).attr('action'), // Use the form's action attribute
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Câu hỏi đã được chỉnh sửa thành công!',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'SecurityQuestion';
+                        }
+                    });
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Đã xảy ra lỗi khi chỉnh sửa câu hỏi!',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        });
+    });
+    </script>
 
         <!-- Edit Modal HTML -->
         <div id="Edit" class="modal fade">

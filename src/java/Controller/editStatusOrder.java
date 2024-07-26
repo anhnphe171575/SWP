@@ -111,9 +111,26 @@ public class editStatusOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
-    }
+                DAOSetting db = new DAOSetting();
+            DAOStatusOrder dao = new DAOStatusOrder();
+String customerID = request.getParameter("status_orderid");
+                String fname = request.getParameter("status_name");
+                   String oname = request.getParameter("status_nameo");
 
+               int customerid = Integer.parseInt(customerID);
+                String sql = "select * from Status_Order where Status_OrderID=" + customerID;
+                Vector<StatusOrder> vector = dao.getStatus(sql);
+                if (vector.size() > 0) {
+                     SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+                     LocalDate localDate = LocalDate.now();
+                     Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    StatusOrder status = new StatusOrder(customerid, fname);
+                            Setting sl = new Setting(-1, "Edit Status Order",oname + "=>"+ fname, date_create_by, 1);
+                    db.addSetting(sl);
+                    dao.updateStatus(status);
+                    response.sendRedirect("editStatusOrderURL");    
+                }
+    }
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
