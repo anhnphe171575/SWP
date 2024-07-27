@@ -18,6 +18,8 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import Entity.Slider;
 import java.time.ZoneId;
 import Entity.Staff;
@@ -57,14 +59,40 @@ public class SliderServlet extends HttpServlet {
         if (service.equals("viewDetailsSlider")) {
             String submit = request.getParameter("submit");
             Vector<Slider> vector = null;
-            if (submit == null) {
-                request.setAttribute("sliderDetail", dao.getBySliderID(Integer.parseInt(request.getParameter("sliderid"))));
-                request.setAttribute("list", vector);
-                //request.setAttribute("viewDetailsSlider", vector);
-                request.getRequestDispatcher("/Views/ViewDetailsSlider.jsp").forward(request, response);
+
+            try {
+                if (submit == null) {
+                    // Retrieve the slider details
+                    int sliderId = Integer.parseInt(request.getParameter("sliderid"));
+                    Slider sliderDetail = dao.getBySliderID(sliderId);
+
+                    if (sliderDetail != null) {
+                        request.setAttribute("sliderDetail", sliderDetail);
+                    } else {
+                        // Handle the case where no slider was found
+                        request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
+                    }
+
+                    request.setAttribute("list", vector);
+                    // Forward to the JSP page
+                    request.getRequestDispatcher("/Views/ViewDetailsSlider.jsp").forward(request, response);
+                }
+            } catch (NumberFormatException e) {
+
+                if (submit == null) {
+                    vector = dao.getSlider("select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                            + "inner join Staff us on us.StaffID = s.StaffID");
+                } else {
+                    String title = request.getParameter("title");
+                    vector = dao.getSlider("select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                            + "inner join Staff us on us.StaffID = s.StaffID where title like'%" + title + "%'");
+                }
+
+                request.setAttribute("listAllSlider", vector);
+                request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
+
             }
-        }
-        if (service.equals("status")) {
+        } else if (service.equals("status")) {
             String slideridd = request.getParameter("sliderID");
             String statuss = request.getParameter("status");
             try {
@@ -75,10 +103,9 @@ public class SliderServlet extends HttpServlet {
             } catch (Exception e) {
 
             }
-        }
-        if (service.equals("addSlider")) {
+        } else if (service.equals("addSlider")) {
             String submit = request.getParameter("submit");
-                        System.out.println(submit);
+            System.out.println(submit);
 
             if (submit == null) {
                 DAOStaff daoo = new DAOStaff();
@@ -126,8 +153,7 @@ public class SliderServlet extends HttpServlet {
                 String image2 = request.getParameter("image");
                 String link2 = request.getParameter("link");
                 String status2 = request.getParameter("status");
-               
-                
+
                 String username = (String) session.getAttribute("username");
                 Staff u = daoU.getStaffByLogin(username);
                 String note2 = request.getParameter("notes");
@@ -137,13 +163,12 @@ public class SliderServlet extends HttpServlet {
 
                 int status3 = Integer.parseInt(status2);
                 int pagrorder = Integer.parseInt(page_order);
-                
+
                 Slider sl = new Slider(-1, title2, fileUrl, link2, status3, note2, u, pagrorder, sliderdatecreateby);
                 dao.addSlider(sl);
                 response.sendRedirect("SliderServletURL");
             }
-        }
-        if (service.equals("filter")) {
+        } else if (service.equals("filter")) {
             String statusno = request.getParameter("status");
             int statuss = Integer.parseInt(statusno);
             Vector<Slider> list = new Vector<>();
@@ -156,83 +181,82 @@ public class SliderServlet extends HttpServlet {
             }
             request.setAttribute("listAllSlider", list);
             request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
-        }
-        if (service.equals("updateSlider")) {
+        } else if (service.equals("updateSlider")) {
             String submit = request.getParameter("submit");
+             Vector<Slider> vector = null;
             DAOSlider db = new DAOSlider();
+
             if (submit == null) {
-                int id_raw = 0;
                 try {
+                    int id_raw = 0;
                     String id = request.getParameter("sliderid");
                     id_raw = Integer.parseInt(id);
-
+                    request.setAttribute("Slider", db.getBySliderID(id_raw));
+                    request.getRequestDispatcher("/Views/EditSlider.jsp").forward(request, response);
                 } catch (Exception e) {
-                    request.getRequestDispatcher("SliderServletURL").forward(request, response);
+                    Logger.getLogger(CustomerServlet.class.getName()).log(Level.SEVERE, null, e);
+                    request.setAttribute("error", "Unable to load slider details.");
+                     vector = dao.getSlider("select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                            + "inner join Staff us on us.StaffID = s.StaffID");
+                     request.setAttribute("listAllSlider", vector);
+                    request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
                 }
-                request.setAttribute("Slider", db.getBySliderID(id_raw));
-                request.getRequestDispatcher("/Views/EditSlider.jsp").forward(request, response);
             } else {
-                String applicationPath = request.getServletContext().getRealPath("");
-                // Construct the path for the upload directory
-                String uploadFilePath = applicationPath + File.separator + "img";
+                try {
+                    String applicationPath = request.getServletContext().getRealPath("");
+                    String uploadFilePath = applicationPath + File.separator + "img";
 
-                // Create the upload directory if it doesn't exist
-                File fileSaveDir = new File(uploadFilePath);
-                if (!fileSaveDir.exists()) {
-                    fileSaveDir.mkdirs();
-                }
+                    File fileSaveDir = new File(uploadFilePath);
+                    if (!fileSaveDir.exists()) {
+                        fileSaveDir.mkdirs();
+                    }
 
-                // Get the file part from the request
-                Part filePart = request.getPart("file");
-                String originalFileName = "";
-                String fileUrl = "";
+                    Part filePart = request.getPart("file");
+                    String originalFileName = "";
+                    String fileUrl = "";
 
-                if (filePart != null && filePart.getSize() > 0) {
-                    // Get the original file name
-                    originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                    if (filePart != null && filePart.getSize() > 0) {
+                        originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+                        String newFileName = "user_" + System.currentTimeMillis() + fileExtension;
+                        File file = new File(uploadFilePath, newFileName);
+                        filePart.write(file.getAbsolutePath());
+                        fileUrl = "img" + File.separator + newFileName;
+                    } else {
+                        fileUrl = request.getParameter("existingImage");
+                    }
 
-                    // Create a new file name
-                    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-                    String newFileName = "user_" + System.currentTimeMillis() + fileExtension;
+                    String sliderid2 = request.getParameter("sliderID");
+                    String title2 = request.getParameter("title");
+                    String link2 = request.getParameter("link");
+                    String status2 = request.getParameter("status");
+                    String note2 = request.getParameter("notes");
+                    String page_order = request.getParameter("page_order");
 
-                    // Create a file path
-                    File file = new File(uploadFilePath, newFileName);
+                    LocalDate localDate = LocalDate.now();
+                    Date sliderdatecreateby = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-                    // Write the file to the specified directory
-                    filePart.write(file.getAbsolutePath());
+                    int sliderid11 = Integer.parseInt(sliderid2);
+                    int status3 = Integer.parseInt(status2);
+                    int pagrorder = Integer.parseInt(page_order);
+                    String sql = "select * from slider where sliderID=" + sliderid2;
+                     vector = dao.getSlider(sql);
 
-                    // Construct the file URL relative to the web application
-                    fileUrl = "img" + File.separator + newFileName;
-                } else {
-                    // If no new file is uploaded, use the existing image URL
-                    fileUrl = request.getParameter("existingImage");
-                }
-                String sliderid2 = request.getParameter("sliderID");
-                String title2 = request.getParameter("title");
-                String image2 = request.getParameter("image");
-                String link2 = request.getParameter("link");
-                String status2 = request.getParameter("status");
-                String note2 = request.getParameter("notes");
-                String page_order = request.getParameter("page_order");
-                LocalDate localDate = LocalDate.now();
-                Date sliderdatecreateby = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-                int sliderid11 = Integer.parseInt(sliderid2);
-                int status3 = Integer.parseInt(status2);
-                int pagrorder = Integer.parseInt(page_order);
-                String sql = "select * from slider where sliderID=" + sliderid2;
-                Vector<Slider> vector = dao.getSlider(sql);
-                if (vector.size() > 0) {
-                    Slider sl = new Slider(sliderid11, title2, fileUrl, link2, status3, note2, null, pagrorder, sliderdatecreateby);
-                    dao.updateSlider(sl);
-                    response.sendRedirect("SliderServletURL");
-                } else {
-                    request.setAttribute("error", "error");
+                    if (vector.size() > 0) {
+                        Slider sl = new Slider(sliderid11, title2, fileUrl, link2, status3, note2, null, pagrorder, sliderdatecreateby);
+                        dao.updateSlider(sl);
+                        response.sendRedirect("SliderServletURL");
+                    } else {
+                        request.setAttribute("error", "Slider not found.");
+                        request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
+                    }
+                } catch (Exception e) {
+                    Logger.getLogger(CustomerServlet.class.getName()).log(Level.SEVERE, null, e);
+                    request.setAttribute("error", "An error occurred while updating the slider.");
                     request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
                 }
             }
-        }
-        if (service.equals(
+        } else if (service.equals(
                 "listAllSlider")) {
             String submit = request.getParameter("submit");
             Vector<Slider> vector = null;
@@ -247,6 +271,21 @@ public class SliderServlet extends HttpServlet {
 
             request.setAttribute("listAllSlider", vector);
             request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
+        } else {
+            String submit = request.getParameter("submit");
+            Vector<Slider> vector = null;
+            if (submit == null) {
+                vector = dao.getSlider("select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                        + "inner join Staff us on us.StaffID = s.StaffID");
+            } else {
+                String title = request.getParameter("title");
+                vector = dao.getSlider("select s.sliderID, s.title, s.image, s.link, s.status, s.notes, s.page_order, s.slider_date_createby, us.StaffID from Slider s\n"
+                        + "inner join Staff us on us.StaffID = s.StaffID where title like'%" + title + "%'");
+            }
+
+            request.setAttribute("listAllSlider", vector);
+            request.getRequestDispatcher("/Views/SliderList.jsp").forward(request, response);
+
         }
     }
 

@@ -20,6 +20,60 @@ import java.util.logging.Level;
  * @author phuan
  */
 public class DAOCategoryProduct extends DBContext{
+    public boolean isCategoryNameDuplicate(String categoryName) {
+        boolean isDuplicate = false;
+        String sql = "SELECT COUNT(*) FROM CategoryProduct WHERE category_name = ?";
+        try (
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, categoryName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    isDuplicate = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isDuplicate;
+    }
+    
+    public int updateCategory(CategoryProduct obj) {
+        int n = 0;
+        String sql = "UPDATE [dbo].[CategoryProduct] SET [category_name] = ? ,[category_description] = ?, [image] = ? WHERE category_productID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getCategory_name());
+            pre.setString(2, obj.getCategory_description());
+            pre.setString(3, obj.getImage());
+            pre.setInt(4, obj.getCategory_productID());
+            
+          
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+        }
+
+        return n;
+    }
+    public int addCategory(CategoryProduct obj) {
+        int n = 0;
+        String sql = "INSERT INTO [dbo].[CategoryProduct] ([category_name] ,[category_description] ,[image]) VALUES (?,?,?)";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, obj.getCategory_name());
+            pre.setString(2, obj.getCategory_description());
+            pre.setString(3, obj.getImage());
+            
+          
+
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+           ex.printStackTrace();
+        }
+
+        return n;
+    }
      public List<String> getCategoryProductName() {
         List<String> categoryNames = new ArrayList();
         try {
@@ -137,6 +191,6 @@ public class DAOCategoryProduct extends DBContext{
 }
     public static void main(String[] args) {
         DAOCategoryProduct db = new DAOCategoryProduct();
-        System.out.println(db.getCategoryStatus());
+        System.out.println(db.getAll("select * from CategoryProduct"));
     }
 }

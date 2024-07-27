@@ -402,11 +402,7 @@
                                         <input type="hidden" name="service" value="listAllSetting">
                                     </form>
                                 </div>
-                                <div class="col-sm-6">
-                                    <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i
-                                            class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
-                                    
-                                </div>
+                                
                             </div>
                         </div>
 

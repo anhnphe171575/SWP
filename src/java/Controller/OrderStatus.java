@@ -5,6 +5,7 @@
 package Controller;
 
 import DAL.DAOOrder;
+import Entity.Staff;
 import Entity.StatusOrder;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -37,25 +38,26 @@ public class OrderStatus extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-// response.setContentType("application/json");
-//        HttpSession session = request.getSession();
-//        
-//        String orderID = request.getParameter("statusOrderid"); // Retrieve the orderID parameter from the request
-//        System.out.println("Received orderID: " + orderID); // Debugging statement
-//        
-//        DAOOrder daoOrder = new DAOOrder();
-//        List<String> statuses = daoOrder.getStatusById(Integer.parseInt("statusOrderid")); // Pass orderID to the method if needed
-//        System.out.println("Fetched statuses: " + statuses); // Debugging statement
-//        
-//        Gson gson = new Gson();
-//        JsonElement element = gson.toJsonTree(statuses);
-//        JsonArray jsonArray = element.getAsJsonArray();
-//
-//        PrintWriter out = response.getWriter();
-//        out.print(jsonArray);
-//        out.flush();
+            request.getRequestDispatcher("Views/AccsessDenied.jsp").forward(request, response);
 
-        response.setContentType("application/json");
+     
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+                HttpSession session = request.getSession(true);
+                  Staff u = (Staff)  session.getAttribute("user");
+
+          response.setContentType("application/json");
         String statusOrderid = request.getParameter("statusOrderid");
         int statusid = Integer.parseInt(statusOrderid);
         DAOOrder daoOrder = new DAOOrder();
@@ -75,10 +77,13 @@ public class OrderStatus extends HttpServlet {
             } else if (statusid == 4) {
                 statuses.add(daoOrder.getStatusOrder2().get(3));
                 statuses.add(daoOrder.getStatusOrder2().get(4));
-            } else if (statusid == 5) {
+            } else if (statusid == 5 && u.getRole().getRoleID() == 4) {
+                statuses.add(daoOrder.getStatusOrder2().get(4));
+                statuses.add(daoOrder.getStatusOrder2().get(6));
+            }
+            else if (statusid == 5 && u.getRole().getRoleID() == 2) {
                 statuses.add(daoOrder.getStatusOrder2().get(4));
                 statuses.add(daoOrder.getStatusOrder2().get(5));
-                statuses.add(daoOrder.getStatusOrder2().get(6));
             }
             Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(statuses);
@@ -92,20 +97,6 @@ public class OrderStatus extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\":\"Internal Server Error\"}");
         }
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

@@ -61,6 +61,7 @@ public class AutheticationFilter implements Filter {
         }
 
         System.out.println("Requested Resource::" + url);
+        log("Requested Resource::" + url);
         HttpSession session = req.getSession();
         Role role = (Role) session.getAttribute("role");
         Staff user = (Staff) session.getAttribute("user");
@@ -77,11 +78,13 @@ public class AutheticationFilter implements Filter {
         roleUrls.put(4, new String[]{"orderlist", "mktcss", "TransactionURL", "orderdetails", "updatestatusorder", "orderstatus", "LoginController", "editProfileUserURL", "productslist", "updateQuantity", "updatePrice", "updateSalePrice"});
         roleUrls.put(5, new String[]{"AdminDashboard", "editProfileUserURL", "userList", "userDetail", "AddUser", "updateUser", "SecurityQuestion", "EditSQ", "editRoleURL", "editStatusOrderURL", "LoginController","CategoryProductURL", "AdminSettingURL", "CategoryServletURL"});
 
-        if (!isUrlInArrays(url, customerUrls, publicUrls, customerAuthUrls, roleUrls) &&
+        if (isUrlInArrays(url, customerUrls, publicUrls, customerAuthUrls, roleUrls) &&
             !url.contains("LoginController") && !url.contains("LoginCusController") &&
             !url.contains("ResetPassword") && !url.contains("verify") &&
             !url.contains("signup") && !url.contains("NewPassword")) {
             session.setAttribute("position", url);
+                    System.out.println("position" + url);
+
             log("position" + url);
         }
 
