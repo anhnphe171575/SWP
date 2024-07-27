@@ -214,7 +214,7 @@ public class SignUpCustomer extends HttpServlet {
             Security sq = new Security(secu_id, ques);
             Date date = new Date();
             Customer cus = new Customer(id, firstName, lastName, phone, email, address, user, pass, formatDate(dob),
-                    Boolean.valueOf(gen), date, sq, ans,null);
+                    Boolean.valueOf(gen), date, sq, ans, null);
             session.setAttribute("cus", cus);
 
             // Gửi email xác minh với thời gian hết hạn
@@ -223,7 +223,7 @@ public class SignUpCustomer extends HttpServlet {
         }
     }
 
-    private void sendVerificationEmail(String recipientEmail, String expirationTime) {
+    private boolean sendVerificationEmail(String recipientEmail, String expirationTime) {
         final String fromEmail = "anhnphe171575@fpt.edu.vn";
         final String password = "jull jeex qjzb cdtn";
         //set properties for mail
@@ -249,8 +249,10 @@ public class SignUpCustomer extends HttpServlet {
             msg.setText("Click the following link to verify your account: http://localhost:8080/SWP/verify?token=" + recipientEmail
                     + "\nThis link will expire at: " + expirationTime);
             Transport.send(msg);
+            return true;
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

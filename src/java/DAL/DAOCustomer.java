@@ -513,13 +513,13 @@ public class DAOCustomer extends DBContext {
         //return false;
     }
 
-    public Boolean addCustomer(String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, Boolean gender, Date activity, int securityID, String securityAnswer) {
+    public void addCustomer(String first_name, String last_name, String phone, String email, String address, String username, String password, Date dob, Boolean gender, Date activity, int securityID, String securityAnswer) {
         try {
             //java.sql.Date sqlDate = new java.sql.Date(dob.getTime());
             SimpleDateFormat mySimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = mySimpleDateFormat.format(dob);
             String date2 = mySimpleDateFormat.format(activity);
-            String query = "INSERT INTO Customer (first_name, last_name, phone, email, address, username, password, dob, gender, status, "
+            String query = "INSERT INTO Customer (first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, "
                     + "securityID, securityAnswer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setString(1, first_name);
@@ -535,11 +535,9 @@ public class DAOCustomer extends DBContext {
             stm.setInt(11, securityID);
             stm.setString(12, securityAnswer);
             stm.executeUpdate();
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
    public int insertCustomer(Customer obj) {
