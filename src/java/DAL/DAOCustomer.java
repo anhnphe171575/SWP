@@ -387,9 +387,11 @@ public class DAOCustomer extends DBContext {
             String sql = "select c.customerID,c.first_name,c.last_name,c.phone,c.email,c.address,c.activity_history,c.username,c.password,c.dob,c.gender,c.securityID,c.securityAnswer,\n"
                     + "sq.security_question, c.image from Customer c\n"
                     + "inner join  securityQuestion sq on c.securityID = sq.securityID\n"
-                    + "where c.username=?";
+                    + "where c.username=? and c.password=?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, username);
+                        stm.setString(2, password);
+
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 Security sq = new Security(rs.getInt("securityID"),
