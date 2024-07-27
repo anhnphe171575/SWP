@@ -10,7 +10,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>EShopper - Bootstrap Shop Template</title>
+        <title>Home Page</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
@@ -49,9 +49,10 @@
 
             }
             .product-img1 img {
-                width: 100%;
-                height: auto;
-            }
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
             .product-img1 {
                 height: 200px; /* Set a fixed height for the image container */
 
@@ -329,8 +330,7 @@
                     <c:forEach items="${requestScope.HotPost}" begin="1" end="6" var="hp">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
-                                <div class="card-header product-img1 position-relative overflow-hidden bg-transparent border p-0">
-                                    <img src="${hp.thumbnail}" alt="post">
+<div class="card-header product-img1 position-relative bg-transparent border p-0" style="background-image: url('${hp.thumbnail}'); background-size: contain; background-repeat: no-repeat; background-position: center; height: 200px;">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <a href="BlogDetail?postID=${hp.postID}" class="text-truncate mb-3">${hp.title}</a>
