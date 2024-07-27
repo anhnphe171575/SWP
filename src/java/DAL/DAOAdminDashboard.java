@@ -39,16 +39,16 @@ public class DAOAdminDashboard extends DBContext {
         String sql = "Select \n"
                 + "(SELECT COUNT(*) AS newly_registered_customers\n"
                 + "FROM Customer\n"
-                + "WHERE activity_history >= DATEADD(DAY, -30, GETDATE())) as 'newly customer',\n"
+                + "WHERE activity_history >= DATEADD(DAY, -5, GETDATE())) as 'newly_customer',\n"
                 + "\n"
                 + "(SELECT COUNT(DISTINCT o.customerID) AS customers_with_recent_purchases\n"
                 + "FROM [Order] o\n"
-                + "WHERE o.order_date >= DATEADD(DAY, -30, GETDATE())) as 'newly order';";
+                + "WHERE o.order_date >= DATEADD(DAY, -1, GETDATE())) as 'newly_order';";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
-                linkedHashMap.put(rs.getInt("newly customer"), rs.getInt("newly customer"));
+                linkedHashMap.put(rs.getInt("newly_customer"), rs.getInt("newly_order"));
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -204,6 +204,20 @@ public LinkedHashMap<String, Double> trendFeedbackstar() {
         }
         return linkedHashMap;
     }
+  public double trendFeedbackStarAver() {
+        double averageRateStar = 0.0;
+        String sql = "SELECT AVG(rate_star) AS average_rate_star FROM [n7].[dbo].[Feedback];";
+        try {
+            Statement state = conn.createStatement();
+            ResultSet rs = state.executeQuery(sql);
+            if (rs.next()) {
+                averageRateStar = rs.getDouble("average_rate_star");
+            }
+        } catch (Exception ex) {
+            System.out.println("Query failed: " + ex.getMessage());
+        }
+        return averageRateStar;
+    }
 
     public LinkedHashMap<String, Integer> trendAll2(int month, int year) {
         LinkedHashMap<String, Integer> linkedHashMap = new LinkedHashMap<>();
@@ -252,6 +266,6 @@ linkedHashMap.put(rs.getString("the_date"), rs.getInt("success_count"));
 
     public static void main(String[] args) {
         DAOAdminDashboard dao = new DAOAdminDashboard();
-        System.out.println(dao.trendAll2(5, 2024));
+        System.out.println(dao.trendFeedbackStarAver());
     }
 }

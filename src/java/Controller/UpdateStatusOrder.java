@@ -126,11 +126,11 @@ public class UpdateStatusOrder extends HttpServlet {
         if (newID == 7) {
             for (int i = 0; i < d.getOrderByOrderID(orderID).size(); i++) {
                 Product p = db2.getProductByID(d.getOrderByOrderID(orderID).get(i).getProduct().getProductID());
-
                 int quantity = d.getOrderByOrderID(orderID).get(i).getQuantity();
+                System.out.println(quantity);
                 LocalDate localDate = LocalDate.now();
                 Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                d.RestoreOrderQuantity(orderID);
+                db2.UpdateQuantity(p.getQuantity() + quantity,p.getProductID());
                 int quantity1 = db2.getProductByID(p.getProductID()).getQuantity();
                 String note = request.getParameter("note");
                 db3.AddInventoryTransaction(p.getProductID(), orderID, quantity, "Return", user.getStaffID(), date_create_by, note, quantity1);

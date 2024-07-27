@@ -121,24 +121,15 @@
                         <h6 class="m-0">Thể Loại</h6>
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
-                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                        <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                            <c:forEach items="${requestScope.Cate1}" var="a"> 
-                                <div class="nav-item dropdown"> 
-                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
-                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-
-                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
-
-                                            </c:if>
-                                        </c:forEach>
+                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                            <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                                <c:forEach items="${requestScope.Cate1}" var="a"> 
+                                    <div class="nav-item dropdown"> 
+                                        <a href="ProductsListPublic?cname=${a.category_name}" class="nav-link" >${a.category_name}</a>
                                     </div>
-                                </div>
-                            </c:forEach>                   
-                        </div>
-                    </nav>
+                                </c:forEach>                   
+                            </div>
+                        </nav>
                 </div>
                 <div class="col-lg-9">
                     <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
@@ -288,41 +279,58 @@
                                     <h6 class="font-weight-medium">Tổng</h6>
                                 </div>
                             </div>
-
-                            <c:forEach items="${requestScope.list}" var="l" varStatus="status">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="hidden" name="productID" value="${l.product.productID}" />
-                                        <input type="hidden" name="productName" value="${l.product.product_name}" />
-                                        <p>${l.product.product_name}</p>
-                                    </div>
-                                    <div class="col-lg">
-                                        <c:choose>
-                                            <c:when test="${l.product.sale_price != 0}">
-                                                <input type="hidden" name="productPrice" value="${l.product.sale_price}" />
-                                                <p class="align-middle">${l.product.sale_price}</p>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="hidden" name="productPrice" value="${l.product.original_price}" />
-                                                <p class="align-middle">${l.product.original_price}</p>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="col-lg">
-                                        <input type="hidden" name="productQuantity" value="${l.quantity}" />
-                                        <p>${l.quantity}</p>
-                                    </div>
-                                    <div class="col-lg">
-                                        <input type="hidden" name="productCost" value="${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}" />
-                                        <p>${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}</p>
-                                    </div>
-                                </div>
-                                <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
-                                <c:set var="subtotal" value="${itemPrice * l.quantity}" />
-                                <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
-
+                            <c:set var="hasValidItem" value="false" />
+                            <c:forEach items="${requestScope.list}" var="item">
+                                <c:if test="${item != null}">
+                                    <c:set var="hasValidItem" value="true" />
+                                </c:if>
                             </c:forEach>
+                            <c:choose>
+                                <c:when test="${!hasValidItem}">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p style="color: red; font-weight: bold;">Bạn cần mua hàng trước khi thanh toán.</p>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach items="${requestScope.list}" var="l" varStatus="status">
+                                        <c:if test="${l != null}">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <input type="hidden" name="productID" value="${l.product.productID}" />
+                                                    <input type="hidden" name="productName" value="${l.product.product_name}" />
+                                                    <p>${l.product.product_name}</p>
+                                                </div>
+                                                <div class="col-lg">
+                                                    <c:choose>
+                                                        <c:when test="${l.product.sale_price != 0}">
+                                                            <input type="hidden" name="productPrice" value="${l.product.sale_price}" />
+                                                            <p class="align-middle">${l.product.sale_price}</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="hidden" name="productPrice" value="${l.product.original_price}" />
+                                                            <p class="align-middle">${l.product.original_price}</p>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                                <div class="col-lg">
+                                                    <input type="hidden" name="productQuantity" value="${l.quantity}" />
+                                                    <p>${l.quantity}</p>
+                                                </div>
+                                                <div class="col-lg">
+                                                    <input type="hidden" name="productCost" value="${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}" />
+                                                    <p>${l.product.sale_price != 0 ? l.product.sale_price * l.quantity : l.product.original_price * l.quantity}</p>
+                                                </div>
+                                            </div>
+                                            <c:set var="itemPrice" value="${l.product.sale_price != 0 ? l.product.sale_price : l.product.original_price}" />
+                                            <c:set var="subtotal" value="${itemPrice * l.quantity}" />
+                                            <c:set var="totalOrderPrice" value="${totalOrderPrice + subtotal}" />
 
+                                    </c:if>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
 
                         </div>
                         <div class="card-footer border-secondary bg-transparent">
@@ -352,7 +360,7 @@
                             </div>
                         </div>
                         <div class="card-footer border-secondary bg-transparent">
-                            <button type="submit"class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Đặt Hàng</button>
+                            <button type="submit"class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3"   ${!hasValidItem ? 'disabled' : ''}>Đặt Hàng</button>
                         </div>
                     </div>
                     </form>
@@ -454,6 +462,7 @@
 
         <!-- Footer Start -->
       <jsp:include page="footter.jsp"/>
+
         <!-- Footer End -->
 
 

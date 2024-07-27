@@ -27,6 +27,13 @@
         <!-- Libraries Stylesheet -->
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
         <style>
+            .titlepost{
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-left: 15px;
+            }
             .aa {
                 width: 200px; /* Đặt chiều rộng mong muốn */
                 height: 200px; /* Đặt chiều cao mong muốn */
@@ -246,7 +253,7 @@
                             <a href="ProductsListPublic?cname=${cp.key}" class="cat-img position-relative overflow-hidden mb-3">
                                 <c:forEach items="${requestScope.imageC}" var="ic">
                                     <c:if test="${ic.key == cp.key}">
-                                        <img class="img-fluid" src="${ic.value}" alt="">
+                                        <img style="height: 164px;width: 277px"class="img-fluid" src="${ic.value}" alt="">
                                     </c:if>
                                 </c:forEach>
                             </a>
@@ -278,13 +285,13 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">${p.product_name}</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>${p.original_price}</h6>
+                                        <h6 class="titlepost">${p.original_price}</h6>
                                         <c:if test="${not empty p.sale_price}">
                                             <h6 class="text-muted ml-2"><del>${p.sale_price}</del></h6>
                                                 </c:if>                       
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <p>${p.brief_information}</p>
+                                        <p class="titlepost">${p.brief_information}</p>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
@@ -330,7 +337,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img1 position-relative overflow-hidden bg-transparent border p-0">
-                                    <img src="${hp.thumbnail}" alt="post">
+                                    <img style="width: 100%;height: 200px"src="${hp.thumbnail}" alt="post">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <a href="BlogDetail?postID=${hp.postID}" class="text-truncate mb-3">${hp.title}</a>

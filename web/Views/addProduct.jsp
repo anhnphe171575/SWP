@@ -21,23 +21,143 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
         <script>
-            $(document).ready(function () {
-                $('#productName').on('blur', function () {
-                    var productName = $(this).val();
-                    $.ajax({
-                        url: 'checkproductname',
-                        method: 'POST',
-                        data: {productName: productName},
-                        success: function (response) {
-                            if (response.exists) {
-                                $('#productNameError').text('Product name already exists.');
-                            } else {
-                                $('#productNameError').text('');
-                            }
-                        }
-                    });
-                });
-            });
+           $(document).ready(function () {
+    // Product name validation
+    $('#productName').on('blur', function () {
+        var productName = $(this).val();
+        if (productName.length > 255) {
+            $('#productNameError').text('Product name must not exceed 255 characters.');
+            return;
+        }
+        $.ajax({
+            url: 'checkproductname',
+            method: 'POST',
+            data: {productName: productName},
+            success: function (response) {
+                if (response.exists) {
+                    $('#productNameError').text('Product name already exists.');
+                } else {
+                    $('#productNameError').text('');
+                }
+            }
+        });
+    });
+
+    // Description character limit
+    $('#description').on('input', function() {
+        var maxLength = 1000;
+        var currentLength = $(this).val().length;
+        if(currentLength > maxLength) {
+            $(this).val($(this).val().substring(0, maxLength));
+        }
+        $('#descriptionCharCount').text(maxLength - currentLength + ' characters remaining');
+    });
+
+    // Brief Info character limit
+    $('#briefInfo').on('input', function() {
+        var maxLength = 255;
+        var currentLength = $(this).val().length;
+        if(currentLength > maxLength) {
+            $(this).val($(this).val().substring(0, maxLength));
+        }
+        $('#briefInfoCharCount').text(maxLength - currentLength + ' characters remaining');
+    });
+
+    // File type and size check
+    $('#file').on('change', function() {
+        var file = this.files[0];
+        var fileType = file.type;
+        var fileSize = file.size;
+        var maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!fileType.startsWith('image/')) {
+            alert('Please select an image file.');
+            this.value = '';
+        } else if (fileSize > maxSize) {
+            alert('File size must be less than 5MB.');
+            this.value = '';
+        }
+    });
+
+    // Year validation
+    $('select[name="year"]').on('change', function() {
+        var selectedYear = parseInt($(this).val());
+        var currentYear = new Date().getFullYear();
+        if (selectedYear < 2000 || selectedYear > currentYear) {
+            alert('Please select a valid year between 2000 and ' + currentYear);
+            $(this).val(''); // Reset to default
+        }
+    });
+
+    // Form submission validation
+    $('form').on('submit', function(e) {
+        var isValid = true;
+
+        // Check if all required fields are filled
+        $(this).find('[required]').each(function() {
+            if ($(this).val() === '') {
+                isValid = false;
+                $(this).addClass('error');
+            } else {
+                $(this).removeClass('error');
+            }
+        });
+
+        // Specific validations
+        var productName = $('#productName').val();
+        if (productName.length > 255) {
+            isValid = false;
+            $('#productNameError').text('Product name must not exceed 255 characters.');
+        }
+
+        var description = $('textarea[name="description"]').val();
+        if (description.length > 1000) {
+            isValid = false;
+            alert('Description must not exceed 1000 characters.');
+        }
+
+        var briefInfo = $('input[name="briefInfo"]').val();
+        if (briefInfo.length > 255) {
+            isValid = false;
+            alert('Brief info must not exceed 255 characters.');
+        }
+
+        // File validation
+        var fileInput = $('#file')[0];
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var fileType = file.type;
+            var fileSize = file.size;
+            var maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (!fileType.startsWith('image/')) {
+                isValid = false;
+                alert('Please select an image file.');
+            } else if (fileSize > maxSize) {
+                isValid = false;
+                alert('File size must be less than 5MB.');
+            }
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please correct the errors before submitting.');
+        }
+    });
+
+    // Add visual feedback for required fields
+    $('[required]').on('input', function() {
+        if ($(this).val() !== '') {
+            $(this).removeClass('error');
+        } else {
+            $(this).addClass('error');
+        }
+    });
+
+    // Initialize character counters
+    $('#description').trigger('input');
+    $('#briefInfo').trigger('input');
+});
         </script>
     </head>
     <body style="background-color:lightblue ">
@@ -52,7 +172,7 @@
                 </div>
 
                 <div class="form-group">
-<div class="label">Thể loại:</div>
+                    <div class="label">Thể loại:</div>
                     <select name="categoryID" class="form-control" required>
                         <c:forEach var="category" items="${category}">
                             <option value="${category.category_productID}" ${category.category_productID == product.categoryProduct.category_productID ? 'selected' : ''}>
@@ -69,7 +189,7 @@
                         </c:forEach>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="label">Số lượng:</div>
                     <input type="number" name="quantity" value="0" readonly required>
@@ -114,7 +234,7 @@
                         </c:forEach>
                     </select>
                 </div>
-<div class="form-group">
+                <div class="form-group">
                     <div class="label">Nổi bật:</div>
                     <select class="form-control" name="featured" required>
                         <option value="0">Có</option>

@@ -333,7 +333,7 @@
             function fetchSaleOptions(orderID) {
                 $.ajax({
                     url: 'sales',
-                    method: 'GET',
+                    method: 'POST',
                     dataType: 'json',
                     success: function (sales) {
                         console.log('Sales data received:', sales); // Debugging line
@@ -388,7 +388,7 @@
             function fetchOrderStatuses(statusOrderid, orderID) {
                 $.ajax({
                     url: 'orderstatus', // Adjust the URL to your API endpoint
-                    method: 'GET',
+                    method: 'POST',
                     data: {statusOrderid: statusOrderid}, // Include the statusOrderid as a parameter
                     dataType: 'json',
                     success: function (statuses) {

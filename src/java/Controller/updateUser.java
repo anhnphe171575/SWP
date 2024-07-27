@@ -128,11 +128,15 @@ public class updateUser extends HttpServlet {
 
            Boolean a = true;
     String error = "";
-    if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null || (daoU.checkEmail()).contains(email)) {
+    if (daoU.checkPhone1(daoU.getStaffsByID(UserId).getPhone()).contains(phone)) {
+        error += "số điện thoại đã tồn tại. ";
+        a = false;
+    }
+    if (daoU.checkEmail1(daoU.getStaffsByID(UserId).getEmail()).contains(email)) {
         error += "Email đã tồn tại. ";
         a = false;
     }
-    if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null || (daoU.checkUsername()).contains(username)) {
+    if (daoU.checkUsername1(daoU.getStaffsByID(UserId).getUsername()).contains(username)) {
         error += "Tài khoản đã tồn tại. ";
         a = false;
     }

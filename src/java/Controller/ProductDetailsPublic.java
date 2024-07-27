@@ -56,8 +56,14 @@ public class ProductDetailsPublic extends HttpServlet {
         } catch (Exception e) {
             request.getRequestDispatcher("ProductsListPublic").forward(request, response);
         }
-        String activate = request.getParameter("activate");
-        String orderid = request.getParameter("orderid");
+        HttpSession session = request.getSession();
+                Customer cus = (Customer) session.getAttribute("cus");
+                String activate = null;
+                String orderid = null;
+        if(cus != null){
+         activate = request.getParameter("activate");
+         orderid = request.getParameter("orderid");
+        }
         CategoryProduct cp = new CategoryProduct();
         DAOCategoryProduct db2 = new DAOCategoryProduct();
         cp = db2.getCategoryProductbyPID(pid_raw);

@@ -116,7 +116,7 @@ public class LoginController extends HttpServlet {
                 doGet(request, response);
 
             } else {
-                request.setAttribute("error", "Error");
+                request.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
                 request.getRequestDispatcher("Views/loginUser.jsp").forward(request, response);
             }
         }

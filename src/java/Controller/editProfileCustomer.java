@@ -17,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -84,13 +85,14 @@ public class editProfileCustomer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        Customer cus = (Customer)session.getAttribute("cus");
         DAOCustomer dao = new DAOCustomer();
-
         Vector<Customer> vector
                 = (Vector<Customer>) dao.getCustomer("select c.image, c.customerID, c.first_name, c.last_name,c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer from Customer c\n"
                         + "inner join SecurityQuestion sq on c.securityID = sq.securityID where customerID="
-                        + Integer.parseInt(request.getParameter("customerid")));
+                        + cus.getCustomerID());
+        System.out.println(vector);
         request.setAttribute("vector", vector);
         DAOSecurityQuestion db = new DAOSecurityQuestion();
         request.setAttribute("security", db.getAll("select * from SecurityQuestion"));
@@ -152,7 +154,6 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     String email = request.getParameter("email");
     String address = request.getParameter("address");
     String username = request.getParameter("username");
-    String password = request.getParameter("password");
     String date = request.getParameter("dob");
 
     // Validate phone number and email
@@ -203,8 +204,9 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
     String securityid = request.getParameter("security");
     int securityId = Integer.parseInt(securityid);
+    String securityque = request.getParameter("security_question");
 
-    Security sq = new Security(securityId, "");
+    Security sq = new Security(securityId, securityque);
 
     String securityAnswer = request.getParameter("securityAnswer");
     int customerid = Integer.parseInt(customerID);
@@ -212,7 +214,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     LocalDate localDate = LocalDate.now();
     Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-    Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, password, date1, gen, date_create_by, sq, securityAnswer, fileUrl);
+    Customer cus = new Customer(customerid, fname, lname, phone, email, address, username, "", date1, gen, date_create_by, sq, securityAnswer, fileUrl);
     dao.updateCustomer(cus);
     response.sendRedirect("editProfileCustomerURL?customerid=" + customerID);
 }

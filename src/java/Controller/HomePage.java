@@ -66,8 +66,8 @@ public class HomePage extends HttpServlet {
         request.setAttribute("imageC", db.ImageByCategory());   
          request.setAttribute("CountP" , db.CountProductByCategory());
          
-        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider ORDER BY page_order"));
-        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
+        request.setAttribute("slider1", db2.getSlider("SELECT top 1 * FROM Slider where status = 1 ORDER BY page_order"));
+        request.setAttribute("slider", db2.getSlider("SELECT * FROM Slider where status = 1 EXCEPT SELECT top 1 * FROM Slider ORDER BY page_order"));
         
          request.setAttribute("HotPost", db3.HotPost());
         request.setAttribute("AllP", db.getProductFeature());

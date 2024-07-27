@@ -363,9 +363,7 @@
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <a href="#Sort" class="btn btn-danger" data-toggle="modal">
-                                            <i class="material-icons">&#xe164;</i> <span>Sắp xếp</span>         
-                                        </a>
+                                        
                                         <h5>${sessionScope.username}</h5>
                                 </div>
                             </div>

@@ -50,6 +50,7 @@ public class MKTDashboard extends HttpServlet {
                 request.setAttribute("date", date1);
                 request.setAttribute("fb", daoAd.trendFeedbackstar());
                 request.setAttribute("newCus", daoAd.trendCusNew());
+                request.setAttribute("fb_aver", daoAd.trendFeedbackStarAver());
 
                 request.setAttribute("total_product", daoMTK.allProduct());
                 request.setAttribute("total_post", daoMTK.allPost());
@@ -75,6 +76,7 @@ public class MKTDashboard extends HttpServlet {
                 request.setAttribute("total_product", daoMTK.allProduct());
                 request.setAttribute("total_post", daoMTK.allPost());
                 request.setAttribute("total_customer", daoMTK.allCustomer());
+                request.setAttribute("fb_aver", daoAd.trendFeedbackStarAver());
 
                 request.setAttribute("dataProduct", daoMTK.trendProAutoday(start_date, end_date));
                 request.setAttribute("dataPost", daoMTK.trendPostAutoday(start_date, end_date));
@@ -91,6 +93,7 @@ public class MKTDashboard extends HttpServlet {
             request.setAttribute("date1", "null");
             request.setAttribute("fb", daoAd.trendFeedbackstar());
             request.setAttribute("newCus", daoAd.trendCusNew());
+                request.setAttribute("fb_aver", daoAd.trendFeedbackStarAver());
 
             request.setAttribute("total_product", daoMTK.allProduct());
             request.setAttribute("total_post", daoMTK.allPost());

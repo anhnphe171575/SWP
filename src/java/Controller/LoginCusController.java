@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  *
@@ -82,9 +85,13 @@ public class LoginCusController extends HttpServlet {
         if (check == true) {
             int cusid = daoC.getCusByUserName(username).getCustomerID();
             session.setAttribute("cus", daoC.getCus(username));
-
+              
             session.setAttribute("cart", db.getListCart(cusid));
             session.setMaxInactiveInterval(15 * 60);
+            DAOCustomer db1 = new DAOCustomer();
+            LocalDate localDate = LocalDate.now();
+                Date date_create_by = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            db1.updateCustomerActivity(cusid, date_create_by);
             String position = (String) session.getAttribute("position");
             if (position != null) {
                 session.removeAttribute("position"); // Xóa position sau khi sử dụng
@@ -93,7 +100,7 @@ public class LoginCusController extends HttpServlet {
                 response.sendRedirect("HomePage");
             }
         } else {
-            request.setAttribute("error", "error");
+            request.setAttribute("error", "Sai tài khoản hoặc mật khẩu");
             request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
         }
     }
