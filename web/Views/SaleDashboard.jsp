@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="java.time.LocalDate" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,15 +95,27 @@
                     <div class="main-title">
                         <h2 style="color: black">Biểu đồ</h2>
                     </div>
+                    <%
+// Retrieve the month and year from the request, if available
+String monthParam = request.getParameter("month");
+String yearParam = request.getParameter("year");
 
+// Get the current month and year
+int currentMonth = LocalDate.now().getMonthValue();
+int currentYear = LocalDate.now().getYear();
+
+// Set the month and year to display
+int displayMonth = (monthParam != null && !monthParam.isEmpty()) ? Integer.parseInt(monthParam) : currentMonth;
+int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt(yearParam) : currentYear;
+                    %>
                     
                 <div class="select">
                     <h2>Theo tháng:</h2>
                     <form action="SaleDashboardURL" method="post">
                         <label for="month">Tháng:</label>
-                        <input type="number" id="month" name="month" min="1" max="12" value="6" required>
+                        <input type="number" id="month" name="month" min="1" max="12" value="<%= displayMonth %>" required>
                         <label for="year">Năm:</label>
-                        <input type="number" id="year" name="year" min="2000" max="2100" value="2024" required>
+                        <input type="number" id="year" name="year" min="2000" max="2100" value="<%= displayYear %>" required>
                         <input type="hidden" name="service" value="select">
                         <input type="submit"></input>
                     </form>
