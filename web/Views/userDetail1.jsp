@@ -117,7 +117,7 @@
                         <tbody>     
                             <tr>
                                 <td>Ảnh</td>
-                                <td><img style="width: 150px" src="${user.image}" alt="Thumbnail" class="thumbnail"></td>
+                                <td><img style="width: 150px" src="${user.image}" alt="image" class="image"></td>
                             </tr>
                             <tr>
                                 <td>Họ và tên</td>

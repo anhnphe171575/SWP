@@ -213,6 +213,7 @@ public class DAOStaff extends DBContext {
                 + "    [email] = ?,\n"
                 + "    [address] = ?,\n"
                 + "    [username] = ?,\n"
+                + "    [password] = ?,\n"
                 + "    [dob] = ?,\n"
                 + "    [gender] = ?,\n"
                 + "    [status] = ?,\n"
@@ -233,14 +234,15 @@ public class DAOStaff extends DBContext {
             pre.setString(4, obj.getEmail());
             pre.setString(5, obj.getAddress());
             pre.setString(6, obj.getUsername());
-            pre.setDate(7, java.sql.Date.valueOf(date1));
-            pre.setBoolean(8, obj.isGender());
-            pre.setInt(9, obj.getStatus());
-            pre.setInt(10, obj.getRole().getRoleID());
-            pre.setInt(11, obj.getSecurity().getSecurityID());
-            pre.setString(12, obj.getSecurityAnswer());
-            pre.setString(13, obj.getImage());
-            pre.setInt(14, obj.getStaffID());
+             pre.setString(7, obj.getPassword());
+            pre.setDate(8, java.sql.Date.valueOf(date1));
+            pre.setBoolean(9, obj.isGender());
+            pre.setInt(10, obj.getStatus());
+            pre.setInt(11, obj.getRole().getRoleID());
+            pre.setInt(12, obj.getSecurity().getSecurityID());
+            pre.setString(13, obj.getSecurityAnswer());
+            pre.setString(14, obj.getImage());
+            pre.setInt(15, obj.getStaffID());
 
             pre.executeUpdate();
         } catch (SQLException ex) {
