@@ -568,7 +568,7 @@ public class DAOOrder extends DBContext {
         return list;
     }
 
-    public ArrayList<OrderItems> getOrderInforByCustomerByStatus(String customerid, String status) {
+    public ArrayList<OrderItems> getOrderInforByCustomerByStatus(int customerid, String status) {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
             String query = "SELECT o.orderID, o.order_date, STRING_AGG(p.product_name, ', ') AS Product_name, STRING_AGG(p.productID, ',') AS Product_id, SUM(ot.list_price * ot.quantity) AS total_cost,\n"
@@ -706,7 +706,7 @@ public class DAOOrder extends DBContext {
 
     }
 
-    public ArrayList<OrderItems> getOrderInforByCustomer(String customerid) {
+    public ArrayList<OrderItems> getOrderInforByCustomer(int customerid) {
         ArrayList<OrderItems> list = new ArrayList<>();
         try {
             String query = "SELECT  o.orderID, o.order_date, c.first_name, c.last_name,STRING_AGG(p.productID, ',') AS Product_id,STRING_AGG(p.quantity, ',') AS Product_quantity, STRING_AGG(p.product_name, ', ') AS Product_name, SUM(ot.list_price * ot.quantity) AS total_cost,\n"
@@ -1306,10 +1306,10 @@ public class DAOOrder extends DBContext {
         try {
             String query = "SELECT o.orderID, o.order_date, o.Status_OrderID, o.shipped_date, \n"
                     + "                        c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, \n"
-                    + "                        c.staffname, c.password, c.dob, c.gender, c.activity_history, \n"
+                    + "                        c.username, c.password, c.dob, c.gender, c.activity_history, \n"
                     + "                        u.StaffID, u.first_name, u.last_name, \n"
                     + "                        u.phone, u.email, u.address, \n"
-                    + "                        u.staffname AS staff_staffname, u.password, u.dob, \n"
+                    + "                        u.username AS staff_username, u.password, u.dob, \n"
                     + "                        u.gender, u.status,ri.ReceiverID, ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"
@@ -1338,7 +1338,7 @@ public class DAOOrder extends DBContext {
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("staffname"),
+                        rs.getString("staff_username"),
                         rs.getString("password"),
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
@@ -1371,7 +1371,7 @@ public class DAOOrder extends DBContext {
                         rs.getString("phone"),
                         rs.getString("email"),
                         rs.getString("address"),
-                        rs.getString("staffname"),
+                        rs.getString("username"),
                         rs.getString("password"),
                         rs.getDate("dob"),
                         rs.getBoolean("gender"),
@@ -1416,7 +1416,7 @@ public class DAOOrder extends DBContext {
                     + "                        c.username, c.password, c.dob, c.gender, c.activity_history, \n"
                     + "                        u.StaffID, u.first_name, u.last_name, \n"
                     + "                        u.phone, u.email, u.address, \n"
-                    + "                        u.staffname AS staff_staname, u.password, u.dob, \n"
+                    + "                        u.username AS staff_staname, u.password, u.dob, \n"
                     + "                        u.gender, u.status, ri.ReceiverID,ri.ReceiverFullName, ri.ReceiverMobile, ri.ReceiverAddress, \n"
                     + "                        p.productID, p.product_name, p.quantity, p.year, p.product_description, \n"
                     + "                        p.featured, p.thumbnail, p.brief_information, p.original_price, p.sale_price, \n"

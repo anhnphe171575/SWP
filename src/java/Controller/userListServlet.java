@@ -152,48 +152,7 @@ public class userListServlet extends HttpServlet {
                 }
 
             }
-        } else if (service.equals("sort")) {
-            String sort = request.getParameter("sort");
-            request.setAttribute("data", daoU.sort(sort));
-            RequestDispatcher dispath = request.getRequestDispatcher("/Views/ViewUsers.jsp");
-            //run
-            dispath.forward(request, response);
-        } else if (service.equals("filter")) {
-            String status_raw = request.getParameter("status");
-            String gender = request.getParameter("gender");
-            String role = request.getParameter("role");
-            Map<String, String> list1 = new LinkedHashMap<>();
-            ArrayList<String> list2 = new ArrayList<>();
-
-            if (!status_raw.equalsIgnoreCase("all")) {
-                list2.add("u.status = ?");
-                list1.put("status", status_raw);
-            }
-            if (gender != null && !gender.equalsIgnoreCase("all")) {
-                list2.add("u.gender = ?");
-                list1.put("gender", gender.equals("Male") ? "true" : "false");
-            }
-            if (!role.equalsIgnoreCase("all")) {
-                list2.add("u.RoleID = ?");
-                list1.put("role", role);
-            }
-
-            if (list2.isEmpty()) {
-                list = daoU.getStaff("", new LinkedHashMap<>());
-            } else {
-                StringBuilder queryBuilder = new StringBuilder("SELECT * FROM [User] u ");
-                for (int i = 0; i < list2.size(); i++) {
-                    if (i == 0) {
-                        queryBuilder.append("WHERE ");
-                    }
-                    queryBuilder.append(list2.get(i));
-                    if (i < list2.size() - 1) {
-                        queryBuilder.append(" AND ");
-                    }
-                }
-                list = daoU.getStaff(queryBuilder.toString(), list1);
-            }
-        }
+        } 
         Vector<Staff> vector = new Vector<>();
 
         if ("listAllUsers".equals(service)) {
@@ -363,12 +322,54 @@ public class userListServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            // Xử lý yêu cầu POST ở đây
-            processRequest(request, response);
-        } catch (MessagingException ex) {
-            Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                List<Staff> list = new ArrayList<>();
+        DAOStaff daoU = new DAOStaff();
+
+         String status_raw = request.getParameter("status");
+            String gender = request.getParameter("gender");
+            String role = request.getParameter("role");
+            Map<String, String> list1 = new LinkedHashMap<>();
+            ArrayList<String> list2 = new ArrayList<>();
+          System.out.println(gender);
+            if (!status_raw.equalsIgnoreCase("all")) {
+                list2.add("u.status = ?");
+                list1.put("status", status_raw);
+            }
+            if (gender != null && !gender.equalsIgnoreCase("all")) {
+                list2.add("u.gender = ?");
+                list1.put("gender", gender);
+            }
+            if (!role.equalsIgnoreCase("all")) {
+                list2.add("u.RoleID = ?");
+                list1.put("role", role);
+            }
+
+            if (list2.isEmpty()) {
+                list = daoU.getStaff("", new LinkedHashMap<>());
+                                System.out.println("bb" + list );
+
+            } else {
+                StringBuilder queryBuilder = new StringBuilder("SELECT * FROM [Staff] u inner join [Role] r on u.RoleID = r.RoleID inner join SecurityQuestion sq on u.securityID = sq.[securityID]");
+                for (int i = 0; i < list2.size(); i++) {
+                    if (i == 0) {
+                        queryBuilder.append("WHERE ");
+                    }
+                    queryBuilder.append(list2.get(i));
+                    if (i < list2.size() - 1) {
+                        queryBuilder.append(" AND ");
+                    }
+                }
+                list = daoU.getStaff1(queryBuilder.toString(), list1);
+                System.out.println("aa" +queryBuilder.toString());
+            }
+                        DAOSecurityQuestion db = new DAOSecurityQuestion();
+            request.setAttribute("data", list);
+
+             request.setAttribute("role", daoU.getRole("select * from Role"));
+            request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
+              RequestDispatcher dispath = request.getRequestDispatcher("/Views/ViewUsers.jsp");
+            //run
+            dispath.forward(request, response);
     }
 
     @Override

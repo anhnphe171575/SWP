@@ -9,81 +9,81 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html >
 <html lang="vi">
-    
+
     <head>
-<meta charset="UTF-8">
+        <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">        <style>
-           body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    padding: 20px;
-}
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                padding: 20px;
+            }
 
-form {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+            form {
+                max-width: 600px;
+                margin: auto;
+                padding: 20px;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-td {
-    padding: 10px;
-}
+            td {
+                padding: 10px;
+            }
 
-input[type="text"],
-input[type="email"],
-input[type="date"],
-select {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+            input[type="text"],
+            input[type="email"],
+            input[type="date"],
+            select {
+                width: calc(100% - 20px);
+                padding: 8px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-input[type="file"] {
-    margin-top: 10px;
-}
+            input[type="file"] {
+                margin-top: 10px;
+            }
 
-input[type="radio"] {
-    margin-right: 5px;
-}
+            input[type="radio"] {
+                margin-right: 5px;
+            }
 
-input[type="submit"],
-input[type="reset"] {
-    background-color: #5cb85c;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+            input[type="submit"],
+            input[type="reset"] {
+                background-color: #5cb85c;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-input[type="submit"]:hover,
-input[type="reset"]:hover {
-    background-color: #4cae4c;
-}
+            input[type="submit"]:hover,
+            input[type="reset"]:hover {
+                background-color: #4cae4c;
+            }
 
-img#userImage {
-    max-width: 100px;
-    display: block;
-    margin-bottom: 10px;
-}
+            img#userImage {
+                max-width: 100px;
+                display: block;
+                margin-bottom: 10px;
+            }
 
         </style>
     </head>
     <body>
-         
+
         <form action="updateUser" method="post" enctype="multipart/form-data">
             <table>
                 ${requestScope.error}
@@ -91,13 +91,14 @@ img#userImage {
                     <td>Ảnh</td>
                     <td>
                         <img class="rounded-circle mt-5" width="150px" src="${user.image}">
-                        <input type="file" name="file" id="file" accept="image/*" >
+                        <input type="file" name="file" id="file" accept="image/*"  >
+                        <input type="hidden" name="existingImage" value="${user.getImage()}">
                     </td>
 
                 </tr>
                 <tr>
                     <td>ID</td>
-                    <td><input type="text" name="UserID" readonly id="" value="${user.StaffID}"></td>
+                    <td><input type="text" name="UserID" readonly id="" value="${user.getStaffID()}"></td>
                 </tr>
                 <tr>
                     <td>Tên</td>

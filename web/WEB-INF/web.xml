@@ -36,6 +36,22 @@
         <servlet-name>Transaction</servlet-name>
         <servlet-class>Controller.Transaction</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductDetailsPublic</servlet-name>
+        <servlet-class>Controller.ProductDetailsPublic</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>checkEmail</servlet-name>
+        <servlet-class>Controller.checkEmail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccsessDenied</servlet-name>
+        <servlet-class>Controller.AccsessDenied</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryServlet</servlet-name>
+        <servlet-class>Controller.CategoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>userDetail</servlet-name>
         <url-pattern>/userDetail</url-pattern>
@@ -147,10 +163,6 @@
     <servlet>
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>Controller.NewServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ProductDetailsPublic</servlet-name>
-        <servlet-class>Controller.ProductDetailsPublic</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CartDetails</servlet-name>
@@ -381,10 +393,6 @@
         <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductDetailsPublic</servlet-name>
-        <url-pattern>/ProductDetailsPublic</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>CartDetails</servlet-name>
         <url-pattern>/CartDetails</url-pattern>
     </servlet-mapping>
@@ -579,5 +587,22 @@
     <servlet-mapping>
         <servlet-name>Transaction</servlet-name>
         <url-pattern>/TransactionURL</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailsPublic</servlet-name>
+        <url-pattern>/ProductDetailsPublic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>checkEmail</servlet-name>
+        <url-pattern>/checkEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccsessDenied</servlet-name>
+        <url-pattern>/AccsessDenied</url-pattern>
+    </servlet-mapping>
+   
+    <servlet-mapping>
+        <servlet-name>CategoryServlet</servlet-name>
+        <url-pattern>/CategoryServletURL</url-pattern>
     </servlet-mapping>
 </web-app>

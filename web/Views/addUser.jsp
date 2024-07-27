@@ -66,51 +66,52 @@
             }
         </style>
     </head>
+
     <body>
 
         <form action="AddUser" method="post" >
             <table>
-                ${error}
-<!--                <tr>
-                    <td>Image</td>
-                    <td><input type="file" name="file" id="file" accept="image/*"></td>
-                </tr>-->
+                <p style="color: black">${error}</p>
+                <!--                <tr>
+                                    <td>Image</td>
+                                    <td><input type="file" name="file" id="file" accept="image/*"></td>
+                                </tr>-->
                 <tr>
                     <td>Tên</td>
-                    <td><input type="text" name="fname" id="" value=""></td>
+                    <td><input type="text" name="fname" id="" value="" required=""></td>
                 </tr>
                 <tr>
                     <td>Họ </td>
-                    <td><input type="text" name="lname" id="" value=""></td>
+                    <td><input type="text" name="lname" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Số điện thoại</td>
-                    <td><input type="text" name="phone" id="" value=""></td>
+                    <td><input type="text" name="phone" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type="email" name="email" id="" value=""></td>
+                    <td><input type="email" name="email"  id="email" value="" required></td>
                 </tr>
                 <tr>
                     <td>Địa chỉ</td>
-                    <td><input type="text" name="address" id="" value=""></td>
+                    <td><input type="text" name="address" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Tên đăng nhập</td>
-                    <td><input type="text" name="username" id="" value=""></td>
+                    <td><input type="text" name="username" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Mật khẩu</td>
-                    <td><input type="password" name="password" id="" value=""></td>
+                    <td><input type="password" name="password" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Ngày Sinh</td>
-                    <td><input type="date" name="dob" id="" value=""></td>
+                    <td><input type="date" name="dob" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td>Giới tính</td>
                     <td style="display: flex; justify-content: space-between;">
-                        <input type="radio" name="gender" value="true" id="male">
+                        <input type="radio" name="gender" value="true" id="male" required>
                         <label for="male">Nam</label>
                         <input type="radio" name="gender" value="false" id="female">
                         <label for="female">Nữ</label>
@@ -119,26 +120,26 @@
                 <tr>
                     <td>Status</td>
                     <td>
-                        <select name="status">
+                        <select name="status" required>
                             <option value="1">Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
                     </td>
                 </tr>
-                 <tr>
+                <tr>
                     <td>Vai trò</td>
-                    <td> <select name="role">
-                    <c:forEach items="${role}" var="r">
-                    <option value="${r.roleID}">${r.role_Name}</option>
-                    </c:forEach>
-                    </select>
+                    <td> <select name="role" required>
+                            <c:forEach items="${role}" var="r">
+                                <option value="${r.roleID}">${r.role_Name}</option>
+                            </c:forEach>
+                        </select>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td>Câu hỏi bảo mật</td>
                     <td>
-                        <select name="securityQuestion">
+                        <select name="securityQuestion" required>
                             <c:forEach items="${question}" var="q">
                                 <option value="${q.securityID}">${q.securityID} -${q.security_question}</option>
                             </c:forEach>
@@ -147,7 +148,7 @@
                 </tr>
                 <tr>
                     <td>Câu trả lời</td>
-                    <td><input type="text" name="securityAnswer" id="" value=""></td>
+                    <td><input type="text" name="securityAnswer" id="" value="" required></td>
                 </tr>
                 <tr>
                     <td><input type="submit" name="submit" value="Add User"></td>
@@ -156,7 +157,7 @@
                 </tr>
             </table>
         </form>
-
+       
     </body>
 </html>
 

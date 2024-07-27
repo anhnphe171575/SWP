@@ -450,19 +450,46 @@ public class DAOStaff extends DBContext {
         return vector;
     }
 
-    public Vector<Staff> getStaff(String query, Map<String, String> parameters) {
+    public Vector<Staff> getStaff1(String query, Map<String, String> parameters) {
         Vector<Staff> vector = new Vector<Staff>();
-        String sql = "SELECT u.StaffID, u.first_name, u.last_name, u.phone, u.email, u.address, \n"
-                + "                u.username, u.password, u.dob, u.gender, u.status, r.RoleID, u.securityID, u.securityAnswer, u.image, \n"
-                + "                r.Role_Name, s.security_question \n"
-                + "                FROM [Staff] u \n"
-                + "                INNER JOIN [Role] r ON r.RoleID = r.RoleID \n"
-                + "                INNER JOIN SecurityQuestion s ON s.securityID = u.securityID" + query;
+        String sql = query;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             int index = 1;
             for (String key : parameters.keySet()) {
                 ps.setString(index++, parameters.get(key));
             }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int StaffID = rs.getInt("StaffID");
+                    String first_name = rs.getString("first_name");
+                    String last_name = rs.getString("last_name");
+                    String phone = rs.getString("phone");
+                    String email = rs.getString("email");
+                    String address = rs.getString("address");
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    Date dob = rs.getDate("dob");
+                    Boolean gender = rs.getBoolean("gender");
+                    int status = rs.getInt("status");
+                    Role role = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
+                    Security securityID = new Security(rs.getInt("securityID"), rs.getString("security_question"));
+                    String securityAnswer = rs.getString("securityAnswer");
+                    String image = rs.getString("image");
+                    Staff obj = new Staff(StaffID, first_name, last_name, phone, email, address, username, password, dob, gender, status, role, securityID, securityAnswer, image);
+                    vector.add(obj);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return vector;
+    }
+
+    public Vector<Staff> getStaff(String query, Map<String, String> parameters) {
+        Vector<Staff> vector = new Vector<Staff>();
+        String sql = "select * from Staff s inner join [Role] r on s.RoleID = r.RoleID inner join SecurityQuestion sq on s.securityID = sq.[securityID]";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int StaffID = rs.getInt("StaffID");
@@ -609,13 +636,81 @@ public class DAOStaff extends DBContext {
         return u;
     }
 
+    public Vector<String> checkEmail() {
+        Vector<String> email = new Vector<>();
+        String sql = "SELECT email FROM Staff " +
+                     "UNION ALL " +
+                     "SELECT email FROM Customer;";
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                email.add(rs.getString("email"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đảm bảo ResultSet và Statement được đóng để tránh rò rỉ tài nguyên
+            try {
+                if (rs != null) rs.close();
+                if (st != null) st.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return email;
+    }
+
+    public Vector<String> checkUsername() {
+        Vector<String> email = new Vector<>();
+        String sql = "SELECT username FROM Staff\n"
+                + "UNION ALL\n"
+                + "SELECT username FROM Customer;";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                email.add(rs.getString("username"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return email;
+    }
+
+    public Vector<String> checkPhone() {
+        Vector<String> phone = new Vector<>();
+        String sql = "SELECT phone FROM Staff\n" +
+"UNION ALL\n" +
+"SELECT phone FROM Customer;";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //dataType varName=rs.getdataType(index,fieldName);
+
+                // String first_name=rs.getString(2);
+                phone.add(rs.getString("phone"));
+                // System.out.println(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return phone;
+    }
+
     public Staff getStaffsByemail(String email1) {
         Staff u = null;
         String sql = "select u.StaffID,u.first_name, u.last_name,u.phone,u.email,u.address,\n"
                 + "                u.username,u.password,u.dob,u.gender,u.status,u.RoleID,u.securityID,u.securityID,u.securityAnswer,u.image,\n"
                 + "                r.Role_Name,s.security_question from [Staff] u \n"
                 + "                inner join [Role] r on u.RoleID=r.RoleID\n"
-                + "                inner join SecurityQuestion s on s.securityID=u.securityID where u.email = " + email1 + "'";
+                + "                inner join SecurityQuestion s on s.securityID=u.securityID where u.email = '" + email1 + "'";
         try {
             Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -821,7 +916,10 @@ public class DAOStaff extends DBContext {
 
     public static void main(String[] args) {
         DAOStaff dao = new DAOStaff();
-        System.out.println(dao.getStaffsByUsername("admin"));
+Vector<String> existingEmails = dao.checkEmail();
+if (existingEmails.contains("aaa@gmail.com")) {
+            System.out.println("xxx");
 
+} 
     }
 }

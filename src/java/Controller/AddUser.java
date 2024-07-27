@@ -95,6 +95,7 @@ public class AddUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
         DAOStaff daoU = new DAOStaff();
+        DAOSecurityQuestion db = new DAOSecurityQuestion();
 
         String fname = request.getParameter("fname");
         String lname = request.getParameter("lname");
@@ -106,30 +107,29 @@ public class AddUser extends HttpServlet {
         String dob = request.getParameter("dob");
         String gender = request.getParameter("gender");
         String roleID = request.getParameter("role");
-            int roleid = Integer.parseInt(roleID);
+        int roleid = Integer.parseInt(roleID);
         int status1 = 0;
         String securityidd = request.getParameter("securityQuestion");
         int securityid = Integer.parseInt(securityidd);
         String securityAnswer = request.getParameter("securityAnswer");
-        String image = request.getParameter("image");
         boolean hasError = false;
         String errorMessage = "";
 
+        if ((daoU.checkPhone()).contains(phone)) {
+            errorMessage = "số điện thoại đã tồn tại";
+            hasError = true;
+        }else
         // Check for duplicate email
-        if (daoU.getStaffsByemail(email) != null) {
-            errorMessage = "Email already exists";
+        if ((daoU.checkEmail()).contains(email)) {
+            errorMessage = "Email đã tồn tại";
             hasError = true;
-        }
-
-        // Check for duplicate username
-        if (daoU.getStaffsByUsername(username) != null) {
-            errorMessage = "Username already exists";
+        } else // Check for duplicate username
+        if ((daoU.checkUsername()).contains(username)) {
+            errorMessage = "Tài khoản đã tồn tại";
             hasError = true;
-        }
-
+        } 
         if (hasError) {
             // Set error attribute and redirect to user list
-            request.getSession().setAttribute("error", errorMessage);
             request.setAttribute("error", errorMessage);
         } else {
 
@@ -142,11 +142,10 @@ public class AddUser extends HttpServlet {
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
-
             // Create User object
             Role role = new Role(roleid, "");
             Security sq = new Security(securityid, "");
-            Staff user = new Staff(0, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, image);
+            Staff user = new Staff(0, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, null);
 
             // Send email with reset link
             String resetLink = "Bạn đã được thêm vào công ty ESHOP với vai trò " + daoU.getRoleName(roleid).getRole_Name() + ". Sau đây là tài khoản của bạn:\n"
@@ -158,9 +157,14 @@ public class AddUser extends HttpServlet {
             }
 
             // Insert new user
-            System.out.println(daoU.insertStaff(user));
+       daoU.insertStaff(user);
             response.sendRedirect("userList");
+            return;
         }
+        request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
+        request.setAttribute("role", daoU.getRole("select * from [Role]"));
+                    request.getRequestDispatcher("Views/addUser.jsp").forward(request, response);
+
     }
 
     public void sendEmail(String subject, String body, String to) throws MessagingException, UnsupportedEncodingException {

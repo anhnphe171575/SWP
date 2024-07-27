@@ -169,6 +169,11 @@ public class Staff {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "Staff{" + "StaffID=" + StaffID + ", first_name=" + first_name + ", last_name=" + last_name + ", phone=" + phone + ", email=" + email + ", address=" + address + ", username=" + username + ", password=" + password + ", dob=" + dob + ", gender=" + gender + ", status=" + status + ", role=" + role + ", security=" + security + ", securityAnswer=" + securityAnswer + ", image=" + image + '}';
+    }
+
   
    
 }

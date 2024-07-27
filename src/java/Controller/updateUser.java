@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class updateUser extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgUserProfile";
+    private static final String UPLOAD_DIR = "C:\\Users\\phuan\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgUserProfile";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,6 +74,7 @@ public class updateUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOStaff daoU = new DAOStaff();
+        
         DAOSecurityQuestion db = new DAOSecurityQuestion();
         request.setAttribute("error", request.getParameter("error"));
         request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
@@ -94,14 +95,7 @@ public class updateUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOStaff daoU = new DAOStaff();
-        Part filePart = request.getPart("file");
-        // Get the file name
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        // Create a file path                
-        File file = new File(UPLOAD_DIR, fileName);
-        // Write the file to the specified directory
-        filePart.write(file.getAbsolutePath());
-        String fileUrl = "imgUserProfile/" + fileName;
+
 
         String UserID = request.getParameter("UserID");
         String fname = request.getParameter("fname");
@@ -132,26 +126,26 @@ public class updateUser extends HttpServlet {
             Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Boolean a = true;
-        String error = "";
-        if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null) {
-            error += "Error Mail";
-            a = false;
-        }
-        if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null) {
-            error += "Error UserName";
-            a = false;
+           Boolean a = true;
+    String error = "";
+    if (daoU.notStaffbyEmail(daoU.getStaffsByID(UserId).getEmail(), email) != null || (daoU.checkEmail()).contains(email)) {
+        error += "Email đã tồn tại. ";
+        a = false;
+    }
+    if (daoU.notStaffbyUsername(daoU.getStaffsByID(UserId).getUsername(), username) != null || (daoU.checkUsername()).contains(username)) {
+        error += "Tài khoản đã tồn tại. ";
+        a = false;
+    }
 
-        }
-        if (a == false) {
-            //request.setAttribute("error", error);
-            //  request.getRequestDispatcher("userList?service=updateUser&UserID=" + UserID).forward(request, response);
-            response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + error);
-        } else {
-            Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
-            daoU.UpdateStaff(user);
-            response.sendRedirect("userList");
-        }
+    if (a == false) {
+        // Chuyển hướng với thông báo lỗi
+        response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + java.net.URLEncoder.encode(error, "UTF-8"));
+    } else {
+        Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, null);
+        daoU.UpdateStaff(user);
+        // Chuyển hướng sau khi cập nhật thành công
+        response.sendRedirect("userList");
+    }
 
     }
 

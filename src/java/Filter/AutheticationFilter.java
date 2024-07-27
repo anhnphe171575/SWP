@@ -1,7 +1,5 @@
 package Filter;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
 import Entity.Customer;
 import Entity.Role;
 import Entity.Staff;
@@ -20,6 +18,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class AutheticationFilter implements Filter {
 
@@ -50,28 +50,49 @@ public class AutheticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String url = req.getServletPath();
-          if (url.endsWith(".jsp") || url.endsWith(".scss") || url.endsWith(".html") || url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") || url.endsWith(".gif")) {
+        if (url.endsWith(".scss") || url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".jpeg") || url.endsWith(".gif")) {
             chain.doFilter(request, response);
             return;
         }
-        System.out.println("Requested Resource::" + url);
-        log("Requested Resource:" + url);
 
+        if (url.toLowerCase().endsWith(".jsp")) {
+            req.getRequestDispatcher("/AccsessDenied").forward(request, response);
+            return;
+        }
+
+        System.out.println("Requested Resource::" + url);
         HttpSession session = req.getSession();
         Role role = (Role) session.getAttribute("role");
         Staff user = (Staff) session.getAttribute("user");
         Customer cus = (Customer) session.getAttribute("cus");
 
-        String[] customerUrls = {"AddToCart", "CartDetails", "CartContact", "MyOrderURL", "CancelOrder", "MyOrderDetailURL", "PayAgain", "editProfileCustomerURL"};
-        String[] publicUrls = {"ProductsListPublic", "BlogController", "HomePage", "payments.png", "ProductDetailsPublic", "LoginController", "LoginCusController", "ResetPassword", "NewPassword", "SearchHome", "signup", "verify", "LogOut"};
-        String[] customerAuthUrls = {"CartDetails", "CartContact", "editProfileCustomerURL", "ProductsListPublic", "LogOut", "BlogController", "MyOrderURL", "CancelOrder", "MyOrderDetailURL", "HomePage", "AddToCart", "CartCompletion", "payments.png", "ProductDetailsPublic", "vnpayajax", "BlogDetail", "PayAgain"};
+        String[] customerUrls = {"AddToCart", "CartDetails", "CartContact", "MyOrderURL", "CancelOrder", "ChangePassword", "MyOrderDetailURL", "PayAgain", "editProfileCustomerURL"};
+        String[] publicUrls = {"ProductsListPublic", "EditReceive", "BlogDetail", "BlogController", "HomePage", "payments.png", "ProductDetailsPublic", "LoginController", "LoginCusController", "ResetPassword", "NewPassword", "SearchHome", "signup", "verify", "LogOut"};
+        String[] customerAuthUrls = {"CartDetails", "ChangePassword", "CartContact", "editProfileCustomerURL", "ProductsListPublic", "LogOut", "BlogController", "MyOrderURL", "CancelOrder", "MyOrderDetailURL", "HomePage", "AddToCart", "CartCompletion", "payments.png", "ProductDetailsPublic", "vnpayajax", "BlogDetail", "PayAgain"};
 
         Map<Integer, String[]> roleUrls = new HashMap<>();
-        roleUrls.put(1, new String[]{"MKTDashboard", "DBcus", "DBpost", "DBpro", "DBfeedback", "editp", "EditPost", "editProductDetails", "productslist", "SliderServletURL", "PostController", "CustomerServletURL", "addp", "StatusFeedBack", "FeedBackList", "update", "view", "FeedbackDetail", "deleteProduct", "editProfileUserURL","PostDetail"});
+        roleUrls.put(1, new String[]{"MKTDashboard", "DBcus", "DBpost", "DBpro", "DBfeedback", "editp", "EditPost", "editProductDetails", "productslist", "SliderServletURL", "PostController", "CustomerServletURL", "addp", "StatusFeedBack", "FeedBackList", "update", "view", "FeedbackDetail", "deleteProduct", "editProfileUserURL", "PostDetail", "turnfeatured"});
         roleUrls.put(2, new String[]{"updatestatusorder", "orderlist", "orderstatus", "orderdetails", "mktcss", "LoginController", "editProfileUserURL"});
         roleUrls.put(3, new String[]{"SaleDashboardURL", "orderlist", "mktcss", "orderdetails", "updatesale", "sales", "LoginController", "editProfileUserURL"});
-        roleUrls.put(4, new String[]{"orderlist", "mktcss", "orderdetails", "updatestatusorder", "orderstatus", "LoginController", "editProfileUserURL", "productslist", "updateQuantity", "updatePrice", "updateSalePrice"});
-        roleUrls.put(5, new String[]{"AdminDashboard","editProfileUserURL", "userList", "userDetail", "AddUser", "updateUser", "SecurityQuestion", "EditSQ", "editRoleURL", "editStatusOrderURL", "LoginController", "AdminSettingURL"});
+        roleUrls.put(4, new String[]{"orderlist", "mktcss", "TransactionURL", "orderdetails", "updatestatusorder", "orderstatus", "LoginController", "editProfileUserURL", "productslist", "updateQuantity", "updatePrice", "updateSalePrice"});
+        roleUrls.put(5, new String[]{"AdminDashboard", "editProfileUserURL", "userList", "userDetail", "AddUser", "updateUser", "SecurityQuestion", "EditSQ", "editRoleURL", "editStatusOrderURL", "LoginController","CategoryProductURL", "AdminSettingURL", "CategoryServletURL"});
+
+        if (!isUrlInArrays(url, customerUrls, publicUrls, customerAuthUrls, roleUrls) &&
+            !url.contains("LoginController") && !url.contains("LoginCusController") &&
+            !url.contains("ResetPassword") && !url.contains("verify") &&
+            !url.contains("signup") && !url.contains("NewPassword")) {
+            session.setAttribute("position", url);
+            log("position" + url);
+        }
+
+        if (url.equals("LoginController") || url.equals("LoginCusController") || url.equals("ResetPassword") || url.equals("verify") || url.equals("signup") || url.equals("NewPassword")) {
+            String position = (String) session.getAttribute("position");
+            if (position != null && position.length() > 0) {
+                res.sendRedirect("/SWP/" + position);
+                System.out.println("aaaa");
+                return;
+            }
+        }
 
         if (cus == null && matchesAny(url, customerUrls)) {
             request.getRequestDispatcher("LoginCusController").forward(request, response);
@@ -97,12 +118,30 @@ public class AutheticationFilter implements Filter {
                     request.getRequestDispatcher(getRedirectURL(roleId)).forward(request, response);
                     return;
                 }
+            } else {
+                request.getRequestDispatcher("AccsessDenied").forward(request, response);
+                return;
             }
             chain.doFilter(request, response);
             return;
         }
+        if (req.getRequestDispatcher("/AccsessDenied") != null) {
+            req.getRequestDispatcher("/AccsessDenied").forward(request, response);
+        } else {
+            res.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
 
-        request.getRequestDispatcher("LoginController").forward(request, response);
+    private boolean isUrlInArrays(String url, String[] customerUrls, String[] publicUrls, String[] customerAuthUrls, Map<Integer, String[]> roleUrls) {
+        if (matchesAny(url, customerUrls) || matchesAny(url, publicUrls) || matchesAny(url, customerAuthUrls)) {
+            return true;
+        }
+        for (String[] urls : roleUrls.values()) {
+            if (matchesAny(url, urls)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean matchesAny(String url, String[] patterns) {
@@ -149,10 +188,7 @@ public class AutheticationFilter implements Filter {
                 log("AutheticationFilter:Initializing filter");
             }
         }
-
-        
     }
-    
 
     @Override
     public String toString() {

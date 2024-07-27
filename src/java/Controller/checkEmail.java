@@ -4,21 +4,19 @@
  */
 package Controller;
 
-import DAL.DAOCart;
-import DAL.DAOCustomer;
+import DAL.DAOStaff;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  *
  * @author phuan
  */
-public class LoginCusController extends HttpServlet {
+public class checkEmail extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class LoginCusController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginCusController</title>");
+            out.println("<title>Servlet checkEmail</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginCusController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet checkEmail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +56,7 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -72,30 +70,21 @@ public class LoginCusController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAOCustomer daoC = new DAOCustomer();
-        HttpSession session = request.getSession();
+                DAOStaff daoU = new DAOStaff();
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        DAOCart db = new DAOCart();
-        boolean check = daoC.loginCus(username, password);
-        if (check == true) {
-            int cusid = daoC.getCusByUserName(username).getCustomerID();
-            session.setAttribute("cus", daoC.getCus(username));
-
-            session.setAttribute("cart", db.getListCart(cusid));
-            session.setMaxInactiveInterval(15 * 60);
-            String position = (String) session.getAttribute("position");
-            if (position != null) {
-                session.removeAttribute("position"); // Xóa position sau khi sử dụng
-                response.sendRedirect("/SWP" + position);
-            } else {
-                response.sendRedirect("HomePage");
-            }
-        } else {
-            request.setAttribute("error", "error");
-            request.getRequestDispatcher("Views/loginCus.jsp").forward(request, response);
+            String email = request.getParameter("email");
+        boolean exists = false;
+        boolean checkEmailInDatabase = false;
+        if (daoU.getStaffsByemail(email) != null) {
+            checkEmailInDatabase=true;
         }
+if (email != null && !email.trim().isEmpty()) {
+            exists = checkEmailInDatabase;
+        }
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"exists\": " + exists + "}");
     }
 
     /**

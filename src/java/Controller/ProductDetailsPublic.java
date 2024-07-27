@@ -25,7 +25,7 @@ import java.util.Date;
 @MultipartConfig
 public class ProductDetailsPublic extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+ 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,6 +49,7 @@ public class ProductDetailsPublic extends HttpServlet {
         int pid_raw = 0;
         DAOProduct db = new DAOProduct();
         DAOFeedback db1 = new DAOFeedback();
+
         try {
             String pid = request.getParameter("pid");
             pid_raw = Integer.parseInt(pid);
@@ -60,6 +61,8 @@ public class ProductDetailsPublic extends HttpServlet {
         CategoryProduct cp = new CategoryProduct();
         DAOCategoryProduct db2 = new DAOCategoryProduct();
         cp = db2.getCategoryProductbyPID(pid_raw);
+                request.setAttribute("Cate1", db2.getCategoryProductProduct());
+
         request.setAttribute("orderid", orderid);
         request.setAttribute("activate", activate);
         request.setAttribute("feedback", db1.getFeedBackByProID(pid_raw));

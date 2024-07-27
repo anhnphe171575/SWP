@@ -3,9 +3,9 @@
     Created on : Jun 1, 2024, 4:32:25 AM
     Author     : phuan
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +18,6 @@
         <meta content="Free HTML Templates" name="description">
 
         <!-- Favicon -->
-        <link href="img/favicon.ico" rel="icon">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -119,23 +118,25 @@
             $('#quantity-input').on('input', function () {
                 // Chỉ cho phép số nguyên dương
                 this.value = this.value.replace(/[^0-9]/g, '');
-                if (this.value === '') this.value = 1; // Đặt giá trị mặc định nếu trống
+                if (this.value === '')
+                    this.value = 1; // Đặt giá trị mặc định nếu trống
             });
 
             $('#quantity-input').on('change', function () {
                 // Đảm bảo số lượng tối thiểu là 1
-                if (this.value < 1) this.value = 1;
+                if (this.value < 1)
+                    this.value = 1;
             });
         });
 
-        function addToCart() {
-            var quantity = $('#quantity-input').val();
-            var productID = '123'; // Thay thế '123' bằng ID sản phẩm thực tế
-            // Thực hiện hành động khi nhấn nút "Add to Cart"
-            alert('Added ' + quantity + ' items to the cart.');
-            // Ví dụ về chuyển hướng với productID và quantity là các tham số truy vấn
-            location.href = 'AddToCart?pid=' + productID + '&quantity=' + quantity;
-        }
+//        function addToCart() {
+//            var quantity = $('#quantity-input').val();
+//            var productID = '123'; // Thay thế '123' bằng ID sản phẩm thực tế
+//            // Thực hiện hành động khi nhấn nút "Add to Cart"
+//            alert('Added ' + quantity + ' items to the cart.');
+//            // Ví dụ về chuyển hướng với productID và quantity là các tham số truy vấn
+//            location.href = 'AddToCart?pid=' + productID + '&quantity=' + quantity;
+//        }
     </script>
     <body>
         <!-- Topbar Start -->
@@ -172,81 +173,72 @@
         <!-- Navbar Start -->
         <div id="stickyBar"class="bar">
             <div class="container-fluid">
-            <div class="row border-top px-xl-5">
-                <div class="col-lg-3 d-none d-lg-block">
-                    <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                        <h6 class="m-0">Thể Loại</h6>
-                        <i class="fa fa-angle-down text-dark"></i>
-                    </a>
-                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                        <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                            <c:forEach items="${requestScope.Cate1}" var="a"> 
-                                <div class="nav-item dropdown"> 
-                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
-                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-
-                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
-
-                                            </c:if>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-                            </c:forEach>                   
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-lg-9">
-                    <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                        <a href="" class="text-decoration-none d-block d-lg-none">
-                            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                <div class="row border-top px-xl-5">
+                    <div class="col-lg-3 d-none d-lg-block">
+                        <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                            <h6 class="m-0">Thể Loại</h6>
+                            <i class="fa fa-angle-down text-dark"></i>
                         </a>
-                        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                            <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
-                                <div class="nav-item dropdown">
-                                    <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
-                                    <div class="dropdown-menu rounded-0 m-0">
-                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
+                        <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                            <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                                <c:forEach items="${requestScope.Cate1}" var="a"> 
+                                    <div class="nav-item dropdown"> 
+                                        <a href="ProductsListPublic?cname=${a.category_name}" class="nav-link" >${a.category_name}</a>
                                     </div>
-                                </div>
-                                <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
-                            </div>       
-                            <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.cus}">
-
-                                    <div class="navbar-nav ml-auto py-0">
-                                          <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <div class="dropdown-menu ml-auto py-0">
-                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
-                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                </c:forEach>                   
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="col-lg-9">
+                        <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                            <a href="" class="text-decoration-none d-block d-lg-none">
+                                <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                            </a>
+                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                                <div class="navbar-nav mr-auto py-0">
+                                    <a href="HomePage" class="nav-item nav-link ">Trang chủ</a>
+                                    <a href="ProductsListPublic" class="nav-item nav-link active">Sản Phẩm</a>
+                                    <div class="nav-item dropdown">
+                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
+                                        <div class="dropdown-menu rounded-0 m-0">
+                                            <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                         </div>
-                                        <!--<a href="LogOut">Log out</a>-->
-                                        
-                                          </div>
-                                        <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
+                                    <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+                                </div>       
+                                <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
+                                <c:choose>
+                                    <c:when test="${not empty sessionScope.cus}">
 
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="navbar-nav ml-auto py-0">
-                                        <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
-                                        <a href="signup" class="nav-item nav-link">Đăng Ký</a>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                    </nav>
+                                        <div class="navbar-nav ml-auto py-0">
+                                            <div class="nav-item dropdown">
+                                                <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                                <div class="dropdown-menu ml-auto py-0">
+                                                    <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                                    <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                                </div>
+                                                <!--<a href="LogOut">Log out</a>-->
+
+                                            </div>
+                                            <a href="LogOut" class="nav-link ">Đăng Xuất</a>
+                                        </div>
+
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="navbar-nav ml-auto py-0">
+                                            <a href="LoginCusController" class="nav-item nav-link">Đăng Nhập</a>
+                                            <a href="signup" class="nav-item nav-link">Đăng Ký</a>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <!-- Navbar End -->
 
@@ -309,10 +301,11 @@
                         </div>
 
                         <p class="product-availability">${p.quantity - p.quantity_hold} sản phẩm còn khả dụng</p>
-                    </div>
+                    </div>   
                     <button type="button" class="btn btn-primary px-3 add-to-cart-btn ${p.quantity - p.quantity_hold == 0 ? 'disabled' : ''}" data-product-id="${p.productID}">
-                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
-                    </button>
+                                <i class="fa fa-shopping-cart mr-1"></i> Thêm vào giỏ hàng
+                            </button>
+
                 </div>
             </div>
             <div class="row px-xl-5">
@@ -400,9 +393,9 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3"><a href="ProductDetailsPublic?pid=${rp.productID}">${rp.product_name}</a></h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>$${rp.original_price}</h6>
+                                        <h6>VND${rp.original_price}</h6>
                                         <c:if test="${not empty l.sale_price}">
-                                            <h6 class="text-muted ml-2"><del>$${rp.sale_price}</del></h6>
+                                            <h6 class="text-muted ml-2"><del>VND${rp.sale_price}</del></h6>
                                         </c:if>
                                     </div>
                                 </div>
@@ -454,18 +447,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row border-top border-light mx-xl-5 py-4">
-                <div class="col-md-6 px-xl-0">
-                    <p class="mb-md-0 text-center text-md-left text-dark">
-                        &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-                        by
-                        <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
-                    </p>
-                </div>
-                <div class="col-md-6 px-xl-0 text-center text-md-right">
-                    <img class="img-fluid" src="img/payments.png" alt="">
-                </div>
-            </div>
+        
         </div>
         <!-- Footer End -->
 
@@ -486,65 +468,65 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
-        
+
         <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const quantityInput = document.getElementById('quantity-input');
-        const btnMinus = document.querySelector('.btn-minus');
-        const btnPlus = document.querySelector('.btn-plus');
-        const addToCartButton = document.querySelector('.add-to-cart-btn');
-        const maxQuantity = ${p.quantity - p.quantity_hold};
+        document.addEventListener('DOMContentLoaded', function () {
+            const quantityInput = document.getElementById('quantity-input');
+            const btnMinus = document.querySelector('.btn-minus');
+            const btnPlus = document.querySelector('.btn-plus');
+            const addToCartButton = document.querySelector('.add-to-cart-btn');
+            const maxQuantity = ${p.quantity - p.quantity_hold};
 
-        function updateQuantity(value) {
-            if (value < 1) {
-                value = 1;
-            } else if (value > maxQuantity) {
-                value = maxQuantity;
-            }
-            quantityInput.value = value;
-        }
-
-        btnMinus.addEventListener('click', function() {
-            let currentValue = parseInt(quantityInput.value) || 1;
-            updateQuantity(currentValue - 1);
-        });
-
-        btnPlus.addEventListener('click', function() {
-            let currentValue = parseInt(quantityInput.value) || 1;
-            updateQuantity(currentValue + 1);
-        });
-
-        quantityInput.addEventListener('input', function() {
-            let currentValue = parseInt(quantityInput.value) || 1;
-            updateQuantity(currentValue);
-        });
-
-        addToCartButton.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const productId = this.getAttribute('data-product-id');
-            const quantity = parseInt(quantityInput.value);
-
-            if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
-                alert('Vui lòng chọn số lượng hợp lệ.');
-                return;
-            }
-
-            $.ajax({
-                url: 'AddToCart',
-                method: 'GET',
-                data: { pid: productId, quantity: quantity},
-                success: function(response) {
-                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
-                    // Xử lý cập nhật giỏ hàng tại đây (nếu cần)
-                },
-                error: function(error) {
-                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+            function updateQuantity(value) {
+                if (value < 1) {
+                    value = 1;
+                } else if (value > maxQuantity) {
+                    value = maxQuantity;
                 }
+                quantityInput.value = value;
+            }
+
+            btnMinus.addEventListener('click', function () {
+                let currentValue = parseInt(quantityInput.value) || 1;
+                updateQuantity(currentValue - 1);
+            });
+
+            btnPlus.addEventListener('click', function () {
+                let currentValue = parseInt(quantityInput.value) || 1;
+                updateQuantity(currentValue + 1);
+            });
+
+            quantityInput.addEventListener('input', function () {
+                let currentValue = parseInt(quantityInput.value) || 1;
+                updateQuantity(currentValue);
+            });
+
+            addToCartButton.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const productId = this.getAttribute('data-product-id');
+                const quantity = parseInt(quantityInput.value);
+
+                if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+                    alert('Vui lòng chọn số lượng hợp lệ.');
+                    return;
+                }
+
+                $.ajax({
+                    url: 'AddToCart',
+                    method: 'GET',
+                    data: {pid: productId, quantity: quantity},
+                    success: function (response) {
+                        alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                        // Xử lý cập nhật giỏ hàng tại đây (nếu cần)
+                    },
+                    error: function (error) {
+                        alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    }
+                });
             });
         });
-    });
-</script>
+        </script>
 
     </body>
 

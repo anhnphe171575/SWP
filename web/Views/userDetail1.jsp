@@ -102,7 +102,6 @@
                             <div class="col-sm-8"><h2>Thông tin chi tiết</h2></div>
                             <div class="col-sm-4">
                               
-                                <a href="userList?service=updateUser&UserID=${user.StaffID}" class="btn btn-danger" ><i class="material-icons">&#XE15C;</i> <span>Edit</span></a>
 
                             </div>                       
 

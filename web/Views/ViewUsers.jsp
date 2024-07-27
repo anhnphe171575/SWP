@@ -293,9 +293,9 @@
                 $(document).ready(function () {
                     $('#staffTable').DataTable({
                         "paging": true, // Bật phân trang
-                        "searching": false, // Bật chức năng tìm kiếm
+                        "searching": true, // Bật chức năng tìm kiếm
                         "info": true, // Hiển thị thông tin tổng số bản ghi
-                        "ordering": false,
+                        "ordering": true,
                         "lengthChange": 5    // Tắt chức năng thay đổi số lượng bản ghi mỗi trang
                     });
                 });
@@ -319,72 +319,103 @@
                                         <div class="col-sm-3">
                                             <h2><b>Quản lí Nhân viên</b></h2>
                                         </div>
-                                        <div style="text-align: right" class="col-sm-9">
-                                            <div>
-                                                <div class="col-sm-3">
-                                                    <form action="userList" method="post" style="display: flex; justify-content: space-between;">
-                                                        <div>
-                                                            <input type="text" name="name" placeholder="Fullname">
-                                                            <input type="text" name="email" placeholder="Email">
-                                                            <input type="text" name="phone" placeholder="Phone">
-                                                            <br>
-                                                            <br>
-                                                            <input type="submit" name="submit" value="Search">
-                                                            <input type="reset" value="Clear">
-                                                            <input type="hidden" name="service" value="search"> <!-- Duy nhất một service value -->
-                                                        </div>
-                                                    </form>
 
-                                                </div>
-
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6"style="margin-top:10px">
-                                            <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#XE15C;</i> <span>Lọc</span></a>
+
                                             <a href="AddUser" class="btn btn-success"  ><i class="material-icons">&#xE147;</i> <span>Thêm nhân viên</span></a>
-                                            <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
 
                                         </div>
                                     </div>
                                 </div>
-                                <table id="staffTable" class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>ID nhân viên</th>
-                                            <th>Tên</th>
-                                            <th>Họ</th>
-                                            <th>Số điện thoại</th>
-                                            <th>Email</th>
-                                            <th>Ngày sinh</th>
-                                            <th>Giới tính</th>
-                                            <th>Trạng thái</th>
-                                            <th>Vai trò</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% 
-                                    Vector<Staff> vector = (Vector<Staff>)request.getAttribute("data");
-                                    for (Staff obj : vector) {
-                                    %>
+                                <form action="userList" method="post">
+                                    <div class="filter-container d-flex flex-wrap align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Gender: </span>
+                                                </div>
+                                                <select id="gender-filter" name="gender" class="form-control">
+                                                    <option value="all">Tất cả</option>
+                                                    <option value="1">Nam</option>
+                                                    <option value="0">Nữ</option>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Vai trò:</span>
+                                                </div>
+                                                <select id="role-filter" id="salename" name="role" class="form-control">
+                                                    <option value="all">Tất cả</option>
+                                                <c:forEach items="${requestScope.role}" var="r">
+                                                    <option value="${r.getRoleID()}">${r.getRole_Name()}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Trạng thái</span>
+                                            </div>
+                                            <select class="custom-select" id="status" name="status">
+                                                <option value="all">Tất cả</option>
+                                                <option value="1">Chấp Nhận</option>
+                                                <option value="0">Không Chấp Nhận</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" value="filter" name="service">
+                                    <div class="col-md-3" >
+                                        <input type="submit" value="Lọc" class="btn btn-primary" style="margin-top: 0px">
+                                    </div>
+
+                                </div>
+                            </form>
+
+                            <table id="staffTable" class="table table-striped table-hover">
+                                <thead>
                                     <tr>
-                                        <td><%= obj.getStaffID() %></td>
-                                        <td><%= obj.getFirst_name() %></td>
-                                        <td><%= obj.getLast_name() %></td>
-                                        <td><%= obj.getPhone() %></td>
-                                        <td><%= obj.getEmail() %></td>
-                                        <td><%= obj.getDob() %></td>
-                                        <td><%= obj.isGender() ? "Nam" : "Nữ" %></td>
-                                        <td><%= obj.getStatus() == 1 ? "Hoạt động" : "Không hoạt động" %></td>
-                                        <td><%= obj.getRole().getRole_Name() %></td>
-                                        <td>
-                                            <a href="userDetail?UserID=<%= obj.getStaffID() %>" style="color: red" class="fa fa-eye"></a>
-                                            <a href="updateUser?UserID=<%= obj.getStaffID() %>">
-                                                <i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
-                                            </a>
-                                        </td>
+                                        <th>ID</th>
+                                        <th>Tên</th>
+                                        <th>Họ</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Email</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th>Trạng thái</th>
+                                        <th>Vai trò</th>
+                                        <th>Hành động</th>
                                     </tr>
-                                    <% } %>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${requestScope.data}" var="d">
+                                        <tr>
+                                            <td>${d.getStaffID()}</td>
+                                            <td>${d.first_name}</td>
+                                            <td>${d.last_name}</td>
+                                            <td>${d.phone}</td>
+                                            <td>${d.email}</td>
+                                            <td>${d.dob}</td>
+                                             <td>
+                                            <c:choose>
+                                                <c:when test="${d.gender}">Nam</c:when>
+                                                <c:otherwise>Nữ</c:otherwise>
+                                            </c:choose>   
+                                                </td>
+                                                <td>${d.status == 1 ? "Chấp Nhận" : "Không Chấp Nhận"}</td>
+                                            <td>${d.role.getRole_Name()}</td>
+                                            <td>
+                                                <a href="userDetail?UserID=${d.getStaffID()}" style="color: red" class="fa fa-eye"></a>
+                                                <a href="updateUser?UserID=${d.getStaffID()}">
+                                                    <i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -398,8 +429,22 @@
                                 <h5 class="modal-title">Bộ lọc</h5>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
-                            <form action="userList" >
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Tiêu đề</label>
+                                    <input type="text" class="form-control" name="title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Hình ảnh</label>
+                                    <input type="text" class="form-control" name="thumbnail">
+                                </div>
+                                <div class="form-group">
+                                    <label>Hình ảnh</label>
+                                    <input type="text" class="form-control" name="thumbnail">
+                                </div>
+                            </div>
 
+                            <form action="userList" >
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">OK</button>
                                     <input type="hidden" name="service" value="filter">
@@ -414,37 +459,7 @@
 
 
                 <!-- Sort -->
-                <div id="Sort" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form action="userList" enctype="multipart/form-data">
-                                <div class="modal-header">						
-                                    <h4 class="modal-title">Sort</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="modal-body">					
-                                    <div class="form-group">
-                                        <label>Lựa chọn:</label>
-                                        <select id="category-select" class="form-control" name="sort">                                   
-                                            <option value="UserID">ID nhân viên</option>
-                                            <option value="first_name">Tên đầu</option>
-                                            <option value="phone">Số điện thoại</option>
-                                            <option value="email">email</option>
-                                            <option value="status">Trạng thái</option>
-                                            <option value="role">Vai trò</option>
-                                            <option value="gender">giới tính</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
 
-                                    <input type="submit" class="btn btn-info" value="OK">
-                                    <input type="hidden" name="service" value="sort">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
                 <!-- Delete Modal HTML -->
             </div>
         </body>
