@@ -78,16 +78,16 @@ public class BlogController extends HttpServlet {
         } catch (Exception e) {
             request.getRequestDispatcher("HomePage").forward(request, response);
         }
-if (cname != null) {
+           if (cname != null) {
             cid_raw = daoCP.getCategoryProductbyName(cname).getCategory_productID();
         }
         if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank())) {
             list_post = daoP.getBlog();
-        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank() && cid_raw !=0) {
             list_post = daoP.getPostBySearchAndid(search, cid_raw);
             request.setAttribute("search1", search);
             request.setAttribute("cid", cid);
-        } else if (cid != null && !cid.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && cid_raw !=0) {
             list_post = daoP.getPostByCPId(cid_raw);
             request.setAttribute("cid", cid);
         } else if (cname != null && !cname.isBlank()) {
@@ -105,17 +105,25 @@ if (cname != null) {
         String xpage = request.getParameter("page");
         int size = list_post.size();
         int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
-        if (xpage == null) {
+       if (xpage == null) {
             page = 1;
         } else {
-            page = Integer.parseInt(xpage);
+            try {
+                page = Integer.parseInt(xpage);
+                if (page < 1) {
+                    page = 1;
+                }
+            } catch (NumberFormatException ex) {
+               response.sendRedirect("ProductsListPublic");
+                return;
+            }
         }
         int start, end;
         start = (page - 1) * numberOfPage;
         end = Math.min(page * numberOfPage, list_post.size());
         Vector<Post> list = daoP.getListByPage(list_post, start, end);
         request.setAttribute("category_product", daoCP.getCategoryProductProduct());
-
+        
         request.setAttribute("lastPost", daoP.getLastBlog());
         request.setAttribute("numpage", num);
         request.setAttribute("page", page);

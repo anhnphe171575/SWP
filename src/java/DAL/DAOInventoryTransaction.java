@@ -58,6 +58,7 @@ public class DAOInventoryTransaction extends DBContext {
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("aaaa");
         }
 
     }

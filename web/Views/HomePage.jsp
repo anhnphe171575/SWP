@@ -15,8 +15,7 @@
         <meta content="Free HTML Templates" name="keywords">
         <meta content="Free HTML Templates" name="description">
 
-        <!-- Favicon -->
-        <link href="img/favicon.ico" rel="icon">
+
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -327,7 +326,7 @@
 
 
                 <div class="row px-xl-5 pb-3">
-                    <c:forEach items="${requestScope.HotPost}" var="hp">
+                    <c:forEach items="${requestScope.HotPost}" begin="1" end="6" var="hp">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
                                 <div class="card-header product-img1 position-relative overflow-hidden bg-transparent border p-0">
