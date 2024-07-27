@@ -135,12 +135,12 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
 
                 </div>
                 <div id="line-chart" style="width: 100%; height: 500px;margin-top: 10px"></div>
-                <div class="zoom-img-container">
-                    <!-- Th? <img> ?? hi?n th? ?nh -->
+<!--                <div class="zoom-img-container">
+                     Th? <img> ?? hi?n th? ?nh 
                     <img src="https://cdn0.fahasa.com/media/catalog/product/d/r/dragon-ball-full-color---phan-bon---frieza-dai-de-_-tap-2.jpg" class="zoom-img" onclick="zoomImage(this)">
-                    <!-- D?u X ?? ?óng ?nh -->
+                     D?u X ?? ?óng ?nh 
                     <span class="close-btn" onclick="zoomImage(this.parentNode.querySelector('.zoom-img'))">&times;</span>
-                </div>
+                </div>-->
             </main>
         </div>
         <script>

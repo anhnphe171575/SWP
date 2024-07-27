@@ -638,9 +638,9 @@ public class DAOStaff extends DBContext {
 
     public Vector<String> checkEmail() {
         Vector<String> email = new Vector<>();
-        String sql = "SELECT email FROM Staff " +
-                     "UNION ALL " +
-                     "SELECT email FROM Customer;";
+        String sql = "SELECT email FROM Staff "
+                + "UNION ALL "
+                + "SELECT email FROM Customer;";
         Statement st = null;
         ResultSet rs = null;
 
@@ -655,8 +655,46 @@ public class DAOStaff extends DBContext {
         } finally {
             // Đảm bảo ResultSet và Statement được đóng để tránh rò rỉ tài nguyên
             try {
-                if (rs != null) rs.close();
-                if (st != null) st.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return email;
+    }
+
+    public Vector<String> checkEmail1(String emailInput) {
+        Vector<String> email = new Vector<>();
+        String sql = "DECLARE @excludeEmail VARCHAR(255) = '" + emailInput + "';\n"
+                + "\n"
+                + "SELECT email FROM Staff WHERE email <> @excludeEmail\n"
+                + "UNION ALL \n"
+                + "SELECT email FROM Customer WHERE email <> @excludeEmail;";
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                email.add(rs.getString("email"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đảm bảo ResultSet và Statement được đóng để tránh rò rỉ tài nguyên
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -682,11 +720,55 @@ public class DAOStaff extends DBContext {
         return email;
     }
 
+    public Vector<String> checkUsername1(String usename) {
+        Vector<String> email = new Vector<>();
+        String sql = "DECLARE @excludeEmail VARCHAR(255) = '" + usename + "';\n"
+                + "\n"
+                + "SELECT username FROM Staff WHERE username <> @excludeEmail\n"
+                + "UNION ALL \n"
+                + "SELECT username FROM Customer WHERE username <> @excludeEmail;";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                email.add(rs.getString("username"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return email;
+    }
+
     public Vector<String> checkPhone() {
         Vector<String> phone = new Vector<>();
-        String sql = "SELECT phone FROM Staff\n" +
-"UNION ALL\n" +
-"SELECT phone FROM Customer;";
+        String sql = "SELECT phone FROM Staff\n"
+                + "UNION ALL\n"
+                + "SELECT phone FROM Customer;";
+        try {
+            Statement st = conn.createStatement(
+                    ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                //dataType varName=rs.getdataType(index,fieldName);
+
+                // String first_name=rs.getString(2);
+                phone.add(rs.getString("phone"));
+                // System.out.println(obj);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return phone;
+    }
+
+    public Vector<String> checkPhone1(String phone1) {
+        Vector<String> phone = new Vector<>();
+        String sql = "DECLARE @excludeEmail VARCHAR(255) = '" + phone1 + "';\n"
+                + "\n"
+                + "SELECT phone FROM Staff WHERE phone <> @excludeEmail\n"
+                + "UNION ALL \n"
+                + "SELECT phone FROM Customer WHERE phone <> @excludeEmail;";
         try {
             Statement st = conn.createStatement(
                     ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -803,6 +885,62 @@ public class DAOStaff extends DBContext {
 
     }
 
+    public Staff notStaffbyPhone(String phoneU, String phoneI) {
+        Staff u = null;
+        String sql = "	SELECT \n"
+                + "    u.StaffID, \n"
+                + "    u.first_name, \n"
+                + "    u.last_name, \n"
+                + "    u.phone, \n"
+                + "    u.email, \n"
+                + "    u.address,\n"
+                + "    u.username, \n"
+                + "    u.password, \n"
+                + "    u.dob, \n"
+                + "    u.gender, \n"
+                + "    u.status, \n"
+                + "    u.RoleID, \n"
+                + "    u.securityID, \n"
+                + "    u.securityAnswer, \n"
+                + "    u.image,\n"
+                + "    r.Role_Name, \n"
+                + "    s.security_question \n"
+                + "FROM [Staff] u \n"
+                + "INNER JOIN [Role] r ON u.RoleID = r.RoleID\n"
+                + "INNER JOIN SecurityQuestion s ON s.securityID = u.securityID \n"
+                + "WHERE u.phone <> '" + phoneU + "'\n"
+                + "  AND u.emphoneail = '" + phoneI + "';";
+
+        try {
+            Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = state.executeQuery(sql);
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("roleID"), rs.getString("Role_Name"));
+                Security securityID = new Security(rs.getInt("securityID"), "");
+                u = new Staff(rs.getInt("StaffID"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getString("address"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getDate("dob"),
+                        rs.getBoolean("gender"),
+                        rs.getInt("status"),
+                        role,
+                        securityID,
+                        rs.getString("securityAnswer"),
+                        rs.getString("image"));
+
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return u;
+
+    }
+
     public Staff notStaffbyEmail(String emailU, String emailI) {
         Staff u = null;
         String sql = "	SELECT \n"
@@ -916,10 +1054,10 @@ public class DAOStaff extends DBContext {
 
     public static void main(String[] args) {
         DAOStaff dao = new DAOStaff();
-Vector<String> existingEmails = dao.checkEmail();
-if (existingEmails.contains("aaa@gmail.com")) {
+        Vector<String> existingEmails = dao.checkEmail();
+        if (existingEmails.contains("aaa@gmail.com")) {
             System.out.println("xxx");
 
-} 
+        }
     }
 }

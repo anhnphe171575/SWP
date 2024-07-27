@@ -27,6 +27,13 @@
         <!-- Libraries Stylesheet -->
         <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
         <style>
+            .titlepost{
+                max-width: 250px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-left: 15px;
+            }
             .aa {
                 width: 200px; /* Đặt chiều rộng mong muốn */
                 height: 200px; /* Đặt chiều cao mong muốn */
@@ -247,7 +254,7 @@
                             <a href="ProductsListPublic?cname=${cp.key}" class="cat-img position-relative overflow-hidden mb-3">
                                 <c:forEach items="${requestScope.imageC}" var="ic">
                                     <c:if test="${ic.key == cp.key}">
-                                        <img class="img-fluid" src="${ic.value}" alt="">
+                                        <img style="height: 164px;width: 277px"class="img-fluid" src="${ic.value}" alt="">
                                     </c:if>
                                 </c:forEach>
                             </a>
@@ -279,13 +286,13 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">${p.product_name}</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6>${p.original_price}</h6>
+                                        <h6 class="titlepost">${p.original_price}</h6>
                                         <c:if test="${not empty p.sale_price}">
                                             <h6 class="text-muted ml-2"><del>${p.sale_price}</del></h6>
                                                 </c:if>                       
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <p>${p.brief_information}</p>
+                                        <p class="titlepost">${p.brief_information}</p>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
@@ -331,6 +338,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
 <div class="card-header product-img1 position-relative bg-transparent border p-0" style="background-image: url('${hp.thumbnail}'); background-size: contain; background-repeat: no-repeat; background-position: center; height: 200px;">
+
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <a href="BlogDetail?postID=${hp.postID}" class="text-truncate mb-3">${hp.title}</a>
@@ -355,80 +363,8 @@
             <!-- Vendor End -->
 
 
-            <!-- Footer Start -->
-            <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-                <div class="row px-xl-5 pt-5">
-                    <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                        <a href="" class="text-decoration-none">
-                            <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
-                        </a>
-                        <p></p>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Dong Hung,Thai Binh, Viet Nam</p>
-                        <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                        <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
-                    </div>
-                    <div class="col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 mb-5">
-                                <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                                <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
-                                    <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                    <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                    <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <!--                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                                                <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>-->
-                                    <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                                    <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                                    <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-5">
-                                <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
-                                <!--                        <form action="">
-                                                            <div class="form-group">
-                                                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                                                    required="required" />
-                                                            </div>
-                                                            <div>
-                                                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
-                                                            </div>
-                                                        </form>-->
-                                <div><p>HKD Nguyen Phu Anh </p>
-                                    <p> Giấy chứng nhận đăng ký HKD số 17A80041952 do Phòng Tài chính - Kế hoạch, Uỷ ban nhân dân thành phố Thái Nguyên cấp ngày 30/5/2019</p>
-                                    <p> Địa chỉ: Số 235, Đường Quang Trung, Tổ 7, Phường Tân Thịnh, Thành phố Thái Nguyên, Tỉnh Thái Nguyên, Việt Nam</p>
-                                    <p> Email: teelabvn@gmail.com</p>
-                                    <p>Điện thoại: 0865539083</p></div>
-                            </div>      
-                        </div>
-                    </div>
-                </div>
-                <div class="row border-top border-light mx-xl-5 py-4">
-                    <div class="col-md-6 px-xl-0">
-                        <p class="mb-md-0 text-center text-md-left text-dark">
-                            &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-                            by
-                            <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a>
-                        </p>
-                    </div>
-                    <div class="col-md-6 px-xl-0 text-center text-md-right">
-                        <img class="img-fluid" src="img/payments.png" alt="">
-                    </div>
-                </div>
-            </div>
-            <!-- Footer End -->
-
+            
+        <jsp:include page="footter.jsp"/>
 
             <!-- Back to Top -->
             <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
