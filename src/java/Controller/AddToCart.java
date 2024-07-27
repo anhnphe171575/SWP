@@ -57,8 +57,9 @@ public class AddToCart extends HttpServlet {
                 request.setAttribute("message", "Item quantity updated in cart.");
             }
         }
+                  DAOCart db = new DAOCart();
 
-        response.sendRedirect("CartDetails");
+        session.setAttribute("cart", db.getListCart(cus.getCustomerID()));
     }
 
     @Override

@@ -77,7 +77,7 @@ public class ProductsListPublic extends HttpServlet {
 
             } catch (Exception e) {
 
-                request.getRequestDispatcher("HomePage").forward(request, response);
+                request.getRequestDispatcher("ProductsListPublic").forward(request, response);
             }
         }
         String cname = request.getParameter("cname");
@@ -86,11 +86,10 @@ public class ProductsListPublic extends HttpServlet {
         if (cname != null) {
             cid_raw = db1.getCategoryProductbyName(cname).getCategory_productID();
         }
-        if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank()) && feature!= null &&feature.equals("no")
-                ) {
+        if ((cid == null || cid.isBlank()) && service == null && (search == null || search.isBlank()) && (cname == null || cname.isBlank()) && feature != null && feature.equals("no")) {
             listProduct = db.getProductBySorted();
             request.setAttribute("feature", "no");
-        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank() && feature != null && !feature.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank() && feature != null && !feature.isBlank() && cid_raw != 0) {
             if (feature.equals("yes")) {
                 listProduct = db.getProductFeatureByTitleByCid(search, cid_raw, 1);
 
@@ -101,7 +100,7 @@ public class ProductsListPublic extends HttpServlet {
             }
             request.setAttribute("search1", search);
             request.setAttribute("cid", cid_raw);
-        } else if (cid != null && !cid.isBlank() && feature != null && !feature.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && feature != null && !feature.isBlank() && cid_raw != 0) {
             if (feature.equals("yes")) {
                 listProduct = db.getProductFeatureByCid(cid_raw, 1);
 
@@ -121,7 +120,7 @@ public class ProductsListPublic extends HttpServlet {
                 request.setAttribute("feature", "no");
             }
             request.setAttribute("search1", search);
-        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && search != null && !search.isBlank() && cid_raw != 0) {
             listProduct = db.getProductByTitleByCid(search, cid_raw);
             request.setAttribute("search1", search);
             request.setAttribute("cid", cid_raw);
@@ -134,11 +133,11 @@ public class ProductsListPublic extends HttpServlet {
                 listProduct = db.getProductBySorted();
                 request.setAttribute("feature", "no");
             }
-        } else if (cid != null && !cid.isBlank()) {
+        } else if (cid != null && !cid.isBlank() && cid_raw != 0) {
             listProduct = db.getProductbyCategoryID(cid_raw);
             request.setAttribute("cid", cid);
             request.setAttribute("feature", "no");
-        } else if (cname != null && !cname.isBlank()) {
+        } else if (cname != null && !cname.isBlank() && cid_raw != 0) {
             // Assuming you have a method to get products by category name if needed.
             listProduct = db.getProductbyCategoryID(cid_raw);
             request.setAttribute("cid", cid_raw);
@@ -157,16 +156,23 @@ public class ProductsListPublic extends HttpServlet {
         String xpage = request.getParameter("page");
         int size = listProduct.size();
         int num = (size % numberOfPage == 0 ? (size / numberOfPage) : ((size / numberOfPage) + 1));
-        if (xpage == null) {
+             if (xpage == null) {
             page = 1;
         } else {
-            page = Integer.parseInt(xpage);
+            try {
+                page = Integer.parseInt(xpage);
+                
+            } catch (NumberFormatException ex) {
+               response.sendRedirect("ProductsListPublic");
+                return;
+            }
         }
+
         int start, end;
         start = (page - 1) * numberOfPage;
         end = Math.min(page * numberOfPage, listProduct.size());
         List<Product> list = db.getListByPage(listProduct, start, end);
-        request.setAttribute("LatedProducts", db.LastedProduct("SELECT top 5* FROM Product where featured = 1 and quantity > 0 and status = 1 ORDER BY update_date,price"));
+        request.setAttribute("LatedProducts", db.LastedProduct("SELECT top 5* FROM Product where featured = 1 and quantity > 0 and status = 1 ORDER BY update_date, sale_price"));
         request.setAttribute("Cate1", db1.getCategoryProductProduct());
         request.setAttribute("CategoryB", db.ListCatogoryAndBrand());
         request.setAttribute("numpage", num);

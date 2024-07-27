@@ -17,7 +17,7 @@
         <meta content="Free HTML Templates" name="description">
 
         <!-- Favicon -->
-        <link href="img/favicon.ico" rel="icon">
+       
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -92,21 +92,14 @@
                         <i class="fa fa-angle-down text-dark"></i>
                     </a>
                     <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
-                        <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                            <c:forEach items="${requestScope.Cate1}" var="a"> 
-                                <div class="nav-item dropdown"> 
-                                    <a href="#" class="nav-link" data-toggle="dropdown">${a.category_name}<i class="fa fa-angle-down float-right mt-1"></i></a>
-                                    <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                                        <c:forEach items="${requestScope.CategoryB}" var="c"> 
-                                            <c:if test="${a.getCategory_name() == c.categoryProduct.getCategory_name()}">
-                                                <a href="ProductsListPublic?cid=${a.category_productID}" class="dropdown-item">${c.brand}</a>
-                                            </c:if>
-                                        </c:forEach>
+                            <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                                <c:forEach items="${requestScope.Cate1}" var="a"> 
+                                    <div class="nav-item dropdown"> 
+                                        <a href="ProductsListPublic?cname=${a.category_name}" class="nav-link" >${a.category_name}</a>
                                     </div>
-                                </div>
-                            </c:forEach>                   
-                        </div>
-                    </nav>
+                                </c:forEach>                   
+                            </div>
+                        </nav>
                 </div>
                 <div class="col-lg-9">
                     <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
@@ -118,8 +111,8 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <a href="HomePage" class="nav-item nav-link active">Trang chủ</a>
-                                <a href="ProductsListPublic" class="nav-item nav-link">Sản Phẩm</a>
+                                <a href="HomePage" class="nav-item nav-link ">Trang chủ</a>
+                                <a href="ProductsListPublic" class="nav-item nav-link ">Sản Phẩm</a>
                                 <div class="nav-item dropdown">
                                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
