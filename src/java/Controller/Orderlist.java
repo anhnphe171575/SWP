@@ -93,7 +93,7 @@ public class Orderlist extends HttpServlet {
                 Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
                 request.setAttribute("quantity", quantity);
             } else if (user.getRole().getRoleID() == 4) {
-                ArrayList<OrderItems> orderItems = d.getPackingOrder();
+                ArrayList<OrderItems> orderItems = d.getOrderInfor();
                 request.setAttribute("list1", orderItems);
                 Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
                 request.setAttribute("quantity", quantity);

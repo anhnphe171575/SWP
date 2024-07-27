@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="link">Link:</label>
-                <input type="url" name="link" id="link" class="form-control" required>
+                <input type="text" name="link" id="link" class="form-control" required>
             </div>
             <div class="form-group">
                 <label for="notes">Notes:</label>
