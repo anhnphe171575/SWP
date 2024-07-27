@@ -369,11 +369,12 @@
                                         <td>${item.quantity}</td>
                                         <td>${item.list_price}</td>
                                         <c:forEach var="item1" items="${requestScope.list4}">
-                                            <c:if test="${item1.productID == item.product.productID && item1.quantity > 0}">                                            
-                                                <td><button onclick="location.href = 'AddToCart?pid=${item.product.productID}'" ></button></td>
+                                            <c:if test="${item1.productID == item.product.productID && item1.quantity - item1.quantity_hold > 0}">                                            
+                                                <td>                                                <button class="add-to-cart-btn" data-product-id="${item.product.productID}">Mua lại</button>
+                                                    </button></td>
                                                 </c:if>               
                                             </c:forEach>
-                                    <form id="cancelForm" method="GET" action="CancelOrder">
+                                <form id="cancelForm" method="GET" action="CancelOrder">
                                     <input type="hidden" name="pid" value="${item.product.productID}" />
                                     <input type="hidden" name="quantity" value="${item.quantity}" />
 
@@ -397,5 +398,43 @@
             <a href="MyOrderURL?customerid=${requestScope.customerid}" class="button-field">Back To My Order</a>
 
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+
+                        // Lấy ID sản phẩm từ thuộc tính data
+                        const productId = this.getAttribute('data-product-id');
+
+                        // Tạo hiệu ứng thêm vào giỏ hàng
+                        const cartIcon = document.querySelector('.fa-shopping-cart');
+
+                        // Tạo bản sao của hình ảnh sản phẩm
+                        ;
+
+                        // Lấy vị trí của hình ảnh sản phẩm và giỏ hàng
+                        const cartIconRect = cartIcon.getBoundingClientRect();
+
+                        $.ajax({
+                            url: 'AddToCart',
+                            method: 'GET',
+                            data: {pid: productId},
+                            success: function (response) {
+                                // Xử lý phản hồi thành công, ví dụ cập nhật giỏ hàng
+                                alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                            },
+                            error: function (error) {
+                                // Xử lý lỗi
+                                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                            }
+                        });
+                    }, 1100);
+                });
+            });
+
+        </script>
     </body>
 </html>

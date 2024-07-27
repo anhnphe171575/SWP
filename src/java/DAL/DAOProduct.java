@@ -898,7 +898,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProduct() {
         List<Product> product = new ArrayList();
         try {
-            String query = "Select p.productID, p.product_name, p.quantity, p.year,p.category_productID, p.product_description, p.featured, p.thumbnail, "
+            String query = "Select p.productID, p.product_name,p.quantity_hold, p.quantity, p.year,p.category_productID, p.product_description, p.featured, p.thumbnail, "
                     + "p.brief_information,p.original_price,p.sale_price,p.update_date,p.brand, p.status, cp.category_name, cp.category_name, cp.category_description, cp.image "
                     + "from Product p inner join CategoryProduct cp "
                     + "on p.category_productID =cp.category_productID  ";
@@ -921,7 +921,7 @@ public class DAOProduct extends DBContext {
                         cp,
                         rs.getString("brand"),
                         rs.getDate("update_date"),
-                        rs.getBoolean("status"), 0
+                        rs.getBoolean("status"), rs.getInt("quantity_hold")
                 );
                 product.add(p);
             }

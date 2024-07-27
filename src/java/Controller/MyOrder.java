@@ -3,6 +3,7 @@ package Controller;
 import DAL.DAOCategoryProduct;
 import DAL.DAOFeedback;
 import DAL.DAOOrder;
+import Entity.Customer;
 import Entity.OrderItems;
 import Entity.StatusOrder;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,22 +30,24 @@ public class MyOrder extends HttpServlet {
             throws ServletException, IOException {
         DAOOrder d = new DAOOrder();
         DAOCategoryProduct db2 = new DAOCategoryProduct();
-        String customerid = request.getParameter("customerid");
+        HttpSession session = request.getSession();
+
+        Customer cus = (Customer)session.getAttribute("cus");
         String status = request.getParameter("status");
         ArrayList<OrderItems> orderItems;
         List<StatusOrder> st = d.getStatusOrder1();
         
         if (status == null) {
-            orderItems = d.getOrderInforByCustomer(customerid);
+            orderItems = d.getOrderInforByCustomer(cus.getCustomerID());
         } else {
-            orderItems = d.getOrderInforByCustomerByStatus(customerid, status);
+            orderItems = d.getOrderInforByCustomerByStatus(cus.getCustomerID(), status);
         }
 
         Map<Integer, Integer> quantity = d.getOrderQuantities(orderItems);
         DAOFeedback db1 = new DAOFeedback();
-        request.setAttribute("feedback", db1.getFeedBackOrder(Integer.parseInt(customerid)));
+        request.setAttribute("feedback", db1.getFeedBackOrder(cus.getCustomerID()));
         request.setAttribute("status1", status);
-        request.setAttribute("customerid", customerid);
+        request.setAttribute("customerid", cus.getCustomerID());
         request.setAttribute("sale", d.getSaleName());
         request.setAttribute("list1", orderItems);
         request.setAttribute("quantityOrder", quantity);
@@ -59,7 +63,9 @@ public class MyOrder extends HttpServlet {
             throws ServletException, IOException {
         DAOOrder d = new DAOOrder();
         String service = request.getParameter("service");
+        HttpSession session = request.getSession();
 
+        Customer cus = (Customer)session.getAttribute("cus");
         if (service == null || service.isEmpty()) {
             doGet(request, response);
 
@@ -77,9 +83,9 @@ public class MyOrder extends HttpServlet {
             if(status1.length() != 0 && id.length() ==0 && name.length()==0)
             {
                  if (status1.length() != 0) {
-                    orderItems = d.getOrderInforByCustomerByStatus(cus_id, status1);
+                    orderItems = d.getOrderInforByCustomerByStatus(cus.getCustomerID(), status1);
                 } else {
-                   orderItems = d.getOrderInforByCustomer(cus_id);
+                   orderItems = d.getOrderInforByCustomer(cus.getCustomerID());
                 }
             }
             else if (status1.length() != 0) {
@@ -98,9 +104,9 @@ public class MyOrder extends HttpServlet {
             }
             else{
                  if (status1.length() != 0) {
-                    orderItems = d.getOrderInforByCustomerByStatus(cus_id, status1);
+                    orderItems = d.getOrderInforByCustomerByStatus(cus.getCustomerID(), status1);
                 } else {
-                   orderItems = d.getOrderInforByCustomer(cus_id);
+                   orderItems = d.getOrderInforByCustomer(cus.getCustomerID());
                 }
             }
            

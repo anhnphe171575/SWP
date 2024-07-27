@@ -310,7 +310,6 @@ public class DAOCustomer extends DBContext {
                 + "           ,[email]=?\n"
                 + "           ,[address]=?\n"
                 + "           ,[username]=?\n"
-                + "           ,[password]=?\n"
                 + "           ,[dob]=?\n"
                 + "           ,[gender]=?\n"
                 + "           ,[activity_history]=?\n"
@@ -327,17 +326,16 @@ public class DAOCustomer extends DBContext {
             pre.setString(4, obj.getEmail());
             pre.setString(5, obj.getAddress());
             pre.setString(6, obj.getUsername());
-            pre.setString(7, obj.getPassword());
             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(obj.getDob());
             String date2 = spd.format(obj.getActivity_history());
-            pre.setDate(8, java.sql.Date.valueOf(date1));
-            pre.setBoolean(9, obj.isGender());
-            pre.setDate(10, java.sql.Date.valueOf(date2));
-            pre.setInt(11, obj.getSecurity().getSecurityID());
-            pre.setString(12, obj.getSecutityAnswer());
-            pre.setString(13, obj.getImage());
-            pre.setInt(14, obj.getCustomerID());
+            pre.setDate(7, java.sql.Date.valueOf(date1));
+            pre.setBoolean(8, obj.isGender());
+            pre.setDate(9, java.sql.Date.valueOf(date2));
+            pre.setInt(10, obj.getSecurity().getSecurityID());
+            pre.setString(11, obj.getSecutityAnswer());
+            pre.setString(12, obj.getImage());
+            pre.setInt(13, obj.getCustomerID());
             n = pre.executeUpdate();
 
         } catch (SQLException ex) {
@@ -788,6 +786,6 @@ public class DAOCustomer extends DBContext {
 //                "123 Main St", "johndoe", "password123", dob, true,
 //                dateCreateBy, sq, "My first pet's name?", null
 //        );
-        System.out.println();
+        System.out.println(dao.check("user1", "1234"));
     }
 }

@@ -41,6 +41,11 @@
                 <span class="material-icons-outlined">person </span> Vai trò
             </a>
         </li>
+        <li class="sidebar-list-item">
+            <a href="CategoryServletURL">
+                <span class="material-icons-outlined">person </span> Loại sản phẩm
+            </a>
+        </li>
 
     </ul>
 </aside>
