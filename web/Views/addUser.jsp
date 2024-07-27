@@ -1,12 +1,5 @@
-<%-- 
-    Document   : addUser
-    Created on : Jul 5, 2024, 2:30:33 PM
-    Author     : admin
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -78,31 +71,31 @@
                                 </tr>-->
                 <tr>
                     <td>Tên</td>
-                    <td><input type="text" name="fname" id="" value="" required=""></td>
+                    <td><input type="text" name="fname" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
                     <td>Họ </td>
-                    <td><input type="text" name="lname" id="" value="" required></td>
+                    <td><input type="text" name="lname" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
                     <td>Số điện thoại</td>
-                    <td><input type="text" name="phone" id="" value="" required></td>
+                    <td><input type="text" name="phone" id="" value="" required maxlength="10"></td>
                 </tr>
                 <tr>
                     <td>Email</td>
-                    <td><input type="email" name="email"  id="email" value="" required></td>
+                    <td><input type="email" name="email"  id="email" value="" required maxlength="50"></td>
                 </tr>
                 <tr>
                     <td>Địa chỉ</td>
-                    <td><input type="text" name="address" id="" value="" required></td>
+                    <td><input type="text" name="address" id="" value="" required maxlength="100"></td>
                 </tr>
                 <tr>
                     <td>Tên đăng nhập</td>
-                    <td><input type="text" name="username" id="" value="" required></td>
+                    <td><input type="text" name="username" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
                     <td>Mật khẩu</td>
-                    <td><input type="password" name="password" id="" value="" required></td>
+                    <td><input type="password" name="password" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
                     <td>Ngày Sinh</td>
@@ -148,7 +141,7 @@
                 </tr>
                 <tr>
                     <td>Câu trả lời</td>
-                    <td><input type="text" name="securityAnswer" id="" value="" required></td>
+                    <td><input type="text" name="securityAnswer" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
                     <td><input type="submit" name="submit" value="Add User"></td>
@@ -160,4 +153,3 @@
        
     </body>
 </html>
-
