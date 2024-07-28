@@ -54,10 +54,6 @@
                 color: #007bff;
             }
 
-            .verify-form {
-                text-align: center;
-            }
-
             .btn {
                 display: inline-block;
                 padding: 10px 20px;
@@ -78,31 +74,30 @@
             }
         </style>
     </head>
+
     <body>
         <div class="container">
             <h2 class="title">Thông Tin Khách Hàng</h2>
-
-            <c:if test="${sessionScope.cus != null}">
-                <div class="customer-info">
-                    <!-- Ẩn ID khách hàng -->
-                    <!-- <p><strong>ID:</strong> ${cus.customerID}</p> -->
-                    <p><strong>Họ:</strong> ${cus.first_name}</p>
-                    <p><strong>Tên:</strong> ${cus.last_name}</p>
-                    <p><strong>Số điện thoại:</strong> ${cus.phone}</p>
-                    <p><strong>Email:</strong> ${cus.email}</p>
-                    <p><strong>Địa chỉ:</strong> ${cus.address}</p>
-                    <p><strong>Tên đăng nhập:</strong> ${cus.username}</p>
-                    <p><strong>Ngày sinh:</strong> <fmt:formatDate value="${cus.dob}" pattern="dd/MM/yyyy"/></p>
-                    <p><strong>Giới tính:</strong> ${cus.gender ? 'Nam' : 'Nữ'}</p>
-                    <p><strong>Lịch sử hoạt động:</strong> <fmt:formatDate value="${cus.activity_history}" pattern="dd/MM/yyyy"/></p>
-                    <p><strong>Câu hỏi bảo mật:</strong> ${cus.security.security_question}</p>
-                    <p><strong>Câu trả lời:</strong> ${cus.secutityAnswer}</p>
-                    <p><strong>Ảnh đại diện:</strong> ${cus.image == null ? 'Không có' : '<img src="${cus.image}" alt="Ảnh đại diện" style="max-width: 100px; max-height: 100px;">'}</p>
-                </div>
-            </c:if>
-
             <form method="post" action="verify" class="verify-form">
-                <button type="submit" class="btn btn--red">Xác thực tài khoản</button>
+                <c:if test="${sessionScope.cus != null}">
+
+                    <div class="customer-info">
+
+                        <p><strong>Họ:</strong> ${cus.first_name}</p>
+                        <p><strong>Tên:</strong> ${cus.last_name}</p>
+                        <p><strong>Số điện thoại:</strong> ${cus.phone}</p>
+                        <p><strong>Email:</strong> ${cus.email}</p>
+                        <p><strong>Địa chỉ:</strong> ${cus.address}</p>
+                        <p><strong>Tên đăng nhập:</strong> ${cus.username}</p>
+                        <p><strong>Ngày sinh:</strong> <fmt:formatDate value="${cus.dob}" pattern="dd/MM/yyyy" /></p>
+                        <p><strong>Giới tính:</strong> ${cus.gender ? 'Nam' : 'Nữ'}</p>
+                        <p><strong>Ngày đăng ký:</strong> <fmt:formatDate value="${cus.activity_history}" pattern="dd/MM/yyyy" /></p>
+                        <p><strong>Câu hỏi bảo mật:</strong> ${cus.security.security_question}</p>
+                        <p><strong>Câu trả lời:</strong> ${cus.secutityAnswer}</p>
+                    </div>
+                    <button type="submit" class="btn btn--red">Xác thực tài khoản</button>
+
+                </c:if>
             </form>
         </div>
 
@@ -111,4 +106,5 @@
         <!-- Main JS-->
         <script src="vnjs/global.js"></script>
     </body>
+
 </html>

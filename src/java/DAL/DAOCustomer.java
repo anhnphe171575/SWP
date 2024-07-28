@@ -24,71 +24,69 @@ import java.time.ZoneId;
  * @author phuan
  */
 public class DAOCustomer extends DBContext {
-     public boolean checkDuplicateUpdate(String field, String value, int customerID) {
-    String sqlCustomer = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ? AND customerID != ?";
-    String sqlStaff = "SELECT COUNT(*) FROM Staff WHERE " + field + " = ?";
 
-    try (PreparedStatement psCustomer = conn.prepareStatement(sqlCustomer);
-         PreparedStatement psStaff = conn.prepareStatement(sqlStaff)) {
-        
-        // Check in Customer table
-        psCustomer.setString(1, value);
-        psCustomer.setInt(2, customerID);
-        try (ResultSet rsCustomer = psCustomer.executeQuery()) {
-            if (rsCustomer.next() && rsCustomer.getInt(1) > 0) {
-                return true; // Duplicate found in Customer
+    public boolean checkDuplicateUpdate(String field, String value, int customerID) {
+        String sqlCustomer = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ? AND customerID != ?";
+        String sqlStaff = "SELECT COUNT(*) FROM Staff WHERE " + field + " = ?";
+
+        try (PreparedStatement psCustomer = conn.prepareStatement(sqlCustomer); PreparedStatement psStaff = conn.prepareStatement(sqlStaff)) {
+
+            // Check in Customer table
+            psCustomer.setString(1, value);
+            psCustomer.setInt(2, customerID);
+            try (ResultSet rsCustomer = psCustomer.executeQuery()) {
+                if (rsCustomer.next() && rsCustomer.getInt(1) > 0) {
+                    return true; // Duplicate found in Customer
+                }
             }
-        }
 
-        // Check in Staff table
-        psStaff.setString(1, value);
-        try (ResultSet rsStaff = psStaff.executeQuery()) {
-            if (rsStaff.next() && rsStaff.getInt(1) > 0) {
-                return true; // Duplicate found in Staff
+            // Check in Staff table
+            psStaff.setString(1, value);
+            try (ResultSet rsStaff = psStaff.executeQuery()) {
+                if (rsStaff.next() && rsStaff.getInt(1) > 0) {
+                    return true; // Duplicate found in Staff
+                }
             }
-        }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
 
     public boolean checkDuplicateInCustomerAndStaff(String field, String value) {
-    String sqlCustomer = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ?";
-    String sqlStaff = "SELECT COUNT(*) FROM Staff WHERE " + field + " = ?";
-    boolean isDuplicate = false;
+        String sqlCustomer = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ?";
+        String sqlStaff = "SELECT COUNT(*) FROM Staff WHERE " + field + " = ?";
+        boolean isDuplicate = false;
 
-    try (
-        PreparedStatement psCustomer = conn.prepareStatement(sqlCustomer);
-        PreparedStatement psStaff = conn.prepareStatement(sqlStaff)
-    ) {
-        psCustomer.setString(1, value);
-        psStaff.setString(1, value);
+        try (
+                PreparedStatement psCustomer = conn.prepareStatement(sqlCustomer); PreparedStatement psStaff = conn.prepareStatement(sqlStaff)) {
+            psCustomer.setString(1, value);
+            psStaff.setString(1, value);
 
-        try (ResultSet rsCustomer = psCustomer.executeQuery()) {
-            if (rsCustomer.next()) {
-                isDuplicate = rsCustomer.getInt(1) > 0;
-            }
-        }
-
-        if (!isDuplicate) { // If not found in Customer, check in Staff
-            try (ResultSet rsStaff = psStaff.executeQuery()) {
-                if (rsStaff.next()) {
-                    isDuplicate = rsStaff.getInt(1) > 0;
+            try (ResultSet rsCustomer = psCustomer.executeQuery()) {
+                if (rsCustomer.next()) {
+                    isDuplicate = rsCustomer.getInt(1) > 0;
                 }
             }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return isDuplicate;
-}
 
-     public boolean checkDuplicate(String field, String value) {
+            if (!isDuplicate) { // If not found in Customer, check in Staff
+                try (ResultSet rsStaff = psStaff.executeQuery()) {
+                    if (rsStaff.next()) {
+                        isDuplicate = rsStaff.getInt(1) > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isDuplicate;
+    }
+
+    public boolean checkDuplicate(String field, String value) {
         String sql = "SELECT COUNT(*) FROM Customer WHERE " + field + " = ?";
-        try ( 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, value);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -100,10 +98,11 @@ public class DAOCustomer extends DBContext {
         }
         return false;
     }
-     public boolean checkDuplicate1(String field, String value) {
+
+    public boolean checkDuplicate1(String field, String value) {
         String sql = "SELECT COUNT(*) FROM Staff WHERE " + field + " = ?";
-        try ( 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, value);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -115,6 +114,7 @@ public class DAOCustomer extends DBContext {
         }
         return false;
     }
+
     public Vector<Customer> getListByPage(Vector<Customer> list, int start, int end) {
         Vector<Customer> arr = new Vector<>();
         for (int i = start; i < end; i++) {
@@ -122,6 +122,7 @@ public class DAOCustomer extends DBContext {
         }
         return arr;
     }
+
     public List<Customer> sortByActivityHistory() {
         List<Customer> custo = new ArrayList<>();
         try {
@@ -156,6 +157,7 @@ public class DAOCustomer extends DBContext {
         }
         return custo;
     }
+
     public List<Customer> sortByPhone() {
         List<Customer> custo = new ArrayList<>();
         try {
@@ -190,6 +192,7 @@ public class DAOCustomer extends DBContext {
         }
         return custo;
     }
+
     public List<Customer> sortByEmail() {
         List<Customer> custo = new ArrayList<>();
         try {
@@ -224,6 +227,7 @@ public class DAOCustomer extends DBContext {
         }
         return custo;
     }
+
     public List<Customer> sortByFullname() {
         List<Customer> custo = new ArrayList<>();
         try {
@@ -258,9 +262,10 @@ public class DAOCustomer extends DBContext {
         }
         return custo;
     }
+
     public Customer getCustomerID(int id) {
-        Customer sl =null;
-        String sql = "SELECT c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer, c.image FROM Customer c INNER JOIN SecurityQuestion sq ON c.securityID = sq.securityID WHERE c.customerID ="+id; 
+        Customer sl = null;
+        String sql = "SELECT c.customerID, c.first_name, c.last_name, c.phone, c.email, c.address, c.username, c.password, c.dob, c.gender, c.activity_history, c.securityID, sq.security_question, c.securityAnswer, c.image FROM Customer c INNER JOIN SecurityQuestion sq ON c.securityID = sq.securityID WHERE c.customerID =" + id;
         try {
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
@@ -284,7 +289,7 @@ public class DAOCustomer extends DBContext {
                 String securityAnswer = rs.getString("securityAnswer");
                 String image = rs.getString("image");
                 sl = new Customer(customerID, first_name, last_name, phone, email, address, username, password, dob, gender, activity_history, sq, securityAnswer, image);
-                
+
             }
         } catch (SQLException ex) {
 
@@ -359,8 +364,8 @@ public class DAOCustomer extends DBContext {
         }
         return c;
     }
-   
-     public int updateCustomerActivity(int cusid , Date activity) {
+
+    public int updateCustomerActivity(int cusid, Date activity) {
         int n = 0;
         String sql = "UPDATE [Customer]\n"
                 + "   SET \n"
@@ -368,11 +373,11 @@ public class DAOCustomer extends DBContext {
                 + " WHERE [customerID] = ?";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
-             SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat spd = new SimpleDateFormat("yyyy-MM-dd");
             String date1 = spd.format(activity);
             pre.setDate(1, java.sql.Date.valueOf(date1));
             pre.setInt(2, cusid);
-            
+
             n = pre.executeUpdate();
 
         } catch (SQLException ex) {
@@ -381,6 +386,7 @@ public class DAOCustomer extends DBContext {
 
         return n;
     }
+
     public int updateCustomer(Customer obj) {
         int n = 0;
         String sql = "UPDATE [Customer]\n"
@@ -468,7 +474,7 @@ public class DAOCustomer extends DBContext {
                     + "where c.username=? and c.password=?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, username);
-                        stm.setString(2, password);
+            stm.setString(2, password);
 
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -540,11 +546,11 @@ public class DAOCustomer extends DBContext {
         }
     }
 
-   public int insertCustomer(Customer obj) {
+    public int insertCustomer(Customer obj) {
         int n = 0;
-        if (checkDuplicate("email", obj.getEmail()) ||
-            checkDuplicate("username", obj.getUsername()) ||
-            checkDuplicate("phone", obj.getPhone())) {
+        if (checkDuplicate("email", obj.getEmail())
+                || checkDuplicate("username", obj.getUsername())
+                || checkDuplicate("phone", obj.getPhone())) {
             throw new IllegalArgumentException("Duplicate email, username, or phone number");
         }
         String sql = "INSERT INTO [Customer]\n"
@@ -846,23 +852,20 @@ public class DAOCustomer extends DBContext {
         }
     }
 
-   public static void main(String[] args) {
-        DAOCustomer dao = new DAOCustomer();
-//        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd");
-//        java.util.Date dob = null;
-//        try {
-//            dob = formatter1.parse("1990-01-01");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        LocalDate activityHistory1 = LocalDate.now();
-//        java.util.Date dateCreateBy = Date.from(activityHistory1.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        Security sq = new Security(1, ""); // Assume Security class with a constructor that takes an int and a string
-//        Customer cus = new Customer(
-//                4, "Johnnew", "Doe", "1234567890", "john.doe@example.com",
-//                "123 Main St", "johndoe", "password123", dob, true,
-//                dateCreateBy, sq, "My first pet's name?", null
-//        );
-        
+    public static void main(String[] args) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            DAOCustomer dao = new DAOCustomer();
+            String date1 = "2003-11-08";
+            String date2 = "2003-11-07";
+            Date dat1 = dateFormat.parse(date1);
+            Date dat2 = dateFormat.parse(date2);
+            dao.addCustomer("david", "nguyen", "0946129916", "vinhnm", "hn", "vinh123", "123", dat1, Boolean.TRUE, dat2, 1, "Anna");
+        } catch (ParseException e) {
+
+        }
+
     }
+
 }
