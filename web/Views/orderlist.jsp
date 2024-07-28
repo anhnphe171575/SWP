@@ -283,7 +283,7 @@
                 $('.table').DataTable({
                     "paging": true,
                     "lengthChange": false,
-                    "searching": false,
+                    "searching": true,
                     "ordering": true,
                     "info": false,
                     "autoWidth": false,
@@ -476,12 +476,7 @@
                                         <h2>Danh sách đơn hàng</h2>
                                     </div>
                                     <div class="col-sm-6 text-right">
-                                        <form name="searchForm" action="orderlist" method="post" onsubmit="return validateForm();">
-                                            <input type="text" name="id" placeholder="ID">
-                                            <input type="text" name="customer" placeholder="Tên">
-                                            <input type="submit" name="submit" value="Tìm">
-                                            <input type="hidden" name="service" value="search">
-                                        </form>
+                                        
                                     </div>
                                 </div>
                             </div>

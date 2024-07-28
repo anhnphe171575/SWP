@@ -329,7 +329,7 @@
             $(document).ready(function () {
                 $('.table').DataTable({
                     "paging": true,
-                    "searching": false,
+                    "searching": true,
                     "ordering": true,
                     "info": false
                 });
@@ -355,11 +355,7 @@
                                         <h2>Quản lí <b>FeedBack</b></h2>
                                     </div>
                                     <div style="text-align: right"class="col-sm-3">
-                                        <form action="FeedBackList" method="post">
-                                            <input type="text" name="name"><!-- comment -->
-                                            <input type="submit" name="submit" value="Search"><!-- comment -->
-                                            <input type="hidden" name="service" value="search">
-                                        </form>					
+                                        				
                                     </div>
 
                                     <div class="col-sm-6">
