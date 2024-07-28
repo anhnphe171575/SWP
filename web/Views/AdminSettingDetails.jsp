@@ -243,7 +243,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5" class="text-center">
-                                    <a href="AdminSettingURL" class="button-field">Quay về Cài Đặt</a>
+                                    <a href="AdminSettingURL" style="color: white" class="button-field">Quay về Cài Đặt</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -65,6 +65,7 @@ public class ViewProduct extends HttpServlet {
             request.setAttribute("product", product);
             request.getRequestDispatcher("Views/viewProduct.jsp").forward(request, response);
         } catch (NumberFormatException e){
+            response.sendRedirect("productslist");
         }
     }
 

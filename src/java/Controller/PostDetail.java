@@ -49,11 +49,17 @@ public class PostDetail extends HttpServlet {
         String service = request.getParameter("service");
         DAOPost daoP = new DAOPost();
         DAOCategoryProduct daoCP = new DAOCategoryProduct();
-        if (service.equals("viewDetail")) {
-            int postID = Integer.parseInt(request.getParameter("postID"));
-            request.setAttribute("post", daoP.getPostById(postID));
-            request.setAttribute("category_product", daoCP.getAll("select * from CategoryProduct"));
-            request.getRequestDispatcher("Views/postDetail.jsp").forward(request, response);
+          try {
+            if (service.equals("viewDetail")) {
+                int postID = Integer.parseInt(request.getParameter("postID"));
+                request.setAttribute("post", daoP.getPostById(postID));
+                request.setAttribute("category_product", daoCP.getAll("select * from CategoryProduct"));
+                request.getRequestDispatcher("Views/postDetail.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            // Handle other exceptions
+            request.setAttribute("error", "An unexpected error occurred.");
+            request.getRequestDispatcher("PostController").forward(request, response);
         }
     }
 

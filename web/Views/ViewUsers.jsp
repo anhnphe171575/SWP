@@ -362,8 +362,8 @@
                                             </div>
                                             <select class="custom-select" id="status" name="status">
                                                 <option value="all">Tất cả</option>
-                                                <option value="1">Chấp Nhận</option>
-                                                <option value="0">Không Chấp Nhận</option>
+                                                <option value="1">Hoạt động</option>
+                                                <option value="0">Không hoạt động</option>
                                             </select>
                                         </div>
                                     </div>
@@ -406,12 +406,12 @@
                                                 <c:otherwise>Nữ</c:otherwise>
                                             </c:choose>   
                                                 </td>
-                                                <td>${d.status == 1 ? "Chấp Nhận" : "Không Chấp Nhận"}</td>
+                                                <td>${d.status == 1 ? "Hoạt động" : "Không hoạt động"}</td>
                                             <td>${d.role.getRole_Name()}</td>
                                             <td>
                                                 <a href="userDetail?UserID=${d.getStaffID()}" style="color: red" class="fa fa-eye"></a>
                                                 <a href="updateUser?UserID=${d.getStaffID()}">
-                                                    <i class="material-icons" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit">&#xE8B8;</i>
+                                                    <i class="material-icons fa fa-edit" style="color: rgb(86, 103, 135)" data-toggle="tooltip" title="Edit"></i>
                                                 </a>
                                             </td>
                                         </tr>

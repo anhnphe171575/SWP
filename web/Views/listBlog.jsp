@@ -39,7 +39,13 @@
         <link href="css/style.css" rel="stylesheet">
     </head>
     <style>
-
+.titlepost{
+                max-width: 450px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-left: 15px;
+            }
         .nav-item.dropdown:hover {
             background-color: #f0f0f0; /* Màu xám */
         }
@@ -168,7 +174,9 @@
                             <div class="carousel-inner">
                                 <c:forEach items="${requestScope.lastPost}" var="lp" varStatus="status">
                                     <div class="carousel-item ${status.index == 0 ? 'active' : ''}" data-bs-interval="10000">
-                                        <img src="${lp.thumbnail}" class="d-block w-100" alt="Product image">
+                                        <img style="height: 150px" src="${lp.thumbnail}" class="d-block w-100" alt="Product image">
+                                        <a href="BlogDetail?postID=${lp.postID}"><p style="text-align: center">${lp.title}</p></a>
+                                        
                                     </div>
                                 </c:forEach>
                             </div>
@@ -224,7 +232,7 @@
                                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                                 <h6 class="text-truncate mb-3">${b.title}</h6>
                                                 <div class="d-flex justify-content-center">
-                                                    <p>${b.brief_information}</p>
+                                                    <p class="titlepost">${b.brief_information}</p>
                                                     <h6 class="text-muted ml-2"><del></del></h6>
                                                 </div>
                                             </div>

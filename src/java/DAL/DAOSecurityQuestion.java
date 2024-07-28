@@ -169,6 +169,6 @@ public class DAOSecurityQuestion extends DBContext {
     public static void main(String[] args) {
         DAOSecurityQuestion dao = new DAOSecurityQuestion();
 
-        System.out.println(dao.getSQbyID(6));
+        System.out.println(dao.getSecurityQuestionID("How is your dog?"));
     }
 }
