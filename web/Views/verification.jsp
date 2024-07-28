@@ -36,7 +36,7 @@
             }
 
             .title {
-                text-align: center;
+               
                 margin-bottom: 20px;
                 color: #007bff;
             }
@@ -83,8 +83,8 @@
 
                     <div class="customer-info">
 
-                        <p><strong>Họ:</strong> ${cus.first_name}</p>
-                        <p><strong>Tên:</strong> ${cus.last_name}</p>
+                        <p><strong>Họ và tên:</strong> ${cus.first_name} ${cus.last_name}</p>
+                        
                         <p><strong>Số điện thoại:</strong> ${cus.phone}</p>
                         <p><strong>Email:</strong> ${cus.email}</p>
                         <p><strong>Địa chỉ:</strong> ${cus.address}</p>

@@ -219,6 +219,12 @@ public class SignUpCustomer extends HttpServlet {
 
             // Gửi email xác minh với thời gian hết hạn
             sendVerificationEmail(email, expirationTimeStr);
+            if (sendVerificationEmail(email, expirationTimeStr)) {
+                request.setAttribute("emailSent", "true");
+            }
+            else{
+                 request.setAttribute("emailSent", "false");
+            }
             doGet(request, response);
         }
     }
