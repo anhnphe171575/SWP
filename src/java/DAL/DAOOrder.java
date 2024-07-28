@@ -1967,7 +1967,8 @@ public class DAOOrder extends DBContext {
     public List<String> getStatusOrder() {
         List<String> status = new ArrayList<>();
         try {
-            String query = "  select Status_Name from Status_Order";
+            String query = "SELECT Status_Name FROM Status_Order\n"
+                    + "where Status_Name != 'Draft'";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -2362,7 +2363,7 @@ public class DAOOrder extends DBContext {
     public static void main(String[] args) {
 
         DAOOrder db = new DAOOrder();
-        System.out.println(db.getOrderbyStaffID(3));
+        System.out.println(db.getStatusOrder());
 //        HashMap<Integer, Integer> countMap = db.Countorder();
 //        int minCount = Integer.MAX_VALUE;
 //
