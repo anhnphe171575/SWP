@@ -148,7 +148,7 @@ public class DAOStaff extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
-                Role role = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
+                Role role = new Role(rs.getInt("RoleID"), "");
                 Staff obj = new Staff(rs.getInt("StaffID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -1056,10 +1056,9 @@ public class DAOStaff extends DBContext {
 
     public static void main(String[] args) {
         DAOStaff dao = new DAOStaff();
-        Vector<String> existingEmails = dao.checkEmail();
-        if (existingEmails.contains("aaa@gmail.com")) {
-            System.out.println("xxx");
-
-        }
+        System.out.println(dao.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID where u.RoleID=1"  ));
     }
 }

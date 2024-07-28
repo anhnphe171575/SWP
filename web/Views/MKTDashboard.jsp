@@ -187,7 +187,7 @@
                     </div>
                     <div class="charts-card" >
                         <h2 class="chart-title">Thống kê số sao phản hồi</h2>
-                        <h2 style="text-align: center">Trung Bình: 4.5 <i class="fas fa-star"></i></h2>
+                        <h2 style="text-align: center">Trung Bình: ${fb_aver} <i class="fas fa-star"></i></h2>
                         <div class="charts" id="statsChart1"></div>
                     </div>
 
@@ -840,8 +840,8 @@
                     var new_res = [];
                     var new_order = [];
             <c:forEach items="${newCus}" var="entry">
-                    new_res.push('${entry.value}');
-                    new_order.push(<c:out value="${entry.key}"/>);
+                    new_res.push('${entry.key}');
+                    new_order.push(<c:out value="${entry.value}"/>);
             </c:forEach>
                     const statsData = {
                         series: [{
@@ -849,7 +849,7 @@
                                 data: [new_res[new_res.length - 1], new_order[new_order.length - 1]], // Example data: [new customers, customers with orders today]
                                 colors: ['#f5f7ff', '#d50000', '#00ff00', '#0000ff'] // Specify colors for each column
                             }],
-                        categories: ['Khách hàng mới', 'Khách hàng có đơn hôm nay']
+                        categories: ['Hoạt động gần đây', 'Khách hàng có đơn hôm nay']
                     };
                     const statsChartOptions = {
                         chart: {
