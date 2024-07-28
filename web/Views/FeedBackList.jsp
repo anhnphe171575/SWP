@@ -334,6 +334,7 @@
                                     "ordering": true,
                                     "info": true,
                                     "autoWidth": false
+
                 });
             });
         </script>
@@ -355,6 +356,7 @@
                                 <div class="row">
                                     <div class="col-sm-3">
                                         <h2>Quản lí FeedBack</h2>
+
                                     </div>
                                   
 

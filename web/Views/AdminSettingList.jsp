@@ -344,7 +344,7 @@
         $(document).ready(function () {
             $('.table').DataTable({
                     "paging": true,
-                    "searching": false,
+                    "searching": true,
                     "ordering": true,
                     "info": false,
                     "pageLength": 10
@@ -393,14 +393,7 @@
                                     <h2>Danh sách <b>Cài đặt</b></h2>
                                 </div>
                                 <div class="col-sm-3">
-                                    <form action="AdminSettingURL" method="get">
-                                        <p>
-                                            Tìm kiếm: <input type="text" name="value" placeholder="Giá trị">
-                                            <input type="submit" name="submit" value="search">
-                                            <input type="reset" value="Clear">
-                                        </p>
-                                        <input type="hidden" name="service" value="listAllSetting">
-                                    </form>
+                                    
                                 </div>
                                 <div class="col-sm-6">
                                     <a href="#Filter" class="btn btn-danger" data-toggle="modal"><i
