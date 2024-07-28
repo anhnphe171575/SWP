@@ -29,26 +29,17 @@
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
         <link rel="stylesheet" href="./mktcss/styles.css">
         <style>
-            .filter-form {
-                font-size: 12px; /* Adjust this value as needed */
-            }
-            td img {
-                width: 100px; /* Sets the width of the image */
-                height: auto; /* Maintains the aspect ratio */
-                border: 2px solid #ccc; /* Adds a border around the image */
-                border-radius: 5px; /* Rounds the corners of the image */
-                padding: 5px; /* Adds padding inside the border */
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adds a shadow effect */
-            }
             body {
                 color: #566787;
                 background: #f5f5f5;
                 font-family: 'Varela Round', sans-serif;
                 font-size: 13px;
             }
+
             .table-responsive {
                 margin: 30px 0;
             }
+
             .table-wrapper {
                 background: #fff;
                 padding: 20px 25px;
@@ -56,22 +47,20 @@
                 min-width: 1000px;
                 box-shadow: 0 1px 1px rgba(0,0,0,.05);
             }
+
             .table-title {
-                padding-bottom: 15px;
                 background: #435d7d;
                 color: #fff;
                 padding: 16px 30px;
-                min-width: 100%;
                 margin: -20px -25px 10px;
                 border-radius: 3px 3px 0 0;
             }
+
             .table-title h2 {
                 margin: 5px 0 0;
                 font-size: 24px;
             }
-            .table-title .btn-group {
-                float: right;
-            }
+
             .table-title .btn {
                 color: #fff;
                 float: right;
@@ -79,46 +68,41 @@
                 border: none;
                 min-width: 50px;
                 border-radius: 2px;
-                border: none;
                 outline: none !important;
                 margin-left: 10px;
             }
+
             .table-title .btn i {
                 float: left;
                 font-size: 21px;
                 margin-right: 5px;
             }
-            .table-title .btn span {
-                float: left;
-                margin-top: 2px;
-            }
+
             table.table tr th, table.table tr td {
                 border-color: #e9e9e9;
                 padding: 12px 15px;
                 vertical-align: middle;
             }
+
             table.table tr th:first-child {
                 width: 60px;
             }
             table.table tr th:last-child {
                 width: 100px;
             }
+
             table.table-striped tbody tr:nth-of-type(odd) {
                 background-color: #fcfcfc;
             }
+
             table.table-striped.table-hover tbody tr:hover {
                 background: #f5f5f5;
             }
+
             table.table th i {
                 font-size: 13px;
                 margin: 0 5px;
                 cursor: pointer;
-            }
-            table.table th, table.table td {
-                text-align: center;
-            }
-            table.table th {
-                text-align: center;
             }
 
             table.table td:last-child i {
@@ -126,13 +110,14 @@
                 font-size: 22px;
                 margin: 0 5px;
             }
+
             table.table td a {
                 font-weight: bold;
                 color: #566787;
                 display: inline-block;
                 text-decoration: none;
-                outline: none !important;
             }
+
             table.table td a:hover {
                 color: #2196F3;
             }
@@ -142,50 +127,51 @@
             table.table td a.delete {
                 color: #F44336;
             }
-            table.table td i {
-                font-size: 19px;
-            }
+
             table.table .avatar {
                 border-radius: 50%;
                 vertical-align: middle;
                 margin-right: 10px;
             }
+
             .pagination {
                 display: inline-block;
             }
-            .pagination  a {
+
+            .pagination a {
                 color: black;
                 font-size: 22px;
                 float: left;
                 padding: 8px 16px;
                 text-decoration: none;
             }
+
             .pagination a.active {
                 background-color: #4CAF50;
                 color: white;
             }
+
             .pagination a:hover:not(.active) {
                 background: #27A4F2;
             }
+
             .hint-text {
                 float: left;
                 margin-top: 10px;
                 font-size: 13px;
             }
-            /* Custom checkbox */
+
             .custom-checkbox {
                 position: relative;
             }
+
             .custom-checkbox input[type="checkbox"] {
                 opacity: 0;
                 position: absolute;
                 margin: 5px 0 0 3px;
                 z-index: 9;
             }
-            .custom-checkbox label:before{
-                width: 18px;
-                height: 18px;
-            }
+
             .custom-checkbox label:before {
                 content: '';
                 margin-right: 10px;
@@ -196,7 +182,10 @@
                 border-radius: 2px;
                 box-sizing: border-box;
                 z-index: 2;
+                width: 18px;
+                height: 18px;
             }
+
             .custom-checkbox input[type="checkbox"]:checked + label:after {
                 content: '';
                 position: absolute;
@@ -210,72 +199,95 @@
                 z-index: 3;
                 transform: rotateZ(45deg);
             }
+
             .custom-checkbox input[type="checkbox"]:checked + label:before {
                 border-color: #03A9F4;
                 background: #03A9F4;
             }
+
             .custom-checkbox input[type="checkbox"]:checked + label:after {
                 border-color: #fff;
             }
+
             .custom-checkbox input[type="checkbox"]:disabled + label:before {
                 color: #b8b8b8;
                 cursor: auto;
                 box-shadow: none;
                 background: #ddd;
             }
-            /* Modal styles */
+
             .modal .modal-dialog {
                 max-width: 400px;
             }
+
             .modal .modal-header, .modal .modal-body, .modal .modal-footer {
                 padding: 20px 30px;
             }
+
             .modal .modal-content {
                 border-radius: 3px;
                 font-size: 14px;
             }
+
             .modal .modal-footer {
                 background: #ecf0f1;
                 border-radius: 0 0 3px 3px;
             }
+
             .modal .modal-title {
                 display: inline-block;
             }
+
             .modal .form-control {
                 border-radius: 2px;
                 box-shadow: none;
                 border-color: #dddddd;
             }
+
             .modal textarea.form-control {
                 resize: vertical;
             }
+
             .modal .btn {
                 border-radius: 2px;
                 min-width: 100px;
             }
+
             .modal form label {
                 font-weight: normal;
             }
+
             .grid-container {
                 display: grid;
-
                 height: 100vh;
                 width: 100%;
             }
+
             .filter-form .input-group-text,
             .filter-form .form-control,
             .filter-form .custom-select {
-                font-size: 12px; /* Make the font size smaller */
+                font-size: 12px;
             }
+
             .filter-form .input-group {
-                flex-wrap: nowrap; /* Prevent wrapping */
+                flex-wrap: nowrap;
             }
+
             .filter-form .input-group-prepend,
             .filter-form .input-group-text,
             .filter-form .form-control,
             .filter-form .custom-select {
-                width: auto; /* Allow elements to resize based on content */
-                min-width: 0; /* Remove minimum width */
+                width: auto;
+                min-width: 0;
+            }
+
+            td img {
+                width: 100px;
+                height: auto;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                padding: 5px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             }
         </style>
         <script>
@@ -475,9 +487,8 @@
                                     <div class="col-sm-3">
                                         <h2>Danh sách đơn hàng</h2>
                                     </div>
-                                    <div class="col-sm-6 text-right">
-                                        
-                                    </div>
+                                    
+
                                 </div>
                             </div>
                             <div class="container">
@@ -509,7 +520,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 mt-3">
+                                            <div class="col-md-4 ">
                                                 <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
                                                 <input type="hidden" name="service" value="filter">
                                             </div>
@@ -555,7 +566,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 mt-3">
+                                            <div class="col-md-1">
                                                 <button type="submit" class="btn btn-primary" id="filter-btn">Filter</button>
                                                 <input type="hidden" name="service" value="filter">
                                             </div>

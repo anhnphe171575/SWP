@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@page import="java.util.Vector,Entity.Staff"%>
 <%@page import="Entity.Security"%>
 <!DOCTYPE html>
@@ -98,10 +100,10 @@
     <body>
         <div class="d-flex">
             <!-- Sidebar -->
-            
-                <div class="main-content">
-                    <div class="container profile-container">
-                        <form id="sliderForm" action="editProfileUserURL" method="post" enctype="multipart/form-data" onsubmit="return validatePhoneNumber()">
+
+            <div class="main-content">
+                <div class="container profile-container">
+                    <form id="sliderForm" action="editProfileUserURL" method="post" enctype="multipart/form-data" onsubmit="return validatePhoneNumber()">
                         <% 
                            Vector<Staff> vector = (Vector<Staff>) request.getAttribute("vector");
                            Staff obj = vector.get(0);
@@ -188,7 +190,25 @@
                                 </div>
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-save mr-2">Lưu thay đổi</button>
-                                    <a href="HomePage" class="btn btn-home">Trang chủ</a>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user.role.getRoleID() == 1}">
+                                            <button onclick="location.href = 'MKTDashboard';" class="btn btn-save mr-2">Trở lại trang chủ</button>
+                                        </c:when>
+                                        <c:when test="${sessionScope.user.role.getRoleID() == 2}">
+                                            <button onclick="location.href = 'orderlist';" class="btn btn-save mr-2">Trở lại trang chủ</button>
+                                        </c:when>
+                                        <c:when test="${sessionScope.user.role.getRoleID() == 3}">
+                                            <button onclick="location.href = 'SaleDashboardURL';" class="btn btn-save mr-2">Trở lại trang chủ</button>
+                                        </c:when>
+                                        <c:when test="${sessionScope.user.role.getRoleID() == 4}">
+                                            <button onclick="location.href = 'orderlist';" class="btn btn-save mr-2">Trở lại trang chủ</button>
+                                        </c:when>
+                                        <c:when test="${sessionScope.user.role.getRoleID() == 5}">
+                                            <button onclick="location.href = 'AdminSettingURL';" class="btn btn-save mr-2">Trở lại trang chủ</button>
+                                        </c:when>
+                                     
+                                    </c:choose>
+
                                 </div>
                             </div>
                         </div>
@@ -202,117 +222,44 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script>
-                                        function validateField(fieldName, maxLength, errorMessage) {
-                                            const field = document.querySelector(fieldName);
-                                            if (field.value.length > maxLength) {
-                                                alert(errorMessage);
-                                                return false;
-                                            }
-                                            return true;
-                                        }
+                                                function validatePhoneNumber() {
+                                                    const phoneInput = document.querySelector('input[name="phone"]');
+                                                    const phonePattern = /^[0-9]{10}$/;
+                                                    if (!phonePattern.test(phoneInput.value)) {
+                                                        alert("Vui lòng nhập số điện thoại hợp lệ (10 chữ số).");
+                                                        return false;
+                                                    }
+                                                    return true;
+                                                }
 
-                                        function validatePhoneNumber() {
-                                            const phoneInput = document.querySelector('input[name="phone"]');
-                                            const phonePattern = /^0[0-9]{9}$/;
-                                            if (!phonePattern.test(phoneInput.value)) {
-                                                alert("Số điện thoại phải có 10 chữ số và bắt đầu bằng số 0.");
-                                                return false;
-                                            }
-                                            return true;
-                                        }
+                                                function showSecurityAnswer(storedPassword) {
+                                                    const password = prompt("Vui lòng nhập mật khẩu:");
+                                                    if (password === storedPassword) {
+                                                        document.getElementById('security-answer').style.display = 'block';
+                                                        document.getElementById('show-answer-btn').style.display = 'none';
+                                                        document.getElementById('hide-answer-btn').style.display = 'inline';
+                                                    } else {
+                                                        alert("Mật khẩu không đúng!");
+                                                    }
+                                                }
 
-                                        function validateEmail() {
-                                            const emailInput = document.querySelector('input[name="email"]');
-                                            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                            if (!emailPattern.test(emailInput.value)) {
-                                                alert("Vui lòng nhập một địa chỉ email hợp lệ.");
-                                                return false;
-                                            }
-                                            return true;
-                                        }
+                                                function hideSecurityAnswer() {
+                                                    document.getElementById('security-answer').style.display = 'none';
+                                                    document.getElementById('show-answer-btn').style.display = 'inline';
+                                                    document.getElementById('hide-answer-btn').style.display = 'none';
+                                                }
 
-                                        function validateUsername() {
-                                            const usernameInput = document.querySelector('input[name="username"]');
-                                            const usernamePattern = /^[a-zA-Z0-9_]+$/;
-                                            if (!usernamePattern.test(usernameInput.value)) {
-                                                alert("Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới.");
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-
-                                        function validateSecurityAnswer() {
-                                            const securityAnswerInput = document.querySelector('input[name="securityAnswer"]');
-                                            if (securityAnswerInput.value.length > 20) {
-                                                alert("Câu trả lời bảo mật không được vượt quá 20 ký tự.");
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-
-                                        function validateForm() {
-                                            return validateField('input[name="first_name"]', 20, 'Họ không được vượt quá 20 ký tự.') &&
-                                                    validateField('input[name="last_name"]', 20, 'Tên không được vượt quá 20 ký tự.') &&
-                                                    validatePhoneNumber() &&
-                                                    validateEmail() &&
-                                                    validateField('input[name="username"]', 20, 'Tài khoản không được vượt quá 20 ký tự.') &&
-                                                    validateField('input[name="password"]', 20, 'Mật khẩu không được vượt quá 20 ký tự.') &&
-                                                    validateSecurityAnswer() &&
-                                                    validateField('input[name="address"]', 100, 'Địa chỉ không được vượt quá 100 ký tự.');
-                                        }
-
-                                        function showSecurityAnswer(storedPassword) {
-                                            const password = prompt("Vui lòng nhập mật khẩu:");
-                                            if (password === storedPassword) {
-                                                document.getElementById('security-answer').style.display = 'block';
-                                                document.getElementById('show-answer-btn').style.display = 'none';
-                                                document.getElementById('hide-answer-btn').style.display = 'inline';
-                                            } else {
-                                                alert("Mật khẩu không đúng!");
-                                            }
-                                        }
-
-                                        function hideSecurityAnswer() {
-                                            document.getElementById('security-answer').style.display = 'none';
-                                            document.getElementById('show-answer-btn').style.display = 'inline';
-                                            document.getElementById('hide-answer-btn').style.display = 'none';
-                                        }
-
-                                        function previewImage(event) {
-                                            var reader = new FileReader();
-                                            reader.onload = function () {
-                                                var output = document.getElementById('profile-image');
-                                                output.src = reader.result;
-                                            };
-                                            reader.readAsDataURL(event.target.files[0]);
-                                        }
-
-                                        // Add event listeners for real-time validation
-                                        document.querySelector('input[name="first_name"]').addEventListener('input', function () {
-                                            validateField('input[name="first_name"]', 20, 'Họ không được vượt quá 20 ký tự.');
-                                        });
-
-                                        document.querySelector('input[name="last_name"]').addEventListener('input', function () {
-                                            validateField('input[name="last_name"]', 20, 'Tên không được vượt quá 20 ký tự.');
-                                        });
-
-                                        document.querySelector('input[name="phone"]').addEventListener('input', validatePhoneNumber);
-                                        document.querySelector('input[name="email"]').addEventListener('input', validateEmail);
-                                        document.querySelector('input[name="username"]').addEventListener('input', function () {
-                                            validateField('input[name="username"]', 20, 'Tài khoản không được vượt quá 20 ký tự.');
-                                            validateUsername();
-                                        });
-                                        document.querySelector('input[name="password"]').addEventListener('input', function () {
-                                            validateField('input[name="password"]', 20, 'Mật khẩu không được vượt quá 20 ký tự.');
-                                        });
-                                        document.querySelector('input[name="securityAnswer"]').addEventListener('input', validateSecurityAnswer);
-                                        document.querySelector('input[name="address"]').addEventListener('input', function () {
-                                            validateField('input[name="address"]', 100, 'Địa chỉ không được vượt quá 100 ký tự.');
-                                        });
+                                                function previewImage(event) {
+                                                    var reader = new FileReader();
+                                                    reader.onload = function () {
+                                                        var output = document.getElementById('profile-image');
+                                                        output.src = reader.result;
+                                                    };
+                                                    reader.readAsDataURL(event.target.files[0]);
+                                                }
         </script>
-
         <script>
-             $(document).ready(function () {
+            $(document).ready(function () {
                 $('#sliderForm').submit(function (e) {
                     e.preventDefault();
 

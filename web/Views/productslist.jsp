@@ -414,9 +414,7 @@ function validateForm() {
                                 <div class="col-sm-3">
                                     <a href="productslist" style="color: white"><h2>Quản lý sản phẩm</h2></a>
                                 </div>
-                                <div style="text-align: right" class="col-sm-3">
-                                                      
-                                </div>
+
                                 <div class="col-sm-6">
                                     <a href="#Sort" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xe164;</i> <span>Sắp xếp</span></a>
                                     <c:if test="${sessionScope.role.getRoleID() == 1}">

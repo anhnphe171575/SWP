@@ -247,6 +247,7 @@ public class SignUpCustomer extends HttpServlet {
         };
         Session session = Session.getInstance(props, auth);
 
+           new Thread(() -> {
         try {
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(fromEmail, "NoReply"));
@@ -258,9 +259,12 @@ public class SignUpCustomer extends HttpServlet {
             return true;
         } catch (MessagingException | UnsupportedEncodingException e) {
             e.printStackTrace();
+        }}).start();
             return false;
-        }
     }
+       
+        
+    
 
     private Date formatDate(String dob) {
         try {

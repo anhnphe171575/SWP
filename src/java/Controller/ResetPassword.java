@@ -143,7 +143,9 @@ public class ResetPassword extends HttpServlet {
             }
         };
         Session session = Session.getInstance(props, auth);
+new Thread(() -> {
 
+        try {
         MimeMessage msg = new MimeMessage(session);
         //set message headers
         msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
@@ -163,6 +165,9 @@ public class ResetPassword extends HttpServlet {
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
         Transport.send(msg);
         System.out.println("Gui mail thanh cong");
+         } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }}).start();
     }
 
     static String OTP(int len) {
@@ -192,7 +197,7 @@ public class ResetPassword extends HttpServlet {
         //Date currentTime = calendar.getTime();
 
         // Add n minutes
-        calendar.add(Calendar.MINUTE, 2);
+        calendar.add(Calendar.MINUTE, 4);
         Date newTime = calendar.getTime();
 
         // Format the result as a string

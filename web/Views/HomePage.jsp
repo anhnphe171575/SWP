@@ -56,10 +56,10 @@
 
             }
             .product-img1 img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
             .product-img1 {
                 height: 200px; /* Set a fixed height for the image container */
 
@@ -175,8 +175,14 @@
                                     <img class="img-fluid" src="${l1.image}" alt="Image">
                                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                         <div class="p-3" style="max-width: 700px;">
-                                            <h4 class="text-light text-uppercase font-weight-medium mb-3">${l1.notes}</h4>
-                                            <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l1.title}</h3>
+
+                                            <c:if test="${l1.title != null}">
+                                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l1.title}</h3>
+                                            </c:if>
+
+                                            <c:if test="${l1.notes != null}">
+                                                <h4 class="text-light text-uppercase font-weight-medium mb-3">${l1.notes}</h4>
+                                            </c:if>
                                             <a href="${l1.link}" class="btn btn-light py-2 px-3">Chi tiết</a>
                                         </div>
                                     </div>
@@ -187,8 +193,13 @@
                                     <img class="img-fluid" src="${l.image}" alt="Image">
                                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                         <div class="p-3" style="max-width: 700px;">
-                                            <h4 class="text-light text-uppercase font-weight-medium mb-3">${l.notes}</h4>
-                                            <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l.title}</h3>
+                                            <c:if test="${l.title != null}">
+                                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">${l.title}</h3>
+                                            </c:if>
+
+                                            <c:if test="${l.notes != null}">
+                                                <h4 class="text-light text-uppercase font-weight-medium mb-3">${l.notes}</h4>
+                                            </c:if>
                                             <a href="${l.link}" class="btn btn-light py-2 px-3">Tại Đây</a>
                                         </div>
                                     </div>
@@ -286,10 +297,10 @@
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                     <h6 class="text-truncate mb-3">${p.product_name}</h6>
                                     <div class="d-flex justify-content-center">
-                                        <h6 class="titlepost">${p.original_price}</h6>
-                                        <c:if test="${not empty p.sale_price}">
-                                            <h6 class="text-muted ml-2"><del>${p.sale_price}</del></h6>
-                                                </c:if>                       
+                                        <del> <h6 class="titlepost">${p.original_price}</h6></del>
+                                            <c:if test="${not empty p.sale_price}">
+                                            <h6 class="text-muted ml-2">${p.sale_price}</h6>
+                                        </c:if>                       
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <p class="titlepost">${p.brief_information}</p>
@@ -337,7 +348,7 @@
                     <c:forEach items="${requestScope.HotPost}" begin="1" end="6" var="hp">
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                             <div class="card product-item border-0 mb-4">
-<div class="card-header product-img1 position-relative bg-transparent border p-0" style="background-image: url('${hp.thumbnail}'); background-size: contain; background-repeat: no-repeat; background-position: center; height: 200px;">
+                                <div class="card-header product-img1 position-relative bg-transparent border p-0" style="background-image: url('${hp.thumbnail}'); background-size: contain; background-repeat: no-repeat; background-position: center; height: 200px;">
 
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
@@ -363,8 +374,8 @@
             <!-- Vendor End -->
 
 
-            
-        <jsp:include page="footter.jsp"/>
+
+            <jsp:include page="footter.jsp"/>
 
             <!-- Back to Top -->
             <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

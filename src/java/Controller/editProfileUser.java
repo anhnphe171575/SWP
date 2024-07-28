@@ -169,7 +169,6 @@ public class editProfileUser extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
         String dob = request.getParameter("dob");
         String gender = request.getParameter("gender");
         boolean gen = Boolean.parseBoolean(gender);  
@@ -206,7 +205,6 @@ public class editProfileUser extends HttpServlet {
             request.setAttribute("email", email);
             request.setAttribute("address", address);
             request.setAttribute("username", username);
-            request.setAttribute("password", password);
             request.setAttribute("dob", dob);
             request.setAttribute("gender", gender);
             request.setAttribute("status", status);
@@ -229,7 +227,7 @@ public class editProfileUser extends HttpServlet {
         int status1 = Integer.parseInt(status);
         int UserId = Integer.parseInt(UserID);
 
-        Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gen, status1, role, sq, securityAnswer, fileUrl);
+        Staff user = new Staff(UserId, fname, lname, phone, email, address, username,"", date1, gen, status1, role, sq, securityAnswer, fileUrl);
         dao.UpdateStaff(user);
         response.sendRedirect("editProfileUserURL?userid=" + UserID);
     }

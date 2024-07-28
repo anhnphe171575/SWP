@@ -44,7 +44,7 @@ public class DAOStaff extends DBContext {
 
     public boolean login(String username, String password) {
         boolean flag = false;
-        String sql = "  select * from Staff where username =? and password =?";
+        String sql = "  select * from Staff where username =? and password =? and status = 1";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);
@@ -148,7 +148,7 @@ public class DAOStaff extends DBContext {
             ResultSet rs = state.executeQuery(sql);
             while (rs.next()) {
                 Security se = new Security(rs.getInt("securityID"), "");
-                Role role = new Role(rs.getInt("RoleID"), rs.getString("Role_Name"));
+                Role role = new Role(rs.getInt("RoleID"), "");
                 Staff obj = new Staff(rs.getInt("StaffID"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
@@ -213,7 +213,6 @@ public class DAOStaff extends DBContext {
                 + "    [email] = ?,\n"
                 + "    [address] = ?,\n"
                 + "    [username] = ?,\n"
-                + "    [password] = ?,\n"
                 + "    [dob] = ?,\n"
                 + "    [gender] = ?,\n"
                 + "    [status] = ?,\n"
@@ -234,15 +233,14 @@ public class DAOStaff extends DBContext {
             pre.setString(4, obj.getEmail());
             pre.setString(5, obj.getAddress());
             pre.setString(6, obj.getUsername());
-             pre.setString(7, obj.getPassword());
-            pre.setDate(8, java.sql.Date.valueOf(date1));
-            pre.setBoolean(9, obj.isGender());
-            pre.setInt(10, obj.getStatus());
-            pre.setInt(11, obj.getRole().getRoleID());
-            pre.setInt(12, obj.getSecurity().getSecurityID());
-            pre.setString(13, obj.getSecurityAnswer());
-            pre.setString(14, obj.getImage());
-            pre.setInt(15, obj.getStaffID());
+            pre.setDate(7, java.sql.Date.valueOf(date1));
+            pre.setBoolean(8, obj.isGender());
+            pre.setInt(9, obj.getStatus());
+            pre.setInt(10, obj.getRole().getRoleID());
+            pre.setInt(11, obj.getSecurity().getSecurityID());
+            pre.setString(12, obj.getSecurityAnswer());
+            pre.setString(13, obj.getImage());
+            pre.setInt(14, obj.getStaffID());
 
             pre.executeUpdate();
         } catch (SQLException ex) {
@@ -1056,10 +1054,9 @@ public class DAOStaff extends DBContext {
 
     public static void main(String[] args) {
         DAOStaff dao = new DAOStaff();
-        Vector<String> existingEmails = dao.checkEmail();
-        if (existingEmails.contains("aaa@gmail.com")) {
-            System.out.println("xxx");
-
-        }
+        System.out.println(dao.getStaff("select u.StaffID,u.first_name,u.last_name,u.phone,u.email,u.address,u.username,u.password,\n"
+                + "                u.dob,u.gender,u.status,u.image, u.RoleID,u.securityID,u.securityAnswer,s.security_question from [Staff] u\n"
+                + "                 inner join SecurityQuestion s on u.securityID=s.securityID\n"
+                + "                inner join [Role] r on r.RoleID = u.RoleID where u.RoleID=1"  ));
     }
 }

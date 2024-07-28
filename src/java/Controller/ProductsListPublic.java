@@ -82,7 +82,7 @@ public class ProductsListPublic extends HttpServlet {
         }
         String cname = request.getParameter("cname");
         String feature = request.getParameter("feature");
-
+        System.out.println(search);
         if (cname != null) {
             cid_raw = db1.getCategoryProductbyName(cname).getCategory_productID();
         }
@@ -111,6 +111,8 @@ public class ProductsListPublic extends HttpServlet {
             }
             request.setAttribute("cid", cid_raw);
         } else if (search != null && !search.isBlank() && feature != null && !feature.isBlank()) {
+                        System.out.println("bbbb");
+
             if (feature.equals("yes")) {
                 listProduct = db.getProductFeatureByTitle(search, 1);
 
@@ -143,6 +145,7 @@ public class ProductsListPublic extends HttpServlet {
             request.setAttribute("cid", cid_raw);
             request.setAttribute("feature", "no");
         } else if (search != null && !search.isBlank()) {
+            System.out.println("aaaa");
             listProduct = db.getProductByTitle(search);
             request.setAttribute("search1", search);
             request.setAttribute("feature", "no");
