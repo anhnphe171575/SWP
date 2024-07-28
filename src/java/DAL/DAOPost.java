@@ -192,7 +192,7 @@ public Vector<Post> getPostByCPId(int id) {
                 + "				 from Post p \n"
                 + "                inner join CategoryPost cp on p.category_postID=cp.category_postID\n"
                 + "                inner join CategoryProduct cpr on cpr.category_productID = cp.category_productID\n"
-                + "                inner join [Staff] u on p.StaffID = u.StaffID where date_create_by = (SELECT max_date FROM LatestDate)";
+                + "                inner join [Staff] u on p.StaffID = u.StaffID where p.featured=1 ";
         try {
             Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = state.executeQuery(sql);

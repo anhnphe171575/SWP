@@ -74,13 +74,33 @@ public class EditPost extends HttpServlet {
             throws ServletException, IOException {
         DAL.DAOPost dao = new DAOPost();
         DAOCategoryProduct dao2 = new DAOCategoryProduct();
+  try {
+            // Retrieve and validate postID parameter
+            String postIDParam = request.getParameter("postID");
+            if (postIDParam == null) {
+                throw new IllegalArgumentException("Missing post ID parameter.");
+            }
+            int id = Integer.parseInt(postIDParam);
 
-        int id = Integer.parseInt(request.getParameter("postID"));
-        Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
-        request.setAttribute("category_product", vec5);
-        request.setAttribute("post", dao.getPostById(id));
-        request.setAttribute("detail", Integer.parseInt(request.getParameter("detail")));
-        request.getRequestDispatcher("Views/editpost.jsp").forward(request, response);
+            // Retrieve and validate detail parameter
+            String detailParam = request.getParameter("detail");
+            if (detailParam == null) {
+                throw new IllegalArgumentException("Missing detail parameter.");
+            }
+            int detail = Integer.parseInt(detailParam);
+
+            // Fetch data
+            Vector<CategoryProduct> vec5 = dao2.getAll("select * from CategoryProduct");
+            request.setAttribute("category_product", vec5);
+            request.setAttribute("post", dao.getPostById(id));
+            request.setAttribute("detail", detail);
+
+            // Forward to the JSP
+            request.getRequestDispatcher("Views/editpost.jsp").forward(request, response);
+        }catch (Exception e)  {
+            // Handle other exceptions
+            request.getRequestDispatcher("/PostController").forward(request, response);
+        }
     }
 
     /**

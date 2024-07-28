@@ -196,22 +196,21 @@
             </div>
             <div class="row px-xl-5">
                 <div class="col">
-                    
                     <div class="owl-carousel related-carousel">
                         <c:forEach items="${blogc}" var="b">
                         <div class="card product-item border-0">
                             
                                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100" src="${b.thumbnail}" alt="">
+                                    <img style="height: 150px"class="img-fluid w-100" src="${b.thumbnail}" alt="">
                                 </div>
                                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3">${b.title}</h6>
+                                    <a href="BlogDetail?postID=${b.postID}"><h6 class="text-truncate mb-3">${b.title}</h6></a>
                                     <div class="d-flex justify-content-center">
                                     </div>
                                 </div>
                                
                         </div>
-                                    </c:forEach>
+                        </c:forEach>            
                     </div>
                                     
                 </div>
