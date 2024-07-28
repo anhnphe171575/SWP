@@ -14,49 +14,98 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <style>
-            .container {
-                max-width: 600px;
-                margin-top: 50px;
-                background: #fff;
-                padding: 30px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border-radius: 8px;
-            }
-            h2 {
-                margin-bottom: 20px;
-            }
-            .form-group label {
-                font-weight: bold;
-            }
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                padding: 10px;
-                border-radius: 5px;
-                margin-bottom: 10px;
-            }
-            .btn-primary {
-                background-color: #007bff;
-                border: none;
-            }
-            .btn-primary:hover {
-                background-color: #0056b3;
-            }
-            .btn-secondary {
-                background-color: #6c757d;
-                border: none;
-            }
-            .btn-secondary:hover {
-                background-color: #565e64;
-            }
-            .gender-options label {
-                margin-right: 20px;
-            }
-            .gender-options .checkmark {
-                border-radius: 50%;
-            }
-            .error {
-                color: red;
-            }
+            body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.btn-primary,
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #565e64;
+}
+
+.gender-options {
+    display: flex;
+}
+
+.custom-control {
+    margin-right: 20px;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
+    .container {
+        width: 100%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+}
         </style>
     </head>
     <body>

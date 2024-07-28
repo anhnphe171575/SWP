@@ -44,7 +44,7 @@ public class DAOStaff extends DBContext {
 
     public boolean login(String username, String password) {
         boolean flag = false;
-        String sql = "  select * from Staff where username =? and password =?";
+        String sql = "  select * from Staff where username =? and password =? and status = 1";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, username);

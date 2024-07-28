@@ -205,41 +205,42 @@ public class DAOProduct extends DBContext {
     }
 
     public List<Product> getProductByTitle(String title) {
-        List<Product> p = new ArrayList();
-        try {
-            String query = "SELECT * FROM Product WHERE product_name = ? ORDER BY productID DESC;";
-            PreparedStatement stm = conn.prepareStatement(query);
-            stm.setString(1, title);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Product pr = new Product(
-                        rs.getInt("productID"),
-                        rs.getString("product_name"),
-                        rs.getInt("quantity"),
-                        rs.getInt("year"),
-                        rs.getString("product_description"),
-                        rs.getInt("featured"),
-                        rs.getString("thumbnail"),
-                        rs.getString("brief_information"),
-                        rs.getFloat("original_price"),
-                        rs.getFloat("sale_price"),
-                        null,
-                        rs.getString("brand"),
-                        rs.getDate("update_date"),
-                        rs.getBoolean("status"), rs.getInt("quantity_hold")
-                );
-                p.add(pr);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    List<Product> p = new ArrayList<>();
+    try {
+        String query = "SELECT * FROM Product WHERE product_name LIKE N ? ORDER BY productID DESC";
+        PreparedStatement stm = conn.prepareStatement(query);
+        stm.setString(1, "%" + title + "%");
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Product pr = new Product(
+                rs.getInt("productID"),
+                rs.getString("product_name"),
+                rs.getInt("quantity"),
+                rs.getInt("year"),
+                rs.getString("product_description"),
+                rs.getInt("featured"),
+                rs.getString("thumbnail"),
+                rs.getString("brief_information"),
+                rs.getFloat("original_price"),
+                rs.getFloat("sale_price"),
+                null,
+                rs.getString("brand"),
+                rs.getDate("update_date"),
+                rs.getBoolean("status"),
+                rs.getInt("quantity_hold")
+            );
+            p.add(pr);
         }
-        return p;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return p;
+}
 
     public List<Product> getProductByTitleByCid(String title, int cid) {
         List<Product> p = new ArrayList();
         try {
-            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ?";
+            String query = "SELECT * FROM Product WHERE product_name like N'%" + title + "%' and category_productID = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, cid);
             ResultSet rs = stm.executeQuery();
@@ -271,7 +272,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductFeatureByTitleByCid(String title, int cid, int feature) {
         List<Product> p = new ArrayList();
         try {
-            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%' and category_productID = ? and featured = ?";
+            String query = "SELECT * FROM Product WHERE product_name like N'%" + title + "%' and category_productID = ? and featured = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, cid);
             stm.setInt(2, feature);
@@ -304,7 +305,7 @@ public class DAOProduct extends DBContext {
     public List<Product> getProductFeatureByTitle(String title, int feature) {
         List<Product> p = new ArrayList();
         try {
-            String query = "SELECT * FROM Product WHERE product_name like '%" + title + "%'  and featured = ?";
+            String query = "SELECT * FROM Product WHERE product_name like N'%" + title + "%'  and featured = ?";
             PreparedStatement stm = conn.prepareStatement(query);
             stm.setInt(1, feature);
             ResultSet rs = stm.executeQuery();
@@ -945,7 +946,7 @@ public class DAOProduct extends DBContext {
             String query = "Select p.productID, p.product_name, p.quantity_hold,p.quantity, p.year,p.category_productID, p.product_description, p.featured, p.thumbnail, "
                     + "p.brief_information,p.original_price,p.sale_price,p.update_date,p.brand, p.status, cp.category_name, cp.category_name, cp.category_description, cp.image "
                     + "from Product p inner join CategoryProduct cp "
-                    + "on p.category_productID =cp.category_productID Order by p.update_date";
+                    + "on p.category_productID =cp.category_productID where p.featured = 0 Order by p.update_date";
             PreparedStatement stm = conn.prepareStatement(query);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

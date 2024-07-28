@@ -120,7 +120,7 @@
                                 <div class="nav-item dropdown">
                                     <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Khác</a>
                                     <div class="dropdown-menu rounded-0 m-0">
-                                                                <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
+                                        <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                     </div>
                                 </div>
                                 <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
@@ -130,15 +130,15 @@
                                 <c:when test="${not empty sessionScope.cus}">
 
                                     <div class="navbar-nav ml-auto py-0">
-                                          <div class="nav-item dropdown">
-                                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
-                                        <div class="dropdown-menu ml-auto py-0">
-                                            <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
-                                             <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                        <div class="nav-item dropdown">
+                                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">HI ${cus1.first_name} ${cus1.last_name}</a>
+                                            <div class="dropdown-menu ml-auto py-0">
+                                                <a href="editProfileCustomerURL?customerid=${cus1.customerID}" class="dropdown-item">Cá Nhân</a>
+                                                <a href="MyOrderURL?customerid=${cus1.customerID}" class="dropdown-item">Đơn hàng </a>
+                                            </div>
+                                            <!--<a href="LogOut">Log out</a>-->
+
                                         </div>
-                                        <!--<a href="LogOut">Log out</a>-->
-                                        
-                                          </div>
                                         <a href="LogOut" class="nav-link ">Đăng Xuất</a>
                                     </div>
                                 </c:when>
@@ -250,7 +250,7 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <form action="ProductsListPublic" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="search" placeholder="Tìm theo tên sản phẩm">
+                                        <input type="text" class="form-control" name="search" id="searchInput" placeholder="Tìm theo tên sản phẩm">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-search"></i>
@@ -277,10 +277,15 @@
                                         <h6 class="text-truncate mb-3">${l.product_name}</h6>
                                         <p>${l.brief_information}</p>
                                         <div class="d-flex justify-content-center">
-                                            <h6>${l.original_price}</h6>
+
                                             <c:if test="${not empty l.sale_price}">
-                                                <h6 class="text-muted ml-2"><del>${l.sale_price}</del></h6>
-                                                    </c:if>
+                                                <del><h6>${l.original_price}</h6></del>
+                                                <h6 class="text-muted ml-2">${l.sale_price}</h6>
+                                            </c:if>
+                                            <c:if test="${ empty l.sale_price}">
+                                                <h6>${l.original_price}</h6>
+                                            </c:if>
+
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex justify-content-between bg-light border">
@@ -371,7 +376,7 @@
 
 
         <!-- Footer Start -->
-       <jsp:include page="footter.jsp"/>
+        <jsp:include page="footter.jsp"/>
         <!-- Footer End -->
 
 
@@ -406,6 +411,11 @@
                                         }
         </script>
         <script>
+document.getElementById('searchInput').addEventListener('change', function() {
+    this.value = this.value.trim();
+});
+</script>
+        <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
@@ -426,32 +436,32 @@
                         const cartIconRect = cartIcon.getBoundingClientRect();
 
                         // Đặt vị trí ban đầu của hình ảnh bản sao
-                       
+
 
                         // Di chuyển hình ảnh bản sao đến vị trí của giỏ hàng
-                        
+
 
                         // Loại bỏ hình ảnh bản sao sau khi di chuyển
-                        
 
-                            // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
-                            $.ajax({
-                                url: 'AddToCart',
-                                method: 'GET',
-                                data: {pid: productId},
-                                success: function (response) {
-                                    // Xử lý phản hồi thành công, ví dụ cập nhật giỏ hàng
-                                    alert('Sản phẩm đã được thêm vào giỏ hàng!');
-                                },
-                                error: function (error) {
-                                    // Xử lý lỗi
-                                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
-                                }
-                            });
-                        }, 1100);
-                    });
+
+                        // Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+                        $.ajax({
+                            url: 'AddToCart',
+                            method: 'GET',
+                            data: {pid: productId},
+                            success: function (response) {
+                                // Xử lý phản hồi thành công, ví dụ cập nhật giỏ hàng
+                                alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                            },
+                            error: function (error) {
+                                // Xử lý lỗi
+                                alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                            }
+                        });
+                    }, 1100);
                 });
-            
+            });
+
         </script>
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
