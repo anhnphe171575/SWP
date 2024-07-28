@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controller;
 
 import DAL.DAOSetting;
@@ -29,38 +28,45 @@ import java.util.Vector;
 
 /**
  *
- * @author Nguyễn Đăng
+ * @author Nguyễn Vinh
  */
 public class AdminSetting extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
         DAOSetting dao = new DAOSetting();
         String service = request.getParameter("service");
         if (service == null) {
             service = "listAllSetting";
         }
-        if(service.equals("AdminSettingDetails")) {
+        if (service.equals("AdminSettingDetails")) {
             String submit = request.getParameter("submit");
-        Vector<Setting> vector = null;
-        if (submit == null) {                            
-        request.setAttribute("setting", dao.getBySettingID(Integer.parseInt(request.getParameter("settingid"))));
-        
-        //request.setAttribute("list", vector);
-        //request.setAttribute("viewDetailsSlider", vector);
-        request.getRequestDispatcher("/Views/AdminSettingDetails.jsp").forward(request, response);
+            Vector<Setting> vector = null;
+            if (submit == null) {
+                try {
+                    int setID = Integer.parseInt(request.getParameter("settingid"));
+                    request.setAttribute("setting", dao.getBySettingID(setID));
+                    request.getRequestDispatcher("/Views/AdminSettingDetails.jsp").forward(request, response);
+                } catch (Exception e) {
+                    response.sendRedirect("AdminSettingURL");
+                }
+
+                //request.setAttribute("list", vector);
+                //request.setAttribute("viewDetailsSlider", vector);
+            }
         }
-        }
-        if(service.equals("sort")) {
+        if (service.equals("sort")) {
             String sort = request.getParameter("sort");
             if ("settingID".equals(sort)) {
                 request.setAttribute("listAllSetting", dao.sortByID());
@@ -75,23 +81,22 @@ public class AdminSetting extends HttpServlet {
             } else {
                 request.setAttribute("listAllSetting", dao.sortByStatus());
             }
-             request.getRequestDispatcher("/Views/AdminSettingList.jsp").forward(request, response);
-            
+            request.getRequestDispatcher("/Views/AdminSettingList.jsp").forward(request, response);
+
         }
         if (service.equals("filter")) {
             String statusno = request.getParameter("status");
             int statuss = Integer.parseInt(statusno);
-             Vector<Setting> list = new Vector<>();
-             DAOSetting db = new DAOSetting();
+            Vector<Setting> list = new Vector<>();
+            DAOSetting db = new DAOSetting();
             if (!statusno.equalsIgnoreCase("3")) {
-              String status = " where s.Status = " + statuss;
-              list = db.getByStatus(status);
-            }
-            else{
-               list = db.getByStatus("");
+                String status = " where s.Status = " + statuss;
+                list = db.getByStatus(status);
+            } else {
+                list = db.getByStatus("");
             }
             request.setAttribute("listAllSetting", list);
-             request.getRequestDispatcher("/Views/AdminSettingList.jsp").forward(request, response);
+            request.getRequestDispatcher("/Views/AdminSettingList.jsp").forward(request, response);
         }
 //        if (service.equals("addSetting")) {
 //            String submit = request.getParameter("submit");
@@ -176,13 +181,13 @@ public class AdminSetting extends HttpServlet {
             request.setAttribute("listAllSetting", vector);
             request.getRequestDispatcher("/Views/AdminSettingList.jsp").forward(request, response);
         }
-    
-        }
-    
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -190,12 +195,13 @@ public class AdminSetting extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -203,12 +209,13 @@ public class AdminSetting extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

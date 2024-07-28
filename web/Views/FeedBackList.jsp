@@ -328,10 +328,13 @@
             });
             $(document).ready(function () {
                 $('.table').DataTable({
-                    "paging": true,
-                    "searching": false,
-                    "ordering": true,
-                    "info": false
+                  "pageLength": 10,
+                                    "lengthChange": false,
+                                    "searching": true,
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": false
+
                 });
             });
         </script>
@@ -352,19 +355,13 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h2>Quản lí <b>FeedBack</b></h2>
+                                        <h2>Quản lí FeedBack</h2>
+
                                     </div>
-                                    <div style="text-align: right"class="col-sm-3">
-                                        <form action="FeedBackList" method="post">
-                                            <input type="text" name="name"><!-- comment -->
-                                            <input type="submit" name="submit" value="Search"><!-- comment -->
-                                            <input type="hidden" name="service" value="search">
-                                        </form>					
-                                    </div>
+                                  
 
                                     <div class="col-sm-6">
                                         
-                                        <h5>${sessionScope.username}</h5>
                                 </div>
                             </div>
                         </div>
@@ -377,7 +374,7 @@
                                             <span class="input-group-text">Sản phẩm: </span>
                                         </div>
                                         <select id="product-filter" name="proid" class="form-control">
-                                            <option value="all">tất cả</option>
+                                            <option value="all">Tất cả</option>
                                             <c:forEach items="${requestScope.product}" var="p">
                                                 <option value="${p.productID}">${p.product_name}</option>
                                             </c:forEach>

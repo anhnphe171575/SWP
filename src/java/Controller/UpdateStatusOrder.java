@@ -171,7 +171,9 @@ public class UpdateStatusOrder extends HttpServlet {
             }
         };
         Session session = Session.getInstance(props, auth);
+  new Thread(() -> {
 
+        try {
         MimeMessage msg = new MimeMessage(session);
         //set message headers
         msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
@@ -190,6 +192,9 @@ public class UpdateStatusOrder extends HttpServlet {
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, false));
         Transport.send(msg);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }}).start();
     }
 
     /**

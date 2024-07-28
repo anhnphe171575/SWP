@@ -5,8 +5,16 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Product</title>
+        <title>Chỉnh sửa sản phẩm</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="./mktcss/styles.css">
         <style>
             body {
                 background-color: #f8f9fa;
@@ -45,179 +53,60 @@
                 border-color: #545b62;
             }
         </style>
+
         <script>
-          document.addEventListener("DOMContentLoaded", function () {
-    // Set max date for update date
-    var today = new Date().toISOString().split('T')[0];
-    document.getElementById("updateDate").setAttribute("max", today);
+            document.addEventListener("DOMContentLoaded", function () {
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById("updateDate").setAttribute("max", today);
 
-    // Create error message container
-    var errorContainer = document.createElement('div');
-    errorContainer.id = 'errorContainer';
-    errorContainer.style.color = 'red';
-    errorContainer.style.marginBottom = '10px';
-    document.getElementById("editProductForm").prepend(errorContainer);
+                document.getElementById("editProductForm").addEventListener("submit", function (event) {
+                    event.preventDefault(); // Ngăn không cho form gửi theo cách truyền thống
 
-    // Function to display error messages
-    function showError(message) {
-        errorContainer.innerHTML += message + '<br>';
-        errorContainer.style.display = 'block';
-    }
+                    var formData = new FormData(this);
 
-    // Function to clear error messages
-    function clearErrors() {
-        errorContainer.innerHTML = '';
-        errorContainer.style.display = 'none';
-    }
-
-    // Product name validation
-    var productNameInput = document.querySelector('input[name="productName"]');
-    productNameInput.addEventListener('blur', function () {
-        if (this.value.length > 255) {
-            showError('Tên sản phẩm không được vượt quá 255 ký tự.');
-        }
-    });
-
-    // Description character limit
-    var descriptionTextarea = document.querySelector('textarea[name="description"]');
-    var descriptionCharCount = document.createElement('div');
-    descriptionTextarea.parentNode.appendChild(descriptionCharCount);
-
-    descriptionTextarea.addEventListener('input', function() {
-        var maxLength = 1000;
-        var currentLength = this.value.length;
-        if(currentLength > maxLength) {
-            this.value = this.value.substring(0, maxLength);
-        }
-        descriptionCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
-    });
-
-    // Brief Info character limit
-    var briefInfoTextarea = document.querySelector('textarea[name="briefInfo"]');
-    var briefInfoCharCount = document.createElement('div');
-    briefInfoTextarea.parentNode.appendChild(briefInfoCharCount);
-
-    briefInfoTextarea.addEventListener('input', function() {
-        var maxLength = 255;
-        var currentLength = this.value.length;
-        if(currentLength > maxLength) {
-            this.value = this.value.substring(0, maxLength);
-        }
-        briefInfoCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
-    });
-
-    // File type and size check
-    var fileInput = document.getElementById('file');
-    fileInput.addEventListener('change', function() {
-        if (this.files.length > 0) {
-            var file = this.files[0];
-            var fileType = file.type;
-            var fileSize = file.size;
-            var maxSize = 5 * 1024 * 1024; // 5MB
-
-            if (!fileType.startsWith('image/')) {
-                showError('Vui lòng chọn một tệp hình ảnh.');
-                this.value = '';
-            } else if (fileSize > maxSize) {
-                showError('Kích thước tệp phải nhỏ hơn 5MB.');
-                this.value = '';
-            }
-        }
-    });
-
-    // Form submission validation
-    document.getElementById("editProductForm").addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent form from submitting immediately
-        clearErrors(); // Clear previous error messages
-
-        var isValid = true;
-
-        // Check if all required fields are filled
-        this.querySelectorAll('[required]').forEach(function(element) {
-            if (element.value.trim() === '') {
-                isValid = false;
-                element.classList.add('error');
-                showError('Vui lòng điền vào tất cả các trường bắt buộc.');
-            } else {
-                element.classList.remove('error');
-            }
-        });
-
-        var originalPrice = parseFloat(document.getElementById("originalPrice").value);
-        var salePrice = parseFloat(document.getElementById("salePrice").value);
-        var featured = parseInt(document.getElementById("featured").value);
-
-        if (originalPrice <= salePrice) {
-            isValid = false;
-            showError("Giá gốc phải lớn hơn giá bán.");
-        }
-
-        if (featured !== 0 && featured !== 1) {
-            isValid = false;
-            showError("Giá trị 'Nổi bật' phải là 0 hoặc 1.");
-        }
-
-        // Validate product name length
-        if (productNameInput.value.length > 255) {
-            isValid = false;
-            showError('Tên sản phẩm không được vượt quá 255 ký tự.');
-        }
-
-        // Validate description length
-        if (descriptionTextarea.value.length > 1000) {
-            isValid = false;
-            showError('Mô tả không được vượt quá 1000 ký tự.');
-        }
-
-        // Validate brief info length
-        if (briefInfoTextarea.value.length > 255) {
-            isValid = false;
-            showError('Thông tin tóm tắt không được vượt quá 255 ký tự.');
-        }
-
-        if (isValid) {
-            this.submit(); // Submit the form if all validations pass
-        }
-    });
-
-    // Initialize character counters
-    descriptionTextarea.dispatchEvent(new Event('input'));
-    briefInfoTextarea.dispatchEvent(new Event('input'));
-});
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr("action"),
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            // Giả sử server trả về "success" nếu thành công
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Sản phẩm đã được chỉnh sửa thành công.',
+                            }).then(function () {
+                                window.location.href = "productslist"; // Điều hướng đến trang danh sách sản phẩm
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi!',
+                                text: 'Có lỗi xảy ra khi chỉnh sửa sản phẩm.',
+                            });
+                        }
+                    });
+                });
+            });
         </script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-        <link rel="stylesheet" href="./mktcss/styles.css">
+
     </head>
     <body>
-        <div class="grid-container" style="background-color: white; height:1000px; width:1000px">
-            <jsp:include page="header.jsp"></jsp:include>
-                <!-- End Header -->
+        <div class="grid-container" style="background-color: whitesmoke; ">
+            <div class="container-xl" style="width: 1200px;background-color: white; margin: 10px 0px 15px 180px">
 
-                <!-- Sidebar -->
-            <jsp:include page="sidebar.jsp"></jsp:include>
-                <div class="container-xl" style="width: 1200px;background-color: white">
-
-                    <h2>Chỉnh sửa sản phẩm</h2>
-                    <form id="editProductForm" action="editp" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label>ID:</label>
-                            <input type="text" name="productID" value="${product.productID}" readonly class="form-control-plaintext">
+                <h2>Chỉnh sửa sản phẩm</h2>
+                <form id="editProductForm" action="editp" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>ID:</label>
+                        <input type="text" name="productID" value="${product.productID}" readonly class="form-control-plaintext">
                     </div>
 
                     <div class="form-group">
                         <label>Tên:</label>
-                        <input type="text" name="productName" value="${product.product_name}" class="form-control" required>
+                        <input type="text" id="productName" name="productName" value="${product.product_name}" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -287,12 +176,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Hãng:</label>
-                        <select name="brand" class="form-control" required>
-                            <c:forEach var="brand" items="${brand}">
-                                <option value="${brand}" ${brand == product.brand ? 'selected' : ''}>${brand}</option>
-                            </c:forEach>
-                        </select>
+                        <label for="brand">Thương hiệu:</label>
+                        <input type="text" name="brand" id="brand" value="${product.brand}" class="form-control" required>
+
                     </div>
 
                     <div class="form-group">

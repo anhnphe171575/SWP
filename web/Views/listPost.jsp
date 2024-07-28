@@ -156,11 +156,7 @@
                                         <h2>Quản lý bài đăng</h2>
                                     </div>
                                      <div style="text-align: right" class="col-sm-3">
-                                            <form action="PostController" method="post">
-                                                <input type="text" name="title"><!-- comment -->
-                                                <input type="submit" name="submit" value="Tìm"><!-- comment -->
-                                                <input type="hidden" name="service" value="search">
-                                            </form>
+                                            
                                         </div>
                                         <div class="col-sm-6">
                                             <a href="#Add" class="btn btn-success" data-toggle="modal"><i
@@ -439,7 +435,7 @@ $(document).ready(function() {
                                 $('#customerTable').DataTable({
                                     "pageLength": 10,
                                     "lengthChange": false,
-                                    "searching": false,
+                                    "searching": true,
                                     "ordering": true,
                                     "info": true,
                                     "autoWidth": false,

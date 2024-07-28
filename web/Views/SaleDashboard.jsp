@@ -175,7 +175,7 @@ int displayYear = (yearParam != null && !yearParam.isEmpty()) ? Integer.parseInt
                         <div class="charts" id="statsChart1"></div>
                     </div>-->
   <div class="col-lg-3 charts-card">
-                        <h2 class="chart-title">Đơn hàng theo thể loại</h2>
+                        <h2 class="chart-title">Lợi nhuận đơn hàng theo thể loại</h2>
                         <h2>Tổng: ${total}</h2>
                         <div id="pie-chart"></div>
                     </div>

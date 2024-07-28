@@ -10,7 +10,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Product</title>
+        <title>Edit Post</title>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy ngày hiện tại
@@ -37,41 +37,90 @@
             });
         </script>
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+
             .container {
                 max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                border: 1px solid #ccc;
-                border-radius: 10px;
+                margin: 50px auto;
+                background: #fff;
+                padding: 30px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
             }
+
+            h2 {
+                color: #333;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
             .form-group {
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
+
             .form-group div {
+                font-weight: bold;
                 margin-bottom: 5px;
+                color: #555;
             }
-            input[type="text"], input[type="number"], textarea, select {
+
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select,
+            input[type="file"] {
                 width: 100%;
-                padding: 8px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
                 box-sizing: border-box;
             }
+
+            textarea {
+                height: 100px;
+                resize: vertical;
+            }
+
             input[type="submit"] {
-                padding: 10px 15px;
+                width: 100%;
+                padding: 12px;
                 background-color: #28a745;
                 color: white;
                 border: none;
-                border-radius: 5px;
+                border-radius: 4px;
                 cursor: pointer;
+                font-size: 16px;
             }
+
             input[type="submit"]:hover {
                 background-color: #218838;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+
+            /* Responsive design */
+            @media screen and (max-width: 600px) {
+                .container {
+                    width: 100%;
+                    margin: 20px auto;
+                    padding: 20px;
+                }
             }
         </style>
     </head>
     <body>
         <div class="container">
             <h2>Chỉnh Sửa Bài Viết</h2>
-    <form id="editPostForm" action="EditPost" method="post" enctype="multipart/form-data">
+            <form id="editPostForm" action="EditPost" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <input type="hidden" name="postID" value="${post.postID}" >
                     <div>Tiêu đề:</div>
@@ -134,51 +183,51 @@
                 <input type="submit" value="Submit">
             </form>
         </div>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#editPostForm').submit(function(e) {
-        e.preventDefault();
-        
-        // Validate form
-        if (!this.checkValidity()) {
-            e.stopPropagation();
-            $(this).addClass('was-validated');
-            return;
-        }
-        
-        var formData = new FormData(this);
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+                    $(document).ready(function () {
+                        $('#editPostForm').submit(function (e) {
+                            e.preventDefault();
 
-        $.ajax({
-            url: 'EditPost',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: 'Bài viết đã được cập nhật thành công!',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    window.location.href = 'PostController';
-                });
-            },
-            error: function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã xảy ra lỗi khi cập nhật bài viết!',
-                    confirmButtonText: 'OK'
-                });
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-    });
-});
-</script>
+                            // Validate form
+                            if (!this.checkValidity()) {
+                                e.stopPropagation();
+                                $(this).addClass('was-validated');
+                                return;
+                            }
+
+                            var formData = new FormData(this);
+
+                            $.ajax({
+                                url: 'EditPost',
+                                type: 'POST',
+                                data: formData,
+                                success: function (response) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công',
+                                        text: 'Bài viết đã được cập nhật thành công!',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        window.location.href = 'PostController';
+                                    });
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Lỗi',
+                                        text: 'Đã xảy ra lỗi khi cập nhật bài viết!',
+                                        confirmButtonText: 'OK'
+                                    });
+                                },
+                                cache: false,
+                                contentType: false,
+                                processData: false
+                            });
+                        });
+                    });
+        </script>
     </body>
 </html>
 

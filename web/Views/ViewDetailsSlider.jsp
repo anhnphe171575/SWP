@@ -265,7 +265,7 @@
                                 </tr>
                                 <tr>
                                     <td>ID người đăng</td>
-                                    <td>${c.user.userID}</td>
+                                    <td>${c.staff.getStaffID()}</td>
                                 </tr>
 
                             <td colspan="2">

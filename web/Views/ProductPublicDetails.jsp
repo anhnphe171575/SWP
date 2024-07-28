@@ -207,7 +207,6 @@
                                             <a href="BlogController" class="nav-item nav-link">Bài Viết</a>
                                         </div>
                                     </div>
-                                    <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
                                 </div>       
                                 <c:set  value="${sessionScope.cus}" var="cus1"></c:set>
                                 <c:choose>
@@ -269,18 +268,26 @@
 
                 <div class="col-lg-7 pb-5">
                     <h3 class="font-weight-semi-bold">${p.product_name}</h3>
-                    <div class="d-flex mb-3">
-                        <div class="star-rating1">
+                                        <h5 class="font-weight-semi-bold">NXB: ${p.brand}</h5>
 
-                        </div>
+                    <div class="d-flex mb-3">
+                       
+                                            
+
                         <small class="pt-1">(${requestScope.qreview} Đánh Giá)</small>
+                        
                     </div>
                     <div style="display: flex; padding-bottom: 5px">
                         <c:if test="${not empty p.sale_price}">
-                            <h3 class="font-weight-semi-bold mb-4" style="margin-right: 10px;"><del>$${p.sale_price}</del></h3>
-                        </c:if>
-                        <h3 class="font-weight-semi-bold mb-4">$${p.original_price}</h3>
+                            <h3 class="font-weight-semi-bold mb-4" style="margin-right: 10px;">$${p.sale_price}</h3>
+                            <del>  <h3 class="font-weight-semi-bold mb-4">$${p.original_price}</h3></del>
 
+                        </c:if>
+                        
+                             <c:if test="${ empty p.sale_price}">
+                              <h3 class="font-weight-semi-bold mb-4">$${p.original_price}</h3>
+
+                        </c:if>
                     </div>
                     <p class="mb-4">${p.product_description}</p>
 
