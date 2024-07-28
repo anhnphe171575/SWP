@@ -46,144 +46,144 @@
             }
         </style>
         <script>
-          document.addEventListener("DOMContentLoaded", function () {
-    // Set max date for update date
-    var today = new Date().toISOString().split('T')[0];
-    document.getElementById("updateDate").setAttribute("max", today);
+            document.addEventListener("DOMContentLoaded", function () {
+                // Set max date for update date
+                var today = new Date().toISOString().split('T')[0];
+                document.getElementById("updateDate").setAttribute("max", today);
 
-    // Create error message container
-    var errorContainer = document.createElement('div');
-    errorContainer.id = 'errorContainer';
-    errorContainer.style.color = 'red';
-    errorContainer.style.marginBottom = '10px';
-    document.getElementById("editProductForm").prepend(errorContainer);
+                // Create error message container
+                var errorContainer = document.createElement('div');
+                errorContainer.id = 'errorContainer';
+                errorContainer.style.color = 'red';
+                errorContainer.style.marginBottom = '10px';
+                document.getElementById("editProductForm").prepend(errorContainer);
 
-    // Function to display error messages
-    function showError(message) {
-        errorContainer.innerHTML += message + '<br>';
-        errorContainer.style.display = 'block';
-    }
+                // Function to display error messages
+                function showError(message) {
+                    errorContainer.innerHTML += message + '<br>';
+                    errorContainer.style.display = 'block';
+                }
 
-    // Function to clear error messages
-    function clearErrors() {
-        errorContainer.innerHTML = '';
-        errorContainer.style.display = 'none';
-    }
+                // Function to clear error messages
+                function clearErrors() {
+                    errorContainer.innerHTML = '';
+                    errorContainer.style.display = 'none';
+                }
 
-    // Product name validation
-    var productNameInput = document.querySelector('input[name="productName"]');
-    productNameInput.addEventListener('blur', function () {
-        if (this.value.length > 255) {
-            showError('Tên sản phẩm không được vượt quá 255 ký tự.');
-        }
-    });
+                // Product name validation
+                var productNameInput = document.querySelector('input[name="productName"]');
+                productNameInput.addEventListener('blur', function () {
+                    if (this.value.length > 255) {
+                        showError('Tên sản phẩm không được vượt quá 255 ký tự.');
+                    }
+                });
 
-    // Description character limit
-    var descriptionTextarea = document.querySelector('textarea[name="description"]');
-    var descriptionCharCount = document.createElement('div');
-    descriptionTextarea.parentNode.appendChild(descriptionCharCount);
+                // Description character limit
+                var descriptionTextarea = document.querySelector('textarea[name="description"]');
+                var descriptionCharCount = document.createElement('div');
+                descriptionTextarea.parentNode.appendChild(descriptionCharCount);
 
-    descriptionTextarea.addEventListener('input', function() {
-        var maxLength = 1000;
-        var currentLength = this.value.length;
-        if(currentLength > maxLength) {
-            this.value = this.value.substring(0, maxLength);
-        }
-        descriptionCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
-    });
+                descriptionTextarea.addEventListener('input', function () {
+                    var maxLength = 1000;
+                    var currentLength = this.value.length;
+                    if (currentLength > maxLength) {
+                        this.value = this.value.substring(0, maxLength);
+                    }
+                    descriptionCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
+                });
 
-    // Brief Info character limit
-    var briefInfoTextarea = document.querySelector('textarea[name="briefInfo"]');
-    var briefInfoCharCount = document.createElement('div');
-    briefInfoTextarea.parentNode.appendChild(briefInfoCharCount);
+                // Brief Info character limit
+                var briefInfoTextarea = document.querySelector('textarea[name="briefInfo"]');
+                var briefInfoCharCount = document.createElement('div');
+                briefInfoTextarea.parentNode.appendChild(briefInfoCharCount);
 
-    briefInfoTextarea.addEventListener('input', function() {
-        var maxLength = 255;
-        var currentLength = this.value.length;
-        if(currentLength > maxLength) {
-            this.value = this.value.substring(0, maxLength);
-        }
-        briefInfoCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
-    });
+                briefInfoTextarea.addEventListener('input', function () {
+                    var maxLength = 255;
+                    var currentLength = this.value.length;
+                    if (currentLength > maxLength) {
+                        this.value = this.value.substring(0, maxLength);
+                    }
+                    briefInfoCharCount.textContent = (maxLength - currentLength) + ' ký tự còn lại';
+                });
 
-    // File type and size check
-    var fileInput = document.getElementById('file');
-    fileInput.addEventListener('change', function() {
-        if (this.files.length > 0) {
-            var file = this.files[0];
-            var fileType = file.type;
-            var fileSize = file.size;
-            var maxSize = 5 * 1024 * 1024; // 5MB
+                // File type and size check
+                var fileInput = document.getElementById('file');
+                fileInput.addEventListener('change', function () {
+                    if (this.files.length > 0) {
+                        var file = this.files[0];
+                        var fileType = file.type;
+                        var fileSize = file.size;
+                        var maxSize = 5 * 1024 * 1024; // 5MB
 
-            if (!fileType.startsWith('image/')) {
-                showError('Vui lòng chọn một tệp hình ảnh.');
-                this.value = '';
-            } else if (fileSize > maxSize) {
-                showError('Kích thước tệp phải nhỏ hơn 5MB.');
-                this.value = '';
-            }
-        }
-    });
+                        if (!fileType.startsWith('image/')) {
+                            showError('Vui lòng chọn một tệp hình ảnh.');
+                            this.value = '';
+                        } else if (fileSize > maxSize) {
+                            showError('Kích thước tệp phải nhỏ hơn 5MB.');
+                            this.value = '';
+                        }
+                    }
+                });
 
-    // Form submission validation
-    document.getElementById("editProductForm").addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent form from submitting immediately
-        clearErrors(); // Clear previous error messages
+                // Form submission validation
+                document.getElementById("editProductForm").addEventListener("submit", function (event) {
+                    event.preventDefault(); // Prevent form from submitting immediately
+                    clearErrors(); // Clear previous error messages
 
-        var isValid = true;
+                    var isValid = true;
 
-        // Check if all required fields are filled
-        this.querySelectorAll('[required]').forEach(function(element) {
-            if (element.value.trim() === '') {
-                isValid = false;
-                element.classList.add('error');
-                showError('Vui lòng điền vào tất cả các trường bắt buộc.');
-            } else {
-                element.classList.remove('error');
-            }
-        });
+                    // Check if all required fields are filled
+                    this.querySelectorAll('[required]').forEach(function (element) {
+                        if (element.value.trim() === '') {
+                            isValid = false;
+                            element.classList.add('error');
+                            showError('Vui lòng điền vào tất cả các trường bắt buộc.');
+                        } else {
+                            element.classList.remove('error');
+                        }
+                    });
 
-        var originalPrice = parseFloat(document.getElementById("originalPrice").value);
-        var salePrice = parseFloat(document.getElementById("salePrice").value);
-        var featured = parseInt(document.getElementById("featured").value);
+                    var originalPrice = parseFloat(document.getElementById("originalPrice").value);
+                    var salePrice = parseFloat(document.getElementById("salePrice").value);
+                    var featured = parseInt(document.getElementById("featured").value);
 
-        if (originalPrice <= salePrice) {
-            isValid = false;
-            showError("Giá gốc phải lớn hơn giá bán.");
-        }
+                    if (originalPrice <= salePrice) {
+                        isValid = false;
+                        showError("Giá gốc phải lớn hơn giá bán.");
+                    }
 
-        if (featured !== 0 && featured !== 1) {
-            isValid = false;
-            showError("Giá trị 'Nổi bật' phải là 0 hoặc 1.");
-        }
+                    if (featured !== 0 && featured !== 1) {
+                        isValid = false;
+                        showError("Giá trị 'Nổi bật' phải là 0 hoặc 1.");
+                    }
 
-        // Validate product name length
-        if (productNameInput.value.length > 255) {
-            isValid = false;
-            showError('Tên sản phẩm không được vượt quá 255 ký tự.');
-        }
+                    // Validate product name length
+                    if (productNameInput.value.length > 255) {
+                        isValid = false;
+                        showError('Tên sản phẩm không được vượt quá 255 ký tự.');
+                    }
 
-        // Validate description length
-        if (descriptionTextarea.value.length > 1000) {
-            isValid = false;
-            showError('Mô tả không được vượt quá 1000 ký tự.');
-        }
+                    // Validate description length
+                    if (descriptionTextarea.value.length > 1000) {
+                        isValid = false;
+                        showError('Mô tả không được vượt quá 1000 ký tự.');
+                    }
 
-        // Validate brief info length
-        if (briefInfoTextarea.value.length > 255) {
-            isValid = false;
-            showError('Thông tin tóm tắt không được vượt quá 255 ký tự.');
-        }
+                    // Validate brief info length
+                    if (briefInfoTextarea.value.length > 255) {
+                        isValid = false;
+                        showError('Thông tin tóm tắt không được vượt quá 255 ký tự.');
+                    }
 
-        if (isValid) {
-            this.submit(); // Submit the form if all validations pass
-        }
-    });
+                    if (isValid) {
+                        this.submit(); // Submit the form if all validations pass
+                    }
+                });
 
-    // Initialize character counters
-    descriptionTextarea.dispatchEvent(new Event('input'));
-    briefInfoTextarea.dispatchEvent(new Event('input'));
-});
+                // Initialize character counters
+                descriptionTextarea.dispatchEvent(new Event('input'));
+                briefInfoTextarea.dispatchEvent(new Event('input'));
+            });
         </script>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">

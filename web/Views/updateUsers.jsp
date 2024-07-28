@@ -92,7 +92,7 @@
                     <td>
                         <img class="rounded-circle mt-5" width="150px" src="${user.image}">
                         <input type="file" name="file" id="file" accept="image/*"  >
-                        <input type="hidden" name="existingImage" value="${user.getImage()}">
+                        <input type="hidden" name="existingImage" value="${user.image}">
                     </td>
 
                 </tr>
@@ -180,14 +180,142 @@
 
 
                 <tr>
-                    <td><input type="submit" name="submit" value="update User"></td>
-                    <td><input type="reset" value="reset">
-                        <input type="hidden" name="service" value="updateUser">
+                    <td>
+                        <a href="userList" style="background-color: grey; width: 80px; height: 35px; margin-top: 3px; border-radius: 6px; color: white; display: inline-block; text-align: center; line-height: 35px; text-decoration: none;">Back</a>
+                    </td>                    <td>
+                        <input type="submit" name="submit" value="update User">
                     </td>
                 </tr>
             </table>
 
         </form>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('form');
+                const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="date"], input[type="file"], select');
+                const submitButton = form.querySelector('input[type="submit"]');
 
+                // Create error message elements
+                inputs.forEach(input => {
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'error-message';
+                    errorSpan.style.color = 'red';
+                    errorSpan.style.display = 'none';
+                    input.parentNode.insertBefore(errorSpan, input.nextSibling);
+                });
+
+                // Validation functions
+                function validateRequired(input) {
+                    if (input.value.trim() === '') {
+                        showError(input, 'Trường này là bắt buộc');
+                        return false;
+                    }
+                    hideError(input);
+                    return true;
+                }
+
+                function validateLength(input, maxLength) {
+                    if (input.value.length > maxLength) {
+                        showError(input, `Không được vượt quá ${maxLength} ký tự`);
+                        return false;
+                    }
+                    hideError(input);
+                    return true;
+                }
+
+                function validatePhone(input) {
+                    const phoneRegex = /^0\d{9}$/;
+                    if (!phoneRegex.test(input.value)) {
+                        showError(input, 'Số điện thoại phải bắt đầu bằng 0 và có 10 chữ số');
+                        return false;
+                    }
+                    hideError(input);
+                    return true;
+                }
+
+                function validateEmail(input) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(input.value)) {
+                        showError(input, 'Email không hợp lệ');
+                        return false;
+                    }
+                    hideError(input);
+                    return true;
+                }
+
+                function showError(input, message) {
+                    const errorSpan = input.nextElementSibling;
+                    errorSpan.textContent = message;
+                    errorSpan.style.display = 'block';
+                }
+
+                function hideError(input) {
+                    const errorSpan = input.nextElementSibling;
+                    errorSpan.style.display = 'none';
+                }
+
+                // Validate individual field
+                function validateField(input) {
+                    if (input.type !== 'file' && !validateRequired(input)) {
+                        return false;
+                    }
+
+                    switch (input.name) {
+                        case 'fname':
+                        case 'lname':
+                        case 'securityAnswer':
+                            return validateLength(input, 20);
+                        case 'phone':
+                            return validatePhone(input);
+                        case 'email':
+                            return validateEmail(input);
+                        case 'address':
+                            return validateLength(input, 100);
+                        default:
+                            return true;
+                    }
+                }
+
+                // Validate on input
+                inputs.forEach(input => {
+                    input.addEventListener('input', function () {
+                        validateField(this);
+                        checkFormValidity();
+                    });
+
+                    // Initial validation
+                    if (input.type !== 'file') {
+                        validateField(input);
+                    }
+                });
+
+                function checkFormValidity() {
+                    let isValid = true;
+                    inputs.forEach(input => {
+                        if (input.type !== 'file' && input.nextElementSibling.style.display === 'block') {
+                            isValid = false;
+                        }
+                    });
+                    submitButton.disabled = !isValid;
+                }
+
+                // Prevent form submission if there are errors
+                form.addEventListener('submit', function (e) {
+                    let isValid = true;
+                    inputs.forEach(input => {
+                        if (input.type !== 'file' && !validateField(input)) {
+                            isValid = false;
+                        }
+                    });
+
+                    if (!isValid) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Initial form validity check
+                checkFormValidity();
+            });
+        </script> 
     </body>
 </html>

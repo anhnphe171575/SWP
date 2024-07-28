@@ -144,8 +144,13 @@
                     <td><input type="text" name="securityAnswer" id="" value="" required maxlength="20"></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" name="submit" value="Add User"></td>
-                    <td><input type="reset" value="Reset">
+                    
+                      <td>
+                        <a href="userList" style="background-color: grey; width: 80px; height: 35px; margin-top: 3px; border-radius: 6px; color: white; display: inline-block; text-align: center; line-height: 35px; text-decoration: none;">Back</a>
+                    </td>
+                    
+                    <td><input style="" type="submit" name="submit" value="Add User">
+                        <input type="reset" value="Reset">
                     </td>
                 </tr>
             </table>

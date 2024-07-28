@@ -40,6 +40,7 @@ public class DBContext {
     public DBContext() {
         this("jdbc:sqlserver://localhost:1433;databaseName=n6", "sa", "123");
 
+
                 
                 
     }

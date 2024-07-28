@@ -17,7 +17,7 @@
         <meta name="keywords" content="Colorlib Templates">
 
         <!-- Title Page-->
-        <title>Register Forms</title>
+        <title>Đăng ký Tài Khoản</title>
 
         <!-- Icons font CSS-->
         <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -33,6 +33,16 @@
         <link href="vncss/vn4.css" rel="stylesheet" media="all">
     </head>
     <body>
+        <c:if test="${emailSent == 'true'}">
+            <script>
+                window.alert("Vui lòng kiểm tra Email để hoàn tất đăng ký!");
+            </script>
+        </c:if>
+        <c:if test="${emailSent == 'false'}">
+            <script>
+                window.alert("Gửi email thất bại!");
+            </script>
+        </c:if>
         <div class="page-wrapper p-t-45 p-b-50" style="background-color: pink">
             <div class="wrapper wrapper--w790">
                 <div class="card card-5">
@@ -47,13 +57,13 @@
                                     <div class="row row-space">
                                         <div class="col-2">
                                             <div class="input-group-desc">
-                                                <input class="input--style-5" type="text" name="firstName">
+                                                <input class="input--style-5" type="text" name="firstName" required>
                                                 <label class="label--desc">Họ</label>
                                             </div>
                                         </div>
                                         <div class="col-2">
                                             <div class="input-group-desc">
-                                                <input class="input--style-5" type="text" name="lastName">
+                                                <input class="input--style-5" type="text" name="lastName" required>
                                                 <label class="label--desc">Tên</label>
                                             </div>
                                         </div>
@@ -64,7 +74,7 @@
                                 <div class="name">Số điện thoại</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="text" name="phone">
+                                        <input class="input--style-5" type="text" name="phone" required>
                                     </div>
                                     <c:if test="${not empty msgPhone}">
                                         <div class="error-message" style="color: red">${msgPhone}</div>
@@ -75,7 +85,7 @@
                                 <div class="name">Email</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="email" name="email">
+                                        <input class="input--style-5" type="email" name="email" required>
                                     </div>
                                     <c:if test="${not empty msgEmail}">
                                         <div class="error-message" style="color: red">${msgEmail}</div>
@@ -86,7 +96,7 @@
                                 <div class="name">Địa chỉ</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="text" name="address">
+                                        <input class="input--style-5" type="text" name="address" required>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +105,7 @@
                                 <div class="name">Ngày sinh</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="date" name="dob">
+                                        <input class="input--style-5" type="date" name="dob" required>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +125,7 @@
                                 <div class="name">Tên đăng nhập</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="text" name="username">
+                                        <input class="input--style-5" type="text" name="username" required>
                                     </div>
                                     <c:if test="${not empty msgUser}">
                                         <div class="error-message" style="color: red">${msgUser}</div>
@@ -127,7 +137,7 @@
                                 <div class="name">Mật khẩu</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="password" name="password">
+                                        <input class="input--style-5" type="password" name="password" required>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +145,7 @@
                                 <div class="name">Nhập lại mật khẩu</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="password" name="repass">
+                                        <input class="input--style-5" type="password" name="repass" required>
                                         <c:if test="${not empty msgRepass}">
                                             <div class="error-message" style="color: red">${msgRepass}</div>
                                         </c:if>
@@ -148,7 +158,7 @@
                                 <div class="value">
                                     <div class="input-group">
                                         <div class="rs-select2 js-select-simple select--no-search">
-                                            <select class="input--style-5" name="question">
+                                            <select class="input--style-5" name="question" required>
                                                 <c:forEach items="${securityQuestions}" var="question">
                                                     <option value="${question}">${question}</option>
                                                 </c:forEach>
@@ -162,7 +172,7 @@
                                 <div class="name">Câu trả lời</div>
                                 <div class="value">
                                     <div class="input-group">
-                                        <input class="input--style-5" type="text" name="answer">
+                                        <input class="input--style-5" type="text" name="answer" required>
                                     </div>
                                 </div>
                             </div>

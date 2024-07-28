@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 public class updateUser extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR = "C:\\Users\\phuan\\OneDrive\\Documents\\GitHub\\SWP\\web\\imgUserProfile";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,7 +73,7 @@ public class updateUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAOStaff daoU = new DAOStaff();
-        
+
         DAOSecurityQuestion db = new DAOSecurityQuestion();
         request.setAttribute("error", request.getParameter("error"));
         request.setAttribute("question", db.getSecurtityQuestion("select * from SecurityQuestion"));
@@ -96,7 +95,42 @@ public class updateUser extends HttpServlet {
             throws ServletException, IOException {
         DAOStaff daoU = new DAOStaff();
 
+        String applicationPath = request.getServletContext().getRealPath("");
+        // Construct the path for the upload directory
+        String uploadFilePath = applicationPath + File.separator + "imgUserProfile";
+        System.out.println("aaa");
 
+        // Create the upload directory if it doesn't exist
+        File fileSaveDir = new File(uploadFilePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdirs();
+        }
+
+        // Get the file part from the request
+        Part filePart = request.getPart("file");
+        String originalFileName = "";
+        String fileUrl = "";
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Get the original file name
+            originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            // Create a new file name
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String newFileName = "customer_" + System.currentTimeMillis() + fileExtension;
+
+            // Create a file path
+            File file = new File(uploadFilePath, newFileName);
+
+            // Write the file to the specified directory
+            filePart.write(file.getAbsolutePath());
+
+            // Construct the file URL relative to the web application
+            fileUrl = "imgUserProfile" + File.separator + newFileName;
+        } else {
+            // If no new file is uploaded, use the existing image URL
+            fileUrl = request.getParameter("existingImage");
+        }
         String UserID = request.getParameter("UserID");
         String fname = request.getParameter("fname");
         String lname = request.getParameter("lname");
@@ -126,30 +160,30 @@ public class updateUser extends HttpServlet {
             Logger.getLogger(userListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-           Boolean a = true;
-    String error = "";
-    if (daoU.checkPhone1(daoU.getStaffsByID(UserId).getPhone()).contains(phone)) {
-        error += "số điện thoại đã tồn tại. ";
-        a = false;
-    }
-    if (daoU.checkEmail1(daoU.getStaffsByID(UserId).getEmail()).contains(email)) {
-        error += "Email đã tồn tại. ";
-        a = false;
-    }
-    if (daoU.checkUsername1(daoU.getStaffsByID(UserId).getUsername()).contains(username)) {
-        error += "Tài khoản đã tồn tại. ";
-        a = false;
-    }
+        Boolean a = true;
+        String error = "";
+        if (daoU.checkPhone1(daoU.getStaffsByID(UserId).getPhone()).contains(phone)) {
+            error += "số điện thoại đã tồn tại. ";
+            a = false;
+        }
+        if (daoU.checkEmail1(daoU.getStaffsByID(UserId).getEmail()).contains(email)) {
+            error += "Email đã tồn tại. ";
+            a = false;
+        }
+        if (daoU.checkUsername1(daoU.getStaffsByID(UserId).getUsername()).contains(username)) {
+            error += "Tài khoản đã tồn tại. ";
+            a = false;
+        }
 
-    if (a == false) {
-        // Chuyển hướng với thông báo lỗi
-        response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + java.net.URLEncoder.encode(error, "UTF-8"));
-    } else {
-        Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, null);
-        daoU.UpdateStaff(user);
-        // Chuyển hướng sau khi cập nhật thành công
-        response.sendRedirect("userList");
-    }
+        if (a == false) {
+            // Chuyển hướng với thông báo lỗi
+            response.sendRedirect("userList?service=updateUser&UserID=" + UserID + "&error=" + java.net.URLEncoder.encode(error, "UTF-8"));
+        } else {
+            Staff user = new Staff(UserId, fname, lname, phone, email, address, username, password, date1, gender1, status1, role, sq, securityAnswer, fileUrl);
+            daoU.UpdateStaff(user);
+            // Chuyển hướng sau khi cập nhật thành công
+            response.sendRedirect("userList");
+        }
 
     }
 
