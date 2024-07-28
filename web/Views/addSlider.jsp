@@ -119,11 +119,11 @@ label {
             <h1>Add Slider</h1>
             <form id="sliderForm" action="SliderServletURL" method="post" enctype="multipart/form-data" novalidate>
                 <div class="form-group">
-                    <label for="title">Title:</label>
+                    <label for="title">Tiêu Đề:</label>
                     <input type="text" name="title" id="title" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="file">Image:</label>
+                    <label for="file">Ảnh:</label>
                     <input type="file" id="file" name="file" class="form-control-file" required accept="image/*">
                 </div>
                 <div class="form-group">
@@ -131,15 +131,15 @@ label {
                     <input type="text" name="link" id="link" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="notes">Notes:</label>
+                    <label for="notes">Ghi Chú:</label>
                     <input type="text" name="notes" id="notes" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="page_order">Page Order:</label>
+                    <label for="page_order">Hiện ở trang:</label>
                     <input type="number" name="page_order" id="page_order" class="form-control" required min="1">
                 </div>
                 <div class="form-group">
-                    <label for="status">Status:</label>
+                    <label for="status">Trạng Thái:</label>
                     <select id="status" name="status" class="form-control" required>
                         <option value="1">Show</option>
                         <option value="0">Hide</option>
