@@ -12,19 +12,24 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        body {
+            background-color: #f4f4f4;
+        }
         .container {
             max-width: 600px;
             margin-top: 50px;
-            background: #fff;
+            background: #ffffff;
             padding: 30px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         h2 {
             margin-bottom: 20px;
+            color: #343a40;
         }
         .form-group label {
             font-weight: bold;
+            color: #555;
         }
         .btn-primary {
             width: 100%;
@@ -33,9 +38,27 @@
             margin-bottom: 10px;
             background-color: #007bff;
             border: none;
+            transition: background-color 0.3s;
         }
         .btn-primary:hover {
             background-color: #0056b3;
+        }
+        .btn-secondary {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .alert-danger {
+            margin-top: 10px;
+        }
+        img {
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -53,7 +76,7 @@
             <div class="form-group">
                 <label for="image">Ảnh:</label>
                 <img src="${Slider.image}" width="300px" alt="Current Image"> <br/>
-                <input type="file" name="file" id="file" accept="image/*">
+                <input type="file" name="file" id="file" accept="image/*" class="mt-2">
                 <input type="hidden" name="existingImage" value="${Slider.image}">
             </div>
 
@@ -114,54 +137,47 @@
             $('#sliderForm').submit(function (e) {
                 e.preventDefault();
     
-                // Validate form
                 if (!validateForm()) {
                     return;
                 }
     
-                checkDuplicateName(function (isDuplicate) {
-                    if (isDuplicate) {
-                        $('#title').after('<div class="alert alert-danger mt-3" id="duplicateError">Tên loại sản phẩm đã tồn tại.</div>');
-                    } else {
-                        // Remove previous error message if it exists
-                        $('#duplicateError').remove();
+                var formData = new FormData($('#sliderForm')[0]);
+                formData.append("submit", "Update");
     
-                        var formData = new FormData($('#sliderForm')[0]);
-                        formData.append("submit", "Update");
-    
-                        $.ajax({
-                            url: 'CategoryServletURL',
-                            type: 'POST',
-                            data: formData,
-                            success: function (response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Thành công',
-                                    text: 'Loại sản phẩm đã được cập nhật thành công!',
-                                    confirmButtonText: 'OK'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = 'CategoryServletURL';
-                                    }
-                                });
-                            },
-                            error: function () {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Lỗi',
-                                    text: 'Đã xảy ra lỗi khi cập nhật loại sản phẩm.',
-                                    confirmButtonText: 'OK'
-                                });
-                            },
-                            cache: false,
-                            contentType: false,
-                            processData: false
+                $.ajax({
+                    url: 'CategoryServletURL',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.isDuplicate) {
+                            $('#title').after('<div class="alert alert-danger mt-3" id="duplicateError">Tên loại sản phẩm đã tồn tại.</div>');
+                        } else {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công',
+                                text: 'Loại sản phẩm đã được cập nhật thành công!',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = 'CategoryServletURL';
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Đã xảy ra lỗi khi cập nhật loại sản phẩm.',
+                            confirmButtonText: 'OK'
                         });
-                    }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
                 });
             });
         });
     </script>
-    
 </body>
 </html>

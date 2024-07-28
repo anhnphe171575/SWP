@@ -143,7 +143,7 @@
             $('#customerTable').DataTable({
                 "pageLength": 10,
                 "lengthChange": false,
-                "searching": false,
+                "searching": true,
                 "ordering": true,
                 "info": true,
                 "autoWidth": false,
@@ -202,14 +202,7 @@
                                 <h2>Quản Lý Thanh Trượt</h2>
                             </div>
                             <div class="col-sm-3">
-                                <form action="SliderServletURL" method="get" enctype="multipart/form-data">
-                                    <p>
-                                        Tìm theo tiêu đề: <input type="text" name="title"> 
-                                        <input type="submit" name="submit" value="Tìm">
-                                        <input type="reset" value="Clear">
-                                    </p>
-                                    <input type="hidden" name="service" value="listAllSlider">
-                                </form>				
+                                			
                             </div>
                             <div class="col-sm-5">
                                 <a href="SliderServletURL?service=addSlider" class="btn btn-secondary"><i class="material-icons">&#xE147;</i> <span>Add Slider</span></a>
